@@ -1,18 +1,15 @@
 package com.web.eco2.domain.entity.User;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "tb_user")
+@ToString
+@Data
 public class User {
 
     @Id

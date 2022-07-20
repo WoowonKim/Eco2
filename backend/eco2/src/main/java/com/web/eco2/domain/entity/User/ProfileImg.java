@@ -1,17 +1,15 @@
 package com.web.eco2.domain.entity.User;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Table(name = "tb_profile_img")
+@ToString
 public class ProfileImg {
 
     @Id
