@@ -18,18 +18,18 @@ public class ProfileImg {
     private Long id;
 
     @Column(name = "pri_save_folder", length = 100, nullable = false)
-    private String save_folder;
+    private String saveFolder;
 
     @Column(name = "pri_original_name", length = 200, nullable = false)
-    private String original_name;
+    private String originalName;
 
     @Column(name = "pri_save_name", length = 100, nullable = false, unique = true)
-    private String save_name;
+    private String saveName;
 
     @Builder
-    public ProfileImg(String save_folder, String original_name, String save_name) {
-        this.save_folder = save_folder;
-        this.original_name = original_name;
-        this.save_name = save_name;
+    public ProfileImg(String saveFolder, String originalName, String saveName) {
+        this.saveFolder = saveFolder;
+        this.originalName = originalName;
+        this.saveName = saveName;
     }
 }
