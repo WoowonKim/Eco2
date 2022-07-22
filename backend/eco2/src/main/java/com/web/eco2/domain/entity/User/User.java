@@ -6,7 +6,8 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "tb_user")
 @ToString
 @Data
@@ -20,25 +21,25 @@ public class User {
     @Column(name = "usr_email", length = 100, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "usr_name", length = 24, nullable = true)
+    @Column(name = "usr_name", length = 24, nullable = true, unique = true)
     private String name;
 
     @Column(name = "usr_social_type", nullable = false)
-    private Integer social_type;
+    private Integer socialType;
 
-    @Column(name = "usr_password", length = 50, nullable = true)
+    @Column(name = "usr_password", length = 200, nullable = true)
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @ColumnDefault("0")
     @JoinColumn(name = "pri_id", nullable = true)
-    private ProfileImg profile_img;
+    private ProfileImg profileImg;
 
     @Builder
-    public User(String email, String name, Integer social_type, String password) {
+    public User(String email, String name, Integer socialType, String password) {
         this.email = email;
         this.name = name;
-        this.social_type = social_type;
+        this.socialType = socialType;
         this.password = password;
     }
 
