@@ -1,6 +1,8 @@
 package com.web.eco2.domain.dto.User;
 
 import com.web.eco2.domain.entity.User.ProfileImg;
+import com.web.eco2.domain.entity.User.User;
+import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -11,7 +13,8 @@ import javax.validation.constraints.NotNull;
 
 @Valid
 @ToString
-public class SignUpRequest {
+@Data
+public class SingUpRequest {
 
     @NotNull
     @Email
@@ -20,10 +23,17 @@ public class SignUpRequest {
     private String name;
 
     @NotNull
-    private Integer social_type;
+    private Integer socialType;
 
     @NotNull
     private String password;
 
-    private ProfileImg profile_img;
+    public User toEntity() {
+        return User.builder()
+                .email(email)
+                .name(name)
+                .socialType(socialType)
+                .password(password)
+                .build();
+    }
 }
