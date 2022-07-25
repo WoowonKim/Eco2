@@ -6,17 +6,19 @@ let LoginInput = styled.input`
   width: 330px;
   height: 50px;
   padding-left: 10px;
+  margin: 5px 0;
 `;
 
 let GreenBtn = styled.button`
   background: #adc178;
   border: 1px solid #dadada;
   border-radius: 8px;
-  width: 340px;
+  width: 330px;
   height: 50px;
   text-align: center;
   color: white;
   cursor: pointer;
+  margin-top: 10px;
 `;
 
 let ShortGreenBtn = styled.button`
@@ -28,6 +30,7 @@ let ShortGreenBtn = styled.button`
   text-align: center;
   color: white;
   cursor: pointer;
+  margin-top: 10px;
 `;
 
 let WarningText = styled.p`
