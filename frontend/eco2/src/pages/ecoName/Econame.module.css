@@ -1,0 +1,41 @@
+.login {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.img {
+  width: 100%;
+  height: 350px;
+  margin-bottom: 30px;
+}
+
+.text {
+  font-weight: bold;
+}
+
+.input {
+  border: solid 2px #dadada;
+  border-radius: 8px;
+  margin: 5px 0;
+  height: 40px;
+  width: 100%;
+  background-color: #f7f8f9;
+  padding: 10px 20px;
+  font-size: small;
+}
+
+.button {
+  width: 100%;
+  height: 40px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #d2eaba;
+}
+
+.link {
+  text-decoration: none;
+}
