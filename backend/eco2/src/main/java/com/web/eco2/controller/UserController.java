@@ -115,7 +115,7 @@ public class UserController {
     }
 
     //name 설정
-    @PutMapping()
+    @PutMapping("/econame")
     public ResponseEntity<Object> setName(@RequestBody SingUpRequest user) {
         try {
             User emailUser = userService.findByEmail(user.getEmail());
@@ -144,7 +144,7 @@ public class UserController {
                 System.out.println("비밀번호 불일치");
                 return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
             }
-            return new ResponseEntity<String>("로그인 성공", HttpStatus.OK);
+            return ResponseHandler.generateResponse("로그인되었습니다.", HttpStatus.OK);
         } else {
             Map<String, String> map = new HashMap<>();
             String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
@@ -155,18 +155,87 @@ public class UserController {
         }
     }
 
+    //회원정보 조회
+    @GetMapping()
+    public ResponseEntity<Object> lookupUserInfo(@RequestParam String email) {
+        try {
+            User lookupUser = userService.findByEmail(email);
+            if (lookupUser == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+            }
+            return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //회원정보 수정
+    @PutMapping()
+    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @RequestBody User user) {
+        try {
+            User updateUser = userService.findByEmail(email);
+
+            if (updateUser == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+            }
+            updateUser.setName(user.getName());
+            updateUser.setProfileImg(user.getProfileImg());
+            userService.save(updateUser);
+            return ResponseHandler.generateResponse("회원정보가 수정되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    //회원 탈퇴
+    @DeleteMapping()
+    public ResponseEntity<Object> deleteUserInfo(@RequestBody SingUpRequest user) {
+        try {
+            User deleteUser = userService.findByEmail(user.getEmail());
+            userService.delete(deleteUser);
+            return ResponseHandler.generateResponse("회원탈퇴가 처리되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    //현재 비밀번호 확인
+    @PostMapping("/password")
+    public ResponseEntity<Object> checkPassword(@RequestBody SingUpRequest user) {
+        User passwordCheckUser = userService.findByEmail(user.getEmail());
+        if (passwordCheckUser == null) {
+            System.out.println("존재하지 않는 회원");
+            return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+        }
+        if (!passwordEncoder.matches(user.getPassword(), passwordCheckUser.getPassword())) {
+            System.out.println("비밀번호 불일치");
+            return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+        }
+        return ResponseHandler.generateResponse("새로운 비밀번호를 등록해주세요.", HttpStatus.OK);
+    }
+
+    //비밀번호 변경
+    @PutMapping("/password")
+    public ResponseEntity<Object> changePassword(@RequestBody SingUpRequest user) {
+        try {
+            User passwordChangeUser = userService.findByEmail(user.getEmail());
+            passwordChangeUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            userService.save(passwordChangeUser);
+            return ResponseHandler.generateResponse("비밀번호가 변경되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     // 소셜 로그인
     @GetMapping("/auth/{socialType}")
     public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType, @RequestParam String code) {
         return oAuth2Service.oAuthLogin(socialType, code);
     }
 
-//    //회원정보 수정
-//    @PutMapping()
-//    public ResponseEntity<String> updateUser(@RequestBody User user) {
-//        //TODO: 로직구현
-//        return null;
-//    }
 
 
 }
