@@ -13,7 +13,7 @@ const Regist = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const [social_type, setSocialType] = useState(0);
+  const [socialType, setSocialType] = useState(0);
   const [visibility, setVisibility] = useState(false);
   const [code, setCode] = useState(null);
   const [min, setMin] = useState(5);
@@ -30,7 +30,7 @@ const Regist = () => {
     event.preventDefault();
     setSocialType(0);
     dispatch(
-      signUp({ email: email, password: password, social_type: social_type })
+      signUp({ email: email, password: password, socialType: socialType })
     );
   };
 
