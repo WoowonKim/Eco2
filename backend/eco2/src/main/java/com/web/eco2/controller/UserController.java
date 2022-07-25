@@ -5,6 +5,7 @@ import com.web.eco2.domain.dto.User.MailRequest;
 import com.web.eco2.domain.dto.User.SingUpRequest;
 import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.model.service.MailService;
+import com.web.eco2.model.service.OAuth2Service;
 import com.web.eco2.model.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -25,6 +32,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private OAuth2Service oAuth2Service;
 
     //회원가입
     @PostMapping
@@ -98,7 +108,7 @@ public class UserController {
                 return new ResponseEntity<String>("사용 가능한 별명입니다.", HttpStatus.OK);
             }
             return new ResponseEntity<String>("중복된 별명입니다.", HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<String>("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
 
@@ -123,17 +133,32 @@ public class UserController {
 
     //로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        User loginUser = userService.findByEmail(user.getEmail());
-        if (loginUser == null) {
-            System.out.println("존재하지 않는 회원");
-            return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
+    public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) throws IOException {
+        if (user.getSocialType() == 0) {
+            User loginUser = userService.findByEmail(user.getEmail());
+            if (loginUser == null) {
+                System.out.println("존재하지 않는 회원");
+                return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
+            }
+            if (!passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
+                System.out.println("비밀번호 불일치");
+                return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
+            }
+            return new ResponseEntity<String>("로그인 성공", HttpStatus.OK);
+        } else {
+            Map<String, String> map = new HashMap<>();
+            String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
+            map.put("url", url);
+            map.put("msg", "소셜 로그인");
+            response.sendRedirect(url);
+            return new ResponseEntity<Map<String, String>>(map, HttpStatus.ACCEPTED);
         }
-        if (!passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
-            System.out.println("비밀번호 불일치");
-            return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
-        }
-        return new ResponseEntity<String>("로그인 성공", HttpStatus.OK);
+    }
+
+    // 소셜 로그인
+    @GetMapping("/auth/{socialType}")
+    public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType, @RequestParam String code) {
+        return oAuth2Service.oAuthLogin(socialType, code);
     }
 
 //    //회원정보 수정
