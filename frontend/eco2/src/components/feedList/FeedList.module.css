@@ -1,0 +1,12 @@
+/* .list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+} */
+
+.item {
+  display: flex;
+  flex-direction: row;
+  
+  overflow-x: scroll; 
+}

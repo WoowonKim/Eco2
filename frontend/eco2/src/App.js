@@ -4,6 +4,7 @@ import EcoName from "./pages/ecoName/EcoName";
 import Login from "./pages/login/Login";
 import FindPassword from "./pages/findPassword/FindPassword";
 import Regist from "./pages/regist/Regist";
+import MainFeed from './pages/mainFeed/MainFeed'
 
 /* DailyMission */
 import MissionMain from "./pages/dailyMission/missionMain/missionMain";
@@ -19,11 +20,15 @@ function App() {
         <Route path="/regist" element={<Regist />}></Route>
         <Route path="/findPassword" element={<FindPassword />}></Route>
         <Route path="/ecoName" element={<EcoName />}></Route>
+
         {/*DailyMission */}
         <Route path="/missionMain" element={<MissionMain />} />
         <Route path="/missionDetail" element={<MissionDetail />} />
         <Route path="/missionUpdate" element={<MissionUpdate />} />
         <Route path="/missionCustom" element={<MissionCustom />} />
+
+        <Route path="/mainFeed" element={<MainFeed />}></Route>
+
       </Routes>
     </div>
   );
