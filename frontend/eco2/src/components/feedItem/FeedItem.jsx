@@ -5,9 +5,7 @@ const FeedItem = ({ user, category, content, src }) => {
   return (
     <div className={styles.list}>
       <div className={styles.title}>
-        <div>
-          <p className={styles.user}>{user}님의 인증글</p>
-        </div>
+        <p className={styles.user}>{user}님의 인증글</p>
         <div className={styles.buttonGroup}>
           <button className={styles.button}>
             <i className="fa-solid fa-user-plus"></i>

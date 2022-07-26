@@ -1,3 +1,7 @@
+.container {
+  width: 330px;
+}
+
 .title {
   display: flex;
   align-items: center;
@@ -11,7 +15,7 @@
   margin-right: 10px;
 }
 
-.container {
+.list {
   margin-bottom: 50px;
 }
 
@@ -28,3 +32,4 @@
   color: #adc178;
   transform: scale(1.1);
 }
+
