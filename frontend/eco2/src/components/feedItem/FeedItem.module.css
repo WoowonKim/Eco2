@@ -1,10 +1,42 @@
 .list {
   flex-shrink: 0;
   flex-basis: 50%;
+  border: 1px solid #dadada;
+  border-radius: 10%;
+  margin: 5px 5px;
+  padding: 5px;
+  box-shadow: 5px 5px 10px 1px rgba(218,218,218,1);
 }
+
+.title {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+
+.button {
+  border: none;
+  background-color: white;
+  transition: all 2s ease-in;
+}
+
+.button :hover {
+  cursor: pointer;
+  color: #adc178;
+  transform: scale(1.1);
+}
+
 .user {
   text-align: start;
+  font-size: small;
+  padding: 0;
 }
+
 .img {
-  width: 30%;
+  width: 50%;
+}
+
+.content {
+  text-align: end;
 }

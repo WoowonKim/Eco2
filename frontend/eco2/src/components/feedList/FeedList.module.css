@@ -1,12 +1,10 @@
-/* .list {
+.list {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-} */
-
-.item {
-  display: flex;
-  flex-direction: row;
-  
   overflow-x: scroll; 
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
