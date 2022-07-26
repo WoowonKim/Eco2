@@ -1,0 +1,15 @@
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .boxSet {
+  display: flex;
+  justify-content: space-around;
+} */
+
+.box {
+  margin: auto;
+  padding: 100px;
+  border: 1px solid #dddddd;
+}

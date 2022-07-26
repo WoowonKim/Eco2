@@ -11,7 +11,7 @@ function Login() {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(
       login({ email: email, password: password, socialType: socialType })
@@ -32,7 +32,7 @@ function Login() {
           value={email}
           placeholder="이메일"
           className={styles.input}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
@@ -40,7 +40,7 @@ function Login() {
           value={password}
           placeholder="비밀번호"
           className={styles.input}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <div className={styles.radio}>
           <input type="checkbox" />
@@ -91,9 +91,6 @@ function Login() {
       </Link>
       <Link to="/findpassword" className={styles.link}>
         <p className={styles.text}>비밀번호를 잊어버렸어요</p>
-      </Link>
-      <Link to="/missionMain">
-        <button>GoMission</button>
       </Link>
     </div>
   );

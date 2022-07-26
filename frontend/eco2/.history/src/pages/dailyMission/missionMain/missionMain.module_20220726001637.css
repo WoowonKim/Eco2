@@ -1,0 +1,10 @@
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.box {
+  margin: 30px;
+  border: 30px solid #dddddd;
+  padding: 30px;
+}

@@ -92,7 +92,7 @@ function Login() {
       <Link to="/findpassword" className={styles.link}>
         <p className={styles.text}>비밀번호를 잊어버렸어요</p>
       </Link>
-      <Link to="/missionMain">
+      <Link to="missionMain">
         <button>GoMission</button>
       </Link>
     </div>

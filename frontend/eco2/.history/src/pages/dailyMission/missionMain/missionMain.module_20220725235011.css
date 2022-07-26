@@ -1,0 +1,7 @@
+.mainHeaderLeft {
+  display: flex;
+  justify-content: start;
+}
+
+.mainHeaderRight {
+}

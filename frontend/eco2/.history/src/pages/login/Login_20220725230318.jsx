@@ -93,7 +93,7 @@ function Login() {
         <p className={styles.text}>비밀번호를 잊어버렸어요</p>
       </Link>
       <Link to="/missionMain">
-        <button>GoMission</button>
+        <button>GoDetail</button>
       </Link>
     </div>
   );
