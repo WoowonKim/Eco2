@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
@@ -11,9 +11,11 @@ function Login() {
   const [socialType, setSocialType] = useState(0);
   const [loginFailMsg, setLoginFailMsg] = useState(false);
   let currUser = useSelector((state) => state.user);
+  let navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(currUser);
     dispatch(
       login({ email: email, password: password, socialType: socialType })
     );
@@ -22,7 +24,9 @@ function Login() {
     } else {
       setLoginFailMsg(false);
     }
-    console.log(currUser);
+    if (currUser.isLoggedIn === 1) {
+      navigate("/mainFeed");
+    }
   };
   return (
     <div className={styles.login}>
