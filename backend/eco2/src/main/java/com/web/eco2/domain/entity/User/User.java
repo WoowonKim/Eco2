@@ -2,16 +2,23 @@ package com.web.eco2.domain.entity.User;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_user")
 @ToString
 @Data
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,17 +37,57 @@ public class User {
     @Column(name = "usr_password", length = 200, nullable = true)
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @Column(name = "usr_refreshToken")
+    private String refreshToken;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ColumnDefault("0")
     @JoinColumn(name = "pri_id", nullable = true)
     private ProfileImg profileImg;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+//    @Column(name = "usr_role", nullable = true)
+    private List<String> role = new ArrayList<>();
+
     @Builder
-    public User(String email, String name, Integer socialType, String password) {
+    public User(String email, String name, Integer socialType, String password, String refreshToken, List<String> role) {
         this.email = email;
         this.name = name;
         this.socialType = socialType;
         this.password = password;
+        this.refreshToken = refreshToken;
+        this.role = role;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.role.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
