@@ -27,7 +27,7 @@ public class User {
     @Column(name = "usr_social_type", nullable = false)
     private Integer socialType;
 
-    @Column(name = "usr_password", length = 200, nullable = true)
+    @Column(name = "usr_password", length = 500, nullable = true)
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
