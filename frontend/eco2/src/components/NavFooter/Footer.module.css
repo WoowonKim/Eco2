@@ -1,0 +1,17 @@
+.Footer {
+  height: 75px;
+  padding: 1rem;
+  color: white;
+  background-color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 330px;
+}
+
+.Img {
+  height: 30px;
+}
