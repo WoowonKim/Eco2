@@ -1,6 +1,41 @@
 .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
   text-align: start;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+}
+
+.dropdownContent{
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  right: 0;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
+  padding: 10px 10px;
+}
+
+.dropdownItem:hover {
+  background-color: #dadada;
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+}
+
 
 .img {
   width: 70%;
