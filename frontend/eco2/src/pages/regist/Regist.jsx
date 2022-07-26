@@ -8,6 +8,12 @@ import {
   signUp,
 } from "../../store/user/userSlice";
 import styles from "./Regist.module.css";
+import {
+  GreenBtn,
+  LoginInput,
+  WarningText,
+  ShortGreenBtn,
+} from "../../components/styled";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -97,21 +103,19 @@ const Regist = () => {
         className={styles.img}
       />
       <form onSubmit={handleSubmit}>
-        <input
+        <LoginInput
           type="email"
           onChange={(e) => setEmail(e.target.value)}
-          className={styles.input}
           placeholder="이메일"
         />
-        <button type="button" onClick={onclick} className={styles.button}>
+        <GreenBtn type="button" onClick={onclick} className={styles.button}>
           {message}
-        </button>
+        </GreenBtn>
         {!isEmailValid && mount && (
           <p className={styles.warningText}>
             이메일이 유효하지 않아 인증메일을 발송할 수 없습니다.{" "}
           </p>
         )}
-
         <div className={`${styles.EmailInput}, ${displayType}`}>
           <input
             type="text"
@@ -134,25 +138,25 @@ const Regist = () => {
         </div>
         {isEmailVerified && (
           <div>
-            <input
+            <LoginInput
               type="password"
               onChange={(e) => setPassword(e.target.value)}
               className={styles.input}
               placeholder="비밀번호"
             />
-            <input
+            <LoginInput
               type="password"
               onChange={(e) => setPassword2(e.target.value)}
               className={styles.input}
               placeholder="비밀번호 확인"
             />
             {password !== password2 && (
-              <p className={styles.warningText}>비밀번호가 같지 않습니다.</p>
+              <WarningText className={styles.warningText}>
+                비밀번호가 같지 않습니다.
+              </WarningText>
             )}
             {/* <Link to="/econame" className={styles.link}> */}
-            <button type="submit" className={styles.button}>
-              가입하기
-            </button>
+            <ShortGreenBtn type="submit">가입하기</ShortGreenBtn>
             {/* </Link> */}
           </div>
         )}

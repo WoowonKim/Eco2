@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Econame.module.css";
+import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 
 const Econame = () => {
   const handleSubmit = (event) => {
