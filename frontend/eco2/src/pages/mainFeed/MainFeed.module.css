@@ -1,10 +1,36 @@
+.container {
+  width: 300px;
+  margin-top: 50px;
+}
+
 .title {
-  text-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.text {
   font-weight: bold;
   color: #615e5e;
   margin: 5px 0;
+  margin-right: 10px;
 }
 
-.container {
+.list {
   margin-bottom: 50px;
 }
+
+.link {
+  border: none;
+  background-color: white;
+  transition: all 2s ease-in;
+  text-decoration: none;
+  color: black;
+}
+
+.link :hover {
+  cursor: pointer;
+  color: #adc178;
+  transform: scale(1.1);
+}
+
