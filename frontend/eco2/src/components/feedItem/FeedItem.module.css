@@ -1,0 +1,10 @@
+.list {
+  flex-shrink: 0;
+  flex-basis: 50%;
+}
+.user {
+  text-align: start;
+}
+.img {
+  width: 30%;
+}
