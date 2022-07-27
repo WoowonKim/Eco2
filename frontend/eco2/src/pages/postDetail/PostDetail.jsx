@@ -9,7 +9,7 @@ import PostModal from "../../components/postModal/PostModal";
 const PostDetail = () => {
   const [visible, setVisible] = useState(null);
   const [modalType, setModalType] = useState("");
-  const feedList = useSelector((state) => state.feed.feedList);
+  const feedList = useSelector((state) => state.feed);
   const params = useParams();
   const feedItem = feedList.find((feed) => feed.id === Number(params.postId));
   const displayType = visible ? styles.visible : styles.hidden;
@@ -54,6 +54,10 @@ const PostDetail = () => {
           title={"게시물 수정"}
           content={"게시물을 수정하시겠습니다."}
           type={"수정"}
+          id={feedItem.id}
+          img={feedItem.src}
+          category={feedItem.category}
+          postContent={feedItem.content}
         />
       )}
       {visible && modalType === "삭제" && (

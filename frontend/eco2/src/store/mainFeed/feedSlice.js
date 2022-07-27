@@ -134,7 +134,7 @@ const feedState = {
 };
 export const feedSlice = createSlice({
   name: "feed",
-  initialState: feedState,
+  initialState: feedState.feedList,
   reducers: {
     addPost: (state, action) => {
       const newPost = {
@@ -142,13 +142,14 @@ export const feedSlice = createSlice({
         user: "user1",
         category: action.payload.category,
         content: action.payload.content,
-        src: action.payload.img,
+        src: action.payload.src,
       };
       state.push(newPost);
     },
     updatePost: (state, action) => {
       const index = state.findIndex((post) => post.id === action.payload.id);
       state[index].content = action.payload.content;
+      console.log(state[index].content);
     },
     deletePost: (state, action) => {
       return state.filter((post) => post.id !== action.payload.id);

@@ -7,16 +7,20 @@ import Regist from "./pages/regist/Regist";
 
 import MainFeed from "./pages/mainFeed/MainFeed";
 
-
 import Header from "./components/NavFooter/Header";
-
 
 /* DailyMission */
 import MissionMain from "./pages/dailyMission/missionMain/missionMain";
 import MissionDetail from "./pages/dailyMission/missionDetail/missionDetail";
 import MissionCustom from "./pages/dailyMission/missionCustom/missionCustom";
 import MissionUpdate from "./pages/dailyMission/missionUpdate/missionUpdate";
-import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -24,6 +28,7 @@ import MainTree from "./pages/mainTree/MainTree";
 
 import FeedCategory from "./pages/feedCategory/FeedCategory";
 import PostDetail from "./pages/postDetail/PostDetail";
+import PostForm from "./pages/postForm/PostForm";
 
 /* 더미객체 Start */
 const reducer = (state, action) => {
@@ -57,7 +62,9 @@ function App() {
   const dataId = useRef(0);
 
   const getData = async () => {
-    const res = await fetch("https://jsonplaceholder.typicode.com/comments").then((res) => res.json());
+    const res = await fetch(
+      "https://jsonplaceholder.typicode.com/comments"
+    ).then((res) => res.json());
 
     const initData = res.slice(0, 5).map((it) => {
       return {
@@ -93,33 +100,34 @@ function App() {
 
   let currUser = useSelector((state) => state.user);
   return (
-      <DummyStateContext.Provider value={data}>
+    <DummyStateContext.Provider value={data}>
       <DummyDispathContext.Provider value={memoizedDispatches}>
-    <div className={styles.App}>
-      {currUser.isLoggedIn === 1 ? <Header></Header> : null}
-      <div className={styles.body}>
-        <Routes>
-          <Route path="/" element={<Login />}></Route>
-          <Route path="/regist" element={<Regist />}></Route>
-          <Route path="/findPassword" element={<FindPassword />}></Route>
-          <Route path="/ecoName" element={<EcoName />}></Route>
-          {/*DailyMission */}
-          <Route path="/missionMain" element={<MissionMain />} />
-          <Route path="/missionDetail" element={<MissionDetail />} />
-          <Route path="/missionUpdate" element={<MissionUpdate />} />
-          <Route path="/missionCustom" element={<MissionCustom />} />
-          <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route
-            path="/mainFeed/:feedCategory"
-            element={<FeedCategory />}
-          ></Route>
-          <Route path="/post/:postId" element={<PostDetail />}></Route>
-          <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
-        </Routes>
-      </div>
-      {currUser.isLoggedIn === 1 ? <Footer></Footer> : null}
-    </div>
-          </DummyDispathContext.Provider>
+        <div className={styles.App}>
+          {currUser.isLoggedIn === 1 ? <Header></Header> : null}
+          <div className={styles.body}>
+            <Routes>
+              <Route path="/" element={<Login />}></Route>
+              <Route path="/regist" element={<Regist />}></Route>
+              <Route path="/findPassword" element={<FindPassword />}></Route>
+              <Route path="/ecoName" element={<EcoName />}></Route>
+              {/*DailyMission */}
+              <Route path="/missionMain" element={<MissionMain />} />
+              <Route path="/missionDetail" element={<MissionDetail />} />
+              <Route path="/missionUpdate" element={<MissionUpdate />} />
+              <Route path="/missionCustom" element={<MissionCustom />} />
+              <Route path="/mainFeed" element={<MainFeed />}></Route>
+              <Route
+                path="/mainFeed/:feedCategory"
+                element={<FeedCategory />}
+              ></Route>
+              <Route path="/post" element={<PostForm />}></Route>
+              <Route path="/post/:postId" element={<PostDetail />}></Route>
+              <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
+            </Routes>
+          </div>
+          {currUser.isLoggedIn === 1 ? <Footer></Footer> : null}
+        </div>
+      </DummyDispathContext.Provider>
     </DummyStateContext.Provider>
   );
 }
