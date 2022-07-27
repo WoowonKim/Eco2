@@ -5,7 +5,6 @@ import Login from "./pages/login/Login";
 import FindPassword from "./pages/findPassword/FindPassword";
 import Regist from "./pages/regist/Regist";
 
-import MainFeed from "./pages/mainFeed/MainFeed";
 import Header from "./components/NavFooter/Header";
 
 /* DailyMission */
@@ -17,7 +16,7 @@ import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
 import MainTree from "./pages/mainTree/MainTree";
 
-import MainFeed from './pages/mainFeed/MainFeed'
+import MainFeed from "./pages/mainFeed/MainFeed";
 import FeedCategory from "./pages/feedCategory/FeedCategory";
 import PostDetail from "./pages/postDetail/PostDetail";
 
@@ -38,7 +37,10 @@ function App() {
           <Route path="/missionUpdate" element={<MissionUpdate />} />
           <Route path="/missionCustom" element={<MissionCustom />} />
           <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
+          <Route
+            path="/mainFeed/:feedCategory"
+            element={<FeedCategory />}
+          ></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
         </Routes>
