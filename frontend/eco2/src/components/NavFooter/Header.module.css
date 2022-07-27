@@ -1,0 +1,22 @@
+.Header {
+  height: 75px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color: white;
+  background-color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 330px;
+}
+.Img {
+  height: 30px;
+}
+
+i {
+  color: #adc178;
+  font-size: 20px;
+  margin: 5px;
+}

@@ -1,40 +1,82 @@
 import React from 'react';
 import FeedList from '../../components/feedList/FeedList';
 import styles from './MainFeed.module.css'
+import { Link } from 'react-router-dom'
 
 const MainFeed = () => {
   return (
     <div>
-      <h2 className={styles.title}>실천하기</h2>
       <div className={styles.container}>
-        <FeedList 
-          category={'do'}
-        />
+        <div className={styles.title}>
+          <h2 className={styles.text}>실천하기</h2>
+          <Link to={`/mainFeed/${'do'}`} className={styles.link}>
+            <i className="fa-solid fa-circle-plus"></i> 더보기
+          </Link>
+        </div>
+        <div className={styles.list}>
+          <FeedList 
+            category={'do'}
+            display={'list'}
+          />
+        </div>
       </div>
-      <h2 className={styles.title}>사용하기</h2>
       <div className={styles.container}>
-        <FeedList 
-          category={'use'}
-        />
+        <div className={styles.title}>
+          <h2 className={styles.text}>사용하기</h2>
+          <Link to={`/mainFeed/${'do'}`} className={styles.link}>
+            <i className="fa-solid fa-circle-plus"></i> 더보기
+          </Link>
+        </div>
+        <div className={styles.list}>
+          <FeedList 
+            category={'use'}
+            display={'list'}
+          />
+        </div>
       </div>
-      <h2 className={styles.title}>절약하기</h2>
       <div className={styles.container}>
-        <FeedList 
-          category={'save'}
-        />
+        <div className={styles.title}>
+          <h2 className={styles.text}>절약하기</h2>
+          <Link to={`/mainFeed/${'do'}`} className={styles.link}>
+            <i className="fa-solid fa-circle-plus"></i> 더보기
+          </Link>
+        </div>
+        <div className={styles.list}>
+          <FeedList 
+            category={'save'}
+            display={'list'}
+          />
+        </div>
       </div>
-      <h2 className={styles.title}>구매하기</h2>
       <div className={styles.container}>
-        <FeedList 
-          category={'buy'}
-        />
+        <div className={styles.title}>
+          <h2 className={styles.text}>구매하기</h2>
+          <Link to={`/mainFeed/${'buy'}`} className={styles.link}>
+            <i className="fa-solid fa-circle-plus"></i> 더보기
+          </Link>
+        </div>
+        <div className={styles.list}>
+          <FeedList 
+            category={'do'}
+            display={'list'}
+          />
+        </div>
       </div>
-      <h2 className={styles.title}>재활용하기</h2>
       <div className={styles.container}>
-        <FeedList 
-          category={'recycle'}
-        />
+        <div className={styles.title}>
+          <h2 className={styles.text}>재활용하기</h2>
+          <Link to={`/mainFeed/${'recycle'}`} className={styles.link}>
+            <i className="fa-solid fa-circle-plus"></i> 더보기
+          </Link>
+        </div>
+        <div className={styles.list}>
+          <FeedList 
+            category={'do'}
+            display={'list'}
+          />
+        </div>
       </div>
+      
     </div>
   );
 };
