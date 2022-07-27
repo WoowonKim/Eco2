@@ -1,0 +1,7 @@
+.mainHeaderLeft {
+  justify-content: start;
+}
+
+.mainHeaderRight {
+  justify-content: end;
+}

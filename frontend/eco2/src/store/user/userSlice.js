@@ -11,7 +11,7 @@ export const login = createAsyncThunk("user/login", async (args, thunkAPI) => {
     data: {
       email: args.email,
       password: args.password,
-      social_type: args.social_type,
+      socialType: args.socialType,
     },
     headers: {
       Authorization: "Authorization " + token,
@@ -33,13 +33,13 @@ export const signUp = createAsyncThunk(
         data: {
           email: args.email,
           password: args.password,
-          social_type: args.social_type,
+          socialType: args.socialType,
         },
         headers: {
           Authorization: "Authorization " + token,
         },
       });
-      console.log(args.social_type);
+      console.log(args.socialType);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
