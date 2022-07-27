@@ -19,4 +19,13 @@ public class ResponseHandler {
         map.put("status", status.value());
         map.put(dataName, responseObj);
         return new ResponseEntity<Object>(map,status);
-    }}
+    }
+    public static ResponseEntity<Object> generateResponse(String message, HttpStatus status, String dataName, Object responseObj, String dataName2, Object responseObj2) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", message);
+        map.put("status", status.value());
+        map.put(dataName, responseObj);
+        map.put(dataName2, responseObj2);
+        return new ResponseEntity<Object>(map,status);
+    }
+}

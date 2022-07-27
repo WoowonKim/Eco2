@@ -1,0 +1,38 @@
+.mainHeader {
+  margin-top: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mainHeaderRight {
+  color: #6a707c;
+  font-size: small;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.mainHeaderLeft {
+  color: #6a707c;
+  font-size: small;
+  font-weight: bold;
+  border-bottom: 1px solid #64c964;
+}
+
+.mainColor {
+  color: #adc178;
+  margin-left: 3px;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+}
+
+.btn {
+  margin-top: 10px;
+}

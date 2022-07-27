@@ -1,0 +1,17 @@
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .boxSet {
+  display: flex;
+  justify-content: space-around;
+} */
+
+.box {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #dddddd;
+}

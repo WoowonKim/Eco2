@@ -1,0 +1,25 @@
+.form {
+  margin: 0;
+  padding: 0;
+}
+
+.input {
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  width: 85%;
+  height: 30px;
+  padding-left: 10px;
+  margin: 5px 0;
+}
+
+.button {
+  background: #adc178;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  width: 15%;
+  height: 30px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+}
