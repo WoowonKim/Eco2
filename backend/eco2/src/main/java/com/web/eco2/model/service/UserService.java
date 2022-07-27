@@ -1,6 +1,7 @@
 package com.web.eco2.model.service;
 
 import com.web.eco2.domain.dto.User.UserInformation;
+import com.web.eco2.domain.dto.User.SingUpRequest;
 import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

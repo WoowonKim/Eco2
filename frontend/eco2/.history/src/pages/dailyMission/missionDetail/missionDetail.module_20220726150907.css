@@ -1,0 +1,12 @@
+.Font {
+  font-weight: bold;
+  text-align: left;
+}
+
+.trending {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #adc178;
+  border-left: 2px solid #adc178;
+  border-right: 2px solid #adc178;
+}
