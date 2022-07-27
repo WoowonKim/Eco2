@@ -1,0 +1,12 @@
+.mainHeader {
+  display: flex;
+}
+
+.mainHeaderLeft {
+}
+
+.mainHeaderRight {
+  flex-direction: row;
+  justyfy-content: center;
+  align-self: center;
+}
