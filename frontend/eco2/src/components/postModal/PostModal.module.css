@@ -14,18 +14,34 @@
 
 .modalTitle {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+}
+
+.editIcon {
+  background-color: #dadada;
+  opacity: 0.7;
+  padding: 8px;
+  border-radius: 5px;
+  color: #fbbb00;
+}
+
+.deleteIcon {
+  background-color: #dadada;
+  opacity: 0.7;
+  padding: 8px;
+  border-radius: 5px;
+  color: red;
 }
 
 .title {
   margin: 5px;
+  text-align: start;
 }
 
 .content {
   font-size: small;
   text-align: start;
-  margin-left: 5px;
+  margin: 10px 0 15px 50px;
 }
 
 .editButton {

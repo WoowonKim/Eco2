@@ -149,7 +149,6 @@ export const feedSlice = createSlice({
     updatePost: (state, action) => {
       const index = state.findIndex((post) => post.id === action.payload.id);
       state[index].content = action.payload.content;
-      console.log(state[index].content);
     },
     deletePost: (state, action) => {
       return state.filter((post) => post.id !== action.payload.id);

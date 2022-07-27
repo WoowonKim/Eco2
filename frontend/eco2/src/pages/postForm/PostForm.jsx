@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./PostForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost, updatePost } from "../../store/mainFeed/feedSlice";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
 
 const PostForm = ({ img, content, id, category }) => {
@@ -11,6 +11,8 @@ const PostForm = ({ img, content, id, category }) => {
   const [editText, setEditText] = useState("");
   const [text, setText] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (location.state.content) {
       setEditText(location.state?.content);
@@ -30,8 +32,11 @@ const PostForm = ({ img, content, id, category }) => {
     e.preventDefault();
     if (location.state?.id) {
       dispatch(updatePost({ id: location.state?.id, content: editText }));
+      navigate(`/post/${location.state?.id}`);
+      console.log(location.state.id, editText);
     } else {
       dispatch(addPost({ category: selected, content, src: fileImage }));
+      navigate(`/post/${location.state?.id}`);
     }
   };
   return (
@@ -47,19 +52,26 @@ const PostForm = ({ img, content, id, category }) => {
             />
           )}
         </div>
-        <label htmlFor="img_file" className={styles.imgLabel}>
-          업로드
-        </label>
-        <input
-          className={styles.fileInput}
-          type="file"
-          id="img_file"
-          accept="image/*"
-          onChange={saveFileImage}
-        />
-        <button onClick={() => deleteFileImage()} className={styles.button}>
-          삭제
-        </button>
+        <div className={styles.fileInputGroup}>
+          <input
+            className={styles.fileInput}
+            value="첨부파일"
+            placeholder="첨부파일"
+          />
+          <label htmlFor="file" className={styles.imgLabel}>
+            파일찾기
+          </label>
+          <input
+            type="file"
+            id="file"
+            accept="image/*"
+            onChange={saveFileImage}
+            className={`${styles.fileInput} ${styles.baseFileInput}`}
+          />
+          <button onClick={() => deleteFileImage()} className={styles.button}>
+            삭제
+          </button>
+        </div>
         <div className={styles.selectBox}>
           <select
             name="category"

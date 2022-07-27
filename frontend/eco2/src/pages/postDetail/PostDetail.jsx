@@ -66,6 +66,7 @@ const PostDetail = () => {
           title={"게시물 삭제"}
           content={"게시물을 삭제하시겠습니다."}
           type={"삭제"}
+          id={feedItem.id}
         />
       )}
       <img className={styles.img} src={feedItem.src} alt="img" />

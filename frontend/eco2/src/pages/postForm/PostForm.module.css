@@ -23,16 +23,43 @@
   background-color: #dadada;
   color: black;
 }
+
+.fileInputGroup {
+  display: flex;
+  margin-bottom: 20px;
+}
+
 .fileInput {
+  height: 30px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  width: 50%;
+  color: #999999;
+}
+
+.imgLabel {
+  /* padding: 10px 20px; */
+  color: #fff;
+  vertical-align: middle;
+  background-color: #999999;
+  cursor: pointer;
+  height: 30px;
+  width: 80px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: small;
+}
+
+.baseFileInput {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  width: 0;
+  height: 0;
   padding: 0;
-  margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
 .img {
   width: 300px;
 }
@@ -44,16 +71,13 @@
 }
 
 .select {
-  -webkit-appearance: none;
+  /* -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
+  appearance: none; */
   width: 100px;
-  padding: 5px 5px;
+  padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;
-}
-
-.option {
 }
 
 .missionTitle {
