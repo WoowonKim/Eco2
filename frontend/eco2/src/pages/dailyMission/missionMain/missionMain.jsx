@@ -5,20 +5,13 @@ import { Link } from "react-router-dom";
 import Header from "../../HeadaerAndFooter/Header";
 import Footer from "../../HeadaerAndFooter/Footer";
 
+import MissionList from "./missionList";
 import { GreenBtn } from "../../../components/styled";
 import { DummyDispathContext, DummyStateContext } from "../../../App";
 
 const MissionMain = () => {
   const { onRemove, onEdit } = useContext(DummyDispathContext);
   const dummyList = useContext(DummyStateContext);
-
-  const handleClickRemove = () => {
-    if (window.confirm(`${dummyList.id}의 미션을 정말 삭제 할겁니까?`)) {
-      onRemove(dummyList.id);
-      console.log(dummyList.id);
-    }
-  };
-  console.log(dummyList);
 
   return (
     <div className="missionMain">
@@ -28,24 +21,12 @@ const MissionMain = () => {
         <Link to="/missionDetail" className={styles.mainHeaderRight}>
           <span>
             추가하기
-            <i
-              className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
-            ></i>
+            <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
           </span>
         </Link>
       </div>
       <div>
-        {dummyList.map(it => (
-          <div className={styles.box} key={it.id}>
-            <input type={"checkbox"}></input>
-            <span className={styles.missionList}>{it.content}</span>
-            <i
-              className={`${"fa-solid fa-trash-can"} ${styles.trashColor}`}
-              onClick={handleClickRemove}
-            ></i>
-            <p></p>
-          </div>
-        ))}
+        <MissionList />
       </div>
       <div className={styles.btn}>
         <GreenBtn>오늘 미션 보상 받기</GreenBtn>

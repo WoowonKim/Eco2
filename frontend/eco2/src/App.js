@@ -11,13 +11,7 @@ import MissionMain from "./pages/dailyMission/missionMain/missionMain";
 import MissionDetail from "./pages/dailyMission/missionDetail/missionDetail";
 import MissionCustom from "./pages/dailyMission/missionCustom/missionCustom";
 import MissionUpdate from "./pages/dailyMission/missionUpdate/missionUpdate";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 
 /* 더미객체 Start */
 const reducer = (state, action) => {
@@ -32,7 +26,7 @@ const reducer = (state, action) => {
       return [newItem, ...state];
     }
     case "REMOVE": {
-      return state.filter(it => it.id !== action.targetId);
+      return state.filter((it) => it.id !== action.targetId);
     }
 
     default:
@@ -51,11 +45,9 @@ function App() {
   const dataId = useRef(0);
 
   const getData = async () => {
-    const res = await fetch(
-      "https://jsonplaceholder.typicode.com/comments"
-    ).then(res => res.json());
+    const res = await fetch("https://jsonplaceholder.typicode.com/comments").then((res) => res.json());
 
-    const initData = res.slice(0, 5).map(it => {
+    const initData = res.slice(0, 5).map((it) => {
       return {
         author: it.email,
         content: it.body,
@@ -78,7 +70,7 @@ function App() {
     dataId.current += 1;
   }, []);
 
-  const onRemove = useCallback(targetId => {
+  const onRemove = useCallback((targetId) => {
     dispatch({ type: "REMOVE", targetId });
   }, []);
 
