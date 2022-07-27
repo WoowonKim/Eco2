@@ -1,23 +1,33 @@
 import { React, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
-import { GreenBtn } from "../../components/styled";
+import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [socialType, setSocialType] = useState(0);
-
+  const [loginFailMsg, setLoginFailMsg] = useState(false);
+  let currUser = useSelector((state) => state.user);
+  let navigate = useNavigate();
   const dispatch = useDispatch();
-
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(currUser);
     dispatch(
       login({ email: email, password: password, socialType: socialType })
     );
+    if (currUser.isLoggedIn === 0) {
+      setLoginFailMsg(true);
+    } else {
+      setLoginFailMsg(false);
+    }
+    if (currUser.isLoggedIn === 1) {
+      navigate("/mainFeed");
+    }
   };
-
   return (
     <div className={styles.login}>
       <img
@@ -26,34 +36,33 @@ function Login() {
         className={styles.img}
       />
       <form onSubmit={handleSubmit} className={styles.form}>
-        <input
+        <LoginInput
           type="email"
           required
           value={email}
           placeholder="이메일"
-          className={styles.input}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
+        <LoginInput
           type="password"
           required
           value={password}
           placeholder="비밀번호"
-          className={styles.input}
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className={styles.radio}>
           <input type="checkbox" />
           <span className={styles.radioText}>자동 로그인</span>
         </div>
-        <GreenBtn type="submit" className={styles.button}>
-          로그인
-        </GreenBtn>
+        {loginFailMsg ? (
+          <WarningText>
+            등록된 이메일이 없거나 비밀번호가 일치하지 않습니다.
+          </WarningText>
+        ) : null}
+        <GreenBtn type="submit">로그인</GreenBtn>
       </form>
       <div className={styles.lineGroup}>
-        <hr className={styles.shortLine} />
         <span className={styles.lineText}>SNS로 3초만에 시작하기</span>
-        <hr className={styles.longLine} />
       </div>
       <div className={styles.socialGroup}>
         <button
@@ -82,9 +91,7 @@ function Login() {
         </button>
       </div>
       <div className={styles.lineGroup}>
-        <hr className={styles.shortLine2} />
         <span className={styles.lineText}>제가</span>
-        <hr className={styles.longLine2} />
       </div>
       <Link to="/regist" className={styles.link}>
         <p className={styles.text}>아직 회원이 아니에요</p>
