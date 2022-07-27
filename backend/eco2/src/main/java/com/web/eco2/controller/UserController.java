@@ -3,11 +3,14 @@ package com.web.eco2.controller;
 import com.web.eco2.domain.dto.User.MailRequest;
 import com.web.eco2.domain.dto.User.SingUpRequest;
 import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.model.service.MailService;
 import com.web.eco2.model.service.OAuth2Service;
 import com.web.eco2.model.service.UserService;
 
+import com.web.eco2.model.service.UserSettingService;
 import com.web.eco2.util.ResponseHandler;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserSettingService userSettingService;
 
     @Autowired
     private MailService mailService;
@@ -43,8 +48,18 @@ public class UserController {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.save(user.toEntity());
+
+            // 계정 설정 insert
+            User dbUser = userService.findByEmail(user.getEmail());
+            UserSetting userSetting = UserSetting.builder()
+                    .id(null).user(dbUser)
+                    .chatAlarmFlag(true).commentAlarmFlag(true)
+                    .publicFlag(true).darkmodeFlag(false).build();
+            userSettingService.save(userSetting);
+
             return ResponseHandler.generateResponse("회원가입에 성공하였습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -101,14 +116,14 @@ public class UserController {
 
     //name 중복확인
     @GetMapping("/econame/{name}")
-    public ResponseEntity<Object>checkName(@PathVariable("name") String name) {
+    public ResponseEntity<Object> checkName(@PathVariable("name") String name) {
         try {
             User nameUser = userService.findByName(name);
             if (nameUser == null) {
                 return ResponseHandler.generateResponse("사용 가능한 별명입니다.", HttpStatus.OK);
             }
             return ResponseHandler.generateResponse("중복된 별명입니다.", HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
 
@@ -150,7 +165,7 @@ public class UserController {
             String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
             map.put("url", url);
             map.put("msg", "소셜 로그인");
-            response.sendRedirect(url);
+//            response.sendRedirect(url);
             return new ResponseEntity<Map<String, String>>(map, HttpStatus.ACCEPTED);
         }
     }
@@ -168,5 +183,73 @@ public class UserController {
 //        return null;
 //    }
 
+    // 유저 조회
+    @GetMapping("/{email}")
+    public ResponseEntity<?> getUser(@PathVariable("email") String email) {
+        if(email == null) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+        User user = userService.findUserInfoByEmail(email);
 
+        if (user != null) {
+            return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user);
+        } else {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 현재 비밀번호 확인
+    @PostMapping("/password")
+    public ResponseEntity<?> checkPassword(@RequestBody User user) {
+        User dbUser = userService.findByEmail(user.getEmail());
+        if (dbUser == null) {
+            return ResponseHandler.generateResponse("잘못된 이메일", HttpStatus.BAD_REQUEST);
+        }
+        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseHandler.generateResponse("새로운 비밀번호를 등록해주세요.", HttpStatus.OK);
+    }
+
+    // 비밀번호 변경
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(@RequestBody User user) {
+        if (user.getEmail() == null || user.getPassword() == null) {
+            return ResponseHandler.generateResponse("비밀번호 수정 실패", HttpStatus.BAD_REQUEST);
+        }
+
+        User dbUser = userService.findByEmail(user.getEmail());
+        if (dbUser == null) {
+            return ResponseHandler.generateResponse("잘못된 이메일", HttpStatus.BAD_REQUEST);
+        }
+        if (passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return ResponseHandler.generateResponse("이전과 동일한 비밀번호", HttpStatus.BAD_REQUEST);
+        }
+
+        dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.save(dbUser);
+
+        return ResponseHandler.generateResponse("비밀번호가 변경되었습니다.", HttpStatus.OK);
+    }
+
+    // 사용자 탈퇴
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestBody User user) {
+        if(user == null || user.getEmail() == null) {
+            return ResponseHandler.generateResponse("잘못된 요청", HttpStatus.BAD_REQUEST);
+        }
+        User dbUser = userService.findByEmail(user.getEmail());
+
+        if(dbUser == null) {
+            return ResponseHandler.generateResponse("존재하지 않는 회원", HttpStatus.BAD_REQUEST);
+        }
+        if(!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        userService.delete(user);
+
+        return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
+    }
 }
