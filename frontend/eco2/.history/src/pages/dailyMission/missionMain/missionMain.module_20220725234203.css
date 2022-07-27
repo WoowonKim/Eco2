@@ -1,0 +1,15 @@
+.mainHeader {
+  display: flex;
+  align-items: center;
+}
+
+.mainHeaderLeft {
+  justify-content: start;
+}
+.mainHeaderCenter {
+  justify-content: center;
+}
+
+.mainHeaderRight {
+  justify-content: end;
+}

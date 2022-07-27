@@ -1,0 +1,30 @@
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .boxSet {
+  display: flex;
+  justify-content: space-around;
+} */
+
+.box {
+  display: flex;
+
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #dddddd;
+}
+.box .chk {
+  width: 5%;
+  justify-content: start;
+}
+
+.box .cnt {
+  justify-content: center;
+}
+
+.box .trash {
+  width: 5%;
+  justify-content: end;
+}

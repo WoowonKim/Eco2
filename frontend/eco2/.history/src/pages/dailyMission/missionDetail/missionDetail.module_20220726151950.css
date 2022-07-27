@@ -1,0 +1,16 @@
+.Font {
+  font-weight: bold;
+  text-align: left;
+}
+
+.trending {
+  margin-top: 20px;
+  margin-bottom: 15px;
+  border: 2px solid #adc178;
+}
+
+.tablehead {
+  display: flex;
+  justify-content: space-around;
+  border: 2px solid #adc178;
+}
