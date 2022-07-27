@@ -3,12 +3,15 @@ package com.web.eco2.controller;
 import com.web.eco2.domain.dto.User.MailRequest;
 import com.web.eco2.domain.dto.User.SingUpRequest;
 import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.model.service.MailService;
 import com.web.eco2.model.service.OAuth2Service;
 import com.web.eco2.model.service.UserService;
-
+import com.web.eco2.model.service.UserSettingService;
 import com.web.eco2.util.JwtTokenUtil;
 import com.web.eco2.util.ResponseHandler;
+
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,6 @@ import java.util.Collections;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +34,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserSettingService userSettingService;
 
     @Autowired
     private MailService mailService;
@@ -53,6 +58,14 @@ public class UserController {
             String refreshToken = jwtTokenUtil.createRefreshToken();
             user.setRefreshToken(refreshToken);
             userService.save(user.toEntity());
+
+            // 계정 설정 insert
+            User dbUser = userService.findByEmail(user.getEmail());
+            UserSetting userSetting = UserSetting.builder()
+                    .id(null).user(dbUser)
+                    .chatAlarmFlag(true).commentAlarmFlag(true)
+                    .publicFlag(true).darkmodeFlag(false).build();
+            userSettingService.save(userSetting);
 
             String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
 //            System.out.println("accessToken" + accessToken);
@@ -147,28 +160,6 @@ public class UserController {
         }
     }
 
-    //로그인
-    @PostMapping("/login")
-<<<<<<< backend/eco2/src/main/java/com/web/eco2/controller/UserController.java
-    public ResponseEntity<Object> login(@RequestBody SingUpRequest user) {
-        try {
-            User loginUser = userService.findByEmail(user.getEmail());
-            if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
-                System.out.println("이메일, 비밀번호 불일치");
-                return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.NO_CONTENT);
-            }
-
-            String refreshToken = jwtTokenUtil.createRefreshToken();
-            user.setRefreshToken(refreshToken);
-            userService.save(user.toEntity());
-
-            String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
-            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "refreshToken", refreshToken);
-        } catch (Exception e) {
-            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     //access 토큰 재발급
     @PostMapping("/newaccesstoken")
     public ResponseEntity<Object> newAccessToken(HttpServletRequest request, @RequestBody SingUpRequest user) {
@@ -205,25 +196,33 @@ public class UserController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-=======
+
+    // 로그인
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) throws IOException {
         if (user.getSocialType() == 0) {
-            User loginUser = userService.findByEmail(user.getEmail());
-            if (loginUser == null) {
-                System.out.println("존재하지 않는 회원");
-                return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
+            try {
+                User loginUser = userService.findByEmail(user.getEmail());
+                if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
+                    System.out.println("이메일, 비밀번호 불일치");
+                    return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.NO_CONTENT);
+                }
+
+                String refreshToken = jwtTokenUtil.createRefreshToken();
+                user.setRefreshToken(refreshToken);
+                userService.save(user.toEntity());
+
+                String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
+                return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "refreshToken", refreshToken);
+            } catch (Exception e) {
+                return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
             }
-            if (!passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
-                System.out.println("비밀번호 불일치");
-                return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
-            }
-            return ResponseHandler.generateResponse("로그인되었습니다.", HttpStatus.OK);
         } else {
             Map<String, String> map = new HashMap<>();
             String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
             map.put("url", url);
             map.put("msg", "소셜 로그인");
-            response.sendRedirect(url);
+//            response.sendRedirect(url);
             return new ResponseEntity<Map<String, String>>(map, HttpStatus.ACCEPTED);
         }
     }
@@ -309,7 +308,73 @@ public class UserController {
         return oAuth2Service.oAuthLogin(socialType, code);
     }
 
->>>>>>> backend/eco2/src/main/java/com/web/eco2/controller/UserController.java
+    // 유저 조회
+    @GetMapping("/{email}")
+    public ResponseEntity<?> getUser(@PathVariable("email") String email) {
+        if(email == null) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+        User user = userService.findUserInfoByEmail(email);
 
+        if (user != null) {
+            return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user);
+        } else {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    // 현재 비밀번호 확인
+    @PostMapping("/password")
+    public ResponseEntity<?> checkPassword(@RequestBody User user) {
+        User dbUser = userService.findByEmail(user.getEmail());
+        if (dbUser == null) {
+            return ResponseHandler.generateResponse("잘못된 이메일", HttpStatus.BAD_REQUEST);
+        }
+        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseHandler.generateResponse("새로운 비밀번호를 등록해주세요.", HttpStatus.OK);
+    }
+
+    // 비밀번호 변경
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(@RequestBody User user) {
+        if (user.getEmail() == null || user.getPassword() == null) {
+            return ResponseHandler.generateResponse("비밀번호 수정 실패", HttpStatus.BAD_REQUEST);
+        }
+
+        User dbUser = userService.findByEmail(user.getEmail());
+        if (dbUser == null) {
+            return ResponseHandler.generateResponse("잘못된 이메일", HttpStatus.BAD_REQUEST);
+        }
+        if (passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return ResponseHandler.generateResponse("이전과 동일한 비밀번호", HttpStatus.BAD_REQUEST);
+        }
+
+        dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.save(dbUser);
+
+        return ResponseHandler.generateResponse("비밀번호가 변경되었습니다.", HttpStatus.OK);
+    }
+
+    // 사용자 탈퇴
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestBody User user) {
+        if(user == null || user.getEmail() == null) {
+            return ResponseHandler.generateResponse("잘못된 요청", HttpStatus.BAD_REQUEST);
+        }
+        User dbUser = userService.findByEmail(user.getEmail());
+
+        if(dbUser == null) {
+            return ResponseHandler.generateResponse("존재하지 않는 회원", HttpStatus.BAD_REQUEST);
+        }
+        if(!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        userService.delete(user);
+
+        return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
+    }
 }

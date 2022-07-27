@@ -88,7 +88,7 @@ public class KakaoOAuth implements OAuth {
     @Override
     public User getUserInfo(OAuthToken oAuthToken) throws ParseException {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer "+oAuthToken.getAccessToken());
+        headers.add("Authorization", "Bearer " + oAuthToken.getAccessToken());
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
@@ -96,7 +96,8 @@ public class KakaoOAuth implements OAuth {
         ResponseEntity<String> response = restTemplate.exchange(CLIENT_USERINFO_URL, HttpMethod.GET, request, String.class);
 
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(response.getBody());
-        User user = new User((String) ((JSONObject) jsonObject.get("kakao_account")).get("email"), null, 2, null);
+        User user = User.builder().email((String) ((JSONObject) jsonObject.get("kakao_account")).get("email")).build();
+//        User user = new User((String) ((JSONObject) jsonObject.get("kakao_account")).get("email"), null, 2, null);
 
         return user;
     }

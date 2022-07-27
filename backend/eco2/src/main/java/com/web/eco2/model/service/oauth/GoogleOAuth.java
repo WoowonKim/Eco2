@@ -84,7 +84,7 @@ public class GoogleOAuth implements OAuth {
         ResponseEntity<String> response = restTemplate.exchange(CLIENT_USERINFO_URL, HttpMethod.GET, request, String.class);
 
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(response.getBody());
-        User user = new User((String) jsonObject.get("email"), null, 1, null);
+        User user = User.builder().email((String) jsonObject.get("email")).build();
 
         return user;
     }
