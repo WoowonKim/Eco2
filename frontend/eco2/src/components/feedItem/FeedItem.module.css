@@ -5,7 +5,7 @@
   border-radius: 10%;
   margin: 15px 5px;
   padding: 5px;
-  box-shadow: 5px 5px 10px 1px rgba(218,218,218,1);
+  box-shadow: 5px 5px 10px 1px rgba(218, 218, 218, 1);
 }
 
 .title {
@@ -14,11 +14,15 @@
   align-items: center;
 }
 
+.icon {
+  font-size: 10px;
+}
 
 .button {
   border: none;
   background-color: white;
   transition: all 2s ease-in;
+  padding: 0px;
 }
 
 .button :hover {
