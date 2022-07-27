@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "usr_social_type", nullable = false)
     private Integer socialType;
 
-    @Column(name = "usr_password", length = 200, nullable = true)
+    @Column(name = "usr_password", length = 500, nullable = true)
     private String password;
 
     @Column(name = "usr_refreshToken")

@@ -1,0 +1,21 @@
+import React from "react";
+import { Link } from "react-router-dom";
+const missionMain = () => {
+  return (
+    <div className="missionMain">
+      <div>
+        <span>오늘의 도전과제</span>
+        <span>추가하기</span>
+      </div>
+      <div>
+        <ul>
+          <li>1. 텀블러 사용해서 지구지키기</li>
+          <li>2. 밖에 나갈때 멀티탭 뽑기</li>
+          <li>3. 더운날 찬물 샤워</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default missionMain;

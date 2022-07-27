@@ -1,0 +1,8 @@
+.mainHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mainHeaderRight {
+}

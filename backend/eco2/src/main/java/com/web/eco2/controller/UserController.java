@@ -4,6 +4,7 @@ import com.web.eco2.domain.dto.User.MailRequest;
 import com.web.eco2.domain.dto.User.SingUpRequest;
 import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.model.service.MailService;
+import com.web.eco2.model.service.OAuth2Service;
 import com.web.eco2.model.service.UserService;
 
 import com.web.eco2.util.JwtTokenUtil;
@@ -17,6 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -33,6 +40,9 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private OAuth2Service oAuth2Service;
 
     //회원가입
     @PostMapping()
@@ -139,6 +149,7 @@ public class UserController {
 
     //로그인
     @PostMapping("/login")
+<<<<<<< backend/eco2/src/main/java/com/web/eco2/controller/UserController.java
     public ResponseEntity<Object> login(@RequestBody SingUpRequest user) {
         try {
             User loginUser = userService.findByEmail(user.getEmail());
@@ -194,6 +205,111 @@ public class UserController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
+=======
+    public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) throws IOException {
+        if (user.getSocialType() == 0) {
+            User loginUser = userService.findByEmail(user.getEmail());
+            if (loginUser == null) {
+                System.out.println("존재하지 않는 회원");
+                return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
+            }
+            if (!passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
+                System.out.println("비밀번호 불일치");
+                return new ResponseEntity<String>("로그인 실패", HttpStatus.OK);
+            }
+            return ResponseHandler.generateResponse("로그인되었습니다.", HttpStatus.OK);
+        } else {
+            Map<String, String> map = new HashMap<>();
+            String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
+            map.put("url", url);
+            map.put("msg", "소셜 로그인");
+            response.sendRedirect(url);
+            return new ResponseEntity<Map<String, String>>(map, HttpStatus.ACCEPTED);
+        }
+    }
+
+    //회원정보 조회
+    @GetMapping()
+    public ResponseEntity<Object> lookupUserInfo(@RequestParam String email) {
+        try {
+            User lookupUser = userService.findByEmail(email);
+            if (lookupUser == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+            }
+            return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //회원정보 수정
+    @PutMapping()
+    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @RequestBody User user) {
+        try {
+            User updateUser = userService.findByEmail(email);
+
+            if (updateUser == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+            }
+            updateUser.setName(user.getName());
+            updateUser.setProfileImg(user.getProfileImg());
+            userService.save(updateUser);
+            return ResponseHandler.generateResponse("회원정보가 수정되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    //회원 탈퇴
+    @DeleteMapping()
+    public ResponseEntity<Object> deleteUserInfo(@RequestBody SingUpRequest user) {
+        try {
+            User deleteUser = userService.findByEmail(user.getEmail());
+            userService.delete(deleteUser);
+            return ResponseHandler.generateResponse("회원탈퇴가 처리되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    //현재 비밀번호 확인
+    @PostMapping("/password")
+    public ResponseEntity<Object> checkPassword(@RequestBody SingUpRequest user) {
+        User passwordCheckUser = userService.findByEmail(user.getEmail());
+        if (passwordCheckUser == null) {
+            System.out.println("존재하지 않는 회원");
+            return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+        }
+        if (!passwordEncoder.matches(user.getPassword(), passwordCheckUser.getPassword())) {
+            System.out.println("비밀번호 불일치");
+            return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
+        }
+        return ResponseHandler.generateResponse("새로운 비밀번호를 등록해주세요.", HttpStatus.OK);
+    }
+
+    //비밀번호 변경
+    @PutMapping("/password")
+    public ResponseEntity<Object> changePassword(@RequestBody SingUpRequest user) {
+        try {
+            User passwordChangeUser = userService.findByEmail(user.getEmail());
+            passwordChangeUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            userService.save(passwordChangeUser);
+            return ResponseHandler.generateResponse("비밀번호가 변경되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    // 소셜 로그인
+    @GetMapping("/auth/{socialType}")
+    public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType, @RequestParam String code) {
+        return oAuth2Service.oAuthLogin(socialType, code);
+    }
+
+>>>>>>> backend/eco2/src/main/java/com/web/eco2/controller/UserController.java
 
 
 }
