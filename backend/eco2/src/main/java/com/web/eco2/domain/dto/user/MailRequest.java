@@ -1,4 +1,4 @@
-package com.web.eco2.domain.dto.User;
+package com.web.eco2.domain.dto.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.web.eco2.controller;
 
-import com.web.eco2.domain.dto.User.UserSettingDto;
+import com.web.eco2.domain.dto.user.UserSettingDto;
 import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.model.service.UserService;

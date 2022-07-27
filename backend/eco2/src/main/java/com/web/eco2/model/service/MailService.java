@@ -1,7 +1,6 @@
 package com.web.eco2.model.service;
 
-import com.web.eco2.domain.dto.User.MailRequest;
-import com.web.eco2.model.repository.UserRepository;
+import com.web.eco2.domain.dto.user.MailRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

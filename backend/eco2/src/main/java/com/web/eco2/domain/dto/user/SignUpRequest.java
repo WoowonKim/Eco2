@@ -1,23 +1,18 @@
-package com.web.eco2.domain.dto.User;
+package com.web.eco2.domain.dto.user;
 
-import com.web.eco2.domain.entity.User.ProfileImg;
 import com.web.eco2.domain.entity.User.User;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 @Valid
 @ToString
 @Data
-public class SingUpRequest {
+public class SignUpRequest {
 
     @NotNull
     @Email

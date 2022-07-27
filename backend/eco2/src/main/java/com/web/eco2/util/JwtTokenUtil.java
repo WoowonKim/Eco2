@@ -1,6 +1,6 @@
 package com.web.eco2.util;
 
-import com.web.eco2.domain.dto.User.SingUpRequest;
+import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.model.service.UserService;
 import com.web.eco2.security.UserDetail;
@@ -88,7 +88,7 @@ public class JwtTokenUtil {
         return token;
     }
 
-    public String newAccessToken(SingUpRequest user, String refreshToken) {
+    public String newAccessToken(SignUpRequest user, String refreshToken) {
         if (validateToken(refreshToken)) { //refreshtoken 유효
             User selectUser = userService.findByEmail(user.getEmail());
             if (user.getRefreshToken().equals(selectUser.getRefreshToken())) {
