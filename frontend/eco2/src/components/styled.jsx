@@ -38,4 +38,11 @@ let WarningText = styled.p`
   font-size: small;
 `;
 
-export { GreenBtn, LoginInput, WarningText, ShortGreenBtn };
+let Leaf = styled.img`
+  position: absolute;
+  height: 40px;
+  z-index: 1000;
+  left: ${(props) => props.left};
+  top: ${(props) => props.top};
+`;
+export { GreenBtn, LoginInput, WarningText, ShortGreenBtn, Leaf };
