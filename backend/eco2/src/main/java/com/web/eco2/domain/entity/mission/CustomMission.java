@@ -12,6 +12,8 @@ import java.util.Optional;
 @Table(name = "tb_custom_mission")
 @ToString
 @Data
+@Builder
+@AllArgsConstructor
 public class CustomMission {
 
     @Id
@@ -28,15 +30,15 @@ public class CustomMission {
     @Column(name = "cum_content", length = 200, nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id", nullable = false)
     private User user;
 
-    @Builder
-    public CustomMission(User user, Integer category, String title, String content) {
-        this.user = user;
-        this.category = category;
-        this.title = title;
-        this.content = content;
-    }
+//    @Builder
+//    public CustomMission(User user, Integer category, String title, String content) {
+//        this.user = user;
+//        this.category = category;
+//        this.title = title;
+//        this.content = content;
+//    }
 }

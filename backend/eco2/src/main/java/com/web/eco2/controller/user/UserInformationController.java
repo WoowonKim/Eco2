@@ -2,7 +2,9 @@ package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
+
 import com.web.eco2.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/userinformation")
@@ -20,11 +23,14 @@ public class UserInformationController {
     private UserService userService;
 
     @Autowired
+    private ProfileImgService profileImgService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 //    @Autowired
 //    private JwtTokenUtil jwtTokenUtil;
 
-    // 유저 조회
+    // 회원 조회
     @GetMapping("/{email}")
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
         if(email == null) {
@@ -41,7 +47,7 @@ public class UserInformationController {
 
     //회원정보 수정
     @PutMapping()
-    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @RequestBody User user) {
+    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @ModelAttribute MultipartFile file, SignUpRequest user) {
         try {
             User updateUser = userService.findByEmail(email);
 
@@ -49,10 +55,11 @@ public class UserInformationController {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
             }
             updateUser.setName(user.getName());
-            updateUser.setProfileImg(user.getProfileImg());
+            profileImgService.uploadProfileImg(file, updateUser);
             userService.save(updateUser);
             return ResponseHandler.generateResponse("회원정보가 수정되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

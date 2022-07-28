@@ -1,9 +1,6 @@
 package com.web.eco2.domain.entity.mission;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,8 @@ import javax.persistence.*;
 @Table(name = "tb_mission")
 @ToString
 @Data
+@Builder
+@AllArgsConstructor
 public class Mission {
 
     @Id
