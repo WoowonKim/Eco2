@@ -5,6 +5,7 @@ import CommentForm from "../../components/commentForm/CommentForm";
 import CommentList from "../../components/commentList/CommentList";
 import styles from "./PostDetail.module.css";
 import PostModal from "../../components/postModal/PostModal";
+import ReportModal from "../../components/reportModal/ReportModal";
 
 const PostDetail = () => {
   const [visible, setVisible] = useState(null);
@@ -45,6 +46,16 @@ const PostDetail = () => {
               비공개
               <i className={`fa-solid fa-lock ${styles.dropdownIcon}`}></i>
             </button>
+            <button 
+              onClick={() => {
+                setVisible(!visible);
+                setModalType("신고");
+              }}
+              className={styles.dropdownItem}
+            >
+              신고
+              <i className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}></i>
+            </button>
           </div>
         </div>
       </div>
@@ -62,6 +73,15 @@ const PostDetail = () => {
       )}
       {visible && modalType === "삭제" && (
         <PostModal
+          className={`${displayType}`}
+          title={"게시물 삭제"}
+          content={"게시물을 삭제하시겠습니다."}
+          type={"삭제"}
+          id={feedItem.id}
+        />
+      )}
+      {visible && modalType === "신고" && (
+        <ReportModal
           className={`${displayType}`}
           title={"게시물 삭제"}
           content={"게시물을 삭제하시겠습니다."}

@@ -16,15 +16,6 @@ import DailyEcoMissionEcoFolder from "./pages/dmission/dailyMissionDetail/dailyE
 /* DailyMission End */
 import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
-
-
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
 import MainTree from "./pages/mainTree/MainTree";
@@ -52,6 +43,7 @@ function App() {
           <Route path="/mainFeed" element={<MainFeed />}></Route>
           <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
+          <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
         </Routes>
       </div>

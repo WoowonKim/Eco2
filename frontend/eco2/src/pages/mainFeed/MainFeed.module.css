@@ -23,14 +23,20 @@
 .link {
   border: none;
   background-color: white;
-  transition: all 2s ease-in;
   text-decoration: none;
   color: black;
+  font-size: small;
+  margin: 5px 0 0 5px;
 }
 
-.link :hover {
+.plusIcon {
+  transition: all 200ms ease-in;
+  font-size: larger;
+  margin: 0;
+}
+
+.plusIcon:hover {
   cursor: pointer;
   color: #adc178;
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
-
