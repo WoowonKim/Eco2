@@ -1,12 +1,14 @@
 .Font {
   font-weight: bold;
   text-align: left;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 }
 
 .trending {
-  font-size: small;
-  color: #706e6e;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: 2px solid #adc178;
 }
 
 .tablehead {
@@ -67,7 +69,6 @@
 
 .skyblue {
   background-color: #7dd6fc;
-  opacity: 0.6;
 }
 
 .heading {
@@ -77,66 +78,14 @@
   font-size: 20px;
   font-weight: bold;
   background-color: #dddddd;
-  border-top: 1px solid #696969;
+  border-top: 2px solid #706e6e;
 }
 
 .basicMission {
   cursor: pointer;
-  padding: 10px;
-  font-weight: bold;
-  font-size: small;
-  color: #000000;
 }
 
 i {
   color: #adc178;
   cursor: pointer;
-}
-
-.itemFont {
-  font-weight: bold;
-  text-align: center;
-  font-size: small;
-  padding-top: 5px;
-}
-
-.btn {
-  margin-bottom: 0px;
-  background-color: #7dd6fc;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  text-align: center;
-  font-weight: bold;
-  margin: 0 auto;
-  font-size: 12px;
-  vertical-align: middle;
-
-  position: relative;
-  left: 150px;
-  top: 20px;
-
-  /* line-height: 150px; */
-}
-
-.word {
-  text-align: start;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-weight: bold;
-  font-size: small;
-  color: #706e6e;
-}
-
-fieldset {
-  border: 1px solid #dadada;
-  width: 100%;
-  padding-top: 0px;
-  padding-bottom: 15px;
-  padding-left: 10px;
-}
-
-.plusP {
-  margin-top: 20px;
-  margin-bottom: 1px;
 }
