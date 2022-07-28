@@ -1,5 +1,6 @@
 package com.web.eco2.domain.entity.User;
 
+import com.web.eco2.domain.entity.Friend;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,7 +51,8 @@ public class User implements UserDetails {
     private List<String> role = new ArrayList<>();
 
     @Builder
-    public User(String email, String name, Integer socialType, String password, String refreshToken, List<String> role) {
+    public User(long id, String email, String name, Integer socialType, String password, String refreshToken, List<String> role) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.socialType = socialType;
