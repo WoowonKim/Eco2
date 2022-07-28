@@ -9,6 +9,7 @@
   padding-left: 30px;
   padding-right: 30px;
   border: 2px solid #adc178;
+  margin-bottom: 30px;
 }
 
 .tablehead {
@@ -68,24 +69,5 @@
 }
 
 .skyblue {
-  background-color: #7dd6fc;
-}
-
-.heading {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-around;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #dddddd;
-  border-top: 2px solid #706e6e;
-}
-
-.basicMission {
-  cursor: pointer;
-}
-
-i {
-  color: #adc178;
-  cursor: pointer;
+  background-color: aqua;
 }

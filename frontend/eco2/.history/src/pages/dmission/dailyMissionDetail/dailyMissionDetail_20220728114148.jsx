@@ -13,8 +13,8 @@ const dailyMissionDetail = () => {
         <span className={styles.basicMission}> 기본</span>
 
         <span className={styles.basicMission}> 내목록 </span>
+        <DailyEcoMissionList />
       </div>
-      <DailyEcoMissionList />
     </div>
   );
 };

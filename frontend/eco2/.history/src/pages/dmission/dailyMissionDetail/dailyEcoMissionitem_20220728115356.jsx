@@ -21,12 +21,7 @@ const DailyEcoMissionitem = ({ id, content, onCreate }) => {
         >
           {content}
         </span>
-        <i
-          className={`${favoritesType} `}
-          onClick={() => {
-            setFavorites(!favorites);
-          }}
-        ></i>
+        <i className={`${favoritesType} `}></i>
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ const DailyEcoMissionList = () => {
         ))}
       </div>
       <div>
-        <p>{ecoCount}</p>
+        <p>ecoCount</p>
       </div>
     </div>
   );

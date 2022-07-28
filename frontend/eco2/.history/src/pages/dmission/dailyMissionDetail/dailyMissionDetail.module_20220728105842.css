@@ -46,8 +46,7 @@
 
 .test {
   margin-top: 70px;
-  margin-bottom: 5px;
-  text-align: left;
+  margin-bottom: 20px;
 }
 
 .content {
@@ -68,24 +67,5 @@
 }
 
 .skyblue {
-  background-color: #7dd6fc;
-}
-
-.heading {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-around;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #dddddd;
-  border-top: 2px solid #706e6e;
-}
-
-.basicMission {
-  cursor: pointer;
-}
-
-i {
-  color: #adc178;
-  cursor: pointer;
+  background-color: aqua;
 }

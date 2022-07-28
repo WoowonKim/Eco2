@@ -68,7 +68,7 @@
 }
 
 .skyblue {
-  background-color: #7dd6fc;
+  background-color: aqua;
 }
 
 .heading {
@@ -78,14 +78,4 @@
   font-size: 20px;
   font-weight: bold;
   background-color: #dddddd;
-  border-top: 2px solid #706e6e;
-}
-
-.basicMission {
-  cursor: pointer;
-}
-
-i {
-  color: #adc178;
-  cursor: pointer;
 }

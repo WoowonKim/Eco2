@@ -68,7 +68,7 @@
 }
 
 .skyblue {
-  background-color: #7dd6fc;
+  background-color: aqua;
 }
 
 .heading {
@@ -82,10 +82,5 @@
 }
 
 .basicMission {
-  cursor: pointer;
-}
-
-i {
-  color: #adc178;
   cursor: pointer;
 }
