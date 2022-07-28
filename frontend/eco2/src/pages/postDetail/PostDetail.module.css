@@ -38,8 +38,13 @@
   display: block;
 }
 
+.icon {
+  color: black;
+}
+
 .dropdownIcon {
   font-size: 15px;
+  color: black;
 }
 
 .img {
@@ -77,3 +82,13 @@
 .hidden {
   display: none;
 }
+
+/* .scroll {
+  height: 100%;
+  overflow: auto;
+}
+
+.unset {
+  height: 100%;
+  overflow: unset;
+} */

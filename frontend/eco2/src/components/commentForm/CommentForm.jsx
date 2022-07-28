@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { addComment, updateComment } from "../../store/mainFeed/commentSlice";
 import styles from "./CommentForm.module.css";
 
-const CommentForm = ({ postId, content, id }) => {
+const CommentForm = ({ postId, content, id, closeModal }) => {
   const [value, setValue] = useState("");
   const [editValue, setEditValue] = useState(content);
   const dispatch = useDispatch();
@@ -13,8 +13,8 @@ const CommentForm = ({ postId, content, id }) => {
     e.preventDefault();
     if (content) {
       dispatch(updateComment({ id, content: editValue }));
+      closeModal();
     } else {
-      console.log(editValue);
       dispatch(addComment({ postId, content: value }));
     }
     setValue("");

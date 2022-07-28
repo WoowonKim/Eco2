@@ -1,9 +1,17 @@
 .list {
   list-style: none;
+  margin-bottom: 5px;
+}
+
+.commentContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+}
+
+.comment {
+  display: flex;
+  align-items: baseline;
 }
 
 .user {
@@ -13,9 +21,60 @@
 
 .content {
   font-size: small;
+  text-align: start;
 }
 
-.editButton {
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  right: 0;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+  padding: 10px 10px;
+  border: none;
+}
+
+.dropdownItem:hover {
+  background-color: #dadada;
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+}
+
+.icon {
+  color: black;
+  font-size: 7px;
+  display: flex;
+  justify-items: end;
+}
+
+.dropdownIcon {
+  font-size: 15px;
+  color: black;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+/* .editButton {
   position: relative;
   padding: 3px 5px;
   border-radius: 15px;
@@ -50,5 +109,4 @@
 .deleteButton:hover {
   background-color: #F14336;
   color: #e1eef6;
-}
-
+} */
