@@ -1,0 +1,105 @@
+.modal {
+  position: fixed;
+  display: blick;
+  top: 40%;
+  left: 25%;
+  width: 250px;
+  height: 140px;
+  background-color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 10%;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+}
+
+.editIcon {
+  background-color: #dadada;
+  opacity: 0.7;
+  padding: 8px;
+  border-radius: 5px;
+  color: #fbbb00;
+}
+
+.deleteIcon {
+  background-color: #dadada;
+  opacity: 0.7;
+  padding: 8px;
+  border-radius: 5px;
+  color: red;
+}
+
+.title {
+  margin: 5px;
+  text-align: start;
+}
+
+.content {
+  font-size: small;
+  text-align: start;
+  margin: 10px 0 15px 50px;
+}
+
+.editButton {
+  position: relative;
+  padding: 3px 5px;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid #fbbb00;
+  color: #6e6e6e;
+  background-color: white;
+  transition: all 300ms ease-in-out;
+  margin-right: 30px;
+}
+
+.editButton:hover {
+  background-color: #fbbb00;
+  color: #e1eef6;
+}
+
+.warningButton {
+  position: relative;
+  padding: 3px 5px;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid red;
+  color: #6e6e6e;
+  background-color: white;
+  transition: all 300ms ease-in-out;
+  margin-right: 30px;
+}
+
+.warningButton:hover {
+  background-color: red;
+  color: #e1eef6;
+}
+
+.cancleButton {
+  position: relative;
+  padding: 3px 5px;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid #dadada;
+  color: #6e6e6e;
+  background-color: white;
+  transition: all 300ms ease-in-out;
+}
+
+.cancleButton:hover {
+  background-color: #dadada;
+  color: #000000;
+}
+
+.hidden {
+  display: none;
+}
