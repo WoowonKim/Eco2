@@ -1,8 +1,8 @@
-package com.web.eco2.model.service;
+package com.web.eco2.model.service.user;
 
 import com.web.eco2.domain.dto.user.UserInformation;
-import com.web.eco2.domain.entity.User.User;
-import com.web.eco2.model.repository.UserRepository;
+import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,10 @@ public class UserService {
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public User getById(Long id) {
+        return userRepository.getById(id);
     }
 
     public User findByEmail(String email) {

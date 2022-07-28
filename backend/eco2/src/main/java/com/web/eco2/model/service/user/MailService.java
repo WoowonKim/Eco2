@@ -1,4 +1,4 @@
-package com.web.eco2.model.service;
+package com.web.eco2.model.service.user;
 
 import com.web.eco2.domain.dto.user.MailRequest;
 import org.springframework.beans.factory.annotation.Autowired;

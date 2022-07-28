@@ -1,4 +1,4 @@
-package com.web.eco2.model.service;
+package com.web.eco2.model.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

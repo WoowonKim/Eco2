@@ -1,8 +1,8 @@
-package com.web.eco2.controller;
+package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
-import com.web.eco2.domain.entity.User.User;
-import com.web.eco2.model.service.UserService;
+import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,9 +71,7 @@ public class UserInformationController {
         if(!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
             return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
-
-        userService.delete(user.toEntity());
-
+        userService.delete(dbUser);
         return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
     }
 

@@ -1,7 +1,7 @@
-package com.web.eco2.model.service;
+package com.web.eco2.model.service.user;
 
 import com.web.eco2.domain.entity.UserSetting;
-import com.web.eco2.model.repository.UserSettingRepository;
+import com.web.eco2.model.repository.user.UserSettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,16 +1,15 @@
-package com.web.eco2.controller;
+package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.MailRequest;
 import com.web.eco2.domain.dto.user.SignUpRequest;
-import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.domain.entity.UserSetting;
-import com.web.eco2.model.service.MailService;
-import com.web.eco2.model.service.OAuth2Service;
-import com.web.eco2.model.service.UserService;
-import com.web.eco2.model.service.UserSettingService;
+import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.user.MailService;
+import com.web.eco2.model.service.user.OAuth2Service;
+import com.web.eco2.model.service.user.UserService;
+import com.web.eco2.model.service.user.UserSettingService;
 import com.web.eco2.util.JwtTokenUtil;
 import com.web.eco2.util.ResponseHandler;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,7 +146,7 @@ public class UserController {
         try {
             User emailUser = userService.findByEmail(user.getEmail());
             if (emailUser == null) {
-                return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.NO_CONTENT);
+                return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.ACCEPTED);
             }
             emailUser.setName(user.getName());
             userService.save(emailUser);
