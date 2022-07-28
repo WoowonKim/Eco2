@@ -26,10 +26,19 @@ public class ProfileImg {
     @Column(name = "pri_save_name", length = 100, nullable = false, unique = true)
     private String saveName;
 
+
+    @MapsId
+    @OneToOne
+    @JoinColumn(name = "usr_id")
+    private User user;
+
+
     @Builder
-    public ProfileImg(String saveFolder, String originalName, String saveName) {
+    public ProfileImg(Long id, String saveFolder, String originalName, String saveName, User user) {
+        this.id = id;
         this.saveFolder = saveFolder;
         this.originalName = originalName;
         this.saveName = saveName;
+        this.user = user;
     }
 }
