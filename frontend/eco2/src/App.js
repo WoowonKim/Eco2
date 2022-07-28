@@ -15,12 +15,23 @@ import DailyEcoMissionList from "./pages/dmission/dailyMissionDetail/dailyEcoMis
 import DailyEcoMissionEcoFolder from "./pages/dmission/dailyMissionDetail/dailyEcoMissionEcoFolder";
 /* DailyMission End */
 import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
+
+
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
 import MainTree from "./pages/mainTree/MainTree";
 
 import FeedCategory from "./pages/feedCategory/FeedCategory";
 import PostDetail from "./pages/postDetail/PostDetail";
+import PostForm from "./pages/postForm/PostForm";
 
 function App() {
   let currUser = useSelector((state) => state.user);
