@@ -28,14 +28,22 @@ const PostModal = ({
       window.location.replace(`/post/${id}`);
     }
   };
+  useEffect(() => {
+    document.body.style = `overflow: hidden`;
+    return () => (document.body.style = `overflow: auto`);
+  }, []);
   return (
     <div className={`${displayType} ${styles.modal}`} onClick={closeModal}>
       <div onClick={(e) => e.stopPropagation()} className={styles.modalBody}>
         <div className={styles.modalTitle}>
           {type === "수정" ? (
             <i className={`fa-regular fa-circle-check ${styles.editIcon}`}></i>
-          ) : (
+          ) : type === "삭제" ? (
             <i className={`fa-regular fa-bell ${styles.deleteIcon}`}></i>
+          ) : (
+            <i
+              className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}
+            ></i>
           )}
           <h2 className={styles.title}>{title}</h2>
         </div>
@@ -54,7 +62,10 @@ const PostModal = ({
             </button>
           )}
           <button
-            onClick={() => setHidden(true)}
+            onClick={() => {
+              setHidden(true);
+              document.body.style = `overflow: auto`;
+            }}
             className={`${styles.cancleButton}`}
           >
             취소

@@ -9,13 +9,11 @@ import ReportModal from "../../components/reportModal/ReportModal";
 
 const PostDetail = () => {
   const [visible, setVisible] = useState(false);
-  const [scroll, setScroll] = useState(false);
   const [modalType, setModalType] = useState("");
   const feedList = useSelector((state) => state.feed);
   const params = useParams();
   const feedItem = feedList.find((feed) => feed.id === Number(params.postId));
   const displayType = visible ? styles.visible : styles.hidden;
-  const scrollType = scroll ? styles.scroll : styles.unset;
 
   return (
     <div>
@@ -28,7 +26,6 @@ const PostDetail = () => {
               onClick={() => {
                 setVisible(!visible);
                 setModalType("수정");
-                setScroll(!scroll);
               }}
               className={styles.dropdownItem}
             >
@@ -93,6 +90,7 @@ const PostDetail = () => {
           title={"게시물 신고"}
           content={"해당 게시물을 신고하시겠습니까?"}
           id={feedItem.id}
+          type="게시물"
           closeModal={() => setVisible(!visible)}
         />
       )}
@@ -104,8 +102,11 @@ const PostDetail = () => {
         </button>
       </div>
       <p className={styles.content}>{feedItem.content}</p>
+      <hr className={styles.line} />
+      <div className={styles.CommentForm}>
+        <CommentForm postId={feedItem.id} />
+      </div>
       <CommentList id={feedItem.id} />
-      <CommentForm postId={feedItem.id} />
     </div>
   );
 };

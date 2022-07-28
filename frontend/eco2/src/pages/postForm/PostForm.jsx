@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PostForm.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addPost, updatePost } from "../../store/mainFeed/feedSlice";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
 
-const PostForm = ({ img, content, id, category }) => {
+const PostForm = ({ content }) => {
   const [fileImage, setFileImage] = useState("");
   const [selected, setSelected] = useState("");
   const [editText, setEditText] = useState("");
@@ -14,10 +14,9 @@ const PostForm = ({ img, content, id, category }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state.content) {
+    if (location.state?.content) {
       setEditText(location.state?.content);
     }
-    console.log(location.state.img);
   }, []);
   const saveFileImage = (e) => {
     setFileImage(URL.createObjectURL(e.target.files[0]));
@@ -49,12 +48,11 @@ const PostForm = ({ img, content, id, category }) => {
       <hr className={styles.line} />
       <form onSubmit={onSubmit}>
         <div>
-          {fileImage && (
+          {fileImage ? (
             <img className={styles.img} alt="sample" src={fileImage} />
-          )}
-          {location.state.img && (
+          ) : location.state?.img ? (
             <img className={styles.img} alt="sample" src={location.state.img} />
-          )}
+          ) : null}
         </div>
         <div className={styles.fileInputGroup}>
           <input className={styles.fileInput} placeholder="첨부파일" />
@@ -68,9 +66,9 @@ const PostForm = ({ img, content, id, category }) => {
             onChange={saveFileImage}
             className={`${styles.fileInput} ${styles.baseFileInput}`}
           />
-          <button onClick={() => deleteFileImage()} className={styles.button}>
+          {/* <button onClick={() => deleteFileImage()} className={styles.button}>
             삭제
-          </button>
+          </button> */}
         </div>
         <div className={styles.selectBox}>
           <select
@@ -78,7 +76,7 @@ const PostForm = ({ img, content, id, category }) => {
             onChange={(e) => {
               setSelected(e.target.value);
             }}
-            value={location.state?.category ? location.state.category : null}
+            value={location.state?.category ? location.state?.category : ""}
             className={styles.select}
           >
             <option className={styles.option} value="">
