@@ -1,19 +1,22 @@
-package com.web.eco2.domain.entity.user;
+package com.web.eco2.domain.entity.post;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "tb_profile_img")
+@Table(name = "tb_post_img")
 @ToString
-public class ProfileImg {
+public class PostImg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pri_id")
+    @Column(name = "poi_id")
     private Long id;
 
     @Column(name = "pri_save_folder", length = 100, nullable = false)
@@ -25,19 +28,10 @@ public class ProfileImg {
     @Column(name = "pri_save_name", length = 100, nullable = false, unique = true)
     private String saveName;
 
-
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "usr_id")
-    private User user;
-
-
     @Builder
-    public ProfileImg(Long id, String saveFolder, String originalName, String saveName, User user) {
-        this.id = id;
+    public PostImg(String saveFolder, String originalName, String saveName) {
         this.saveFolder = saveFolder;
         this.originalName = originalName;
         this.saveName = saveName;
-        this.user = user;
     }
 }

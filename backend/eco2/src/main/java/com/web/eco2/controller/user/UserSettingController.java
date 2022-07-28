@@ -1,14 +1,14 @@
-package com.web.eco2.controller;
+package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.UserSettingDto;
 import com.web.eco2.domain.entity.Friend;
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.model.service.FriendService;
-import com.web.eco2.model.service.UserService;
-import com.web.eco2.model.service.UserSettingService;
+import com.web.eco2.model.service.user.UserService;
+import com.web.eco2.model.service.user.UserSettingService;
+
 import com.web.eco2.util.ResponseHandler;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

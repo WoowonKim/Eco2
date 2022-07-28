@@ -1,4 +1,4 @@
-package com.web.eco2.model.repository;
+package com.web.eco2.model.repository.user;
 
 import com.web.eco2.domain.entity.UserSetting;
 import org.springframework.data.jpa.repository.JpaRepository;

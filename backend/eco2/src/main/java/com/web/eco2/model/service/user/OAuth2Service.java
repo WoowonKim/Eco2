@@ -1,20 +1,17 @@
-package com.web.eco2.model.service;
+package com.web.eco2.model.service.user;
 
 import com.web.eco2.domain.dto.oauth.OAuthToken;
-import com.web.eco2.domain.entity.User.User;
-import com.web.eco2.model.repository.UserRepository;
+import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.repository.user.UserRepository;
 import com.web.eco2.model.service.oauth.GoogleOAuth;
 import com.web.eco2.model.service.oauth.KakaoOAuth;
 import com.web.eco2.model.service.oauth.OAuth;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

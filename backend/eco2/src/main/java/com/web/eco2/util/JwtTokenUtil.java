@@ -1,8 +1,8 @@
 package com.web.eco2.util;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
-import com.web.eco2.domain.entity.User.User;
-import com.web.eco2.model.service.UserService;
+import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.security.UserDetail;
 import com.web.eco2.security.UserDetailService;
 import io.jsonwebtoken.Claims;

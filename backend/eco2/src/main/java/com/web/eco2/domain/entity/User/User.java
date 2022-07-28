@@ -1,4 +1,4 @@
-package com.web.eco2.domain.entity.User;
+package com.web.eco2.domain.entity.user;
 
 import com.web.eco2.domain.entity.Friend;
 import lombok.*;
@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usr_id")
-    private long id;
+    private Long id;
 
     @Column(name = "usr_email", length = 100, nullable = false, unique = true)
     private String email;
@@ -42,7 +42,6 @@ public class User implements UserDetails {
     private String refreshToken;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ColumnDefault("0")
     @JoinColumn(name = "pri_id", nullable = true)
     private ProfileImg profileImg;
 
