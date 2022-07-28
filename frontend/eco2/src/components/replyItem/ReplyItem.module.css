@@ -1,6 +1,6 @@
 .list {
   list-style: none;
-  margin-bottom: 5px;
+  margin: 0 0 0 40px;
 }
 
 .commentContainer {
@@ -16,21 +16,15 @@
 
 .user {
   font-weight: 700;
-  margin: 0 15px 0 0;
+  font-size: small;
+  margin-right: 15px;
 }
 
 .content {
-  font-size: small;
+  font-size: x-small;
   text-align: start;
   margin: 0;
 }
-
-/* .replyButton {
-  border: 1px solid #adc178;
-  border-radius: 20px;
-  background-color: white;
-  cursor: pointer;
-} */
 
 .dropdown {
   position: relative;
@@ -59,9 +53,6 @@
 
 .dropdown:hover .dropdownContent {
   display: block;
-  animation-name: dropdown;
-  animation-duration: 500ms;
-  animation-direction: normal;
 }
 
 .icon {
@@ -84,49 +75,18 @@
   display: none;
 }
 
-.replyButton {
-  border: none;
-  border-radius: 15px;
-  font-size: x-small;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
-  margin: 0;
-}
-
-.replyButton:hover {
-  transform: scale(1.1);
-}
-
 .editFormGroup {
   display: flex;
   /* justify-content: space-between; */
   align-items: center;
+  margin: 0 0 0 40px;
 }
 
 .editFormUser {
   font-weight: 700;
-  margin-right: 15px;
+  font-size: small;
 }
 
 .editForm {
   width: 100%;
 }
-
-/* .deleteButton {
-  position: relative;
-  padding: 3px 5px;
-  border-radius: 15px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid #F14336;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
-}
-
-.deleteButton:hover {
-  background-color: #F14336;
-  color: #e1eef6;
-} */

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { addComment, updateComment } from "../../store/mainFeed/commentSlice";
 import styles from "./CommentForm.module.css";
 
-const CommentForm = ({ postId, content, id }) => {
+const CommentForm = ({ replyVisible, postId, content, id, closeModal }) => {
   const [value, setValue] = useState("");
   const [editValue, setEditValue] = useState(content);
   const dispatch = useDispatch();
@@ -13,8 +13,11 @@ const CommentForm = ({ postId, content, id }) => {
     e.preventDefault();
     if (content) {
       dispatch(updateComment({ id, content: editValue }));
+      closeModal();
+    } else if (replyVisible) {
+      dispatch(addComment({ postId, content: value, commentId: id }));
+      closeModal();
     } else {
-      console.log(editValue);
       dispatch(addComment({ postId, content: value }));
     }
     setValue("");
@@ -31,6 +34,7 @@ const CommentForm = ({ postId, content, id }) => {
         type="text"
         onChange={onChange}
         className={styles.input}
+        placeholder="댓글을 작성해주세요"
       />
       <button className={styles.button} type="submit">
         작성
