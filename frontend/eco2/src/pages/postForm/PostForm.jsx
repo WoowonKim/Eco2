@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PostForm.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addPost, updatePost } from "../../store/mainFeed/feedSlice";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
 
-const PostForm = ({ img, content, id, category }) => {
+const PostForm = ({ content }) => {
   const [fileImage, setFileImage] = useState("");
   const [selected, setSelected] = useState("");
   const [editText, setEditText] = useState("");
@@ -14,7 +14,7 @@ const PostForm = ({ img, content, id, category }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state.content) {
+    if (location.state?.content) {
       setEditText(location.state?.content);
     }
   }, []);
@@ -41,23 +41,21 @@ const PostForm = ({ img, content, id, category }) => {
   };
   return (
     <div>
-      <h1 className={styles.title}>인증하기</h1>
+      <div className={styles.titleGroup}>
+        <i className={`fa-brands fa-pagelines ${styles.titleIcon}`}></i>
+        <h2 className={styles.title}>인증하기</h2>
+      </div>
+      <hr className={styles.line} />
       <form onSubmit={onSubmit}>
         <div>
-          {fileImage && (
-            <img
-              className={styles.img}
-              alt="sample"
-              src={location.state?.img ? img : fileImage}
-            />
-          )}
+          {fileImage ? (
+            <img className={styles.img} alt="sample" src={fileImage} />
+          ) : location.state?.img ? (
+            <img className={styles.img} alt="sample" src={location.state.img} />
+          ) : null}
         </div>
         <div className={styles.fileInputGroup}>
-          <input
-            className={styles.fileInput}
-            value="첨부파일"
-            placeholder="첨부파일"
-          />
+          <input className={styles.fileInput} placeholder="첨부파일" />
           <label htmlFor="file" className={styles.imgLabel}>
             파일찾기
           </label>
@@ -68,9 +66,9 @@ const PostForm = ({ img, content, id, category }) => {
             onChange={saveFileImage}
             className={`${styles.fileInput} ${styles.baseFileInput}`}
           />
-          <button onClick={() => deleteFileImage()} className={styles.button}>
+          {/* <button onClick={() => deleteFileImage()} className={styles.button}>
             삭제
-          </button>
+          </button> */}
         </div>
         <div className={styles.selectBox}>
           <select
@@ -78,7 +76,7 @@ const PostForm = ({ img, content, id, category }) => {
             onChange={(e) => {
               setSelected(e.target.value);
             }}
-            value={location.state?.category}
+            value={location.state?.category ? location.state?.category : ""}
             className={styles.select}
           >
             <option className={styles.option} value="">

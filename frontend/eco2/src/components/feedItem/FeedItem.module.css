@@ -4,7 +4,7 @@
   border: 1px solid #dadada;
   border-radius: 10%;
   margin: 15px 5px;
-  padding: 5px;
+  padding: 5px 20px 0 20px;
   box-shadow: 5px 5px 10px 1px rgba(218, 218, 218, 1);
 }
 
@@ -14,7 +14,7 @@
   align-items: center;
 }
 
-.icon {
+/* .icon {
   font-size: 10px;
 }
 
@@ -29,16 +29,50 @@
   cursor: pointer;
   color: #adc178;
   transform: scale(1.1);
-}
+} */
 
 .user {
   text-align: start;
-  font-size: x-small;
+  font-size: small;
   padding: 0 5px;
+  margin: 5px 0;
+}
+
+.line {
+  margin: 0 0 10px 0;
+  border: 0.5px solid #dadada;
 }
 
 .img {
   width: 50%;
+}
+
+.iconGroup {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.heart {
+  font-size: small;
+  margin-right: 7px;
+}
+
+.heartIcon {
+  color: red;
+  font-size: small;
+  margin: 2px;
+}
+
+.comment {
+  font-size: small;
+}
+
+.commentIcon {
+  color: darkgray;
+  font-size: small;
+  margin: 0;
 }
 
 .content {
@@ -48,7 +82,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 120px;
-  height: 50px;
+  height: 30px;
+  margin: 8px 0;
 }
 
 .buttonGroup {

@@ -43,6 +43,7 @@ function App() {
           <Route path="/mainFeed" element={<MainFeed />}></Route>
           <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
+          <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
         </Routes>
       </div>
