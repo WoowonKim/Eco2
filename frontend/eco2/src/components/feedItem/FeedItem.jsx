@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from './FeedItem.module.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import styles from "./FeedItem.module.css";
 
 const FeedItem = ({ id, user, category, content, src }) => {
   // console.log(key)
@@ -11,10 +11,10 @@ const FeedItem = ({ id, user, category, content, src }) => {
           <p className={styles.user}>{user}님의 인증글</p>
           <div className={styles.buttonGroup}>
             <button className={styles.button}>
-              <i className="fa-solid fa-user-plus"></i>
+              <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
             </button>
             <button className={styles.button}>
-              <i className="fa-solid fa-paper-plane"></i>
+              <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
             </button>
           </div>
         </div>

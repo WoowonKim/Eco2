@@ -14,7 +14,7 @@
   padding: 10px 20px;
 }
 
-.dropdownContent{
+.dropdownContent {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
@@ -24,8 +24,10 @@
 .dropdownItem {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100px;
   padding: 10px 10px;
+  border: none;
 }
 
 .dropdownItem:hover {
@@ -36,6 +38,9 @@
   display: block;
 }
 
+.dropdownIcon {
+  font-size: 15px;
+}
 
 .img {
   width: 70%;
@@ -63,4 +68,12 @@
   margin-top: 20px;
   text-align: left;
   font-size: 16px;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
 }
