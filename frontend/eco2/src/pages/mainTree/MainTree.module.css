@@ -1,2 +1,12 @@
 .Tree {
+  width: 300px;
+  margin-top: 30px;
+}
+
+.Img {
+  position: absolute;
+  height: 40px;
+  z-index: 1000;
+  left: 300px;
+  top: 300px;
 }

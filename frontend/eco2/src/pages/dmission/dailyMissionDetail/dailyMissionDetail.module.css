@@ -43,3 +43,28 @@
 .plus {
   cursor: pointer;
 }
+
+.test {
+  margin-top: 70px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  padding: 10px;
+  border: none #dddddd;
+  border-bottom: 3px solid #dadada;
+  border-radius: 5px;
+  cursor: pointer;
+
+  background-color: #f6f4f4;
+}
+
+.gray {
+  background-color: #f6f4f4;
+}
+
+.skyblue {
+  background-color: aqua;
+}
