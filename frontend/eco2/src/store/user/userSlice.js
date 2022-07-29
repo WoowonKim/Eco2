@@ -138,6 +138,27 @@ export const ecoNameVerify = createAsyncThunk(
   }
 );
 
+// 비밀번호 재설정
+export const newPassword = createAsyncThunk(
+  "user/newPassword",
+  async (args, { rejectWithValue }) => {
+    try {
+      const token = getToken();
+      const response = await axios({
+        url: "/user/newpassword",
+        method: "put",
+        data: {
+          email: args.email,
+          password: args.password,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 // EcoName 생성 및 수정
 export const ecoName = createAsyncThunk(
   "user/ecoName",
@@ -171,6 +192,7 @@ const authState = {
   isEmailOnly: false,
   isEcoNameValid: false,
   isEcoNameVerified: false,
+  isPasswordValid: false,
 };
 
 export const authSlice = createSlice({
@@ -203,7 +225,9 @@ export const authSlice = createSlice({
     },
     [emailVerify.fulfilled]: (state, action) => {
       console.log("emailVerify fulfilled", action.payload);
-      state.isEmailValid = true;
+      if (action.payload.status === 200) {
+        state.isEmailValid = true;
+      }
     },
     [emailVerify.rejected]: (state, action) => {
       console.log("emailVerify rejected", action.payload);
@@ -246,6 +270,16 @@ export const authSlice = createSlice({
     [ecoName.rejected]: (state, action) => {
       console.log("ecoName rejected", action.payload);
       state.isEcoNameVerified = false;
+    },
+    [newPassword.fulfilled]: (state, action) => {
+      console.log("newPassword fulfilled", action.payload);
+      if (action.payload.status === 200) {
+        state.isPasswordValid = true;
+      }
+    },
+    [newPassword.rejected]: (state, action) => {
+      console.log("newPassword rejected", action.payload);
+      state.isPasswordValid = false;
     },
   },
 });

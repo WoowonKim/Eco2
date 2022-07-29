@@ -41,7 +41,11 @@ const Regist = () => {
     setSocialType(0);
     dispatch(
       signUp({ email: email, password: password, socialType: socialType })
-    );
+    )
+      .then((res) => {
+        navigate("/ecoName", { state: email });
+      })
+      .catch((err) => console.log(err));
   };
 
   const countRef = useRef(null);
@@ -83,7 +87,7 @@ const Regist = () => {
     setVisibility(true);
     // dispatch(emailCheck({ email: email }));
     // console.log(isEmailOnly);
-    dispatch(emailVerify({ email: email }));
+    dispatch(emailVerify({ email }));
   };
 
   const handleEcoName = () => {
@@ -134,8 +138,9 @@ const Regist = () => {
           <GreenBtn
             type="button"
             onClick={() => {
-              dispatch(emailCheck({ email }));
-              setEmailCheckVisible(true);
+              dispatch(emailCheck({ email })).then((res) => {
+                setEmailCheckVisible(true);
+              });
             }}
             className={styles.button}
           >
@@ -153,9 +158,7 @@ const Regist = () => {
             <button
               className={styles.buttonEmail}
               type="button"
-              onClick={() =>
-                dispatch(emailVerifyCode({ email: email, code: code }))
-              }
+              onClick={() => dispatch(emailVerifyCode({ email, code }))}
             >
               인증하기
             </button>

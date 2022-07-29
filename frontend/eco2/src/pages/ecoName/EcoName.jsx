@@ -23,11 +23,13 @@ const Econame = () => {
   };
 
   const onClick = () => {
-    dispatch(ecoName({ econame, email: location?.state }));
-    console.log(isEcoNameVerified);
-    if (isEcoNameVerified) {
-      navigate("/mainFeed");
-    }
+    dispatch(ecoName({ econame, email: location?.state }))
+      .then((res) => {
+        navigate("/mainTree");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className={styles.login}>
