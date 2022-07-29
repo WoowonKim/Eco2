@@ -1,8 +1,10 @@
 package com.web.eco2.domain.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.Friend;
 import lombok.*;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -63,13 +65,19 @@ public class User {
         this.role = role;
     }
 
+<<<<<<< backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
 //    @Override
+=======
+    @JsonIgnore
+    @Override
+>>>>>>> backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.role.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
+<<<<<<< backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
 //    @Override
 //    public String getUsername() {
 //        return null;
@@ -94,4 +102,37 @@ public class User {
 //    public boolean isEnabled() {
 //        return false;
 //    }
+=======
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    public UserDto toDto() {
+        return UserDto.builder()
+                .id(id).name(name).email(email)
+                .socialType(socialType)
+                .build();
+    }
+>>>>>>> backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
 }

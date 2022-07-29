@@ -1,2 +1,13 @@
 .Tree {
+  width: 400px;
+  margin-top: 80px;
+  margin-left: 0;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+.Img {
+  width: 350px;
+  margin-left: 0;
+  margin-right: auto;
 }
