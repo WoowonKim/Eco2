@@ -1,6 +1,7 @@
 package com.web.eco2.domain.dto.user;
 
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.User.User;
 import lombok.Data;
 import lombok.ToString;
 

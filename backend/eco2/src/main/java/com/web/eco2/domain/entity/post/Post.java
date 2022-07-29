@@ -2,11 +2,8 @@ package com.web.eco2.domain.entity.post;
 
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
-import com.web.eco2.domain.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.web.eco2.domain.entity.User.User;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -25,8 +22,12 @@ public class Post {
     @Column(name = "pos_id")
     private Long id;
 
-//    @Column(name = "pos_regist_time", nullable = false)
-//    private LocalDateTime registTime;
+    @Column(name = "pos_regist_time", nullable = false)
+    private LocalDateTime registTime = LocalDateTime.now();
+
+
+    @Column(name = "pos_content")
+    private String content;
 
     @Column(name = "pos_report", nullable = false)
     @ColumnDefault("0")
@@ -51,4 +52,18 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cum_id")
     private CustomMission customMission;
+
+    @Builder
+    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag,
+                boolean commentFlag, User user, Mission mission, CustomMission customMission) {
+        this.id = id;
+        /*this.registTime = registTime;*/
+        this.content = content;
+        this.report = report;
+        this.publicFlag = publicFlag;
+        this.commentFlag = commentFlag;
+        this.user = user;
+        this.mission = mission;
+        this.customMission = customMission;
+    }
 }

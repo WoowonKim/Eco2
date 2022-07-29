@@ -1,7 +1,7 @@
 package com.web.eco2.model.service.oauth;
 
 import com.web.eco2.domain.dto.oauth.OAuthToken;
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

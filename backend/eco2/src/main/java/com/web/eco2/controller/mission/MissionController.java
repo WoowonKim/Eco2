@@ -4,7 +4,7 @@ import com.web.eco2.domain.dto.mission.CustomMissionRequest;
 import com.web.eco2.domain.dto.mission.FavoriteMissionRequest;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.model.repository.mission.CustomMissionRepository;
 import com.web.eco2.model.repository.mission.MissionRepository;
 import com.web.eco2.model.service.mission.CustomMissionService;

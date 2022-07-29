@@ -1,6 +1,6 @@
 package com.web.eco2.domain.dto.user;
 
-import com.web.eco2.domain.entity.user.ProfileImg;
+import com.web.eco2.domain.entity.User.ProfileImg;
 
 public interface UserInformation {
     long getId();

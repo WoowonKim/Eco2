@@ -1,4 +1,4 @@
-package com.web.eco2.domain.entity.user;
+package com.web.eco2.domain.entity.User;
 
 import lombok.*;
 

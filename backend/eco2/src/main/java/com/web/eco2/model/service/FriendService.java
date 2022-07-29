@@ -1,7 +1,7 @@
 package com.web.eco2.model.service;
 
 import com.web.eco2.domain.entity.Friend;
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
 import com.web.eco2.model.repository.FriendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
