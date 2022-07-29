@@ -1,6 +1,6 @@
 package com.web.eco2.domain.entity;
 
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 

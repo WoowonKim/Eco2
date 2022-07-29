@@ -3,14 +3,10 @@ package com.web.eco2.domain.dto.mission;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.FavoriteMission;
 import com.web.eco2.domain.entity.mission.Mission;
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.User;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 
 @Valid

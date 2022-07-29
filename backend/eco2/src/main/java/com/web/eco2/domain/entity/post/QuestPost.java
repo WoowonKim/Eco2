@@ -21,8 +21,8 @@ public class QuestPost extends Post {
     private Quest quest;
 
     @Builder
-    public QuestPost(Long id, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission, Quest quest) {
-        super(id, report, publicFlag, commentFlag, user, mission, customMission);
+    public QuestPost(Long id, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission, Quest quest) {
+        super(id, content, report, publicFlag, commentFlag, user, mission, customMission);
         this.quest = quest;
     }
 

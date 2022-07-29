@@ -1,8 +1,6 @@
 package com.web.eco2.domain.entity.post;
 
-import com.web.eco2.domain.entity.mission.Quest;
-import com.web.eco2.domain.entity.User.User;
-import lombok.AllArgsConstructor;
+import com.web.eco2.domain.entity.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

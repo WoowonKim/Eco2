@@ -1,7 +1,7 @@
 package com.web.eco2.controller.post;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
