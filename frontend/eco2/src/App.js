@@ -10,17 +10,11 @@ import MainFeed from "./pages/mainFeed/MainFeed";
 import Header from "./components/NavFooter/Header";
 
 /* DailyMission */
+import DailyMissionMain from "./pages/dmission/dailyMissionMain/dailyMissionMain";
 import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMissionDetail";
-import DailyEcoMissionList from "./pages/dmission/dailyMissionDetail/dailyEcoMissionList";
-import DailyEcoMissionEcoFolder from "./pages/dmission/dailyMissionDetail/dailyEcoMissionEcoFolder";
+
 /* DailyMission End */
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -42,12 +36,9 @@ function App() {
           <Route path="/findPassword" element={<FindPassword />}></Route>
           <Route path="/ecoName" element={<EcoName />}></Route>
           {/*DailyMission */}
-          <Route path="/dailymission" element={<DailyMissionDetail />} />
-          <Route path="/dailymissionlist" element={<DailyEcoMissionList />} />
-          <Route
-            path="/dailymissionEcoFolder"
-            element={<DailyEcoMissionEcoFolder />}
-          />
+          <Route path="/dailymissionmain" element={<DailyMissionMain />} />
+          <Route path="/dailymissiondetail" element={<DailyMissionDetail />} />
+
           {/*DailyMission */}
           <Route path="/mainFeed" element={<MainFeed />}></Route>
           <Route
@@ -55,6 +46,7 @@ function App() {
             element={<FeedCategory />}
           ></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
+          <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
         </Routes>
       </div>

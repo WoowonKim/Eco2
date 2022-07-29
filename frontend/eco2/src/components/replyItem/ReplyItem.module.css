@@ -1,0 +1,92 @@
+.list {
+  list-style: none;
+  margin: 0 0 0 40px;
+}
+
+.commentContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment {
+  display: flex;
+  align-items: baseline;
+}
+
+.user {
+  font-weight: 700;
+  font-size: small;
+  margin-right: 15px;
+}
+
+.content {
+  font-size: x-small;
+  text-align: start;
+  margin: 0;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding: 5px 10px;
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  right: 0;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+  border: none;
+}
+
+.dropdownItem:hover {
+  background-color: #dadada;
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+}
+
+.icon {
+  color: black;
+  font-size: 7px;
+  display: flex;
+  justify-items: end;
+}
+
+.dropdownIcon {
+  font-size: 15px;
+  color: black;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.editFormGroup {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin: 0 0 0 40px;
+}
+
+.editFormUser {
+  font-weight: 700;
+  font-size: small;
+}
+
+.editForm {
+  width: 100%;
+}

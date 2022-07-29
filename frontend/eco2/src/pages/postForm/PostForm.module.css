@@ -1,5 +1,23 @@
+.titleGroup {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.titleIcon {
+  font-size: x-large;
+}
+
 .title {
   text-align: start;
+  margin: 0;
+  padding: 0;
+}
+
+.line {
+  border: 1px solid #adc178;
+  width: 50%;
+  margin: 5px 0 15px 0;
 }
 
 .imgLabel {
@@ -26,7 +44,7 @@
 
 .fileInputGroup {
   display: flex;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 .fileInput {
@@ -61,20 +79,18 @@
 }
 
 .img {
-  width: 300px;
+  width: 180px;
+  margin: 10px;
 }
 
 .selectBox {
   display: flex;
   justify-content: start;
-  margin: 10px 0;
+  margin: 20px 0;
 }
 
 .select {
-  /* -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none; */
-  width: 100px;
+  width: 200px;
   padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;

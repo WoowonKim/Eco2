@@ -15,6 +15,7 @@ const CommentList = ({ id }) => {
               id={comment.id}
               content={comment.content}
               user={comment.user}
+              postId={comment.postId}
             />
           )
       )}
