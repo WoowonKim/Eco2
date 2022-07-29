@@ -1,7 +1,9 @@
 package com.web.eco2.domain.entity.user;
 
+import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.Friend;
 import lombok.*;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,6 +62,7 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.role.stream()
@@ -90,5 +93,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public UserDto toDto() {
+        return UserDto.builder()
+                .id(id).name(name).email(email)
+                .socialType(socialType)
+                .build();
     }
 }
