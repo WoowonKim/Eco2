@@ -1,14 +1,14 @@
 package com.web.eco2.domain.entity.mission;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.web.eco2.domain.dto.mission.MissionDto;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "tb_mission")
 @ToString
 @Data
@@ -32,4 +32,11 @@ public class Mission {
 
     @Column(name = "mis_quest_flag", nullable = false)
     private boolean questFlag;
+
+    public MissionDto toDto() {
+        return MissionDto.builder()
+                .id(id).category(category)
+                .title(title).content(content)
+                .questFlag(questFlag).build();
+    }
 }
