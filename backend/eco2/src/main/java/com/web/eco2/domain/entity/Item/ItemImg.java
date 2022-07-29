@@ -1,6 +1,6 @@
 package com.web.eco2.domain.entity.Item;
 
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

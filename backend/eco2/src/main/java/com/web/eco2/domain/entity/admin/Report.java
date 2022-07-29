@@ -2,7 +2,7 @@ package com.web.eco2.domain.entity.admin;
 
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

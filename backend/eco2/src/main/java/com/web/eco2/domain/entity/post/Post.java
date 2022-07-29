@@ -23,8 +23,12 @@ public class Post {
     @Column(name = "pos_id")
     private Long id;
 
-//    @Column(name = "pos_regist_time", nullable = false)
-//    private LocalDateTime registTime;
+    @Column(name = "pos_regist_time", nullable = false)
+    private LocalDateTime registTime = LocalDateTime.now();
+
+
+    @Column(name = "pos_content")
+    private String content;
 
     @Column(name = "pos_report", nullable = false)
     @ColumnDefault("0")
@@ -49,4 +53,18 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cum_id")
     private CustomMission customMission;
+
+    @Builder
+    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag,
+                boolean commentFlag, User user, Mission mission, CustomMission customMission) {
+        this.id = id;
+        /*this.registTime = registTime;*/
+        this.content = content;
+        this.report = report;
+        this.publicFlag = publicFlag;
+        this.commentFlag = commentFlag;
+        this.user = user;
+        this.mission = mission;
+        this.customMission = customMission;
+    }
 }
