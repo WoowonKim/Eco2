@@ -14,8 +14,6 @@ import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMission
 import DailyEcoMissionList from "./pages/dmission/dailyMissionDetail/dailyEcoMissionList";
 import DailyEcoMissionEcoFolder from "./pages/dmission/dailyMissionDetail/dailyEcoMissionEcoFolder";
 /* DailyMission End */
-import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
-
 import React, {
   useCallback,
   useEffect,
@@ -23,7 +21,6 @@ import React, {
   useReducer,
   useRef,
 } from "react";
-
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -37,7 +34,7 @@ function App() {
   let currUser = useSelector((state) => state.user);
   return (
     <div className={styles.App}>
-      {currUser.isLoggedIn === 1 ? <Header></Header> : null}
+      <Header></Header>
       <div className={styles.body}>
         <Routes>
           <Route path="/" element={<Login />}></Route>
@@ -47,15 +44,21 @@ function App() {
           {/*DailyMission */}
           <Route path="/dailymission" element={<DailyMissionDetail />} />
           <Route path="/dailymissionlist" element={<DailyEcoMissionList />} />
-          <Route path="/dailymissionEcoFolder" element={<DailyEcoMissionEcoFolder />} />
+          <Route
+            path="/dailymissionEcoFolder"
+            element={<DailyEcoMissionEcoFolder />}
+          />
           {/*DailyMission */}
           <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
+          <Route
+            path="/mainFeed/:feedCategory"
+            element={<FeedCategory />}
+          ></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
         </Routes>
       </div>
-      {currUser.isLoggedIn === 1 ? <Footer></Footer> : null}
+      <Footer></Footer>
     </div>
   );
 }
