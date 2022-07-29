@@ -1,6 +1,6 @@
 package com.web.eco2.security;
 
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -4,10 +4,18 @@ import com.web.eco2.domain.dto.user.MailRequest;
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.entity.Item.Statistic;
 import com.web.eco2.domain.entity.UserSetting;
+
+
+import com.web.eco2.model.service.user.MailService;
+import com.web.eco2.model.service.user.OAuth2Service;
+import com.web.eco2.model.service.user.UserService;
+import com.web.eco2.model.service.user.UserSettingService;
+
 import com.web.eco2.domain.entity.user.ProfileImg;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.item.StatisticService;
 import com.web.eco2.model.service.user.*;
+
 import com.web.eco2.util.JwtTokenUtil;
 import com.web.eco2.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -230,9 +238,15 @@ public class UserController {
                 }
                 System.out.println("login==================");
                 String refreshToken = jwtTokenUtil.createRefreshToken();
+<<<<<<< backend/eco2/src/main/java/com/web/eco2/controller/user/UserController.java
+                System.out.println(refreshToken);
+                user.setRefreshToken(refreshToken);
+                userService.save(user.toEntity());
+=======
                 loginUser.setRefreshToken(refreshToken);
                 userService.save(loginUser);
                 response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
+>>>>>>> backend/eco2/src/main/java/com/web/eco2/controller/user/UserController.java
 
                 String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
                 return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);

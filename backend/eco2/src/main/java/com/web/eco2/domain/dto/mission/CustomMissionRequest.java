@@ -1,7 +1,7 @@
 package com.web.eco2.domain.dto.mission;
 
 import com.web.eco2.domain.entity.mission.CustomMission;
-import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.domain.entity.User.User;
 import lombok.Data;
 import lombok.ToString;
 
