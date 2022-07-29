@@ -48,4 +48,8 @@ public class ProfileImgService {
             profileImgRepository.save(ProfileImg.builder().saveFolder(uploadFolder).saveName(saveName).originalName(originalName).id(updateUserId).build());
         }
     }
+
+    public void save(ProfileImg profileImg) {
+        profileImgRepository.save(profileImg);
+    }
 }

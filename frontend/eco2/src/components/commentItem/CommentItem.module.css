@@ -1,40 +1,119 @@
 .list {
   list-style: none;
+  margin-bottom: 5px;
+}
+
+.commentContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+}
+
+.comment {
+  display: flex;
+  align-items: baseline;
 }
 
 .user {
   font-weight: 700;
-  margin-right: 15px;
+  margin: 0 15px 0 0;
 }
 
 .content {
   font-size: small;
+  text-align: start;
+  margin: 0;
 }
 
-.editButton {
+/* .replyButton {
+  border: 1px solid #adc178;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+} */
+
+.dropdown {
   position: relative;
-  padding: 3px 5px;
+  display: inline-block;
+  padding: 5px 10px;
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  right: 0;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+  border: none;
+}
+
+.dropdownItem:hover {
+  background-color: #dadada;
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+  animation-name: dropdown;
+  animation-duration: 500ms;
+  animation-direction: normal;
+}
+
+.icon {
+  color: black;
+  font-size: 7px;
+  display: flex;
+  justify-items: end;
+}
+
+.dropdownIcon {
+  font-size: 15px;
+  color: black;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.replyButton {
+  border: none;
   border-radius: 15px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid #FBBB00;
+  font-size: x-small;
   color: #6e6e6e;
   background-color: white;
   transition: all 300ms ease-in-out;
-  margin-right: 5px;
+  margin: 0;
 }
 
-.editButton:hover {
-  background-color: #FBBB00;
-  color: #e1eef6;
+.replyButton:hover {
+  transform: scale(1.1);
 }
 
-.deleteButton {
+.editFormGroup {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.editFormUser {
+  font-weight: 700;
+  margin-right: 15px;
+}
+
+.editForm {
+  width: 100%;
+}
+
+/* .deleteButton {
   position: relative;
   padding: 3px 5px;
   border-radius: 15px;
@@ -50,5 +129,4 @@
 .deleteButton:hover {
   background-color: #F14336;
   color: #e1eef6;
-}
-
+} */

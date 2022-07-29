@@ -45,4 +45,19 @@ public class UserService {
                 .build();
         return user;
     }
+
+//    public Long getByUserId(String email) {
+//        return userRepository.getByUserId(email);
+//    }
+
+    public User findUserInfoById(Long usrId) {
+        UserInformation userInformation = userRepository.findUserInfoById(usrId);
+        User user = User.builder()
+                .email(userInformation.getEmail())
+                .name(userInformation.getName())
+                .socialType(userInformation.getSocialType())
+                .build();
+        System.out.println(user);
+        return user;
+    }
 }

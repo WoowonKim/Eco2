@@ -34,6 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable() // rest api 만을 고려하여 기본 설정은 해제하겠습니다.
                 .csrf().disable() // csrf 보안 토큰 disable처리.
+                //토큰 인증 활성화
 //                .sessionManagement()
 //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지 않습니다.
 //                .and()
@@ -47,7 +48,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtTokenUtil))
 //                .cors()
-//                .apply(new JwtAuthenticationFilter(jwtTokenService))
         ;
     }
     @Bean

@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
@@ -31,9 +32,9 @@ public class JwtTokenUtil {
     @Value("${jwt.secret}")
     private String secretKey;
     @Value("${jwt.accesstokenValidTime}")
-    private long accesstokenValidTime;
+    private Long accesstokenValidTime;
     @Value("${jwt.refreshtokenValidTime}")
-    private long refreshtokenValidTime;
+    private Long refreshtokenValidTime;
     @Autowired
     private UserService userService;
 
@@ -44,6 +45,7 @@ public class JwtTokenUtil {
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
+
     public String getAccessToken(HttpServletRequest request) {
         return request.getHeader("Auth-accessToken");
     }
@@ -101,6 +103,7 @@ public class JwtTokenUtil {
             return null;
         }
     }
+
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(token);
@@ -109,6 +112,7 @@ public class JwtTokenUtil {
             return false;
         }
     }
+
     public Authentication getAuthentication(String token) {
         try {
             String email = (String) getClaim(token).get("sub");
@@ -132,4 +136,15 @@ public class JwtTokenUtil {
     public Map<String, Object> getClaim(String token) {
         return Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(token).getBody();
     }
+
+
+    public Cookie getCookie(String refreshToken) {
+        Cookie cookie = new Cookie("Auth-refreshToken", refreshToken);
+        cookie.setMaxAge(60 * 1000);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        return cookie;
+    }
+
 }

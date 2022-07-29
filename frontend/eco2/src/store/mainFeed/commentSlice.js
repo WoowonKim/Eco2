@@ -5,13 +5,24 @@ export const commentSlice = createSlice({
   initialState: [],
   reducers: {
     addComment: (state, action) => {
-      const newComment = {
-        id: Date.now(),
-        postId: action.payload.postId,
-        content: action.payload.content,
-        user: "user1",
-      };
-      state.push(newComment);
+      if (action.payload.commentId) {
+        const newComment = {
+          id: Date.now(),
+          postId: action.payload.postId,
+          content: action.payload.content,
+          user: "user1",
+          commentId: action.payload.commentId,
+        };
+        state.push(newComment);
+      } else {
+        const newComment = {
+          id: Date.now(),
+          postId: action.payload.postId,
+          content: action.payload.content,
+          user: "user1",
+        };
+        state.push(newComment);
+      }
     },
     updateComment: (state, action) => {
       const index = state.findIndex(
