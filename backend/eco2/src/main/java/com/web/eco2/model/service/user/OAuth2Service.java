@@ -1,7 +1,7 @@
 package com.web.eco2.model.service.user;
 
 import com.web.eco2.domain.dto.oauth.OAuthToken;
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.user.UserRepository;
 import com.web.eco2.model.service.oauth.GoogleOAuth;
 import com.web.eco2.model.service.oauth.KakaoOAuth;

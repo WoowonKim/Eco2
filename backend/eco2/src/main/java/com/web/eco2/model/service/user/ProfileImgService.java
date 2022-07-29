@@ -1,8 +1,8 @@
 package com.web.eco2.model.service.user;
 
 
-import com.web.eco2.domain.entity.User.ProfileImg;
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.ProfileImg;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.ProfileImgRepository;
 import com.web.eco2.model.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

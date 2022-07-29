@@ -1,7 +1,6 @@
 package com.web.eco2.model.repository.mission;
 
 import com.web.eco2.domain.entity.mission.CustomMission;
-import com.web.eco2.domain.entity.User.User;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

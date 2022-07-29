@@ -238,15 +238,9 @@ public class UserController {
                 }
                 System.out.println("login==================");
                 String refreshToken = jwtTokenUtil.createRefreshToken();
-<<<<<<< backend/eco2/src/main/java/com/web/eco2/controller/user/UserController.java
-                System.out.println(refreshToken);
-                user.setRefreshToken(refreshToken);
-                userService.save(user.toEntity());
-=======
                 loginUser.setRefreshToken(refreshToken);
                 userService.save(loginUser);
                 response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
->>>>>>> backend/eco2/src/main/java/com/web/eco2/controller/user/UserController.java
 
                 String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
                 return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);

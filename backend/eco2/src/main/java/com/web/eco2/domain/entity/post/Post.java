@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "tb_post")
 @ToString
 @Data
@@ -54,8 +53,8 @@ public class Post {
     @JoinColumn(name = "cum_id")
     private CustomMission customMission;
 
-    @Builder
-    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag,
+//    @Builder
+    public Post(Long id, String content, boolean report, boolean publicFlag,
                 boolean commentFlag, User user, Mission mission, CustomMission customMission) {
         this.id = id;
         /*this.registTime = registTime;*/

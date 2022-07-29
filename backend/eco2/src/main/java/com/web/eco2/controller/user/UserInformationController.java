@@ -1,7 +1,7 @@
 package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
 

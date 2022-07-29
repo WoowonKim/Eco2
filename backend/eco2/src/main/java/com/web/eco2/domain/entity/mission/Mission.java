@@ -7,8 +7,6 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Builder
-@AllArgsConstructor
 @Table(name = "tb_mission")
 @ToString
 @Data

@@ -1,11 +1,9 @@
 package com.web.eco2.domain.entity.mission;
 
-import com.web.eco2.domain.entity.User.User;
+import com.web.eco2.domain.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Optional;
 
 @Entity
 @NoArgsConstructor
