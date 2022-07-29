@@ -7,5 +7,4 @@ public interface UserInformation {
     String getEmail();
     String getName();
     Integer getSocialType();
-    ProfileImg getProfileImg();
 }

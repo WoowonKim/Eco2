@@ -42,6 +42,7 @@ public class MissionController {
     public ResponseEntity<Object> selectMissionList() {
         try {
             List<Mission> missionList = missionService.findAll();
+            //TODO: 데일리 미션에 있는 항목들을 리스트에서 제외 구현
             System.out.println(missionList);
             return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", missionList);
         } catch (Exception e) {
@@ -69,7 +70,7 @@ public class MissionController {
         try {
             List<CustomMission> customMissionList = customMissionService.findListByUsrId(usrId);
             System.out.println(customMissionList);
-            return ResponseHandler.generateResponse("커스텀 미션 조회 성공하였습니다.", HttpStatus.OK);
+            return ResponseHandler.generateResponse("커스텀 미션 조회 성공하였습니다.", HttpStatus.OK, "customMissionList", customMissionList);
         } catch (Exception e) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -110,9 +111,9 @@ public class MissionController {
                 return ResponseHandler.generateResponse("즐겨찾기 추가 성공하였습니다.", HttpStatus.OK);
             } else {//삭제
                 if (favoriteMission.isMissionType()) {//기본미션
-//                    favoriteMissionService.deleteByMisId(favoriteMission.getMissionId());
+                    favoriteMissionService.deleteByMisId(usrId, favoriteMission.getMissionId());
                 } else {//사용자 미션
-//                    favoriteMissionService.deleteByCumId(favoriteMission.getMissionId());
+                    favoriteMissionService.deleteByCumId(usrId, favoriteMission.getMissionId());
                 }
                 return ResponseHandler.generateResponse("즐겨찾기 삭제 성공하였습니다.", HttpStatus.OK);
             }
@@ -123,13 +124,17 @@ public class MissionController {
     }
 
     //즐겨찾기 조회
-//    @GetMapping("/favorite/{usrId}")
-//    public ResponseEntity<Object> selectFavoriteMission(@PathVariable("usrId") Long usrId) {
-//        try {
-//
-//            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK);
-//        } catch (Exception e) {
-//            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @GetMapping("/favorite/{usrId}")
+    public ResponseEntity<Object> selectFavoriteMission(@PathVariable("usrId") Long usrId) {
+        try {
+            List<Mission> missionList = favoriteMissionService.findMissionByUsrId(usrId);
+            System.out.println(missionList);
+            List<CustomMission> customMissionList = favoriteMissionService.findCustomMissionByUsrId(usrId);
+            System.out.println(customMissionList);
+            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK, "missionList", missionList, "customMissionList", customMissionList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
