@@ -14,7 +14,13 @@ import DailyMissionMain from "./pages/dmission/dailyMissionMain/dailyMissionMain
 import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMissionDetail";
 
 /* DailyMission End */
-import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -23,6 +29,9 @@ import MainTree from "./pages/mainTree/MainTree";
 import FeedCategory from "./pages/feedCategory/FeedCategory";
 import PostDetail from "./pages/postDetail/PostDetail";
 import PostForm from "./pages/postForm/PostForm";
+import Profile from "./pages/profile/Profile";
+import UserSettings from "./pages/userSettings/UserSettings";
+import UserFriends from "./pages/userFriends/UserFriends";
 
 function App() {
   let currUser = useSelector((state) => state.user);
@@ -48,6 +57,10 @@ function App() {
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
+
+          <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/user/settings" element={<UserSettings />}></Route>
+          <Route path="/user/friends" element={<UserFriends />}></Route>
         </Routes>
       </div>
       <Footer></Footer>

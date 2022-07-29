@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
+  emailCheck,
   emailVerify,
   emailVerifyCode,
   signUp,
@@ -24,13 +25,16 @@ const Regist = () => {
   const [code, setCode] = useState(null);
   const [min, setMin] = useState(5);
   const [sec, setSec] = useState(0);
-  const [mount, setMount] = useState(false);
+  const [emailCheckVisible, setEmailCheckVisible] = useState(false);
 
   const displayType = visibility ? styles.visible : styles.hidden;
   const message = visibility ? "인증 메일 다시 보내기" : "이메일 인증하기";
   const dispatch = useDispatch();
   const isEmailValid = useSelector((state) => state.user.isEmailValid);
   const isEmailVerified = useSelector((state) => state.user.isEmailVerified);
+  const isEmailOnly = useSelector((state) => state.user.isEmailOnly);
+  const accessToken = useSelector((state) => state.user.token);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -77,7 +81,15 @@ const Regist = () => {
     //   // startHandler();
     // }
     setVisibility(true);
+    // dispatch(emailCheck({ email: email }));
+    // console.log(isEmailOnly);
     dispatch(emailVerify({ email: email }));
+  };
+
+  const handleEcoName = () => {
+    if (accessToken) {
+      navigate("/ecoName", { state: email });
+    }
   };
 
   // useEffect(() => {
@@ -108,34 +120,50 @@ const Regist = () => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="이메일"
         />
-        <GreenBtn type="button" onClick={onclick} className={styles.button}>
-          {message}
-        </GreenBtn>
-        {!isEmailValid && mount && (
-          <p className={styles.warningText}>
-            이메일이 유효하지 않아 인증메일을 발송할 수 없습니다.{" "}
-          </p>
+        {emailCheckVisible && !isEmailOnly && (
+          <p className={styles.emailCheckText}>중복된 이메일입니다.</p>
         )}
-        <div className={`${styles.EmailInput}, ${displayType}`}>
-          <input
-            type="text"
-            className={styles.inputEmail}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="인증 번호"
-          />
-          <button
-            className={styles.buttonEmail}
+        {emailCheckVisible && isEmailOnly && (
+          <p className={styles.emailCheckText}>사용 가능한 이메일입니다.</p>
+        )}
+        {isEmailOnly ? (
+          <GreenBtn type="button" onClick={onclick} className={styles.button}>
+            {message}
+          </GreenBtn>
+        ) : (
+          <GreenBtn
             type="button"
-            onClick={() =>
-              dispatch(emailVerifyCode({ email: email, code: code }))
-            }
+            onClick={() => {
+              dispatch(emailCheck({ email }));
+              setEmailCheckVisible(true);
+            }}
+            className={styles.button}
           >
-            인증하기
-          </button>
-          <div className={styles.timer}>
-            {min} : {sec}
+            중복 확인
+          </GreenBtn>
+        )}
+        {visibility && isEmailValid && (
+          <div className={`${styles.EmailInput}, ${displayType}`}>
+            <input
+              type="text"
+              className={styles.inputEmail}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="인증 번호"
+            />
+            <button
+              className={styles.buttonEmail}
+              type="button"
+              onClick={() =>
+                dispatch(emailVerifyCode({ email: email, code: code }))
+              }
+            >
+              인증하기
+            </button>
+            <div className={styles.timer}>
+              {min} : {sec}
+            </div>
           </div>
-        </div>
+        )}
         {isEmailVerified && (
           <div>
             <LoginInput
@@ -155,9 +183,9 @@ const Regist = () => {
                 비밀번호가 같지 않습니다.
               </WarningText>
             )}
-            {/* <Link to="/econame" className={styles.link}> */}
-            <ShortGreenBtn type="submit">가입하기</ShortGreenBtn>
-            {/* </Link> */}
+            <ShortGreenBtn type="submit" onClick={handleEcoName}>
+              가입하기
+            </ShortGreenBtn>
           </div>
         )}
       </form>

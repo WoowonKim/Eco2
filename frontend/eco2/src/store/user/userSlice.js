@@ -1,24 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getToken, removeUserSession, setUserSession } from "./common";
+import {
+  getCookie,
+  getToken,
+  removeUserSession,
+  setUserSession,
+} from "./common";
 
 // login 요청
-export const login = createAsyncThunk("user/login", async (args, thunkAPI) => {
-  const token = getToken();
-  const response = await axios({
-    url: "/user/login",
-    method: "post",
-    data: {
-      email: args.email,
-      password: args.password,
-      socialType: args.socialType,
-    },
-    headers: {
-      Authorization: "Authorization " + token,
-    },
-  });
-  return response.data;
-});
+export const login = createAsyncThunk(
+  "user/login",
+  async (args, rejectWithValue) => {
+    const token = getToken();
+    const response = await axios({
+      url: "/user/login",
+      method: "post",
+      data: {
+        email: args.email,
+        password: args.password,
+        socialType: args.socialType,
+      },
+      headers: {
+        Authorization: "Authorization " + token,
+      },
+    });
+    return response.data;
+  }
+);
 
 // 회원가입 요청
 export const signUp = createAsyncThunk(
@@ -67,6 +75,26 @@ export const emailVerify = createAsyncThunk(
   }
 );
 
+// 이메일 중복 확인
+export const emailCheck = createAsyncThunk(
+  "user/email/check/",
+  async (args, { rejectWithValue }) => {
+    try {
+      const token = getToken();
+      const response = await axios({
+        url: `/user/email/${args.email}`,
+        method: "get",
+        headers: {
+          Authorization: "Authorization " + token,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 // 이메일 인증번호 확인
 export const emailVerifyCode = createAsyncThunk(
   "user/email/verify/code",
@@ -90,32 +118,69 @@ export const emailVerifyCode = createAsyncThunk(
   }
 );
 
+// EcoName 중복 확인
+export const ecoNameVerify = createAsyncThunk(
+  "user/ecoName/verify",
+  async (args, { rejectWithValue }) => {
+    try {
+      const token = getToken();
+      const response = await axios({
+        url: `/user/econame/${args.econame}`,
+        method: "get",
+        headers: {
+          Authorization: "Authorization " + token,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// EcoName 생성 및 수정
+export const ecoName = createAsyncThunk(
+  "user/ecoName",
+  async (args, { rejectWithValue }) => {
+    try {
+      console.log(args.email, args.econame);
+      const token = getToken();
+      const response = await axios({
+        url: `/user/econame`,
+        method: "put",
+        data: {
+          email: args.email,
+          name: args.econame,
+        },
+        headers: {
+          Authorization: "Authorization " + token,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 const authState = {
   isLoggedIn: 0,
   token: null,
   isEmailValid: false,
   isEmailVerified: false,
+  isEmailOnly: false,
+  isEcoNameValid: false,
+  isEcoNameVerified: false,
 };
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: authState,
-  reducers: {
-    logout(state) {
-      state.isLoggedIn = 0;
-      state.token = null;
-      removeUserSession();
-      console.log(state.isLoggedIn, state.token);
-    },
-    loginStateReferesh(state) {
-      console.log("login state referesh");
-      state.isLoggedIn = 1;
-      state.token = getToken();
-      setUserSession(getToken());
-    },
-  },
+  reducers: {},
   extraReducers: {
     [login.fulfilled]: (state, action) => {
       console.log("login fulfilled", action.payload);
+      console.log(getCookie("csrftoken"));
       state.isLoggedIn = 1;
       state.token = action.payload.key;
       setUserSession(action.payload.key);
@@ -129,14 +194,12 @@ export const authSlice = createSlice({
     [signUp.fulfilled]: (state, action) => {
       console.log("signup fulfilled", action.payload);
       state.isLoggedIn = 1;
-      state.token = action.payload.key;
-      setUserSession(action.payload.key);
+      state.token = action.payload.accessToken;
+      setUserSession(action.payload.accessToken);
     },
     [signUp.rejected]: (state, action) => {
       console.log("signup rejected", action.payload);
       state.isLoggedIn = 0;
-      state.token = null;
-      removeUserSession();
     },
     [emailVerify.fulfilled]: (state, action) => {
       console.log("emailVerify fulfilled", action.payload);
@@ -152,8 +215,37 @@ export const authSlice = createSlice({
     },
     [emailVerifyCode.rejected]: (state, action) => {
       console.log("emailVerifyCode rejected", action.payload);
-
       state.isEmailVerified = false;
+    },
+    [emailCheck.fulfilled]: (state, action) => {
+      console.log("emailCheck fulfilled", action.payload);
+      if (action.payload.status === 200) {
+        state.isEmailOnly = true;
+      }
+    },
+    [emailCheck.rejected]: (state, action) => {
+      console.log("emailCheck rejected", action.payload);
+      state.isEmailOnly = false;
+    },
+    [ecoNameVerify.fulfilled]: (state, action) => {
+      console.log("ecoNameVerify fulfilled", action.payload);
+      if (action.payload.status === 200) {
+        state.isEcoNameValid = true;
+      }
+    },
+    [ecoNameVerify.rejected]: (state, action) => {
+      console.log("ecoNameVerify rejected", action.payload);
+      state.isEcoNameValid = false;
+    },
+    [ecoName.fulfilled]: (state, action) => {
+      console.log("ecoName fulfilled", action.payload);
+      if (action.payload.status === 200) {
+        state.isEcoNameVerified = true;
+      }
+    },
+    [ecoName.rejected]: (state, action) => {
+      console.log("ecoName rejected", action.payload);
+      state.isEcoNameVerified = false;
     },
   },
 });
