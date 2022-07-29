@@ -1,31 +1,56 @@
 import styles from "./MainTree.module.css";
-import { Leaf } from "../../components/styled";
-import { useSelector, useDispatch } from "react-redux";
-import { leavesAction } from "../../store/mainTree/leavesSlice";
+import { Leaf } from "./Leaf.jsx";
+import { useCallback, useState } from "react";
+import { useDrop } from "react-dnd";
+import update from "immutability-helper";
 const MainTree = () => {
-  let dispatch = useDispatch();
-  let leaves = useSelector((state) => state.leaves);
-  const mouseDownHandler = (e, i, leaf) => {
-    let copy = [...leaves];
-    copy[i].left = "300px";
-    dispatch(leavesAction.changePos(copy));
-  };
+  const [leaves, setLeaves] = useState({
+    a: { top: 20, left: 80, category: 3 },
+    b: { top: 180, left: 20, category: 4 },
+  });
+
+  const moveLeaf = useCallback(
+    (id, left, top) => {
+      setLeaves(
+        update(leaves, {
+          [id]: {
+            $merge: { left, top },
+          },
+        })
+      );
+    },
+    [leaves, setLeaves]
+  );
+  const [, drop] = useDrop(
+    () => ({
+      accept: "leaf",
+      drop(item, monitor) {
+        console.log(item);
+        const delta = monitor.getDifferenceFromInitialOffset();
+        const left = Math.round(item.left + delta.x);
+        const top = Math.round(item.top + delta.y);
+        console.log(left);
+        moveLeaf(item.id, left, top);
+        return undefined;
+      },
+    }),
+    [moveLeaf]
+  );
   return (
-    <div className={styles.Tree}>
+    <div className={styles.Tree} ref={drop}>
       <img
         src={process.env.PUBLIC_URL + "tree_leaves/mainTree.png"}
-        className={styles.Tree}
+        className={styles.Img}
       ></img>
-      {leaves.map(function (leaf, i) {
+      {Object.keys(leaves).map((key) => {
+        console.log(key);
+        const { left, top, category } = leaves[key];
         return (
           <Leaf
-            key={i}
-            src={process.env.PUBLIC_URL + "tree_leaves/Leaf" + leaf.id + ".png"}
-            left={leaf.left}
-            top={leaf.top}
-            onMouseDown={(e) => {
-              mouseDownHandler(e, i, leaf);
-            }}
+            key={key}
+            id={key}
+            left={left}
+            top={top}
             //김우우너 바보멍청ㅇ;
           ></Leaf>
         );

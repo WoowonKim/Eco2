@@ -1,14 +1,16 @@
 .Header {
   height: 75px;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem;
   color: white;
   background-color: white;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   position: fixed;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 330px;
 }
 .Img {

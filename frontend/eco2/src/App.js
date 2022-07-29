@@ -28,7 +28,7 @@ function App() {
   let currUser = useSelector((state) => state.user);
   return (
     <div className={styles.App}>
-      {currUser.isLoggedIn === 1 ? <Header></Header> : null}
+      <Header></Header>
       <div className={styles.body}>
         <Routes>
           <Route path="/" element={<Login />}></Route>
@@ -41,13 +41,16 @@ function App() {
 
           {/*DailyMission */}
           <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
+          <Route
+            path="/mainFeed/:feedCategory"
+            element={<FeedCategory />}
+          ></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
         </Routes>
       </div>
-      {currUser.isLoggedIn === 1 ? <Footer></Footer> : null}
+      <Footer></Footer>
     </div>
   );
 }
