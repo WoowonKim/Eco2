@@ -12,6 +12,8 @@ import javax.persistence.*;
 @Table(name = "tb_mission")
 @ToString
 @Data
+@Builder
+@AllArgsConstructor
 public class Mission {
 
     @Id

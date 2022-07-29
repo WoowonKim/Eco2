@@ -1,5 +1,6 @@
 package com.web.eco2.domain.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.Friend;
 import lombok.*;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Table(name = "tb_user")
 @ToString
 @Data
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,15 +38,17 @@ public class User implements UserDetails {
     @Column(name = "usr_social_type", nullable = false)
     private Integer socialType;
 
+    @JsonIgnore
     @Column(name = "usr_password", length = 500, nullable = true)
     private String password;
 
+    @JsonIgnore
     @Column(name = "usr_refreshToken")
     private String refreshToken;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pri_id", nullable = true)
-    private ProfileImg profileImg;
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "pri_id", nullable = true)
+//    private ProfileImg profileImg;
 
     @ElementCollection(fetch = FetchType.EAGER)
 //    @Column(name = "usr_role", nullable = true)
@@ -62,14 +65,44 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+<<<<<<< backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
+//    @Override
+=======
     @JsonIgnore
     @Override
+>>>>>>> backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.role.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
+<<<<<<< backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
+//    @Override
+//    public String getUsername() {
+//        return null;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return false;
+//    }
+=======
     @Override
     public String getUsername() {
         return null;
@@ -101,4 +134,5 @@ public class User implements UserDetails {
                 .socialType(socialType)
                 .build();
     }
+>>>>>>> backend/eco2/src/main/java/com/web/eco2/domain/entity/User/User.java
 }

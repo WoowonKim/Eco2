@@ -30,7 +30,7 @@ public class UserInformationController {
 //    @Autowired
 //    private JwtTokenUtil jwtTokenUtil;
 
-    // 유저 조회
+    // 회원 조회
     @GetMapping("/{email}")
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
         if(email == null) {

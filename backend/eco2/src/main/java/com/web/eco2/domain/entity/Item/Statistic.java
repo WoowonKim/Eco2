@@ -1,16 +1,15 @@
 package com.web.eco2.domain.entity.Item;
 
 import com.web.eco2.domain.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "tb_statistic")
 @ToString
 @Data
@@ -52,4 +51,10 @@ public class Statistic {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "usr_id")
     private User user;
+
+//    @Builder
+//    public Statistic(Long id, User user) {
+//        this.id = id;
+//        this.user = user;
+//    }
 }
