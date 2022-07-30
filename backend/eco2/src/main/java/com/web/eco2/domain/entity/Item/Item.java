@@ -18,13 +18,16 @@ public class Item {
     @Column(name = "ite_id")
     private Long id;
 
-    @Column(name = "ite_x", nullable = false)
-    private String x;
+    @Column(name = "ite_left", nullable = false)
+    private Integer left;
 
-    @Column(name = "ite_y", nullable = false)
-    private String y;
+    @Column(name = "ite_top", nullable = false)
+    private Integer top;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name = "ite_category", nullable = false)
+    private Integer category;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "usr_id", nullable = false)
     private User user;
 }

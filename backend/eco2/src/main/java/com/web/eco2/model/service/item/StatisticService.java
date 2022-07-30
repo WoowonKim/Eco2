@@ -8,6 +8,8 @@ import com.web.eco2.model.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StatisticService {
 
@@ -18,4 +20,10 @@ public class StatisticService {
     public void save(Statistic statistic) {
         statisticRepository.save(statistic);
     }
+
+    public Statistic findByUsrId(Long usrId) {
+        return statisticRepository.findByUsrId(usrId);
+    }
+
+
 }
