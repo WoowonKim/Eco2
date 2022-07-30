@@ -15,20 +15,18 @@ function Login() {
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     console.log(currUser);
     dispatch(
       login({ email: email, password: password, socialType: socialType })
-    );
-    if (currUser.isLoggedIn === 0) {
+    ).then((res) => {
+      if (res.payload.status === 200) {
+        setLoginFailMsg(false);
+        navigate("/mainFeed");
+      }
       setLoginFailMsg(true);
-    } else {
-      setLoginFailMsg(false);
-    }
-    if (currUser.isLoggedIn === 1) {
-      navigate("/mainFeed");
-    }
+    });
   };
   return (
     <div className={styles.login}>
@@ -43,14 +41,14 @@ function Login() {
           required
           value={email}
           placeholder="이메일"
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <LoginInput
           type="password"
           required
           value={password}
           placeholder="비밀번호"
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <div className={styles.radio}>
           <input type="checkbox" />
