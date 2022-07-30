@@ -1,4 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { getToken } from "../user/common";
+
+export const getLeaves = createAsyncThunk(
+  "leavesSlice/getLeaves",
+  async (args, { rejectWithValue }) => {
+    try {
+      const token = getToken();
+      const response = await axios({
+        url: `/tree/${args.userId}`,
+        method: "get",
+        Headers: {
+          Authorization: "Authorization" + token,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 
 export let leavesSlice = createSlice({
   name: "leaves",
@@ -13,11 +34,19 @@ export let leavesSlice = createSlice({
   reducers: {
     changePos(state, action) {
       let leaf = action.payload;
-      let index = state.findIndex((x) => x.id == leaf.id);
-      state.splice(index, 1);
-      state.push(leaf);
+      let index = state.findIndex((x) => x.id === leaf.id);
+      state[index] = { ...state[index], left: leaf.left, top: leaf.top };
     },
+  },
+  extraReducers: {
+    [getLeaves.pending]: (state, action) => {
+      console.log("getLeaves pending", action.payload);
+    },
+    [getLeaves.fulfilled]: (state, action) => {
+      state = action.payload;
+    },
+    [getLeaves.rejected]: (state, action) => {},
   },
 });
 
-export const leavesAction = leavesSlice.actions;
+export const { changePos } = leavesSlice.actions;
