@@ -11,20 +11,20 @@ import {
 export const login = createAsyncThunk(
   "user/login",
   async (args, rejectWithValue) => {
-    const token = getToken();
-    const response = await axios({
-      url: "/user/login",
-      method: "post",
-      data: {
-        email: args.email,
-        password: args.password,
-        socialType: args.socialType,
-      },
-      headers: {
-        Authorization: "Authorization " + token,
-      },
-    });
-    return response.data;
+    try {
+      const response = await axios({
+        url: "/user/login",
+        method: "post",
+        data: {
+          email: args.email,
+          password: args.password,
+          socialType: args.socialType,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
@@ -34,7 +34,6 @@ export const signUp = createAsyncThunk(
   // rejectWithValue -> 오류가 발생한 이유가 더 자세히 나오는 듯
   async (args, { rejectWithValue }) => {
     try {
-      const token = getToken();
       const response = await axios({
         url: "/user",
         method: "post",
@@ -42,9 +41,6 @@ export const signUp = createAsyncThunk(
           email: args.email,
           password: args.password,
           socialType: args.socialType,
-        },
-        headers: {
-          Authorization: "Authorization " + token,
         },
       });
       console.log(args.socialType);
@@ -60,13 +56,9 @@ export const emailVerify = createAsyncThunk(
   "user/email/verify",
   async (args, { rejectWithValue }) => {
     try {
-      const token = getToken();
       const response = await axios({
         url: `/user/email/verify/${args.email}`,
         method: "get",
-        headers: {
-          Authorization: "Authorization " + token,
-        },
       });
       return response.data;
     } catch (err) {
@@ -80,13 +72,9 @@ export const emailCheck = createAsyncThunk(
   "user/email/check/",
   async (args, { rejectWithValue }) => {
     try {
-      const token = getToken();
       const response = await axios({
         url: `/user/email/${args.email}`,
         method: "get",
-        headers: {
-          Authorization: "Authorization " + token,
-        },
       });
       return response.data;
     } catch (err) {
@@ -100,15 +88,11 @@ export const emailVerifyCode = createAsyncThunk(
   "user/email/verify/code",
   async (args, { rejectWithValue }) => {
     try {
-      const token = getToken();
       const response = await axios({
         url: `/user/email/verify/${args.email}`,
         method: "post",
         data: {
           code: args.code,
-        },
-        headers: {
-          Authorization: "Authorization " + token,
         },
       });
       return response.data;
@@ -123,13 +107,9 @@ export const ecoNameVerify = createAsyncThunk(
   "user/ecoName/verify",
   async (args, { rejectWithValue }) => {
     try {
-      const token = getToken();
       const response = await axios({
         url: `/user/econame/${args.econame}`,
         method: "get",
-        headers: {
-          Authorization: "Authorization " + token,
-        },
       });
       return response.data;
     } catch (err) {
@@ -143,7 +123,6 @@ export const newPassword = createAsyncThunk(
   "user/newPassword",
   async (args, { rejectWithValue }) => {
     try {
-      const token = getToken();
       const response = await axios({
         url: "/user/newpassword",
         method: "put",
@@ -164,17 +143,12 @@ export const ecoName = createAsyncThunk(
   "user/ecoName",
   async (args, { rejectWithValue }) => {
     try {
-      console.log(args.email, args.econame);
-      const token = getToken();
       const response = await axios({
         url: `/user/econame`,
         method: "put",
         data: {
           email: args.email,
           name: args.econame,
-        },
-        headers: {
-          Authorization: "Authorization " + token,
         },
       });
       return response.data;
@@ -202,10 +176,11 @@ export const authSlice = createSlice({
   extraReducers: {
     [login.fulfilled]: (state, action) => {
       console.log("login fulfilled", action.payload);
-      console.log(getCookie("csrftoken"));
-      state.isLoggedIn = 1;
-      state.token = action.payload.key;
-      setUserSession(action.payload.key);
+      if (action.payload.status === 200) {
+        state.isLoggedIn = 1;
+        state.token = action.payload.accessToken;
+      }
+      setUserSession(action.payload.accessToken);
     },
     [login.rejected]: (state, action) => {
       console.log("login rejected", action.payload);
@@ -215,8 +190,10 @@ export const authSlice = createSlice({
     },
     [signUp.fulfilled]: (state, action) => {
       console.log("signup fulfilled", action.payload);
-      state.isLoggedIn = 1;
-      state.token = action.payload.accessToken;
+      if (action.payload.status === 200) {
+        state.isLoggedIn = 1;
+        state.token = action.payload.accessToken;
+      }
       setUserSession(action.payload.accessToken);
     },
     [signUp.rejected]: (state, action) => {
@@ -235,7 +212,9 @@ export const authSlice = createSlice({
     },
     [emailVerifyCode.fulfilled]: (state, action) => {
       console.log("emailVerifyCode fulfilled", action.payload);
-      state.isEmailVerified = true;
+      if (action.payload.statue === 200) {
+        state.isEmailVerified = true;
+      }
     },
     [emailVerifyCode.rejected]: (state, action) => {
       console.log("emailVerifyCode rejected", action.payload);
