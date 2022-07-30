@@ -6,13 +6,17 @@ const Header = () => {
   let navigate = useNavigate();
   return (
     <header className={styles.Header}>
-      <div>
+      <div
+        onClick={() => {
+          navigate("/mainTree");
+        }}
+      >
         <img
-          src={process.env.PUBLIC_URL + "logo.png"}
+          src={`${process.env.PUBLIC_URL}/logo.png`}
           className={styles.Img}
         ></img>
         <img
-          src={process.env.PUBLIC_URL + "logoText.png"}
+          src={`${process.env.PUBLIC_URL}/logoText.png`}
           className={styles.Img}
         ></img>
       </div>

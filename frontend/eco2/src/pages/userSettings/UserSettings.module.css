@@ -1,7 +1,12 @@
 .header {
-  display: flex;
+  display: grid;
   margin-top: 50px;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  grid-template-columns: 1fr 1fr;
+}
+
+.selectedMenu {
+  font-weight: bold;
 }
 
 .profileImg {
@@ -67,4 +72,37 @@
   cursor: pointer;
   margin-top: 10px;
   padding: 0;
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px;
+}
+
+.settingGroup {
+  text-align: start;
+}
+
+.settingTitle {
+  font-weight: bold;
+}
+
+.settingContent {
+  font-size: x-small;
+}
+
+.line {
+  border: 0.5px solid #dadada;
+}
+
+.settingButton {
+  margin-top: 10px;
+  background-color: #d2eaba;
+  border: none;
+  border-radius: 5px;
+  width: 150px;
+  height: 30px;
+  cursor: pointer;
 }

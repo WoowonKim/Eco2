@@ -9,18 +9,17 @@ import {
   emailVerifyCode,
   newPassword,
 } from "../../store/user/userSlice";
-import { store } from "../../store/index";
+
 const FindPassword = () => {
   const [visibility, setVisibility] = useState(false);
   const [formVisibility, setFormVisibility] = useState(false);
+  const [warningVisibility, setWarningVisibility] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [code, setCode] = useState(null);
 
   const isEmailValid = useSelector((state) => state.user.isEmailValid);
-  const isEmailVerified = useSelector((state) => state.user.isEmailVerified);
-  const isPasswordValid = useSelector((state) => state.user.isPasswordValid);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -48,9 +47,13 @@ const FindPassword = () => {
   };
 
   const handleEmailCheck = () => {
+    setWarningVisibility(true);
     dispatch(emailVerifyCode({ email, code }))
       .then((res) => {
-        setFormVisibility(true);
+        if (res.payload.status == 200) {
+          setFormVisibility(true);
+          setWarningVisibility(false);
+        }
       })
       .catch((err) => {
         setFormVisibility(false);
@@ -93,6 +96,9 @@ const FindPassword = () => {
             인증하기
           </button>
         </div>
+        {setFormVisibility && warningVisibility && (
+          <WarningText>이메일을 인증할 수 없습니다.</WarningText>
+        )}
       </form>
       <form onSubmit={handleSubmit} className={`${changeFormDisplayType}`}>
         <LoginInput
@@ -106,9 +112,7 @@ const FindPassword = () => {
           placeholder="새 비밀번호 확인"
         />
         {password !== password2 && (
-          <WarningText className={styles.warningText}>
-            비밀번호가 같지 않습니다.
-          </WarningText>
+          <WarningText>비밀번호가 같지 않습니다.</WarningText>
         )}
         <GreenBtn className={styles.button} onClick={handleNewPassword}>
           비밀번호 변경

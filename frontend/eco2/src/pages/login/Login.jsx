@@ -31,7 +31,7 @@ function Login() {
   return (
     <div className={styles.login}>
       <img
-        src={process.env.PUBLIC_URL + "logo.png"}
+        src={`${process.env.PUBLIC_URL}/logo.png`}
         alt="earth"
         className={styles.img}
       />
