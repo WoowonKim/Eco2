@@ -158,6 +158,25 @@ export const ecoName = createAsyncThunk(
   }
 );
 
+// Google 로그인
+export const googleLogin = createAsyncThunk(
+  "user/googleLogin",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axios({
+        url: `/user/auth/${args.socialType}`,
+        method: "post",
+        data: args.idToken,
+      });
+      console.log(args);
+      return response.data;
+    } catch (err) {
+      console.log(args);
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 const authState = {
   isLoggedIn: 0,
   token: null,
@@ -259,6 +278,17 @@ export const authSlice = createSlice({
     [newPassword.rejected]: (state, action) => {
       console.log("newPassword rejected", action.payload);
       state.isPasswordValid = false;
+    },
+    [googleLogin.fulfilled]: (state, action) => {
+      console.log("googleLogin fulfilled", action.payload);
+      if (action.payload.status === 200) {
+        state.isLoggedIn = 1;
+        state.token = action.payload.accessToken;
+      }
+    },
+    [googleLogin.rejected]: (state, action) => {
+      console.log("googleLogin rejected", action.payload);
+      // state.isPasswordValid = false;
     },
   },
 });
