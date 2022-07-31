@@ -17,16 +17,17 @@ function Login() {
   const dispatch = useDispatch();
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(currUser);
     dispatch(
       login({ email: email, password: password, socialType: socialType })
-    ).then((res) => {
-      if (res.payload.status === 200) {
-        setLoginFailMsg(false);
-        navigate("/mainFeed");
-      }
-      setLoginFailMsg(true);
-    });
+    )
+      .then((res) => {
+        if (res.payload.status === 200) {
+          setLoginFailMsg(false);
+          navigate("/mainFeed");
+        }
+        setLoginFailMsg(true);
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className={styles.login}>
@@ -98,9 +99,6 @@ function Login() {
       </Link>
       <Link to="/findpassword" className={styles.link}>
         <p className={styles.text}>비밀번호를 잊어버렸어요</p>
-      </Link>
-      <Link to="/missionMain">
-        <button>GoMission</button>
       </Link>
     </div>
   );

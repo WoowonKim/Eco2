@@ -108,9 +108,9 @@ const Regist = () => {
             >
               인증하기
             </button>
-            <div className={styles.timer}>
+            {/* <div className={styles.timer}>
               {min} : {sec}
-            </div>
+            </div> */}
           </div>
         )}
         {isEmailVerified && (
