@@ -12,7 +12,7 @@ import Header from "./components/NavFooter/Header";
 /* DailyMission */
 import DailyMissionMain from "./pages/dmission/dailyMissionMain/dailyMissionMain";
 import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMissionDetail";
-
+import DailyMissionCustomUpdate from "./pages/dmission/dailyMissionDetail/dailyMissionCustomUpdate";
 /* DailyMission End */
 import React, {
   useCallback,
@@ -47,12 +47,11 @@ function App() {
           {/*DailyMission */}
           <Route path="/dailymissionmain" element={<DailyMissionMain />} />
           <Route path="/dailymissiondetail" element={<DailyMissionDetail />} />
+          <Route path="/dailymissioncustomUpdate" element={<DailyMissionCustomUpdate />} />
+
           {/*DailyMission */}
           <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route
-            path="/mainFeed/:feedCategory"
-            element={<FeedCategory />}
-          ></Route>
+          <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
