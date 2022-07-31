@@ -1,0 +1,108 @@
+.header {
+  display: grid;
+  margin-top: 50px;
+  /* justify-content: space-around; */
+  grid-template-columns: 1fr 1fr;
+}
+
+.selectedMenu {
+  font-weight: bold;
+}
+
+.profileImg {
+  margin: 20px;
+}
+
+.img {
+  width: 50%;
+}
+
+.profileImgGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emailGroup {
+  text-align: start;
+}
+
+.econameGroup {
+  text-align: start;
+}
+
+.econameTitle {
+  display: flex;
+  align-items: center;
+}
+
+.passwordGroup {
+  text-align: start;
+}
+
+.editIcon {
+  color: black;
+  font-size: small;
+}
+
+.passwordForm {
+  margin: 0;
+  padding: 0;
+}
+
+.passwordFormInput {
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  width: 80%;
+  height: 30px;
+  font-size: x-small;
+  padding-left: 10px;
+  margin: 5px 0;
+}
+
+.passwordFormButton {
+  background: #adc178;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  width: 15%;
+  height: 30px;
+  font-size: x-small;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  padding: 0;
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px;
+}
+
+.settingGroup {
+  text-align: start;
+}
+
+.settingTitle {
+  font-weight: bold;
+}
+
+.settingContent {
+  font-size: x-small;
+}
+
+.line {
+  border: 0.5px solid #dadada;
+}
+
+.settingButton {
+  margin-top: 10px;
+  background-color: #d2eaba;
+  border: none;
+  border-radius: 5px;
+  width: 150px;
+  height: 30px;
+  cursor: pointer;
+}

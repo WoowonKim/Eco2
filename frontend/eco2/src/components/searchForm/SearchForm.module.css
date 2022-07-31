@@ -1,0 +1,25 @@
+.form {
+  margin: 50px 0 0 0;
+  display: flex;
+}
+
+.input {
+  width: 300px;
+  height: 30px;
+  border: none;
+  background-color: #eeeeee;
+  padding: 3px 10px;
+  border-radius: 10px;
+  outline: none;
+}
+
+.button {
+  border: none;
+  /* background-color: #3c3c43;
+  opacity: 0.1; */
+  border-radius: 10px;
+}
+
+.searchIcon {
+  color: black;
+}
