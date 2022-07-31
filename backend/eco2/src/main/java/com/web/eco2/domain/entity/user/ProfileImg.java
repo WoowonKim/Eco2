@@ -27,7 +27,7 @@ public class ProfileImg {
 
 
     @MapsId
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "usr_id")
     private User user;
 
