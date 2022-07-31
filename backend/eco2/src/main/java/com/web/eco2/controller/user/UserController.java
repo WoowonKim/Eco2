@@ -259,7 +259,7 @@ public class UserController {
     // 소셜 로그인
     @PostMapping("/auth/{socialType}")
     public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType,
-                                                 @RequestParam String idToken, HttpServletResponse response) {
+                                                 @RequestBody String idToken, HttpServletResponse response) {
         try{
             FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
             String email = decodedToken.getEmail();

@@ -1,6 +1,7 @@
 package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
+import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
@@ -36,7 +37,7 @@ public class UserInformationController {
         if(email == null) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-        User user = userService.findUserInfoByEmail(email);
+        UserDto user = userService.findUserInfoByEmail(email).toDto();
 
         if (user != null) {
             return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user);
