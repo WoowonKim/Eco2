@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "tb_user")
 @ToString
 @Data
@@ -51,7 +50,7 @@ public class User {
     private List<String> role = new ArrayList<>();
 
     @Builder
-    public User(long id, String email, String name, Integer socialType, String password, String refreshToken, List<String> role) {
+    public User(Long id, String email, String name, Integer socialType, String password, String refreshToken, List<String> role) {
         this.id = id;
         this.email = email;
         this.name = name;

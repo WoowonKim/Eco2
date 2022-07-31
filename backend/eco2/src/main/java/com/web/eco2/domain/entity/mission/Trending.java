@@ -23,7 +23,7 @@ public class Trending {
     private Integer count;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "mis_id")
     private Mission mission;
 }
