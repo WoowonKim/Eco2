@@ -1,5 +1,7 @@
 package com.web.eco2.controller.user;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import com.web.eco2.domain.dto.user.MailRequest;
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.entity.Item.Statistic;
@@ -18,6 +20,7 @@ import com.web.eco2.model.service.user.*;
 
 import com.web.eco2.util.JwtTokenUtil;
 import com.web.eco2.util.ResponseHandler;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -61,6 +64,10 @@ public class UserController {
 
     @Autowired
     StatisticService statisticService;
+
+    @Autowired
+    private FirebaseAuth firebaseAuth;
+
     //회원가입
     @PostMapping()
     public ResponseEntity<Object> signUp(@RequestBody SignUpRequest user, HttpServletResponse response) {
@@ -229,39 +236,79 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody SignUpRequest user, HttpServletResponse response) throws IOException {
-        if (user.getSocialType() == 0) {
-            try {
-                User loginUser = userService.findByEmail(user.getEmail());
-                if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
-                    System.out.println("이메일, 비밀번호 불일치");
-                    return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.ACCEPTED);
-                }
-                System.out.println("login==================");
-                String refreshToken = jwtTokenUtil.createRefreshToken();
-                loginUser.setRefreshToken(refreshToken);
-                userService.save(loginUser);
-                response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
-
-                String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
-                return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        try {
+            User loginUser = userService.findByEmail(user.getEmail());
+            if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
+                System.out.println("이메일, 비밀번호 불일치");
+                return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.ACCEPTED);
             }
-        } else {
-            Map<String, String> map = new HashMap<>();
-            String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
-            map.put("url", url);
-            map.put("msg", "소셜 로그인");
-//            response.sendRedirect(url);
-            return new ResponseEntity<Map<String, String>>(map, HttpStatus.ACCEPTED);
+            System.out.println("login==================");
+            String refreshToken = jwtTokenUtil.createRefreshToken();
+            loginUser.setRefreshToken(refreshToken);
+            userService.save(loginUser);
+            response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
+
+            String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
+            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
     // 소셜 로그인
-    @GetMapping("/auth/{socialType}")
-    public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType, @RequestParam String code) {
-        return oAuth2Service.oAuthLogin(socialType, code);
+    @PostMapping("/auth/{socialType}")
+    public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType,
+                                                 @RequestParam String idToken, HttpServletResponse response) {
+        try{
+            FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
+            String email = decodedToken.getEmail();
+            User user = userService.findByEmail(email);
+
+            String refreshToken = jwtTokenUtil.createRefreshToken();
+            if(user == null) {
+                // 없는 회원: 회원 가입하기
+                userService.save(User.builder().email(email).socialType(socialType).refreshToken(refreshToken).build());
+                user = userService.findByEmail(email);
+
+                // 계정 설정 insert
+                UserSetting userSetting = UserSetting.builder()
+                        .id(null).user(user)
+                        .chatAlarmFlag(true).commentAlarmFlag(true)
+                        .publicFlag(true).darkmodeFlag(false).build();
+                userSettingService.save(userSetting);
+
+                //프로필 insert
+                ProfileImg profileImg = ProfileImg.builder()
+                        .id(null).user(user)
+                        .originalName(null).saveFolder(null).saveName(null)
+                        .build();
+                profileImgService.save(profileImg);
+
+                //통계 insert
+                Statistic statistic = Statistic.builder()
+                        .id(null).user(user)
+                        .category1(0L).category2(0L).category3(0L).category4(0L).category5(0L).category6(0L)
+                        .questCount(0L)
+                        .build();
+                statisticService.save(statistic);
+
+            } else if(user.getSocialType() != socialType) {
+                // 다른 소셜로 회원가입한 유저
+                return ResponseHandler.generateResponse("이미 다른 소셜로 가입한 이메일입니다.", HttpStatus.ACCEPTED, "socialType", user.getSocialType());
+            } else {
+                user.setRefreshToken(refreshToken);
+                userService.save(user);
+            }
+
+            String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
+            response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
+
+            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/newpassword")
