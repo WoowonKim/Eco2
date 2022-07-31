@@ -1,4 +1,7 @@
 /* 상단 START */
+.headerMain {
+  padding-top: 30px;
+}
 .mainHeader {
   margin-top: 20px;
   margin-bottom: 15px;

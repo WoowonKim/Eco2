@@ -5,7 +5,7 @@ import styles from "./dailyMission.module.css";
 import { GreenBtn } from "../../../components/styled";
 const DailyMissionMain = () => {
   return (
-    <div>
+    <div className={styles.headerMain}>
       <div className={styles.mainHeader}>
         <span className={styles.mainHeaderLeft}>오늘의 도전과제</span>
         <Link to="/dailymissionDetail" className={styles.mainHeaderRight}>

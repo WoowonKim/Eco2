@@ -13,7 +13,11 @@ const DummyMissionState = {
 export const dailymissionSlice = createSlice({
   name: "dailyMission",
   initialState: DummyMissionState,
-  reducers: {},
+  reducers: {
+    deleteMission: (state, action) => {
+      return state.filter((it) => it.id !== action.payload.id);
+    },
+  },
   extraReducers: {},
 });
 
