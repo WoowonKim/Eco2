@@ -8,7 +8,7 @@ export const getLeaves = createAsyncThunk(
     try {
       const token = getToken();
       const response = await axios({
-        url: `/tree/${args.userId}`,
+        url: `/tree/1`,
         method: "get",
         Headers: {
           Authorization: "Authorization" + token,
@@ -21,31 +21,62 @@ export const getLeaves = createAsyncThunk(
   }
 );
 
+export const updateLeaf = createAsyncThunk(
+  "leavesSlice/updateLeaf",
+  async (args, { rejectWithValue }) => {
+    console.log(args);
+    try {
+      const token = getToken();
+      const response = await axios({
+        url: `/tree/1`,
+        method: "put",
+        Headers: {
+          Authorization: "Authorization" + token,
+        },
+        data: args,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue;
+    }
+  }
+);
+
 export let leavesSlice = createSlice({
   name: "leaves",
-  initialState: [
-    { id: 1, left: 400, top: 300, category: 1 },
-    { id: 2, left: 420, top: 300, category: 2 },
-    { id: 3, left: 440, top: 300, category: 3 },
-    { id: 4, left: 460, top: 300, category: 4 },
-    { id: 5, left: 480, top: 300, category: 5 },
-    { id: 6, left: 500, top: 300, category: 6 },
-  ],
+  initialState: {
+    loading: false,
+    data: [],
+  },
   reducers: {
     changePos(state, action) {
       let leaf = action.payload;
-      let index = state.findIndex((x) => x.id === leaf.id);
-      state[index] = { ...state[index], left: leaf.left, top: leaf.top };
+      let index = state.data.findIndex((x) => x.id === leaf.id);
+      state.data[index] = {
+        ...state.data[index],
+        left: leaf.left,
+        top: leaf.top,
+      };
     },
   },
   extraReducers: {
     [getLeaves.pending]: (state, action) => {
-      console.log("getLeaves pending", action.payload);
+      state.loading = true;
     },
     [getLeaves.fulfilled]: (state, action) => {
-      state = action.payload;
+      state.loading = false;
+      state.data = action.payload.itemList;
     },
     [getLeaves.rejected]: (state, action) => {},
+    [updateLeaf.rejected]: (state, action) => {
+      console.log("updateLeaf rejected");
+    },
+    [updateLeaf.fulfilled]: (state, action) => {
+      console.log("updateLeaf fullfilled");
+    },
+    [updateLeaf.pending]: (state, action) => {
+      console.log("updateLeaf pendeing");
+    },
   },
 });
 
