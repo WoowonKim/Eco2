@@ -5,6 +5,7 @@ import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { signInGoogle, auth } from "../../store/firebase";
+import { setUserEmail } from "../../store/user/common";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ function Login() {
       .then((res) => {
         if (res.payload.status === 200) {
           setLoginFailMsg(false);
+          setUserEmail(email);
           navigate("/mainFeed");
         }
         setLoginFailMsg(true);
@@ -40,13 +42,12 @@ function Login() {
     auth.currentUser
       .getIdToken(true)
       .then(function (idToken) {
-        console.log(idToken);
         dispatch(
           googleLogin({
             socialType: 1,
             idToken: idToken,
           })
-        );
+        ).then((res) => setUserEmail(data.additionalUserInfo.profile.email));
       })
       .catch(function (error) {
         console.log(error);

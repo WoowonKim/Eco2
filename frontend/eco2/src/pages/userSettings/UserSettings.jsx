@@ -1,34 +1,89 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import Toggle from "../../components/toggle/Toggle";
-import { accountSetting } from "../../store/user/accountSlice";
+import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  LoginInput,
+  ShortGreenBtn,
+  WarningText,
+} from "../../components/styled";
+import {
+  accountSetting,
+  accountSettingChange,
+} from "../../store/user/accountSlice";
+import { getUserEmail } from "../../store/user/common";
+import {
+  passwordChange,
+  passwordCheck,
+  userInformation,
+} from "../../store/user/userSettingSlice";
+import { authActions } from "../../store/user/userSlice";
 import styles from "./UserSettings.module.css";
+import { useNavigate } from "react-router-dom";
 
 const UserSettings = () => {
   const [userSetting, setUserSetting] = useState(true);
-  const [account, setAccount] = useState(false);
-  const [comment, setComment] = useState(false);
-  const [chatting, setChatting] = useState(false);
-  const [friendPost, setFriendsPost] = useState(false);
-  const [darkmode, setDarkmode] = useState(false);
+  const [checked, setChecked] = useState({
+    publicFlag: false,
+    commentAlarmFlag: false,
+    chatAlarmFlag: false,
+    darkmodeFlag: false,
+  });
+
+  const [userId, setUserId] = useState(0);
+  const [socialType, setSocialType] = useState(0);
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [passwordForm, setPasswordForm] = useState(false);
+
+  const email = getUserEmail();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const displayType = userSetting ? styles.selectedMenu : null;
   const displayType2 = userSetting ? null : styles.selectedMenu;
-
-  const dispatch = useDispatch();
+  // const formDisplayType = passwordForm ?
 
   const onClick = () => {
-    // 이메일 정보 받아와서 추가해야함
+    // 토글로 변경된 유저 설정 return
     dispatch(
-      accountSetting({
-        // email: email,
-        publicFlag: account,
-        commentAlarmFlag: comment,
-        chatAlarmFlag: chatting,
-        darkmodeFlag: darkmode,
+      accountSettingChange({
+        email,
+        publicFlag: checked.publicFlag,
+        commentAlarmFlag: checked.commentAlarmFlag,
+        chatAlarmFlag: checked.chatAlarmFlag,
+        darkmodeFlag: checked.darkmodeFlag,
       })
-    );
+    ).then((res) => console.log(checked));
   };
+
+  const handlePasswordForm = (e) => {
+    e.preventDefault();
+    dispatch(passwordCheck({ email, password })).then((res) => {
+      if (res.payload.status === 200) {
+        setPasswordForm(true);
+      }
+    });
+  };
+
+  useEffect(() => {
+    // 계정 설정 불러오기
+    dispatch(accountSetting({ email })).then((res) => {
+      setChecked({
+        ...checked,
+        publicFlag: res.payload.userSetting.publicFlag,
+        commentAlarmFlag: res.payload.userSetting.commentAlarmFlag,
+        chatAlarmFlag: res.payload.userSetting.chatAlarmFlag,
+        darkmodeFlag: res.payload.userSetting.darkmodeFlag,
+      });
+    });
+
+    // 유저 객체 받아오기
+    dispatch(userInformation({ email })).then((res) => {
+      setUserId(res.payload.user.id);
+      setSocialType(res.payload.user.socialType);
+      setName(res.payload.user.name);
+    });
+  }, []);
 
   return (
     <div>
@@ -56,25 +111,104 @@ const UserSettings = () => {
             </div>
           </div>
           <div className={styles.emailGroup}>
-            <p className={styles.emailText}>이메일</p>
+            <div className={styles.emailTitleGroup}>
+              <p className={styles.emailText}>이메일</p>
+              {socialType === 1 && (
+                <img
+                  src={`${process.env.PUBLIC_URL}/google_logo.png`}
+                  alt="social_logo"
+                  className={styles.socialLogo}
+                />
+              )}
+            </div>
             <p className={styles.email}>abcd@abcd.com</p>
           </div>
           <div className={styles.econameGroup}>
             <div className={styles.econameTitle}>
-              <p className={styles.econameText}>EcoName</p>
-              <i className={`fa-solid fa-pencil ${styles.editIcon}`}></i>
+              <label htmlFor="EcoName" className={styles.econameText}>
+                EcoName
+              </label>
+              {/* <i className={`fa-solid fa-pencil ${styles.editIcon}`}></i> */}
             </div>
-            <p className={styles.econame}>EcoName</p>
+            {/* <p className={styles.econame}>EcoName</p> */}
+            <div className={styles.passwordForm}>
+              <input
+                id="EcoName"
+                className={styles.passwordFormInput}
+                placeholder="EcoName을 입력해주세요"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <button onClick={() => {}} className={styles.passwordFormButton}>
+                변경
+              </button>
+            </div>
           </div>
           <div className={styles.passwordGroup}>
             <p className={styles.passwordText}>비밀번호 변경 / 탈퇴</p>
-            <p className={styles.passwordText}>
+            <p className={styles.passwordSmallText}>
               비밀번호를 변경하시거나 탈퇴를 하시려면 비밀번호를 확인해주세요
             </p>
-            <form className={styles.passwordForm}>
-              <input className={styles.passwordFormInput} type="text" />
-              <button className={styles.passwordFormButton}>변경</button>
-            </form>
+            {!passwordForm ? (
+              <div>
+                <form
+                  onSubmit={handlePasswordForm}
+                  className={styles.passwordForm}
+                >
+                  <input
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={styles.passwordFormInput}
+                  />
+                  <button className={styles.passwordFormButton}>확인</button>
+                </form>
+                <hr className={styles.line} />
+                <button
+                  onClick={() => {
+                    dispatch(authActions.logout());
+                    navigate("/");
+                  }}
+                  className={styles.userButton}
+                >
+                  로그아웃
+                </button>
+              </div>
+            ) : (
+              <div>
+                <input
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="새 비밀번호"
+                  className={styles.passwordFormInput}
+                />
+                <input
+                  type="password"
+                  onChange={(e) => setPassword2(e.target.value)}
+                  placeholder="새 비밀번호 확인"
+                  className={styles.passwordFormInput}
+                />
+                {password !== password2 && (
+                  <WarningText>비밀번호가 일치하지 않습니다.</WarningText>
+                )}
+                <button
+                  className={styles.passwordFormButton}
+                  onClick={() => dispatch(passwordChange({ email, password }))}
+                  type="button"
+                >
+                  변경
+                </button>
+                <hr className={styles.line} />
+                <div className={styles.userButtonGroup}>
+                  <button
+                    onClick={() => dispatch(authActions.logout())}
+                    className={styles.userButton}
+                  >
+                    로그아웃
+                  </button>
+                  <button className={styles.userButton}>회원탈퇴</button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : (
@@ -86,15 +220,22 @@ const UserSettings = () => {
                 계정을 비공개로 설정하면 다른 유저들이 게시물을 볼 수 없습니다.
               </p>
             </div>
-            <div
-              className={styles.toggleGroup}
-              onClick={() => setAccount(!account)}
-            >
-              <Toggle
-                type="account"
-                account={account}
+            <div className={styles.toggleGroup}>
+              <input
+                type="checkbox"
+                id="publicFlag"
+                hidden
                 className={styles.toggle}
+                onClick={() => {
+                  let data = { ...checked };
+                  data.publicFlag = !checked.publicFlag;
+                  setChecked(data);
+                }}
+                defaultChecked={checked.publicFlag}
               />
+              <label htmlFor="publicFlag" className={styles.toggleSwitch}>
+                <span className={styles.toggleButton}></span>
+              </label>
             </div>
           </div>
           <hr className={styles.line} />
@@ -106,15 +247,22 @@ const UserSettings = () => {
                 않습니다.
               </p>
             </div>
-            <div
-              className={styles.toggleGroup}
-              onClick={() => setComment(!comment)}
-            >
-              <Toggle
-                type="comment"
-                comment={comment}
+            <div className={styles.toggleGroup}>
+              <input
+                type="checkbox"
+                id="commentAlarmFlag"
+                hidden
                 className={styles.toggle}
+                onClick={() => {
+                  let data = { ...checked };
+                  data.commentAlarmFlag = !checked.commentAlarmFlag;
+                  setChecked(data);
+                }}
+                defaultChecked={checked.commentAlarmFlag}
               />
+              <label htmlFor="commentAlarmFlag" className={styles.toggleSwitch}>
+                <span className={styles.toggleButton}></span>
+              </label>
             </div>
           </div>
           <hr className={styles.line} />
@@ -125,34 +273,22 @@ const UserSettings = () => {
                 채팅 알림을 끄면 채팅 팝업 알림이 가지 않습니다.
               </p>
             </div>
-            <div
-              className={styles.toggleGroup}
-              onClick={() => setChatting(!chatting)}
-            >
-              <Toggle
-                type="chatting"
-                chatting={chatting}
+            <div className={styles.toggleGroup}>
+              <input
+                type="checkbox"
+                id="chatAlarmFlag"
+                hidden
                 className={styles.toggle}
+                onClick={() => {
+                  let data = { ...checked };
+                  data.chatAlarmFlag = !checked.chatAlarmFlag;
+                  setChecked(data);
+                }}
+                defaultChecked={checked.chatAlarmFlag}
               />
-            </div>
-          </div>
-          <hr className={styles.line} />
-          <div className={styles.setting}>
-            <div className={styles.settingGroup}>
-              <p className={styles.settingTitle}>친구의 인증글</p>
-              <p className={styles.settingContent}>
-                친구 인증글 알림을 끄면 친구가 글을 올려도 알림이 가지 않습니다.
-              </p>
-            </div>
-            <div
-              className={styles.toggleGroup}
-              onClick={() => setFriendsPost(!friendPost)}
-            >
-              <Toggle
-                type="friendPost"
-                friendPost={friendPost}
-                className={styles.toggle}
-              />
+              <label htmlFor="chatAlarmFlag" className={styles.toggleSwitch}>
+                <span className={styles.toggleButton}></span>
+              </label>
             </div>
           </div>
           <hr className={styles.line} />
@@ -160,15 +296,22 @@ const UserSettings = () => {
             <div className={styles.settingGroup}>
               <p className={styles.settingTitle}>다크모드</p>
             </div>
-            <div
-              className={styles.toggleGroup}
-              onClick={() => setDarkmode(!darkmode)}
-            >
-              <Toggle
-                type="darkmode"
-                darkmode={darkmode}
+            <div className={styles.toggleGroup}>
+              <input
+                type="checkbox"
+                id="darkmodeFlag"
+                hidden
                 className={styles.toggle}
+                onClick={() => {
+                  let data = { ...checked };
+                  data.darkmodeFlag = !checked.darkmodeFlag;
+                  setChecked(data);
+                }}
+                defaultChecked={checked.darkmodeFlag}
               />
+              <label htmlFor="darkmodeFlag" className={styles.toggleSwitch}>
+                <span className={styles.toggleButton}></span>
+              </label>
             </div>
           </div>
           <button className={styles.settingButton} onClick={onClick}>
