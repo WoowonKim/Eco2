@@ -37,24 +37,30 @@ public class ProfileImgService {
         UUID uuid = UUID.randomUUID();
 
         ProfileImg profileImg = ProfileImg.builder()
-                .saveFolder(uploadFolder).originalName(originalName).build();
+                .saveFolder(uploadFolder).originalName(originalName)
+                .saveName(uuid.toString() + updateUserId + originalName.substring(originalName.lastIndexOf(".")))
+                .build();
 
         Optional<ProfileImg> oldImgOptional = profileImgRepository.findById(updateUserId);
         if (oldImgOptional.isPresent()) {
             // 수정
             // 이전 파일에 덮어쓰기
             ProfileImg oldImg = oldImgOptional.get();
-            profileImg.setSaveName(oldImg.getSaveName());
+            if(oldImg.getSaveName() != null) {
+                profileImg.setSaveName(oldImg.getSaveName());
+            }
 
             profileImg.setId(updateUserId);
         } else {
             // 생성
-            String saveName = uuid.toString() + updateUserId + originalName.substring(originalName.lastIndexOf("."));
-            profileImg.setSaveName(saveName);
-
             profileImg.setUser(updateUser);
         }
-
+        
+        File folder = new File(profileImg.getSaveFolder());
+        if(!folder.exists()) {
+            folder.mkdirs();
+        }
+        System.out.println(profileImg);
 
         File saveFile = new File(profileImg.getSaveFolder(), profileImg.getSaveName());
         file.transferTo(saveFile);
