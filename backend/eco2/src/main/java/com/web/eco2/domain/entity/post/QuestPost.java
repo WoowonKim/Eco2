@@ -6,6 +6,7 @@ import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "tb_quest_post")
 @ToString
+@SuperBuilder
 @Data
 public class QuestPost extends Post {
 
@@ -20,7 +22,6 @@ public class QuestPost extends Post {
     @JoinColumn(name = "que_id")
     private Quest quest;
 
-    @Builder
     public QuestPost(Long id, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission, Quest quest) {
         super(id, content, report, publicFlag, commentFlag, user, mission, customMission);
         this.quest = quest;
@@ -28,7 +29,9 @@ public class QuestPost extends Post {
 
     public PostDto toDto() {
         return PostDto.builder()
-                .id(getId()).report(isReport())
+                .id(getId())
+                .content(getContent())
+                .report(isReport())
                 .publicFlag(isPublicFlag())
                 .commentFlag(isCommentFlag())
                 .user(getUser().toDto())
