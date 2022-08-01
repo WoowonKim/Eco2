@@ -27,7 +27,7 @@ public class ProfileImg {
 
 
     @MapsId
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "usr_id")
     private User user;
 
