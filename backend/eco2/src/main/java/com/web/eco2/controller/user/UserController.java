@@ -145,8 +145,8 @@ public class UserController {
     }
 
     //이메일 중복확인
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Object> checkEmail(@PathVariable("email") String email) {
+    @GetMapping("/email")
+    public ResponseEntity<Object> checkEmail(@RequestParam("email") String email) {
         try {
             User emailUser = userService.findByEmail(email);
             if (emailUser == null) {

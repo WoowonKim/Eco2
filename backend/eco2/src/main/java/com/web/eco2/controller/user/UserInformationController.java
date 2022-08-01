@@ -55,7 +55,7 @@ public class UserInformationController {
             if (updateUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
             }
-            updateUser.setName(updateUser.getName());
+
             profileImgService.uploadProfileImg(file, updateUser);
             userService.save(updateUser);
             return ResponseHandler.generateResponse("회원정보가 수정되었습니다.", HttpStatus.OK);
