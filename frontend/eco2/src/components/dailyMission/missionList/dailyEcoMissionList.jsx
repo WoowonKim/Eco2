@@ -3,11 +3,14 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import DailyEcoMissionitem from "../missionItem/dailyEcoMissionitem";
 import styles from "./dailyMissionDetail.module.css";
+import DailyMissionFavoritesList from "./dailyMissionFavoritesList";
 import { GreenBtn } from "../../styled";
 
-const DailyEcoMissionList = () => {
-  const ecomissionList = useSelector((state) => state.dailyMission.dailyMissionList);
+const DailyEcoMissionList = ({ ecomissionList, onArr }) => {
+  //const ecomissionList = useSelector((state) => state.dailyMission.dailyMissionList);
+
   const [eco, setEco] = useState([]);
+  const [arrFavorites, setArrFavorites] = useState([]);
   const ecoCount = eco.length;
   const naviGate = useNavigate();
 
@@ -19,9 +22,25 @@ const DailyEcoMissionList = () => {
         content: content,
       };
       setEco([...eco, newEco]);
+      onArr(eco);
     } else {
       const reEco = eco.filter((it) => it.id !== id);
       setEco(reEco);
+      onArr(eco);
+    }
+  };
+
+  const onFavorites = (favorites, id, content) => {
+    if (!favorites) {
+      const newArrFavorites = {
+        favorites: favorites,
+        id: id,
+        content,
+      };
+      setArrFavorites([...arrFavorites, newArrFavorites]);
+    } else {
+      const reArrFavorits = arrFavorites.filter((it) => it.id !== id);
+      setArrFavorites(reArrFavorits);
     }
   };
 
@@ -35,8 +54,13 @@ const DailyEcoMissionList = () => {
   return (
     <div>
       <div>
+        {arrFavorites.map((it) => (
+          <DailyMissionFavoritesList key={it.id} content={it.content} id={it.id} />
+        ))}
+      </div>
+      <div>
         {ecomissionList.map((it) => (
-          <DailyEcoMissionitem key={it.id} content={it.content} id={it.id} onCreate={onCreate} />
+          <DailyEcoMissionitem key={it.id} content={it.content} id={it.id} onCreate={onCreate} onFavorites={onFavorites} />
         ))}
       </div>
 

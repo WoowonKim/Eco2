@@ -15,7 +15,7 @@ const Footer = () => {
       <i
         className="fa-solid fa-envelope-open-text"
         onClick={() => {
-          navigate("/missionMain");
+          navigate("/dailymissionmain");
         }}
       ></i>
       <i

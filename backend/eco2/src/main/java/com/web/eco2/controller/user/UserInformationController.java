@@ -48,14 +48,14 @@ public class UserInformationController {
 
     //회원정보 수정
     @PutMapping()
-    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @ModelAttribute MultipartFile file, SignUpRequest user) {
+    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @ModelAttribute MultipartFile file) {
         try {
             User updateUser = userService.findByEmail(email);
 
             if (updateUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
             }
-            updateUser.setName(user.getName());
+            updateUser.setName(updateUser.getName());
             profileImgService.uploadProfileImg(file, updateUser);
             userService.save(updateUser);
             return ResponseHandler.generateResponse("회원정보가 수정되었습니다.", HttpStatus.OK);

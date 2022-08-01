@@ -12,10 +12,11 @@ import javax.persistence.*;
 public class ProfileImg {
 
     @Id
-    @Column(name = "pri_id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usr_id")
     private Long id;
 
-    @Column(name = "pri_save_folder", length = 100)
+    @Column(name = "pri_save_folder", length = 500)
     private String saveFolder;
 
     @Column(name = "pri_original_name", length = 200)
