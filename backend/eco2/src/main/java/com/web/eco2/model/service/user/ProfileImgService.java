@@ -45,7 +45,7 @@ public class ProfileImgService {
             existFile.delete();
             profileImgRepository.save(ProfileImg.builder().saveFolder(uploadFolder).saveName(saveName).originalName(originalName).id(updateUserId).build());
         } else {
-            profileImgRepository.save(ProfileImg.builder().saveFolder(uploadFolder).saveName(saveName).originalName(originalName).id(updateUserId).build());
+            profileImgRepository.save(ProfileImg.builder().saveFolder(uploadFolder).saveName(saveName).originalName(originalName).user(updateUser).build());
         }
     }
 

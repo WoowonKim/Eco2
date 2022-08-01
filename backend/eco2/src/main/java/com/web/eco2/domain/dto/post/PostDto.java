@@ -13,6 +13,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class PostDto {
     private Long id;
+    private String content;
     private boolean report;
     private boolean publicFlag;
     private boolean commentFlag;
