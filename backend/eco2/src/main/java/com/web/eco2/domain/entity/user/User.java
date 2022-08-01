@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.Item.Statistic;
 import com.web.eco2.domain.entity.UserSetting;
+import com.web.eco2.domain.entity.calender.Calendar;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -55,6 +56,9 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Statistic statistic;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Calendar Calendar;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> role = new ArrayList<>();
