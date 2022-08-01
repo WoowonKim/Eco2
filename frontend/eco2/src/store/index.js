@@ -3,9 +3,10 @@ import { authSlice } from "./user/userSlice";
 import { feedSlice } from "./mainFeed/feedSlice";
 import { commentSlice } from "./mainFeed/commentSlice";
 import { leavesSlice } from "./mainTree/leavesSlice";
-import { dailymissionSlice } from "./mission/dailymissionSlice";
 import { userInformationSlice } from "./user/userSettingSlice";
 import { accountSlice } from "./user/accountSlice";
+import { dailymissionSlice } from "./mission/dailymissionSlice";
+import { myEcoMissionSlice } from "./mission/missionMainSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     comment: commentSlice.reducer,
     leaves: leavesSlice.reducer,
     dailyMission: dailymissionSlice.reducer,
+    missionMain: myEcoMissionSlice.reducer,
   },
 });
