@@ -12,7 +12,6 @@ import javax.persistence.*;
 public class ProfileImg {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pri_id")
     private Long id;
 
@@ -27,7 +26,7 @@ public class ProfileImg {
 
 
     @MapsId
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "usr_id")
     private User user;
 
