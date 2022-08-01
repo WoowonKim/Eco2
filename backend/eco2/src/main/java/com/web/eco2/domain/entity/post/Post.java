@@ -2,8 +2,10 @@ package com.web.eco2.domain.entity.post;
 
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
+import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@SuperBuilder
 @Table(name = "tb_post")
 @ToString
 @Data
@@ -31,15 +34,15 @@ public class Post {
 
     @Column(name = "pos_report", nullable = false)
     @ColumnDefault("0")
-    private boolean report;
+    private boolean report = false;
 
     @Column(name = "pos_public_flag", nullable = false)
     @ColumnDefault("1")
-    private boolean publicFlag;
+    private boolean publicFlag = true;
 
     @Column(name = "pos_comment_flag", nullable = false)
     @ColumnDefault("1")
-    private boolean commentFlag;
+    private boolean commentFlag = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id", nullable = false)
@@ -53,11 +56,13 @@ public class Post {
     @JoinColumn(name = "cum_id")
     private CustomMission customMission;
 
-//    @Builder
-    public Post(Long id, String content, boolean report, boolean publicFlag,
-                boolean commentFlag, User user, Mission mission, CustomMission customMission) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "qul_id")
+    private Quest quest;
+
+    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission, Quest quest) {
         this.id = id;
-        /*this.registTime = registTime;*/
+        this.registTime = registTime;
         this.content = content;
         this.report = report;
         this.publicFlag = publicFlag;
@@ -65,5 +70,11 @@ public class Post {
         this.user = user;
         this.mission = mission;
         this.customMission = customMission;
+        this.quest = quest;
     }
+
+    public Post(Long id, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission) {
+    }
+
+
 }
