@@ -25,19 +25,10 @@ public class ResponseBodyWriteUtil {
         response.getOutputStream().write(new ObjectMapper().writeValueAsString(apiResponse).getBytes());
     }
 
-    public static void sendError(HttpServletRequest request, HttpServletResponse response, String msg, HttpStatus httpStatus) throws IOException {
+    public static void sendError(HttpServletResponse response, String msg, HttpStatus httpStatus) throws IOException {
         response.setStatus(httpStatus.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-//        String message = ex.getMessage();
-//        message = message == null ? "" : message;
-//        Map<String, Object> data = ImmutableMap.of(
-//                "timestamp", Calendar.getInstance().getTime(),
-//                "status", httpStatus.value(),
-//                "error", ex.getClass().getSimpleName(),
-//                "message", message,
-//                "path", request.getRequestURI()
-//        );
         Map<String, Object> data = new HashMap<>();
         data.put("msg", msg);
         data.put("status", httpStatus.value());
@@ -46,7 +37,11 @@ public class ResponseBodyWriteUtil {
         pw.flush();
     }
 
-    public static void sendError(HttpServletRequest request, HttpServletResponse response, String msg) throws IOException {
-        sendError(request, response, msg, HttpStatus.UNAUTHORIZED);
+    public static void sendError(HttpServletResponse response, String msg) throws IOException {
+        sendError( response, msg, HttpStatus.UNAUTHORIZED);
+    }
+
+    public static void sendError2(HttpServletResponse response, String msg, HttpStatus httpStatus) throws IOException {
+        sendError( response, msg, httpStatus);
     }
 }
