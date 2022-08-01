@@ -1,6 +1,7 @@
 package com.web.eco2.domain.entity.mission;
 
 import com.web.eco2.domain.entity.user.User;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,20 +22,29 @@ public class DailyMission {
     private Long id;
 
     @Column(name = "dam_achieve_flag", nullable = false)
-    @ColumnDefault("0")
+    @ColumnDefault("false")
     private boolean achieveFlag;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mis_id")
     private Mission mission;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cum_id")
     private CustomMission customMission;
+
+    @Builder
+    public DailyMission(User user, Mission mission, CustomMission customMission) {
+        this.user = user;
+        this.achieveFlag = false;
+        this.mission = mission;
+        this.customMission = customMission;
+    }
+
 }
 
 

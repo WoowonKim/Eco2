@@ -48,13 +48,7 @@ public class Statistic {
     private Long questCount;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "usr_id")
     private User user;
-
-//    @Builder
-//    public Statistic(Long id, User user) {
-//        this.id = id;
-//        this.user = user;
-//    }
 }

@@ -106,7 +106,7 @@ public class QuestController {
                 QuestPost q = new QuestPost();
                 q.setId((long)i);
                 q.setCommentFlag(true);
-                q.setUser(User.builder().id(1).email("a@a.c").name("name").socialType(0).build());
+                q.setUser(User.builder().id(1L).email("a@a.c").name("name").socialType(0).build());
                 q.setQuest(questService.findById(questId));
                 posts.add(q.toDto());
             }
@@ -127,7 +127,7 @@ public class QuestController {
                 QuestPost q = new QuestPost();
                 q.setId((long)i);
                 q.setCommentFlag(true);
-                q.setUser(User.builder().id(1).email("a@a.c").name("name").socialType(0).build());
+                q.setUser(User.builder().id(1L).email("a@a.c").name("name").socialType(0).build());
                 q.setQuest(questService.findById(3L));
                 posts.add(q.toDto());
             }

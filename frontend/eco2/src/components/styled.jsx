@@ -36,6 +36,7 @@ let ShortGreenBtn = styled.button`
 let WarningText = styled.p`
   color: red;
   font-size: small;
+  text-align: start;
 `;
 
 let Leaf = styled.img`
