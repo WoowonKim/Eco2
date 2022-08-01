@@ -1,11 +1,10 @@
 import React from "react";
+import styles from "./dailyMissionDetail.module.css";
 
 const DailyMissionFavoritesList = ({ id, content }) => {
   return (
     <div>
-      <div>
-        <span>{content}</span>
-      </div>
+      <div className={styles.conBack}>{content}</div>
     </div>
   );
 };

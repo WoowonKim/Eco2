@@ -1,52 +1,23 @@
-import React from "react";
-import styles from "./dailyMissionDetail.module.css";
+import React, { useEffect, useState } from "react";
 import DailyEcoMissionList from "../../../components/dailyMission/missionList/dailyEcoMissionList";
-import DailyCustomMissionList from "../../../components/dailyMission/missionList/dailyCustomMissionList";
-import { useState } from "react";
 import { useSelector } from "react-redux/es/exports";
+import { dMission } from "../../../store/mission/dailymissionSlice";
+import { useDispatch } from "react-redux/es/exports";
 
 const DailyMissionDetail = () => {
-  const ecomissionList = useSelector((state) => state.dailyMission.dailyMissionList);
-  const [list, getList] = useState(true);
-  const [ecoArr, setEcoArr] = useState([]);
+  // const ecomissionList = useSelector((state) => state.dailyMission.dailyMissionList);
+  // 서버미션 테이블 갖고오기.
+  const [test, setTest] = useState([]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(dMission()).then((res) => setTest(res.payload.missionList));
+  }, []);
+  // console.log(test);
 
-  const onArr = (eco) => {
-    setEcoArr(eco);
-    console.log(eco);
-  };
-
-  const onCompo = list ? <DailyEcoMissionList ecomissionList={ecomissionList} onArr={onArr} /> : <DailyCustomMissionList />;
   return (
     <div>
-      <div className={styles.Font}>
-        <p>오늘은 어떤 도전을 해볼까?</p>
-      </div>
-      <fieldset>
-        <legend className={styles.word}>Trending</legend>
-        <span className={styles.trending}>텀블러 사용해서 지구 지키기</span>
-      </fieldset>
-
-      <div className={styles.heading}>
-        <span
-          className={styles.basicMission}
-          onClick={() => {
-            getList(true);
-          }}
-        >
-          {" "}
-          기본
-        </span>
-        <span
-          className={styles.basicMission}
-          onClick={() => {
-            getList(false);
-          }}
-        >
-          {" "}
-          내목록{" "}
-        </span>
-      </div>
-      <div>{onCompo}</div>
+      {/* <DailyEcoMissionList ecomissionList={test} /> */}
+      <DailyEcoMissionList />
     </div>
   );
 };
