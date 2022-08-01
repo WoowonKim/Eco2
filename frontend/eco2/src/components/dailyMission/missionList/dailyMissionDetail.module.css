@@ -140,3 +140,21 @@ fieldset {
   margin-top: 20px;
   margin-bottom: 1px;
 }
+
+.faHeading {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #adc178;
+  border-top: 1px solid #696969;
+}
+
+.conBack {
+  background-color: #dadada;
+  border-radius: 3px;
+  border-bottom: 1px solid #696969;
+  font-weight: bold;
+  font-size: 13px;
+}

@@ -35,7 +35,7 @@ public class ProfileImgService {
         Long updateUserId = updateUser.getId();
         String originalName = file.getOriginalFilename();
         UUID uuid = UUID.randomUUID();
-        
+
         ProfileImg profileImg = ProfileImg.builder()
                 .saveFolder(uploadFolder).originalName(originalName)
                 .saveName(uuid.toString() + updateUserId + originalName.substring(originalName.lastIndexOf(".")))
@@ -55,12 +55,13 @@ public class ProfileImgService {
             // 생성
             profileImg.setUser(updateUser);
         }
-
+        
         File folder = new File(profileImg.getSaveFolder());
         if(!folder.exists()) {
             folder.mkdirs();
         }
         System.out.println(profileImg);
+
         File saveFile = new File(profileImg.getSaveFolder(), profileImg.getSaveName());
         file.transferTo(saveFile);
 

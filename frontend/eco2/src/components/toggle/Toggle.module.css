@@ -31,6 +31,15 @@
   background: #fff;
 }
 
+.checked .toggleSwitch {
+  background: #d2eaba;
+}
+
+.checked .toggleSwitch .toggleButton {
+  left: calc(100% - 1rem);
+  background: #fff;
+}
+
 .toggleSwitch,
 .toggleButton {
   transition: all 0.2s ease-in;

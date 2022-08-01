@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./dailyMissionDetail.module.css";
 
-const DailyEcoMissionitem = ({ id, content, onCreate, onFavorites }) => {
+const DailyEcoMissionitem = ({ id, content, onCreate, onFavorites, onEco }) => {
   const [color, setColor] = useState(true);
   const [favorites, setFavorites] = useState(true);
   const favoritesType = favorites ? "fa-regular fa-bookmark" : "fa-solid fa-bookmark";
@@ -15,6 +15,7 @@ const DailyEcoMissionitem = ({ id, content, onCreate, onFavorites }) => {
           onClick={() => {
             setColor(!color);
             onCreate(!color, id, content);
+            onEco(!color, id, content);
           }}
           className={styles.itemFont}
         >

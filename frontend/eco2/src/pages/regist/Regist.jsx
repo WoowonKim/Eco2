@@ -14,6 +14,7 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
+import { setUserEmail } from "../../store/user/common";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -143,6 +144,7 @@ const Regist = () => {
                     })
                   )
                     .then((res) => {
+                      setUserEmail(email);
                       navigate("/ecoName", { state: email });
                     })
                     .catch((err) => console.log(err));
