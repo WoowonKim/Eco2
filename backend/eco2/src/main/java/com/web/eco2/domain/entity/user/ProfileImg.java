@@ -8,8 +8,17 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Table(name = "tb_profile_img")
-@ToString
+//@ToString
 public class ProfileImg {
+    @Override
+    public String toString() {
+        return "ProfileImg{" +
+                "id=" + id +
+                ", saveFolder='" + saveFolder + '\'' +
+                ", originalName='" + originalName + '\'' +
+                ", saveName='" + saveName + '\'' +
+                '}';
+    }
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -20,6 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,19 +71,11 @@ public class DailyMissionController {
     @GetMapping("/{usrId}")
     public ResponseEntity<Object> selectDailyMission(@PathVariable("usrId") Long usrId) {
         try {
-            List<DailyMission> findDailyMissionList = dailyMissionService.findListByUsrId(usrId);
-
-            List<DailyMission> dailyMissionList = new ArrayList<>();
-            for (DailyMission mission : findDailyMissionList) {
-                if (mission.getMission() != null) {
-                    //TODO: null말고 합쳐서 줘야하나,,
-                }
-                if (mission.getCustomMission() != null) {
-
-                }
-            }
+            List<DailyMission> dailyMissionList = dailyMissionService.findListByUsrId(usrId);
+            List<DailyMission> dailyCustomMissionList = dailyMissionService.findCustomListByUsrId(usrId);
             System.out.println(dailyMissionList);
-            return ResponseHandler.generateResponse("데일리 미션이 조회되었습니다.", HttpStatus.OK, "dailyMissionList", findDailyMissionList);
+            System.out.println(dailyCustomMissionList);
+            return ResponseHandler.generateResponse("데일리 미션이 조회되었습니다.", HttpStatus.OK, "dailyMissionList", dailyMissionList, "dailyCustomMissionList", dailyCustomMissionList);
         } catch (Exception e) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -90,10 +86,10 @@ public class DailyMissionController {
     public ResponseEntity<Object> deleteDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRequest dailyMissionRequest) {
         try {
             DailyMission dailyMission;
-            if(dailyMissionRequest.getMissionType()==0){
+            if (dailyMissionRequest.getMissionType() == 0) {
                 //기본미션 삭제
                 dailyMission = dailyMissionService.findListByUsrIdAndMisId(usrId, dailyMissionRequest.getMissionId());
-            }else{
+            } else {
                 dailyMission = dailyMissionService.findListByUsrIdAndCumId(usrId, dailyMissionRequest.getMissionId());
             }
             System.out.println(dailyMission);
@@ -109,10 +105,10 @@ public class DailyMissionController {
     public ResponseEntity<Object> completeDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRequest dailyMissionRequest) {
         try {
             DailyMission dailyMission;
-            if(dailyMissionRequest.getMissionType()==0){
+            if (dailyMissionRequest.getMissionType() == 0) {
                 //기본미션
                 dailyMission = dailyMissionService.findListByUsrIdAndMisId(usrId, dailyMissionRequest.getMissionId());
-            }else{
+            } else {
                 dailyMission = dailyMissionService.findListByUsrIdAndCumId(usrId, dailyMissionRequest.getMissionId());
             }
             dailyMission.setAchieveFlag(true);
@@ -124,6 +120,31 @@ public class DailyMissionController {
         }
     }
 
+    //데일리 미션 보상 받기
+    @PostMapping("/reward/{usrId}")
+    public ResponseEntity<Object> rewardDailyMission(@PathVariable("usrId") Long usrId) {
+        try {
+            BufferedImage img = new BufferedImage(300, 600, BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics = img.createGraphics();    // Graphics2D를 얻어와 그림을 그린다
+            graphics.setColor(Color.WHITE);                       // 색상을 지정한다(파란색)
+            graphics.fillRect(0, 0, 300, 600);                          // 사각형을 하나 그린다
+            graphics.drawLine(10, 30, 50, 50);              // 선을 그린다.
+            graphics.drawRect(60, 30, 50, 50);             // 사각형을 그린다.
+            graphics.drawString("Hello!", 120, 50);
+            try {
+                File file = new File("c://imgtest.jpg");        // 파일의 이름을 설정한다
+                ImageIO.write(img, "jpg", file);               // write메소드를 이용해 파일을 만든다
+                //TODO: 이미지 static에 저장 후에 DB에 저장...
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return ResponseHandler.generateResponse("보상 이미지 제공이 완료되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //트렌딩 조회
     @GetMapping("/trending")
