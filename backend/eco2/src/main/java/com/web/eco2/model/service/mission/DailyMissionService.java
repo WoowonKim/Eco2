@@ -20,7 +20,9 @@ public class DailyMissionService {
     public List<DailyMission> findListByUsrId(Long usrId) {
         return dailyMissionRepository.findListByUsrId(usrId);
     }
-
+    public List<DailyMission> findCustomListByUsrId(Long usrId) {
+        return dailyMissionRepository.findCustomListByUsrId(usrId);
+    }
     public DailyMission findListByUsrIdAndMisId(Long usrId, Long missionId) {
         return dailyMissionRepository.findListByUsrIdAndMisId(usrId, missionId);
 
@@ -33,4 +35,6 @@ public class DailyMissionService {
     public void delete(DailyMission dailyMission) {
         dailyMissionRepository.delete(dailyMission);
     }
+
+
 }

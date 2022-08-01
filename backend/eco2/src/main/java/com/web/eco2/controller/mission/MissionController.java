@@ -69,6 +69,7 @@ public class MissionController {
             System.out.println(customMissionList);
             return ResponseHandler.generateResponse("커스텀 미션 조회 성공하였습니다.", HttpStatus.OK, "customMissionList", customMissionList);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

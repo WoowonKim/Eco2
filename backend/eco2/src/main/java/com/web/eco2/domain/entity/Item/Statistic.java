@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @Table(name = "tb_statistic")
-@ToString
 @Data
 public class Statistic {
 
@@ -48,7 +47,21 @@ public class Statistic {
     private Long questCount;
 
     @MapsId
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id")
     private User user;
+
+    @Override
+    public String toString() {
+        return "Statistic{" +
+                "id=" + id +
+                ", category1=" + category1 +
+                ", category2=" + category2 +
+                ", category3=" + category3 +
+                ", category4=" + category4 +
+                ", category5=" + category5 +
+                ", category6=" + category6 +
+                ", questCount=" + questCount +
+                '}';
+    }
 }

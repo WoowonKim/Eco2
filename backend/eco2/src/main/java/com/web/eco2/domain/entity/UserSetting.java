@@ -35,7 +35,18 @@ public class UserSetting {
     private boolean darkmodeFlag;
 
     @MapsId
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "usr_id")
     private User user;
+
+    @Override
+    public String toString() {
+        return "UserSetting{" +
+                "id=" + id +
+                ", publicFlag=" + publicFlag +
+                ", commentAlarmFlag=" + commentAlarmFlag +
+                ", chatAlarmFlag=" + chatAlarmFlag +
+                ", darkmodeFlag=" + darkmodeFlag +
+                '}';
+    }
 }
