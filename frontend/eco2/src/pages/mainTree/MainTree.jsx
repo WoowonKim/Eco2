@@ -3,25 +3,28 @@ import { Leaf } from "./Leaf.jsx";
 import { useEffect, useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { useSelector, useDispatch } from "react-redux";
-import { changePos, getLeaves } from "../../store/mainTree/leavesSlice";
+import {
+  changePos,
+  getLeaves,
+  updateLeaf,
+} from "../../store/mainTree/leavesSlice";
 const MainTree = () => {
   let dispatch = useDispatch();
   const leaves = useSelector((state) => state.leaves);
   let currUser = useSelector((state) => state.user);
   let categoryCounts = useMemo(() => {
     const categoryCounts = [0, 0, 0, 0, 0, 0];
-    for (let i in leaves) {
-      console.log(leaves[i].category);
-      categoryCounts[leaves[i].category - 1]++;
+    for (let i in leaves.data) {
+      categoryCounts[leaves.data[i].category - 1]++;
     }
-    console.log(categoryCounts);
     return categoryCounts;
-  }, []);
+  }, [leaves]);
   useEffect(() => {
     dispatch(getLeaves(currUser.id));
   }, []);
   const moveLeaf = (id, left, top) => {
     dispatch(changePos({ id, left, top }));
+    dispatch(updateLeaf({ id, left, top }));
   };
   const [, drop] = useDrop(
     () => ({
@@ -43,7 +46,7 @@ const MainTree = () => {
         className={styles.Img}
         draggable="false"
       ></img>
-      {leaves.map((leaf) => {
+      {leaves.data.map((leaf) => {
         const { id, left, top, category } = leaf;
         return (
           <Leaf
