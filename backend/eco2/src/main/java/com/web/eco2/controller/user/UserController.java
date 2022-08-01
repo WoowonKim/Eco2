@@ -95,8 +95,7 @@ public class UserController {
 
             String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
             response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
-
-            return ResponseHandler.generateResponse("회원가입에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
+            return ResponseHandler.generateResponse("회원가입에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user",dbUser);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -236,14 +235,13 @@ public class UserController {
                     System.out.println("이메일, 비밀번호 불일치");
                     return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.ACCEPTED);
                 }
-                System.out.println("login==================");
                 String refreshToken = jwtTokenUtil.createRefreshToken();
                 loginUser.setRefreshToken(refreshToken);
                 userService.save(loginUser);
                 response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
 
                 String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
-                return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
+                return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", loginUser);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
