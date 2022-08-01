@@ -37,3 +37,4 @@ out/
 .vscode/
 
 application-api-key.properties
+fb_key.json

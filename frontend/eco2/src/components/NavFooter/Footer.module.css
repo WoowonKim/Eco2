@@ -1,5 +1,5 @@
 .Footer {
-  height: 75px;
+  /* height: 75px; */
   padding: 1rem;
   color: white;
   background-color: white;
@@ -13,8 +13,5 @@
   right: 0;
   bottom: 0;
   width: 330px;
-}
-
-.Img {
-  height: 30px;
+  z-index: 1;
 }

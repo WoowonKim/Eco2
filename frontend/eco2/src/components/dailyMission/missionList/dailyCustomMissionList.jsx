@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./dailyMissionDetail.module.css";
 import { GreenBtn } from "../../styled";
+
 const DailyCustomMissionList = () => {
   return (
     <div>

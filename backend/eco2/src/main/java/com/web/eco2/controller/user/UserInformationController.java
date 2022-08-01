@@ -1,6 +1,7 @@
 package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
+import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
@@ -36,7 +37,7 @@ public class UserInformationController {
         if (email == null) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-        User user = userService.findUserInfoByEmail(email);
+        UserDto user = userService.findUserInfoByEmail(email).toDto();
 
         if (user != null) {
             return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user);
@@ -47,14 +48,14 @@ public class UserInformationController {
 
     //회원정보 수정
     @PutMapping()
-    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @ModelAttribute MultipartFile file, SignUpRequest user) {
+    public ResponseEntity<Object> updateUserInfo(@RequestParam String email, @ModelAttribute MultipartFile file) {
         try {
             User updateUser = userService.findByEmail(email);
 
             if (updateUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
             }
-            updateUser.setName(user.getName());
+            updateUser.setName(updateUser.getName());
             profileImgService.uploadProfileImg(file, updateUser);
             userService.save(updateUser);
             return ResponseHandler.generateResponse("회원정보가 수정되었습니다.", HttpStatus.OK);

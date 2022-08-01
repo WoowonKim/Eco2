@@ -3,11 +3,26 @@
   margin-top: 80px;
   margin-left: 0;
   margin-right: auto;
-  border: 1px solid black;
+  position: relative;
 }
 
 .Img {
   width: 350px;
   margin-left: 0;
   margin-right: auto;
+}
+
+.Statis {
+  width: 120px;
+  height: 150px;
+  font-size: small;
+  background-color: #d9d9d9;
+  border-radius: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.Statis p {
+  margin: auto 10px;
 }

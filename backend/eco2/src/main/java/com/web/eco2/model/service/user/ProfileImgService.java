@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,26 +28,37 @@ public class ProfileImgService {
 
     @Value("${profileImg.path}")
     private String uploadFolder;
+
     @Transactional
     public void uploadProfileImg(MultipartFile file, User updateUser) throws IOException {
 //        String uploadFolder = "src/main/resources/images";
-        System.out.println("uploadProfileImg"+file.getName());
         Long updateUserId = updateUser.getId();
-        UUID uuid = UUID.randomUUID();
         String originalName = file.getOriginalFilename();
-        String saveName = uuid + "_" + originalName;
-        File saveFile = new File(uploadFolder, saveName);
-        file.transferTo(saveFile);
-        System.out.println("exception");
+        UUID uuid = UUID.randomUUID();
+        
+        ProfileImg profileImg = ProfileImg.builder()
+                .saveFolder(uploadFolder).originalName(originalName).build();
 
-        if(profileImgRepository.existsById(updateUserId)) {
-            // 원래 파일 삭제하기
-            File existFile = new File(uploadFolder);
-            existFile.delete();
-            profileImgRepository.save(ProfileImg.builder().saveFolder(uploadFolder).saveName(saveName).originalName(originalName).id(updateUserId).build());
+        Optional<ProfileImg> oldImgOptional = profileImgRepository.findById(updateUserId);
+        if (oldImgOptional.isPresent()) {
+            // 수정
+            // 이전 파일에 덮어쓰기
+            ProfileImg oldImg = oldImgOptional.get();
+            profileImg.setSaveName(oldImg.getSaveName());
+
+            profileImg.setId(updateUserId);
         } else {
-            profileImgRepository.save(ProfileImg.builder().saveFolder(uploadFolder).saveName(saveName).originalName(originalName).id(updateUserId).build());
+            // 생성
+            String saveName = uuid.toString() + updateUserId + originalName.substring(originalName.lastIndexOf("."));
+            profileImg.setSaveName(saveName);
+
+            profileImg.setUser(updateUser);
         }
+
+        File saveFile = new File(profileImg.getSaveFolder(), profileImg.getSaveName());
+        file.transferTo(saveFile);
+
+        profileImgRepository.save(profileImg);
     }
 
     public void save(ProfileImg profileImg) {

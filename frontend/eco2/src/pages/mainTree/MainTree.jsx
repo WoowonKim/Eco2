@@ -1,35 +1,35 @@
 import styles from "./MainTree.module.css";
 import { Leaf } from "./Leaf.jsx";
-import { useCallback, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useDrop } from "react-dnd";
-import update from "immutability-helper";
+import { useSelector, useDispatch } from "react-redux";
+import { changePos, getLeaves } from "../../store/mainTree/leavesSlice";
 const MainTree = () => {
-  const [leaves, setLeaves] = useState({
-    a: { top: 20, left: 80, category: 3 },
-    b: { top: 180, left: 20, category: 4 },
-  });
-
-  const moveLeaf = useCallback(
-    (id, left, top) => {
-      setLeaves(
-        update(leaves, {
-          [id]: {
-            $merge: { left, top },
-          },
-        })
-      );
-    },
-    [leaves, setLeaves]
-  );
+  let dispatch = useDispatch();
+  const leaves = useSelector((state) => state.leaves);
+  let currUser = useSelector((state) => state.user);
+  let categoryCounts = useMemo(() => {
+    const categoryCounts = [0, 0, 0, 0, 0, 0];
+    for (let i in leaves) {
+      console.log(leaves[i].category);
+      categoryCounts[leaves[i].category - 1]++;
+    }
+    console.log(categoryCounts);
+    return categoryCounts;
+  }, []);
+  useEffect(() => {
+    dispatch(getLeaves(currUser.id));
+  }, []);
+  const moveLeaf = (id, left, top) => {
+    dispatch(changePos({ id, left, top }));
+  };
   const [, drop] = useDrop(
     () => ({
       accept: "leaf",
       drop(item, monitor) {
-        console.log(item);
         const delta = monitor.getDifferenceFromInitialOffset();
         const left = Math.round(item.left + delta.x);
         const top = Math.round(item.top + delta.y);
-        console.log(left);
         moveLeaf(item.id, left, top);
         return undefined;
       },
@@ -41,20 +41,28 @@ const MainTree = () => {
       <img
         src={process.env.PUBLIC_URL + "tree_leaves/mainTree.png"}
         className={styles.Img}
+        draggable="false"
       ></img>
-      {Object.keys(leaves).map((key) => {
-        console.log(key);
-        const { left, top, category } = leaves[key];
+      {leaves.map((leaf) => {
+        const { id, left, top, category } = leaf;
         return (
           <Leaf
-            key={key}
-            id={key}
+            key={id}
+            id={id}
             left={left}
             top={top}
-            //김우우너 바보멍청ㅇ;
+            category={category}
           ></Leaf>
         );
       })}
+      <div className={styles.Statis}>
+        <p>수질 {categoryCounts[0]}회</p>
+        <p>토양 {categoryCounts[1]}회</p>
+        <p>대기 {categoryCounts[2]}회</p>
+        <p>몰라 {categoryCounts[3]}회</p>
+        <p>생태계 {categoryCounts[4]}회</p>
+        <p>기타 {categoryCounts[5]}회</p>
+      </div>
     </div>
   );
 };

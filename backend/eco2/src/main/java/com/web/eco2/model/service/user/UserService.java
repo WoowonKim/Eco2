@@ -39,6 +39,7 @@ public class UserService {
     public User findUserInfoByEmail(String email) {
         UserInformation userInformation = userRepository.findUserInfoByEmail(email);
         User user = User.builder()
+                .id(userInformation.getId())
                 .email(userInformation.getEmail())
                 .name(userInformation.getName())
                 .socialType(userInformation.getSocialType())

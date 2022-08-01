@@ -1,39 +1,61 @@
 import { React, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../store/user/userSlice";
+import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
+import { signInGoogle, auth } from "../../store/firebase";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [socialType, setSocialType] = useState(0);
+  const [socialType, setSocialType] = useState("email");
   const [loginFailMsg, setLoginFailMsg] = useState(false);
 
   let currUser = useSelector((state) => state.user);
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(currUser);
-    dispatch(
-      login({ email: email, password: password, socialType: socialType })
-    );
-    if (currUser.isLoggedIn === 0) {
-      setLoginFailMsg(true);
-    } else {
-      setLoginFailMsg(false);
+    let type;
+    if (socialType === "email") {
+      let type = 0;
+    } else if (socialType === "google") {
+      let type = 1;
     }
-    if (currUser.isLoggedIn === 1) {
-      navigate("/mainFeed");
-    }
+    dispatch(login({ email: email, password: password, socialType: type }))
+      .then((res) => {
+        if (res.payload.status === 200) {
+          setLoginFailMsg(false);
+          navigate("/mainFeed");
+        }
+        setLoginFailMsg(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const onGoogleLogin = async () => {
+    const data = await signInGoogle();
+    auth.currentUser
+      .getIdToken(true)
+      .then(function (idToken) {
+        console.log(idToken);
+        dispatch(
+          googleLogin({
+            socialType: 1,
+            idToken: idToken,
+          })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   return (
     <div className={styles.login}>
       <img
-        src={process.env.PUBLIC_URL + "logo.png"}
+        src={`${process.env.PUBLIC_URL}/logo.png`}
         alt="earth"
         className={styles.img}
       />
@@ -43,14 +65,14 @@ function Login() {
           required
           value={email}
           placeholder="이메일"
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <LoginInput
           type="password"
           required
           value={password}
           placeholder="비밀번호"
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <div className={styles.radio}>
           <input type="checkbox" />
@@ -67,12 +89,7 @@ function Login() {
         <span className={styles.lineText}>SNS로 3초만에 시작하기</span>
       </div>
       <div className={styles.socialGroup}>
-        <button
-          onClick={() => {
-            setSocialType(1);
-          }}
-          className={styles.socialButton}
-        >
+        <button onClick={onGoogleLogin} className={styles.socialButton}>
           <img
             src="google_logo.png"
             alt="social_logo"
@@ -100,9 +117,6 @@ function Login() {
       </Link>
       <Link to="/findpassword" className={styles.link}>
         <p className={styles.text}>비밀번호를 잊어버렸어요</p>
-      </Link>
-      <Link to="/missionMain">
-        <button>GoMission</button>
       </Link>
     </div>
   );
