@@ -39,18 +39,18 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                     SecurityContextHolder.getContext().setAuthentication((Authentication) authentication);
                 } else {//access토큰 만료
                     System.out.println("here");
-                    ResponseBodyWriteUtil.sendError(request, response, "토큰이 유효하지 않습니다.");
+                    ResponseBodyWriteUtil.sendError(response, "토큰이 유효하지 않습니다.");
                     return;
                 }
             } else {
                 System.out.println("access token nono");
-                ResponseBodyWriteUtil.sendError(request, response, "접근 권한이 없습니다.");
+                ResponseBodyWriteUtil.sendError(response, "접근 권한이 없습니다.");
                 return;
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("token error");
-            ResponseBodyWriteUtil.sendError(request, response, "오류가 발생했습니다.");
+            ResponseBodyWriteUtil.sendError( response, "오류가 발생했습니다.");
             return;
         }
         chain.doFilter(request, response);

@@ -1,0 +1,47 @@
+.calender {
+  width: 300px;
+  height: 300px;
+  background-color: aliceblue;
+  color: black;
+}
+
+.userInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.button {
+  background-color: white;
+  border: none;
+}
+
+.settingIcon {
+  color: black;
+  font-size: x-small;
+}
+
+.friendIcon {
+  color: black;
+  font-size: smaller;
+}
+
+.missionList {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* .missionTitle {
+  padding: 0 30px;
+}
+
+.line {
+  width: 100%;
+} */

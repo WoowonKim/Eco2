@@ -37,6 +37,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.0.0'
 }
 
 tasks.named('test') {

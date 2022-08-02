@@ -36,6 +36,14 @@ let ShortGreenBtn = styled.button`
 let WarningText = styled.p`
   color: red;
   font-size: small;
+  text-align: start;
 `;
 
-export { GreenBtn, LoginInput, WarningText, ShortGreenBtn };
+let Leaf = styled.img`
+  position: absolute;
+  height: 40px;
+  z-index: 1000;
+  left: ${(props) => props.left};
+  top: ${(props) => props.top};
+`;
+export { GreenBtn, LoginInput, WarningText, ShortGreenBtn, Leaf };

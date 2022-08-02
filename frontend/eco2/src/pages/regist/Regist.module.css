@@ -11,6 +11,11 @@
   margin-bottom: 10px;
 }
 
+.emailCheckText {
+  text-align: start;
+  font-size: xx-small;
+}
+
 .EmailInput {
   display: flex;
   align-items: center;

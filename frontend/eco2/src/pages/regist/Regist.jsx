@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
+  emailCheck,
   emailVerify,
   emailVerifyCode,
   signUp,
@@ -14,6 +14,7 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
+import { setUserEmail } from "../../store/user/common";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -24,77 +25,29 @@ const Regist = () => {
   const [code, setCode] = useState(null);
   const [min, setMin] = useState(5);
   const [sec, setSec] = useState(0);
-  const [mount, setMount] = useState(false);
+  const [emailCheckVisible, setEmailCheckVisible] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [emailCodeVisible, setEmailCodeVisible] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageVisible, setMessageVisible] = useState(true);
 
   const displayType = visibility ? styles.visible : styles.hidden;
-  const message = visibility ? "인증 메일 다시 보내기" : "이메일 인증하기";
-  const dispatch = useDispatch();
+  const buttonText = visibility ? "인증 메일 다시 보내기" : "이메일 인증하기";
+
   const isEmailValid = useSelector((state) => state.user.isEmailValid);
-  const isEmailVerified = useSelector((state) => state.user.isEmailVerified);
+  const isEmailOnly = useSelector((state) => state.user.isEmailOnly);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setSocialType(0);
-    dispatch(
-      signUp({ email: email, password: password, socialType: socialType })
-    );
-  };
-
-  const countRef = useRef(null);
-  const startHandler = () => {
-    countRef.current = setInterval(() => {
-      if (0 < sec) {
-        setSec(sec - 1);
-      } else if (sec === 0) {
-        if (min === 0) {
-          clearInterval(countRef.current);
-        } else {
-          setMin(min - 1);
-          setSec(59);
-        }
-      }
-    }, 1000);
-  };
-
-  const stopHandler = () => {
-    clearInterval(0);
-    countRef.current = null;
-  };
-
-  const resetHandler = () => {
-    stopHandler();
-    setMin(5);
-    setSec(0);
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onclick = () => {
-    // if (isEmailValid) {
-    //   setVisibility(true);
-    //   // startHandler();
-    // } else {
-    //   setVisibility(true);
-    //   // resetHandler();
-    //   // startHandler();
-    // }
     setVisibility(true);
-    dispatch(emailVerify({ email: email }));
+    dispatch(emailVerify({ email })).then((res) => {
+      setMessage(`${res.payload.msg}`);
+    });
+    setMessageVisible(false);
   };
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     if (0 < sec) {
-  //       setSec(sec - 1);
-  //     } else if (sec === 0) {
-  //       if (min === 0) {
-  //         clearInterval(timer);
-  //       } else {
-  //         setMin(min - 1);
-  //         setSec(59);
-  //       }
-  //     }
-  //   }, 1000);
-  //   return () => clearInterval(timer);
-  // }, [min, sec]);
   return (
     <div className={styles.signup}>
       <img
@@ -102,40 +55,65 @@ const Regist = () => {
         alt="earth"
         className={styles.img}
       />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <LoginInput
           type="email"
           onChange={(e) => setEmail(e.target.value)}
           placeholder="이메일"
         />
-        <GreenBtn type="button" onClick={onclick} className={styles.button}>
-          {message}
-        </GreenBtn>
-        {!isEmailValid && mount && (
-          <p className={styles.warningText}>
-            이메일이 유효하지 않아 인증메일을 발송할 수 없습니다.{" "}
-          </p>
+        {messageVisible && emailCheckVisible && !isEmailOnly && (
+          <WarningText>{message}</WarningText>
         )}
-        <div className={`${styles.EmailInput}, ${displayType}`}>
-          <input
-            type="text"
-            className={styles.inputEmail}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="인증 번호"
-          />
-          <button
-            className={styles.buttonEmail}
+        {messageVisible && emailCheckVisible && isEmailOnly && (
+          <WarningText>{message}</WarningText>
+        )}
+        {isEmailOnly ? (
+          <GreenBtn type="button" onClick={onclick} className={styles.button}>
+            {buttonText}
+          </GreenBtn>
+        ) : (
+          <GreenBtn
             type="button"
-            onClick={() =>
-              dispatch(emailVerifyCode({ email: email, code: code }))
-            }
+            onClick={() => {
+              dispatch(emailCheck({ email })).then((res) => {
+                setEmailCheckVisible(true);
+                setMessage(`${res.payload.msg}`);
+              });
+            }}
+            className={styles.button}
           >
-            인증하기
-          </button>
-          <div className={styles.timer}>
-            {min} : {sec}
+            중복 확인
+          </GreenBtn>
+        )}
+        {visibility && isEmailValid && (
+          <div className={`${styles.EmailInput}, ${displayType}`}>
+            <input
+              type="text"
+              className={styles.inputEmail}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="인증 번호"
+            />
+            <button
+              className={styles.buttonEmail}
+              type="button"
+              onClick={() =>
+                dispatch(emailVerifyCode({ email, code })).then((res) => {
+                  if (res.payload.status === 200) {
+                    setIsEmailVerified(true);
+                    setVisibility(false);
+                  }
+                  setEmailCodeVisible(true);
+                  setMessage(`${res.payload.msg}`);
+                })
+              }
+            >
+              인증하기
+            </button>
+            {/* <div className={styles.timer}>
+              {min} : {sec}
+            </div> */}
           </div>
-        </div>
+        )}
         {isEmailVerified && (
           <div>
             <LoginInput
@@ -151,14 +129,34 @@ const Regist = () => {
               placeholder="비밀번호 확인"
             />
             {password !== password2 && (
-              <WarningText className={styles.warningText}>
-                비밀번호가 같지 않습니다.
-              </WarningText>
+              <WarningText>비밀번호가 일치하지 않습니다.</WarningText>
             )}
-            {/* <Link to="/econame" className={styles.link}> */}
-            <ShortGreenBtn type="submit">가입하기</ShortGreenBtn>
-            {/* </Link> */}
+            <ShortGreenBtn
+              type="button"
+              onClick={() => {
+                if (password === password2) {
+                  setSocialType(0);
+                  dispatch(
+                    signUp({
+                      email: email,
+                      password: password,
+                      socialType: socialType,
+                    })
+                  )
+                    .then((res) => {
+                      setUserEmail(email);
+                      navigate("/ecoName", { state: email });
+                    })
+                    .catch((err) => console.log(err));
+                }
+              }}
+            >
+              가입하기
+            </ShortGreenBtn>
           </div>
+        )}
+        {visibility && !isEmailVerified && emailCodeVisible && (
+          <WarningText>{message}</WarningText>
         )}
       </form>
       <div className={styles.lineGroup}>
