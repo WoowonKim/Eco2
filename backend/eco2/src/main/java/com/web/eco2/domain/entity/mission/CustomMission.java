@@ -2,6 +2,8 @@ package com.web.eco2.domain.entity.mission;
 
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -30,7 +32,10 @@ public class CustomMission {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+
 
 //    @Builder
 //    public CustomMission(User user, Integer category, String title, String content) {

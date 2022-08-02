@@ -3,6 +3,8 @@ package com.web.eco2.domain.entity.Item;
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -12,6 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "tb_statistic")
 @Data
+@ToString
 public class Statistic {
 
     @Id
@@ -49,19 +52,7 @@ public class Statistic {
     @MapsId
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @Override
-    public String toString() {
-        return "Statistic{" +
-                "id=" + id +
-                ", category1=" + category1 +
-                ", category2=" + category2 +
-                ", category3=" + category3 +
-                ", category4=" + category4 +
-                ", category5=" + category5 +
-                ", category6=" + category6 +
-                ", questCount=" + questCount +
-                '}';
-    }
 }

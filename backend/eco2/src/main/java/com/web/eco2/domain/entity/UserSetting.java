@@ -3,6 +3,8 @@ package com.web.eco2.domain.entity;
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -35,18 +37,9 @@ public class UserSetting {
     private boolean darkmodeFlag;
 
     @MapsId
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "usr_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @Override
-    public String toString() {
-        return "UserSetting{" +
-                "id=" + id +
-                ", publicFlag=" + publicFlag +
-                ", commentAlarmFlag=" + commentAlarmFlag +
-                ", chatAlarmFlag=" + chatAlarmFlag +
-                ", darkmodeFlag=" + darkmodeFlag +
-                '}';
-    }
 }
