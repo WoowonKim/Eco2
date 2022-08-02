@@ -1,0 +1,124 @@
+.modal {
+  position: fixed;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modalBody {
+  position: absolute;
+  display: block;
+  width: 280px;
+  height: 350px;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+}
+
+.reportIcon {
+  background-color: #dadada;
+  opacity: 0.7;
+  padding: 8px;
+  border-radius: 5px;
+  color: red;
+}
+
+.title {
+  margin: 5px;
+  text-align: start;
+}
+
+.content {
+  font-size: small;
+  text-align: start;
+  margin: 5px 0 5px 50px;
+}
+
+.selectBox {
+  display: flex;
+  justify-content: center;
+  margin: 20px 50px;
+}
+
+.select {
+  width: 170px;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: small;
+}
+
+.textarea {
+  width: 200px;
+  height: 80px;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 0 0 0 23px;
+}
+
+.buttonGroup {
+  margin-top: 10px;
+}
+
+.reportButton {
+  position: relative;
+  padding: 3px 5px;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid red;
+  color: #6e6e6e;
+  background-color: white;
+  transition: all 300ms ease-in-out;
+  margin-right: 30px;
+}
+
+.reportButton:hover {
+  background-color: red;
+  color: #e1eef6;
+}
+
+.cancleButton {
+  position: relative;
+  padding: 3px 5px;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid #dadada;
+  color: #6e6e6e;
+  background-color: white;
+  transition: all 300ms ease-in-out;
+}
+
+.cancleButton:hover {
+  background-color: #dadada;
+  color: #000000;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
