@@ -1,3 +1,7 @@
+/* .userSettingPage {
+  overflow-y: auto;
+} */
+
 .header {
   display: grid;
   margin-top: 50px;
@@ -117,7 +121,7 @@
 }
 
 .line {
-  margin: 30px 0;
+  margin: 20px 0;
   border: 0.5px solid #dadada;
 }
 
@@ -126,7 +130,7 @@
   border: none;
   background-color: white;
   cursor: pointer;
-  margin: 10px;
+  /* margin: 10px; */
   color: #949191;
 }
 

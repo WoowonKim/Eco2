@@ -10,7 +10,7 @@ import { setUserEmail } from "../../store/user/common";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [socialType, setSocialType] = useState("email");
+  // const [socialType, setSocialType] = useState("email");
   const [loginFailMsg, setLoginFailMsg] = useState(false);
 
   let currUser = useSelector((state) => state.user);
@@ -19,13 +19,7 @@ function Login() {
   const dispatch = useDispatch();
   const handleSubmit = (event) => {
     event.preventDefault();
-    let type;
-    if (socialType === "email") {
-      let type = 0;
-    } else if (socialType === "google") {
-      let type = 1;
-    }
-    dispatch(login({ email: email, password: password, socialType: type }))
+    dispatch(login({ email: email, password: password, socialType: 0 }))
       .then((res) => {
         if (res.payload.status === 200) {
           setLoginFailMsg(false);
@@ -98,9 +92,9 @@ function Login() {
           />
         </button>
         <button
-          onClick={() => {
-            setSocialType(2);
-          }}
+          // onClick={() => {
+          //   setSocialType(2);
+          // }}
           className={styles.socialButton}
         >
           <img

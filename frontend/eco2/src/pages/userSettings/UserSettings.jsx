@@ -11,11 +11,16 @@ import {
 } from "../../store/user/accountSlice";
 import { getUserEmail } from "../../store/user/common";
 import {
+  deleteUser,
   passwordChange,
   passwordCheck,
   userInformation,
 } from "../../store/user/userSettingSlice";
-import { authActions } from "../../store/user/userSlice";
+import {
+  authActions,
+  ecoName,
+  ecoNameVerify,
+} from "../../store/user/userSlice";
 import styles from "./UserSettings.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -86,7 +91,7 @@ const UserSettings = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.userSettingPage}>
       <div className={styles.header}>
         <div onClick={() => setUserSetting(true)} className={styles.userInfo}>
           <p className={`styles.userInfoText ${displayType}`}>회원정보</p>
@@ -137,9 +142,18 @@ const UserSettings = () => {
                 className={styles.passwordFormInput}
                 placeholder="EcoName을 입력해주세요"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  console.log(email, name);
+                  dispatch(ecoNameVerify({ econame: name }));
+                }}
               />
-              <button onClick={() => {}} className={styles.passwordFormButton}>
+              <button
+                onClick={() => {
+                  dispatch(ecoName({ email, econame: name }));
+                }}
+                className={styles.passwordFormButton}
+              >
                 변경
               </button>
             </div>
@@ -187,9 +201,6 @@ const UserSettings = () => {
                   placeholder="새 비밀번호 확인"
                   className={styles.passwordFormInput}
                 />
-                {password !== password2 && (
-                  <WarningText>비밀번호가 일치하지 않습니다.</WarningText>
-                )}
                 <button
                   className={styles.passwordFormButton}
                   onClick={() => dispatch(passwordChange({ email, password }))}
@@ -197,6 +208,9 @@ const UserSettings = () => {
                 >
                   변경
                 </button>
+                {password !== password2 && (
+                  <WarningText>비밀번호가 일치하지 않습니다.</WarningText>
+                )}
                 <hr className={styles.line} />
                 <div className={styles.userButtonGroup}>
                   <button
@@ -205,7 +219,18 @@ const UserSettings = () => {
                   >
                     로그아웃
                   </button>
-                  <button className={styles.userButton}>회원탈퇴</button>
+                  <button
+                    onClick={() =>
+                      dispatch(deleteUser({ email, password })).then((res) => {
+                        if (res.payload.status === 200) {
+                          dispatch(authActions.logout());
+                        }
+                      })
+                    }
+                    className={styles.userButton}
+                  >
+                    회원탈퇴
+                  </button>
                 </div>
               </div>
             )}

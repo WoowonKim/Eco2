@@ -58,6 +58,26 @@ export const passwordChange = createAsyncThunk(
   }
 );
 
+// 회원 탈퇴
+export const deleteUser = createAsyncThunk(
+  "userInformationSlice/deleteUser",
+  async (args, { rejectWithValue }) => {
+    const accessToken = getToken();
+    const response = await axios({
+      url: `/userinformation`,
+      method: "delete",
+      data: {
+        email: args.email,
+        password: args.password,
+      },
+      headers: {
+        "Auth-accessToken": accessToken,
+      },
+    });
+    return response.data;
+  }
+);
+
 export const userInformationSlice = createSlice({
   name: "userInformation",
   initialState: [],
@@ -80,6 +100,12 @@ export const userInformationSlice = createSlice({
     },
     [passwordChange.rejected]: (state, action) => {
       console.log("passwordChange rejected", action.payload);
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      console.log("deleteUser fulfilled", action.payload);
+    },
+    [deleteUser.rejected]: (state, action) => {
+      console.log("deleteUser rejected", action.payload);
     },
   },
 });

@@ -4,26 +4,42 @@ import { WarningText } from "../../components/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ecoName, ecoNameVerify } from "../../store/user/userSlice";
+import { getUserEmail } from "../../store/user/common";
 
 const Econame = () => {
   const [econame, setEconame] = useState("");
-  const [ecoNameCheck, setEcoNameCheck] = useState(false);
-  const [isEcoNameValid, setIsEcoNameValid] = useState(false);
-  const [user, setUser] = useState(false);
-  const [message, setMessage] = useState("");
+  const [isName, setIsName] = useState(false);
+  const [nameMessage, setNameMessage] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+
+  const email = getUserEmail();
+
+  const ecoNameValidation = (e) => {
+    setEconame(e.target.value);
+    if (e.target.value.length < 3 || e.target.value.length > 8) {
+      setNameMessage("3글자 이상 8글자 이하로 입력해주세요.");
+      setIsName(false);
+    } else {
+      dispatch(ecoNameVerify({ econame })).then((res) => {
+        if (res.payload.status === 200) {
+          setNameMessage("올바른 이름 형식입니다 :)");
+          setIsName(true);
+        } else {
+          setIsName(false);
+          setNameMessage(`${res.payload.msg}`);
+        }
+      });
+    }
+  };
 
   const onClick = () => {
-    dispatch(ecoName({ econame, email: location?.state }))
+    dispatch(ecoName({ econame, email }))
       .then((res) => {
         if (res.payload.status === 200) {
           navigate("/mainTree");
         }
-        setUser(true);
-        setMessage(`${res.payload.msg}`);
       })
       .catch((err) => {
         console.log(err);
@@ -45,32 +61,12 @@ const Econame = () => {
           type="text"
           placeholder="최대 8글자"
           className={styles.input}
-          onChange={(e) => setEconame(e.target.value)}
+          onChange={ecoNameValidation}
         />
-        {isEcoNameValid && !ecoNameCheck && (
-          <WarningText>{message}</WarningText>
-        )}
-        {user && <WarningText>{message}</WarningText>}
-        {isEcoNameValid && ecoNameCheck ? (
-          <button onClick={onClick} className={styles.button}>
-            시작하기
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              dispatch(ecoNameVerify({ econame })).then((res) => {
-                if (res.payload.status === 200) {
-                  setEcoNameCheck(true);
-                }
-                setIsEcoNameValid(true);
-                setMessage(`${res.payload.msg}`);
-              });
-            }}
-            className={styles.button}
-          >
-            중복 확인하기
-          </button>
-        )}
+        <WarningText>{nameMessage}</WarningText>
+        <button onClick={onClick} className={styles.button} disabled={!isName}>
+          시작하기
+        </button>
       </form>
     </div>
   );
