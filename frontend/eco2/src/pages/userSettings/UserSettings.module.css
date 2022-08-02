@@ -1,6 +1,7 @@
-/* .userSettingPage {
-  overflow-y: auto;
-} */
+.userSettingPage {
+  /* overflow-y: scroll; */
+  margin-bottom: 100px;
+}
 
 .header {
   display: grid;
@@ -211,4 +212,16 @@
 
 .toggleSwitch {
   margin: 0 0 0 30px;
+}
+
+.success {
+  color: #949191;
+  font-size: small;
+  margin: 5px 0 20px 0;
+}
+
+.fail {
+  color: red;
+  font-size: small;
+  margin: 5px 0 20px 0;
 }

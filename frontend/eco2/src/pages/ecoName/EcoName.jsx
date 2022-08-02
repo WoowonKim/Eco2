@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ecoName, ecoNameVerify } from "../../store/user/userSlice";
 import { getUserEmail } from "../../store/user/common";
+import { nameLengthValidation } from "../../utils";
 
 const Econame = () => {
   const [econame, setEconame] = useState("");
@@ -18,11 +19,11 @@ const Econame = () => {
 
   const ecoNameValidation = (e) => {
     setEconame(e.target.value);
-    if (e.target.value.length < 3 || e.target.value.length > 8) {
+    if (nameLengthValidation(e.target.value)) {
       setNameMessage("3글자 이상 8글자 이하로 입력해주세요.");
       setIsName(false);
     } else {
-      dispatch(ecoNameVerify({ econame })).then((res) => {
+      dispatch(ecoNameVerify({ econame: e.target.value })).then((res) => {
         if (res.payload.status === 200) {
           setNameMessage("올바른 이름 형식입니다 :)");
           setIsName(true);

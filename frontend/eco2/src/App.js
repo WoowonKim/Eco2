@@ -13,7 +13,14 @@ import Header from "./components/NavFooter/Header";
 import DailyMissionMain from "./pages/dmission/dailyMissionMain/dailyMissionMain";
 import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMissionDetail";
 /* DailyMission End */
-import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -25,9 +32,27 @@ import PostForm from "./pages/postForm/PostForm";
 import Profile from "./pages/profile/Profile";
 import UserSettings from "./pages/userSettings/UserSettings";
 import UserFriends from "./pages/userFriends/UserFriends";
+import { dbService, firestore } from "./store/firebase";
 
 function App() {
   let currUser = useSelector((state) => state.user);
+
+  // 친구 신청 알림 기능 구현 예정
+  // const [alarm, setAlarm] = useState([]);
+
+  // useEffect(() => {
+  //   firestore.onSnapshot(
+  //     firestore.collection(dbService, "test/2/alarm"),
+  //     (snapshot) => {
+  //       const alarmArray = snapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       console.log(alarmArray);
+  //       setAlarm(alarmArray);
+  //     }
+  //   );
+  // }, []);
   return (
     <div className={styles.App}>
       <Header></Header>
@@ -42,7 +67,10 @@ function App() {
           <Route path="/dailymissiondetail" element={<DailyMissionDetail />} />
           {/*DailyMission */}
           <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
+          <Route
+            path="/mainFeed/:feedCategory"
+            element={<FeedCategory />}
+          ></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>

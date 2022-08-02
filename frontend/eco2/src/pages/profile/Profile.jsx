@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
+import {
+  getUserName,
+  setUserName,
+  getUserEmail,
+} from "../../store/user/common";
 import { useNavigate } from "react-router-dom";
+import { userInformation } from "../../store/user/userSettingSlice";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
+  const [socialType, setSocialType] = useState(0);
+  const [userId, setUserId] = useState(0);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const email = getUserEmail();
+
+  useEffect(() => {
+    // 유저 객체 받아오기
+    dispatch(userInformation({ email })).then((res) => {
+      setUserId(res.payload.user.id);
+      setSocialType(res.payload.user.socialType);
+      if (res.payload.user.name) {
+        setUserName(res.payload.user.name);
+      } else if (getUserName()) {
+        setUserName(getUserName());
+      } else {
+        navigate("/");
+      }
+    });
+  }, []);
   return (
     <div>
       <div className={styles.calender}>달력</div>
@@ -11,7 +38,7 @@ const Profile = () => {
         <div className={styles.user}>
           <p>UserName</p>
           <button
-            onClick={() => navigate("/user/settings")}
+            onClick={() => navigate("/user/settings", { state: socialType })}
             className={styles.button}
           >
             <i className={`fa-solid fa-gear ${styles.settingIcon}`}></i>
@@ -19,7 +46,7 @@ const Profile = () => {
         </div>
         <div className={styles.friend}>
           <button
-            onClick={() => navigate("/user/friends")}
+            onClick={() => navigate("/user/friends", { state: userId })}
             className={styles.button}
           >
             <i className={`fa-solid fa-users ${styles.friendIcon}`}></i>

@@ -5,7 +5,7 @@ import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { signInGoogle, auth } from "../../store/firebase";
-import { setUserEmail } from "../../store/user/common";
+import { setUserEmail, setUserName } from "../../store/user/common";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -24,6 +24,7 @@ function Login() {
         if (res.payload.status === 200) {
           setLoginFailMsg(false);
           setUserEmail(email);
+          setUserName(res.payload.user.name);
           navigate("/mainFeed");
         }
         setLoginFailMsg(true);
@@ -41,7 +42,12 @@ function Login() {
             socialType: 1,
             idToken: idToken,
           })
-        ).then((res) => setUserEmail(data.additionalUserInfo.profile.email));
+        ).then((res) => {
+          console.log(data.additionalUserInfo.profile.name);
+          setUserEmail(data.additionalUserInfo.profile.email);
+          setUserName(data.additionalUserInfo.profile.name);
+          navigate("/mainFeed");
+        });
       })
       .catch(function (error) {
         console.log(error);

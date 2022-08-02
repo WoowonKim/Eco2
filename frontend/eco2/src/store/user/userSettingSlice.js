@@ -40,11 +40,11 @@ export const passwordCheck = createAsyncThunk(
 
 // 비밀번호 수정
 export const passwordChange = createAsyncThunk(
-  "userInformationSlice/passwordCheck",
+  "userInformationSlice/passwordChange",
   async (args, { rejectWithValue }) => {
     const accessToken = getToken();
     const response = await axios({
-      url: `/userinformation/password`,
+      url: "/userinformation/password",
       method: "put",
       data: {
         email: args.email,

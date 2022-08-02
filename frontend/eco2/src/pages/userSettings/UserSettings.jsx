@@ -1,10 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  LoginInput,
-  ShortGreenBtn,
-  WarningText,
-} from "../../components/styled";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   accountSetting,
   accountSettingChange,
@@ -14,7 +9,6 @@ import {
   deleteUser,
   passwordChange,
   passwordCheck,
-  userInformation,
 } from "../../store/user/userSettingSlice";
 import {
   authActions,
@@ -22,7 +16,8 @@ import {
   ecoNameVerify,
 } from "../../store/user/userSlice";
 import styles from "./UserSettings.module.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { nameLengthValidation, passwordValidationCheck } from "../../utils";
 
 const UserSettings = () => {
   const [userSetting, setUserSetting] = useState(true);
@@ -33,20 +28,26 @@ const UserSettings = () => {
     darkmodeFlag: false,
   });
 
-  const [userId, setUserId] = useState(0);
-  const [socialType, setSocialType] = useState(0);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [passwordForm, setPasswordForm] = useState(false);
+  const [isName, setIsName] = useState(false);
+  const [nameMessage, setNameMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+
+  const [isPassword, setIsPassword] = useState(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
   const email = getUserEmail();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const socialType = location?.state;
   const displayType = userSetting ? styles.selectedMenu : null;
   const displayType2 = userSetting ? null : styles.selectedMenu;
-  // const formDisplayType = passwordForm ?
 
   const onClick = () => {
     // 토글로 변경된 유저 설정 return
@@ -58,16 +59,61 @@ const UserSettings = () => {
         chatAlarmFlag: checked.chatAlarmFlag,
         darkmodeFlag: checked.darkmodeFlag,
       })
-    ).then((res) => console.log(checked));
+    );
   };
 
-  const handlePasswordForm = (e) => {
-    e.preventDefault();
+  // 현재 비밀번호 확인 오류 있음
+  const handlePassword = () => {
     dispatch(passwordCheck({ email, password })).then((res) => {
       if (res.payload.status === 200) {
         setPasswordForm(true);
       }
     });
+  };
+
+  const ecoNameValidation = (e) => {
+    setName(e.target.value);
+    if (nameLengthValidation(e.target.value)) {
+      setNameMessage("3글자 이상 8글자 이하로 입력해주세요.");
+      setIsName(false);
+    } else {
+      dispatch(ecoNameVerify({ econame: e.target.value })).then((res) => {
+        if (res.payload.status === 200) {
+          setNameMessage("올바른 이름 형식입니다 :)");
+          setIsName(true);
+        } else {
+          setIsName(false);
+          setNameMessage(`${res.payload.msg}`);
+        }
+      });
+    }
+  };
+
+  const passwordValidation = (e) => {
+    setPassword(e.target.value);
+
+    if (passwordValidationCheck(e.target.value)) {
+      setPasswordMessage(
+        "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!"
+      );
+      setIsPassword(false);
+    } else {
+      setPasswordMessage("안전한 비밀번호에요 : )");
+      setIsPassword(true);
+    }
+  };
+
+  const passwordConfirmValidation = (e) => {
+    const passwordConfirmCurrent = e.target.value;
+    setPassword2(passwordConfirmCurrent);
+
+    if (password === passwordConfirmCurrent) {
+      setPasswordConfirmMessage("비밀번호를 똑같이 입력했어요 : )");
+      setIsPasswordConfirm(true);
+    } else {
+      setPasswordConfirmMessage("비밀번호가 틀려요. 다시 확인해주세요");
+      setIsPasswordConfirm(false);
+    }
   };
 
   useEffect(() => {
@@ -80,13 +126,6 @@ const UserSettings = () => {
         chatAlarmFlag: res.payload.userSetting.chatAlarmFlag,
         darkmodeFlag: res.payload.userSetting.darkmodeFlag,
       });
-    });
-
-    // 유저 객체 받아오기
-    dispatch(userInformation({ email })).then((res) => {
-      setUserId(res.payload.user.id);
-      setSocialType(res.payload.user.socialType);
-      setName(res.payload.user.name);
     });
   }, []);
 
@@ -126,37 +165,36 @@ const UserSettings = () => {
                 />
               )}
             </div>
-            <p className={styles.email}>abcd@abcd.com</p>
+            <p className={styles.email}>{email}</p>
           </div>
           <div className={styles.econameGroup}>
             <div className={styles.econameTitle}>
               <label htmlFor="EcoName" className={styles.econameText}>
                 EcoName
               </label>
-              {/* <i className={`fa-solid fa-pencil ${styles.editIcon}`}></i> */}
             </div>
-            {/* <p className={styles.econame}>EcoName</p> */}
             <div className={styles.passwordForm}>
               <input
                 id="EcoName"
                 className={styles.passwordFormInput}
                 placeholder="EcoName을 입력해주세요"
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  console.log(email, name);
-                  dispatch(ecoNameVerify({ econame: name }));
-                }}
+                onChange={ecoNameValidation}
               />
+
               <button
                 onClick={() => {
                   dispatch(ecoName({ email, econame: name }));
                 }}
+                disabled={!isName}
                 className={styles.passwordFormButton}
               >
                 변경
               </button>
             </div>
+            <p className={isName ? styles.success : styles.fail}>
+              {nameMessage}
+            </p>
           </div>
           <div className={styles.passwordGroup}>
             <p className={styles.passwordText}>비밀번호 변경 / 탈퇴</p>
@@ -165,17 +203,17 @@ const UserSettings = () => {
             </p>
             {!passwordForm ? (
               <div>
-                <form
-                  onSubmit={handlePasswordForm}
-                  className={styles.passwordForm}
+                <input
+                  type="password"
+                  // onChange={(e) => set}
+                  className={styles.passwordFormInput}
+                />
+                <button
+                  onClick={handlePassword}
+                  className={styles.passwordFormButton}
                 >
-                  <input
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={styles.passwordFormInput}
-                  />
-                  <button className={styles.passwordFormButton}>확인</button>
-                </form>
+                  확인
+                </button>
                 <hr className={styles.line} />
                 <button
                   onClick={() => {
@@ -191,30 +229,43 @@ const UserSettings = () => {
               <div>
                 <input
                   type="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={passwordValidation}
                   placeholder="새 비밀번호"
                   className={styles.passwordFormInput}
                 />
+                {password.length > 0 && (
+                  <p className={isPassword ? styles.success : styles.fail}>
+                    {passwordMessage}
+                  </p>
+                )}
                 <input
                   type="password"
-                  onChange={(e) => setPassword2(e.target.value)}
+                  onChange={passwordConfirmValidation}
                   placeholder="새 비밀번호 확인"
                   className={styles.passwordFormInput}
                 />
+                {password2.length > 0 && (
+                  <p
+                    className={isPasswordConfirm ? styles.success : styles.fail}
+                  >
+                    {passwordConfirmMessage}
+                  </p>
+                )}
                 <button
                   className={styles.passwordFormButton}
                   onClick={() => dispatch(passwordChange({ email, password }))}
                   type="button"
+                  disabled={!(isPassword && isPasswordConfirm)}
                 >
                   변경
                 </button>
-                {password !== password2 && (
-                  <WarningText>비밀번호가 일치하지 않습니다.</WarningText>
-                )}
                 <hr className={styles.line} />
                 <div className={styles.userButtonGroup}>
                   <button
-                    onClick={() => dispatch(authActions.logout())}
+                    onClick={() => {
+                      dispatch(authActions.logout());
+                      navigate("/");
+                    }}
                     className={styles.userButton}
                   >
                     로그아웃
