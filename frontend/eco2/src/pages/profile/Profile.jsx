@@ -38,7 +38,11 @@ const Profile = () => {
         <div className={styles.user}>
           <p>UserName</p>
           <button
-            onClick={() => navigate("/user/settings", { state: socialType })}
+            onClick={() =>
+              navigate("/user/settings", {
+                state: { socialType: socialType, name: getUserName() },
+              })
+            }
             className={styles.button}
           >
             <i className={`fa-solid fa-gear ${styles.settingIcon}`}></i>

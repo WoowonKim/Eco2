@@ -24,7 +24,7 @@ export const passwordCheck = createAsyncThunk(
   async (args, { rejectWithValue }) => {
     const accessToken = getToken();
     const response = await axios({
-      url: `/userinformation/password`,
+      url: "/userinformation/password",
       method: "post",
       data: {
         email: args.email,
@@ -42,19 +42,23 @@ export const passwordCheck = createAsyncThunk(
 export const passwordChange = createAsyncThunk(
   "userInformationSlice/passwordChange",
   async (args, { rejectWithValue }) => {
-    const accessToken = getToken();
-    const response = await axios({
-      url: "/userinformation/password",
-      method: "put",
-      data: {
-        email: args.email,
-        password: args.password,
-      },
-      headers: {
-        "Auth-accessToken": accessToken,
-      },
-    });
-    return response.data;
+    try {
+      const accessToken = getToken();
+      const response = await axios({
+        url: "/userinformation/password",
+        method: "put",
+        data: {
+          email: args.email,
+          password: args.password,
+        },
+        headers: {
+          "Auth-accessToken": accessToken,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      console.log(err, args.email, args.password);
+    }
   }
 );
 
