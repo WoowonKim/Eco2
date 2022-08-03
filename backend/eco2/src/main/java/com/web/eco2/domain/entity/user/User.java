@@ -2,9 +2,14 @@ package com.web.eco2.domain.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.eco2.domain.dto.user.UserDto;
+import com.web.eco2.domain.entity.Item.Item;
 import com.web.eco2.domain.entity.Item.Statistic;
 import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.domain.entity.calender.Calendar;
+import com.web.eco2.domain.entity.mission.CustomMission;
+import com.web.eco2.domain.entity.mission.DailyMission;
+import com.web.eco2.domain.entity.mission.FavoriteMission;
+import com.web.eco2.model.service.mission.DailyMissionService;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,21 +49,37 @@ public class User {
     @Column(name = "usr_refreshToken")
     private String refreshToken;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ProfileImg profileImg;
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private ProfileImg profileImg;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private UserSetting userSetting;
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private UserSetting userSetting;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Statistic statistic;
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Statistic statistic;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Calendar Calendar;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Calendar> Calendar;
+//
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<CustomMission> customMission;
+//
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<FavoriteMission> favoriteMission;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<DailyMission> dailyMission;
+//
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Item> item;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> role = new ArrayList<>();
