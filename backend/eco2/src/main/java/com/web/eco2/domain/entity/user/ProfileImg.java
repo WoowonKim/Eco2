@@ -1,6 +1,8 @@
 package com.web.eco2.domain.entity.user;
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -8,17 +10,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Table(name = "tb_profile_img")
-//@ToString
+@ToString
 public class ProfileImg {
-    @Override
-    public String toString() {
-        return "ProfileImg{" +
-                "id=" + id +
-                ", saveFolder='" + saveFolder + '\'' +
-                ", originalName='" + originalName + '\'' +
-                ", saveName='" + saveName + '\'' +
-                '}';
-    }
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +31,7 @@ public class ProfileImg {
     @MapsId
     @OneToOne
     @JoinColumn(name = "usr_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
 
