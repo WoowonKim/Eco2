@@ -145,7 +145,7 @@ const Regist = () => {
                   )
                     .then((res) => {
                       setUserEmail(email);
-                      navigate("/ecoName", { state: email });
+                      navigate("/ecoName");
                     })
                     .catch((err) => console.log(err));
                 }

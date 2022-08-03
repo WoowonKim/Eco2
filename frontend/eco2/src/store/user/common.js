@@ -7,6 +7,10 @@ export const getUserEmail = () => {
   return localStorage.getItem("email") || null;
 };
 
+export const getUserName = () => {
+  return localStorage.getItem("name") || null;
+};
+
 // remove the token and user from the session storage
 export const removeUserSession = () => {
   localStorage.removeItem("accessToken");
@@ -19,8 +23,11 @@ export const setAccessToken = (accessToken) => {
 };
 
 export const setUserEmail = (email) => {
-  console.log(email);
   localStorage.setItem("email", email);
+};
+
+export const setUserName = (name) => {
+  localStorage.setItem("name", name);
 };
 
 export const getCookie = (cookieName) => {

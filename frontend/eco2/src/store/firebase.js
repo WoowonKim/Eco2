@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import * as firestore from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -34,3 +35,6 @@ export const signOutGoogle = () => {
       console.log(error);
     });
 };
+
+export { firestore };
+export const dbService = firestore.getFirestore();
