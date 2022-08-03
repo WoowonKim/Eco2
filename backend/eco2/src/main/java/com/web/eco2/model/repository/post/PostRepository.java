@@ -11,15 +11,13 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+
     Post getById(Long id);
 
     // FIXME: save(Post)만 가능!
-//    void save(Post post, User postUser);
 
-//    static void savePost(PostDto build) {
-//
-//    }
-//    List<Post> findByUserIdOrderByIdDesc(int id);
+
+//    List<Post> findByUserIdOrderByIdDesc(Long userid);
 
 
 }
