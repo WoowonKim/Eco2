@@ -69,20 +69,21 @@ public class UserInformationController {
     @DeleteMapping
     public ResponseEntity<?> deleteUser(@RequestBody SignUpRequest user) {
         try {
-            if (user == null || user.getEmail() == null) {
+            // TODO: 요청으로 들어온 email과 현재 유저가 같은 유저인지 token으로 확인
+            if (user.getEmail() == null) {
                 return ResponseHandler.generateResponse("잘못된 요청", HttpStatus.BAD_REQUEST);
             }
-            System.out.println(user);
             User dbUser = userService.findByEmail(user.getEmail());
             System.out.println(dbUser);
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원", HttpStatus.BAD_REQUEST);
             }
-            if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
-                return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
-            }
+//            if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+//                return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+//            }
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
 
