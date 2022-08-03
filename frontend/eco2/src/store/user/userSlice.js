@@ -74,8 +74,11 @@ export const emailCheck = createAsyncThunk(
   async (args, { rejectWithValue }) => {
     try {
       const response = await axios({
-        url: `/user/email/${args.email}`,
+        url: `/user/email`,
         method: "get",
+        params: {
+          email: args.email,
+        },
       });
       return response.data;
     } catch (err) {

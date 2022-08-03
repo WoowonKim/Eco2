@@ -35,13 +35,13 @@ public class MissionController {
     private FavoriteMissionService favoriteMissionService;
 
     //기본 미션 리스트 조회
-    @GetMapping()
-    public ResponseEntity<Object> selectMissionList() {
+    @GetMapping("/{usrId}")
+    public ResponseEntity<Object> selectMissionList(@PathVariable("usrId") Long usrId) {
         try {
             List<Mission> missionList = missionService.findAll();
-            //TODO: 데일리 미션에 있는 항목들을 리스트에서 제외 구현
+            List<Mission> selectedMissionList = missionService.selectedDailyMission(missionList, usrId);
             System.out.println(missionList);
-            return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", missionList);
+            return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", selectedMissionList);
         } catch (Exception e) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -66,8 +66,10 @@ public class MissionController {
     public ResponseEntity<Object> selectCustomMission(@PathVariable("usrId") Long usrId) {
         try {
             List<CustomMission> customMissionList = customMissionService.findListByUsrId(usrId);
+            List<CustomMission> selectedCustomMissionList = customMissionService.selectedCustomDailyMission(customMissionList, usrId);
+
             System.out.println(customMissionList);
-            return ResponseHandler.generateResponse("커스텀 미션 조회 성공하였습니다.", HttpStatus.OK, "customMissionList", customMissionList);
+            return ResponseHandler.generateResponse("커스텀 미션 조회 성공하였습니다.", HttpStatus.OK, "customMissionList", selectedCustomMissionList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -126,10 +128,13 @@ public class MissionController {
     public ResponseEntity<Object> selectFavoriteMission(@PathVariable("usrId") Long usrId) {
         try {
             List<Mission> missionList = favoriteMissionService.findMissionByUsrId(usrId);
+            List<Mission> selectedMissionList = missionService.selectedDailyMission(missionList, usrId);
             System.out.println(missionList);
             List<CustomMission> customMissionList = favoriteMissionService.findCustomMissionByUsrId(usrId);
+            List<CustomMission> selectedCustomMissionList = customMissionService.selectedCustomDailyMission(customMissionList, usrId);
+
             System.out.println(customMissionList);
-            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK, "missionList", missionList, "customMissionList", customMissionList);
+            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK, "missionList", selectedMissionList, "customMissionList", selectedCustomMissionList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);

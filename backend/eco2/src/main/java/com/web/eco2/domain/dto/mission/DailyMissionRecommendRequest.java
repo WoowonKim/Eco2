@@ -14,6 +14,9 @@ import java.util.List;
 @ToString
 @Data
 public class DailyMissionRecommendRequest {
+
+    private String lat;
+    private String lng;
     private String date;
 
 //    public DailyMission toEntity(User user, Mission mission, CustomMission customMission) {

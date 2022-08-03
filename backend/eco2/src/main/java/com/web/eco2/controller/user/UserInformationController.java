@@ -81,6 +81,7 @@ public class UserInformationController {
             if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
                 return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
             }
+            userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);

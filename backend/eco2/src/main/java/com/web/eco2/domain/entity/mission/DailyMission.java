@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -27,14 +29,17 @@ public class DailyMission {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mis_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Mission mission;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cum_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomMission customMission;
 
     @Builder

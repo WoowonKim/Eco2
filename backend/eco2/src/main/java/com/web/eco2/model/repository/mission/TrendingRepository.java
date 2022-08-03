@@ -16,4 +16,7 @@ public interface TrendingRepository extends JpaRepository<Trending, Long> {
 
     @Query(value = "select * from tb_trending t order by t.tre_count desc limit 5", nativeQuery = true)
     List<Trending> findTop5List();
+
+    @Query(value = "update tb_trending t set t.tre_count=t.tre_count-1 where t.mis_id=:missionId", nativeQuery = true)
+    void reduceCount(Long missionId);
 }
