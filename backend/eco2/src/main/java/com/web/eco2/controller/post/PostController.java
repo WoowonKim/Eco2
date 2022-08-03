@@ -1,15 +1,19 @@
 package com.web.eco2.controller.post;
 
+
+import com.google.gson.*;
 import com.web.eco2.domain.dto.post.PostCreateDto;
-import com.web.eco2.domain.dto.post.PostDto;
-import com.web.eco2.domain.dto.user.SignUpRequest;
+import com.web.eco2.domain.dto.post.PostListDto;
+import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +22,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -33,7 +41,50 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private PostImgRepository postImgRepository;
 
+
+    //게시물 조회
+//    @GetMapping()
+//    public ResponseEntity<Object> getPostList() throws IOException {
+//        ArrayList<PostListDto> postListDtos = new ArrayList<>();
+//        PostListDto postListDto = new PostListDto();
+//        List<Post> postList = postService.getPostList();
+//
+//        for (Post post : postList) {
+//            //해당 post id에 맞는 post image를 불러와서 byte를 json으로 변환시키기
+//            Long postId = post.getId();
+//            byte[] imageByte = postService.getImageByte(postId);
+//            String imageByteToString = new String(imageByte, StandardCharsets.UTF_8);
+//
+//            Gson gson = new Gson();
+//            JsonArray imageJsonArrayOutput = new JsonArray();
+//            imageJsonArrayOutput = gson.fromJson(imageByteToString, JsonArray.class);
+////            String json = gson.toJson(imageByteToString);
+////            imageJsonArrayOutput = (JsonArray) JsonParser.parseString(imageByteToString);
+//            //postListDto에 이미지파일, id, user, mission, custonMission 정보를 담기
+//            postListDto.setPostImg(imageJsonArrayOutput);
+//            postListDto.setId(post.getId());
+//            postListDto.setUser(post.getUser());
+//            postListDto.setMission(post.getMission());
+//            postListDto.setCustomMission(post.getCustomMission());
+//            postListDtos.add(postListDto);
+//        }
+//        System.out.println();
+//        return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
+//
+//    }
+//    @GetMapping()
+//    public ResponseEntity<InputStreamResource> getPostList() {
+//        MediaType contentType = MediaType.IMAGE_PNG;
+//        InputStream in = getClass().getResourceAsStream("C:/Users/multicampus/Desktop/common_project2/S07P12B103/backend/eco2/src/main/resources/postImages");
+//        List<Post> postList = postService.getPostList();
+//    }
+
+
+
+    //게시물 등록
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> createPost(@RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
@@ -45,14 +96,38 @@ public class PostController {
         return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
     }
 
-//    @PostMapping()
-//    public ResponseEntity<Object> createPost(@RequestBody MultipartFile postImage, @RequestBody PostCreateDto postCreateDto) throws IOException {
-//
-//        System.out.println(postImage);
-//        System.out.println(postCreateDto);
-//        User postUser = userService.findByEmail(postCreateDto.getUser().getEmail());
-//        postService.savePost(postImage, postCreateDto);
-//        return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
-//    }
+
+    //게시물 수정
+    @PutMapping(value = "/{post_id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> updatePost(@RequestParam Long postId,
+                                             @RequestPart(value = "postImage") MultipartFile postImage,
+                                             @RequestPart(value = "postUpdateDto") PostUpdateDto postUpdateDto) {
+        postService.updatePost(postId, postImage, postUpdateDto);
+        return ResponseHandler.generateResponse("게시물이 수정되었습니다.", HttpStatus.OK);
+    }
+
+
+    //게시물 삭제
+    @DeleteMapping("/{post_id}")
+    public ResponseEntity<Object> deletePost(@RequestParam("postId") Long postId) {
+        try {
+            Post post = postService.getById(postId);
+            if (post == null) {
+                return ResponseHandler.generateResponse("게시물이 존재하지 않습니다.", HttpStatus.ACCEPTED);
+            }
+            System.out.println(postId);
+            postService.deletePost(postId);
+            return ResponseHandler.generateResponse("게시물이 삭제되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+
+
+
+
+    }
+
+
 
 }
