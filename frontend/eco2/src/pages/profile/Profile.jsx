@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
+// import { test } from "../../store/user/accountSlice";
 
 const Profile = () => {
   const [socialType, setSocialType] = useState(0);
@@ -35,6 +36,13 @@ const Profile = () => {
     <div>
       <div className={styles.calender}>달력</div>
       <div className={styles.userInfo}>
+        {/* <button
+          onClick={() => {
+            dispatch(test({ id: userId }));
+          }}
+        >
+          test
+        </button> */}
         <div className={styles.user}>
           <p>UserName</p>
           <button
