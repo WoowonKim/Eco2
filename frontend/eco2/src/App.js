@@ -13,15 +13,10 @@ import Header from "./components/NavFooter/Header";
 import DailyMissionMain from "./pages/dmission/dailyMissionMain/dailyMissionMain";
 import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMissionDetail";
 import MissionCom from "./components/dailyMission/missionClear/missionCom";
+import DailyCustomMissionList from "./components/dailyMission/missionList/dailyCustomMissionList";
+import CustomPlus from "./components/dailyMission/missionItem/customPlus";
 /* DailyMission End */
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -67,12 +62,11 @@ function App() {
           <Route path="/dailymissionmain" element={<DailyMissionMain />} />
           <Route path="/dailymissiondetail" element={<DailyMissionDetail />} />
           <Route path="/missionClear" element={<MissionCom />} />
+          <Route path="/dailyCustomMissionList" element={<DailyCustomMissionList />} />
+          <Route path="/customPlus" element={<CustomPlus />} />
           {/*DailyMission */}
           <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route
-            path="/mainFeed/:feedCategory"
-            element={<FeedCategory />}
-          ></Route>
+          <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
