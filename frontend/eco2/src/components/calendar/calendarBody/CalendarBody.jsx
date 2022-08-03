@@ -10,7 +10,7 @@ import {
   format,
 } from "date-fns";
 import React from "react";
-import styels from "./CalendarBody.module.css";
+import styles from "./CalendarBody.module.css";
 
 const CalendarBody = ({ currentMonth, selectedDate, onDateClick }) => {
   const monthStart = startOfMonth(currentMonth);
@@ -28,16 +28,24 @@ const CalendarBody = ({ currentMonth, selectedDate, onDateClick }) => {
       formattedDate = format(day, "d");
       const cloneDay = day;
       days.push(
-        <div onClick={() => onDateClick(parse(cloneDay))}>
-          <span>{formattedDate}</span>
+        <div
+          className={`${styles.col}`}
+          onClick={() => onDateClick(parse(cloneDay))}
+          key={day}
+        >
+          <span className={styles.text}>{formattedDate}</span>
         </div>
       );
       day = addDays(day, 1);
     }
-    rows.push(<div>{days}</div>);
+    rows.push(
+      <div className={styles.row} key={day}>
+        {days}
+      </div>
+    );
     days = [];
   }
-  return <div>{rows}</div>;
+  return <div className={styles.body}>{rows}</div>;
 };
 
 export default CalendarBody;

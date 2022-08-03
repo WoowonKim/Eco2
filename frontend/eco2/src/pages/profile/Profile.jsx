@@ -34,8 +34,7 @@ const Profile = () => {
     });
   }, []);
   return (
-    <div>
-      {/* <div className={styles.calender}>달력</div> */}
+    <div className={styles.container}>
       <Calendar />
       <div className={styles.userInfo}>
         {/* <button

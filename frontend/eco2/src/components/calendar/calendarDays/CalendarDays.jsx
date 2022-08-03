@@ -6,9 +6,9 @@ const CalendarDays = () => {
   const date = ["Sun", "Mon", "Thu", "Wed", "Thrs", "Fri", "Sat"];
 
   for (let i = 0; i < 7; i++) {
-    days.push(<div>{date[i]}</div>);
+    days.push(<div className={styles.col}>{date[i]}</div>);
   }
-  return <div>{days}</div>;
+  return <div className={`${styles.days}`}>{days}</div>;
 };
 
 export default CalendarDays;

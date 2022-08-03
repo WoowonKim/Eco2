@@ -1,7 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addComment, updateComment } from "../../store/mainFeed/commentSlice";
+import {
+  addComment,
+  updateComment,
+} from "../../../store/mainFeed/commentSlice";
 import styles from "./CommentForm.module.css";
 
 const CommentForm = ({ replyVisible, postId, content, id, closeModal }) => {

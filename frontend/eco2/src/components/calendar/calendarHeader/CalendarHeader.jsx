@@ -4,16 +4,20 @@ import styles from "./CalendarHeader.module.css";
 
 const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
   return (
-    <div className={styles.row}>
-      <div className={styles.col}>
-        <span>
-          <span>{format(currentMonth, "M")}월</span>
+    <div className={`${styles.row} ${styles.header}`}>
+      <div className={`${styles.col} ${styles.col_start}`}>
+        <button className={styles.button} onClick={prevMonth}>
+          ◀︎
+        </button>
+        <span className={styles.text}>
+          <span className={`${styles.text} ${styles.month}`}>
+            {format(currentMonth, "M")}월
+          </span>
           {format(currentMonth, "yyyy")}
         </span>
-      </div>
-      <div>
-        <button onClick={prevMonth}>왼</button>
-        <button onClick={nextMonth}>오</button>
+        <button className={styles.button} onClick={nextMonth}>
+          ▶︎
+        </button>
       </div>
     </div>
   );

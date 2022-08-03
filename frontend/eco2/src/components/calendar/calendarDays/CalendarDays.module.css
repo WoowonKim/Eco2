@@ -1,0 +1,20 @@
+.days {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.65em;
+  padding: 2px;
+  color: darkgray;
+  margin: 7px 0;
+}
+
+.col {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #d2eabaa8;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
