@@ -14,6 +14,7 @@ import {
   authActions,
   ecoName,
   ecoNameVerify,
+  newPassword,
 } from "../../store/user/userSlice";
 import styles from "./UserSettings.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -159,7 +160,7 @@ const UserSettings = () => {
           </div>
           <div className={styles.emailGroup}>
             <div className={styles.emailTitleGroup}>
-              <p className={styles.emailText}>이메일</p>
+              <p className={styles.label}>이메일</p>
               {socialType === 1 && (
                 <img
                   src={`${process.env.PUBLIC_URL}/google_logo.png`}
@@ -172,7 +173,7 @@ const UserSettings = () => {
           </div>
           <div className={styles.econameGroup}>
             <div className={styles.econameTitle}>
-              <label htmlFor="EcoName" className={styles.econameText}>
+              <label htmlFor="EcoName" className={styles.label}>
                 EcoName
               </label>
             </div>
@@ -198,9 +199,35 @@ const UserSettings = () => {
               {nameMessage}
             </p>
           </div>
+          {!!socialType && (
+            <div>
+              <hr className={styles.line} />
+              <button
+                onClick={() => {
+                  dispatch(authActions.logout());
+                  navigate("/");
+                }}
+                className={styles.userButton}
+              >
+                로그아웃
+              </button>
+              <button
+                onClick={() =>
+                  dispatch(deleteUser({ email, password })).then((res) => {
+                    if (res.payload.status === 200) {
+                      dispatch(authActions.logout());
+                    }
+                  })
+                }
+                className={styles.userButton}
+              >
+                회원탈퇴
+              </button>
+            </div>
+          )}
           {!socialType && (
             <div className={styles.passwordGroup}>
-              <p className={styles.passwordText}>비밀번호 변경 / 탈퇴</p>
+              <p className={styles.label}>비밀번호 변경 / 탈퇴</p>
               <p className={styles.passwordSmallText}>
                 비밀번호를 변경하시거나 탈퇴를 하시려면 비밀번호를 확인해주세요
               </p>
@@ -219,6 +246,7 @@ const UserSettings = () => {
                   />
                   <button
                     onClick={handlePassword}
+                    disabled={!password}
                     className={styles.passwordFormButton}
                   >
                     확인
@@ -245,10 +273,13 @@ const UserSettings = () => {
                     placeholder="새 비밀번호"
                     className={styles.passwordFormInput}
                   />
-                  {password.length > 0 && (
+                  {newPassword.length > 0 && (
                     <p className={isPassword ? styles.success : styles.fail}>
                       {passwordMessage}
                     </p>
+                  )}
+                  {newPassword.length === 0 && (
+                    <div className={styles.test}></div>
                   )}
                   <label htmlFor="newPasswordCheck"></label>
                   <input
@@ -258,15 +289,6 @@ const UserSettings = () => {
                     placeholder="새 비밀번호 확인"
                     className={styles.passwordFormInput}
                   />
-                  {password2.length > 0 && (
-                    <p
-                      className={
-                        isPasswordConfirm ? styles.success : styles.fail
-                      }
-                    >
-                      {passwordConfirmMessage}
-                    </p>
-                  )}
                   <button
                     className={styles.passwordFormButton}
                     onClick={() =>
@@ -277,6 +299,19 @@ const UserSettings = () => {
                   >
                     변경
                   </button>
+                  {password2.length > 0 && (
+                    <p
+                      className={
+                        isPasswordConfirm ? styles.success : styles.fail
+                      }
+                    >
+                      {passwordConfirmMessage}
+                    </p>
+                  )}
+                  {password2.length === 0 && (
+                    <div className={styles.test}></div>
+                  )}
+
                   <hr className={styles.line} />
                   <div className={styles.userButtonGroup}>
                     <button

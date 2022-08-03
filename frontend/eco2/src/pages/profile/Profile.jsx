@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
+import Calendar from "../../components/calendar/calendar/Calendar";
 // import { test } from "../../store/user/accountSlice";
 
 const Profile = () => {
@@ -34,7 +35,8 @@ const Profile = () => {
   }, []);
   return (
     <div>
-      <div className={styles.calender}>달력</div>
+      {/* <div className={styles.calender}>달력</div> */}
+      <Calendar />
       <div className={styles.userInfo}>
         {/* <button
           onClick={() => {
