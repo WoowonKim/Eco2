@@ -88,11 +88,11 @@ public class PostController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> createPost(@RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
-
         System.out.println(postImage);
         System.out.println(postCreateDto);
         User postUser = userService.findByEmail(postCreateDto.getUser().getEmail());
         postService.savePost(postImage, postCreateDto);
+        //TODO : 미션 아이디 추가로 넣어줘야함 퀘스트 뺌?
         return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
     }
 

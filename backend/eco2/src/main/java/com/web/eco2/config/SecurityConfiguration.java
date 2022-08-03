@@ -2,9 +2,12 @@ package com.web.eco2.config;
 
 import com.web.eco2.util.JwtAuthenticationFilter;
 import com.web.eco2.util.JwtTokenUtil;
+import com.web.eco2.util.ResponseBodyWriteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,6 +16,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -45,6 +54,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 ////                .antMatchers("/auth/**").hasAnyRole("ADMIN", "USER")
 ////                .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
 //                .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling()
+//                .accessDeniedHandler(new AccessDeniedHandler() {
+//                    @Override
+//                    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+//                        ResponseBodyWriteUtil.sendError(response, "관리자만 접근이 가능합니다.", HttpStatus.FORBIDDEN);
+//                    }
+//                })
 //                .and()
 //                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtTokenUtil))
 //                .cors()
