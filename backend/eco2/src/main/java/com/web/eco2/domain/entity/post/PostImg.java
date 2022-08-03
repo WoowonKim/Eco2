@@ -16,22 +16,30 @@ public class PostImg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "poi_id")
+    @Column(name = "pos_id")
     private Long id;
 
-    @Column(name = "pri_save_folder", length = 100, nullable = false)
+    @Column(name = "poi_save_folder", length = 100, nullable = false)
     private String saveFolder;
 
-    @Column(name = "pri_original_name", length = 200, nullable = false)
+    @Column(name = "poi_original_name", length = 200, nullable = false)
     private String originalName;
 
-    @Column(name = "pri_save_name", length = 100, nullable = false, unique = true)
+    @Column(name = "poi_save_name", length = 100, nullable = false, unique = true)
     private String saveName;
 
+
+    @MapsId
+    @OneToOne
+    @JoinColumn(name = "pos_id")
+    private Post post;
+
     @Builder
-    public PostImg(String saveFolder, String originalName, String saveName) {
+    public PostImg(Long id, String saveFolder, String originalName, String saveName, Post post) {
+        this.id = id;
         this.saveFolder = saveFolder;
         this.originalName = originalName;
         this.saveName = saveName;
+        this.post = post;
     }
 }

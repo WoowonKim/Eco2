@@ -78,9 +78,6 @@ public class UserInformationController {
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원", HttpStatus.BAD_REQUEST);
             }
-//            if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
-//                return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
-//            }
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

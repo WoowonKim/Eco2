@@ -1,6 +1,7 @@
 package com.web.eco2.model.service.mission;
 
 import com.web.eco2.domain.entity.mission.CustomMission;
+import com.web.eco2.domain.entity.mission.DailyMission;
 import com.web.eco2.model.repository.mission.CustomMissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ public class CustomMissionService {
 
     @Autowired
     private CustomMissionRepository customMissionRepository;
+    @Autowired
+    private DailyMissionService dailyMissionService;
 
     public void save(CustomMission customMission) {
         customMissionRepository.save(customMission);
@@ -29,8 +32,18 @@ public class CustomMissionService {
         return customMissionRepository.findByCumId(missionId);
     }
 
-
-//    public List<CustomMission> findOne(Long userId) {
-//        return customMissionRepository.findOne(userId);
-//    }
+    public List<CustomMission> selectedCustomDailyMission(List<CustomMission> customMissionList, Long usrId) {
+        List<DailyMission> dailyMissionList = dailyMissionService.findCustomListByUsrId(usrId);
+        System.out.println(customMissionList);
+        for (DailyMission dailyMission: dailyMissionList){
+            for (CustomMission customMission : customMissionList){
+                if(customMission.getId() == dailyMission.getCustomMission().getId()){
+                    customMissionList.remove(customMission);
+                    break;
+                }
+            }
+        }
+        System.out.println(customMissionList);
+        return customMissionList;
+    }
 }

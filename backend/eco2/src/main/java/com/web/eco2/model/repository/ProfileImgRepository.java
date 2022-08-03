@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProfileImgRepository extends JpaRepository<ProfileImg, Long> {
 
-    ProfileImg findById(Integer id);
+
 
 }

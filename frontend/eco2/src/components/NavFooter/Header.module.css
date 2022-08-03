@@ -12,6 +12,7 @@
   left: 0;
   right: 0;
   width: 330px;
+  z-index: 1;
 }
 .Img {
   height: 30px;

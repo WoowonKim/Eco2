@@ -13,11 +13,14 @@ public class TrendingService {
     private TrendingRepository tredingRepository;
 
     public void updateCount(Long missionId) {
-        System.out.println("updateCOunt");
         tredingRepository.updateCount(missionId);
     }
 
     public List<Trending> findTop5List() {
         return tredingRepository.findTop5List();
+    }
+
+    public void reduceCount(Long missionId) {
+        tredingRepository.reduceCount(missionId);
     }
 }
