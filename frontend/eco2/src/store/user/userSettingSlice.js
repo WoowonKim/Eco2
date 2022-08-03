@@ -24,7 +24,7 @@ export const passwordCheck = createAsyncThunk(
   async (args, { rejectWithValue }) => {
     const accessToken = getToken();
     const response = await axios({
-      url: `/userinformation/password`,
+      url: "/userinformation/password",
       method: "post",
       data: {
         email: args.email,
@@ -40,12 +40,36 @@ export const passwordCheck = createAsyncThunk(
 
 // 비밀번호 수정
 export const passwordChange = createAsyncThunk(
-  "userInformationSlice/passwordCheck",
+  "userInformationSlice/passwordChange",
+  async (args, { rejectWithValue }) => {
+    try {
+      const accessToken = getToken();
+      const response = await axios({
+        url: "/userinformation/password",
+        method: "put",
+        data: {
+          email: args.email,
+          password: args.password,
+        },
+        headers: {
+          "Auth-accessToken": accessToken,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      console.log(err, args.email, args.password);
+    }
+  }
+);
+
+// 회원 탈퇴
+export const deleteUser = createAsyncThunk(
+  "userInformationSlice/deleteUser",
   async (args, { rejectWithValue }) => {
     const accessToken = getToken();
     const response = await axios({
-      url: `/userinformation/password`,
-      method: "put",
+      url: `/userinformation`,
+      method: "delete",
       data: {
         email: args.email,
         password: args.password,
@@ -80,6 +104,12 @@ export const userInformationSlice = createSlice({
     },
     [passwordChange.rejected]: (state, action) => {
       console.log("passwordChange rejected", action.payload);
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      console.log("deleteUser fulfilled", action.payload);
+    },
+    [deleteUser.rejected]: (state, action) => {
+      console.log("deleteUser rejected", action.payload);
     },
   },
 });
