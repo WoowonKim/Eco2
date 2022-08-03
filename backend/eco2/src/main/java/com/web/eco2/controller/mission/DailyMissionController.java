@@ -60,9 +60,6 @@ public class DailyMissionController {
     private CalendarService calendarService;
 
 
-    @Value("${reward.path}")
-    private String uploadFolder;
-
     //데일리 미션 등록
     @PostMapping("/{usrId}")
     public ResponseEntity<Object> registerDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRequest dailyMissionRequest) {
@@ -109,6 +106,7 @@ public class DailyMissionController {
             if (dailyMissionRequest.getMissionType() == 0) {
                 //기본미션 삭제
                 dailyMission = dailyMissionService.findListByUsrIdAndMisId(usrId, dailyMissionRequest.getMissionId());
+                trendingService.reduceCount(dailyMission.getId());
             } else {
                 dailyMission = dailyMissionService.findListByUsrIdAndCumId(usrId, dailyMissionRequest.getMissionId());
             }
@@ -145,43 +143,16 @@ public class DailyMissionController {
     public ResponseEntity<Object> rewardDailyMission(@PathVariable("usrId") Long usrId) {
         try {
             User user = userService.getById(usrId);
-            CalendarDto calendarDto = new CalendarDto(user);
+            CalendarDto calendarDto = dailyMissionService.getCalendarDto(user);
             System.out.println(calendarDto);
-
-
-//            ClassPathResource cpr = new ClassPathResource("/rewardImages/original.png");
-//            byte[] bdata = FileCopyUtils.copyToByteArray(cpr.getInputStream());
-////            String jsonTxt=new String(bdata, StandardCharsets.UTF_8);
-//            ByteArrayInputStream input_stream = new ByteArrayInputStream(bdata);
-//            BufferedImage img = ImageIO.read(input_stream);
-//            File originalImaImageIO.write(final_buffered_image , "png", new File("./temp.png") );ge = new File(uploadFolder + "/original.png");
-//            ClassPathResource classPathResource = new ClassPathResource("/resources/original.png");
-//            System.out.println(classPathResource);
-//            System.out.println(this.getClass().getResource("classpath:resources/rewardImages/original.png"));
-
             //보상 이미지 생성
-//            BufferedImage img = new BufferedImage(300, 600, BufferedImage.TYPE_INT_RGB);
-//            BufferedImage img = ImageIO.read(new File("C:/Users/multicampus/Desktop/배경화면/original.PNG"));
-            BufferedImage img = null;
-            URL url = new URL("https://png.pngtree.com/thumb_back/fw800/background/20190221/ourmid/pngtree-pink-watercolor-texture-shading-image_25522.jpg");
-            img = ImageIO.read(url);
-            Graphics2D graphics = img.createGraphics();    // Graphics2D를 얻어와 그림을 그린다
-//            graphics.dispose();
-            Font font = new Font("Gungsuh", Font.BOLD, 26);
-            graphics.setFont(font);
-            graphics.setColor(Color.PINK);
-            graphics.drawString(calendarDto.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")), 200, 200);
+            BufferedImage img = dailyMissionService.getRewardImage(user, calendarDto);
 
-            System.out.println(img);
             //디비, 로컬에 파일 저장
-            UUID uuid = UUID.randomUUID();
-            String saveName = uuid.toString() + calendarDto.getDate() + calendarDto.getUser().getEmail();
-            calendarDto.setSaveName(saveName);
-            calendarDto.setSaveFolder(uploadFolder);
             File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".jpg");
             ImageIO.write(img, "jpg", saveFile);               // write메소드를 이용해 파일을 만든다
             calendarService.save(calendarDto.toEntity());
-            //TODO: 프론트에서 이미지 출력시 뭐 필요한지 모름,, response에 담아주기
+            //TODO : 프론트에서 이미지 출력시 뭐 필요한지 모름,, response에 담아주기
 
             return ResponseHandler.generateResponse("보상 이미지 제공이 완료되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
@@ -222,6 +193,21 @@ public class DailyMissionController {
         }
     }
 
+    //데일리 미션 추천
+    @PostMapping("/recommend/{usrId}")
+    public ResponseEntity<Object> recommendDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
+        try {
+            // 리셋
+            dailyMissionService.deleteByUsrId(usrId);
+
+            //위치 받아와서 추천 목록 생성
+            //디비에 넣기
+            return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //트렌딩 조회
     @GetMapping("/trending")

@@ -10,9 +10,46 @@ export const friends = createAsyncThunk(
       url: "/account/friend",
       method: "get",
       data: {
-        email: args.email,
-        password: args.password,
-        socialType: args.socialType,
+        id: args.id,
+      },
+      headers: {
+        Authorization: "Authorization ",
+      },
+    });
+    return response.data;
+  }
+);
+
+// 친구 신청
+export const friendRequest = createAsyncThunk(
+  "accountSlice/friendRequest",
+  async (args, { rejectWithValue }) => {
+    const response = await axios({
+      url: "/account/friend",
+      method: "post",
+      params: {
+        fromId: args.fromId,
+        toId: args.toId,
+      },
+      headers: {
+        Authorization: "Authorization ",
+      },
+    });
+    return response.data;
+  }
+);
+
+// 친구 수락
+export const friendResponse = createAsyncThunk(
+  "accountSlice/friendResponse",
+  async (args, { rejectWithValue }) => {
+    const response = await axios({
+      url: "/account/friend",
+      method: "put",
+      data: {
+        id: args.id,
+        response: true,
+        alarmId: args.alarmId,
       },
       headers: {
         Authorization: "Authorization ",
@@ -68,6 +105,23 @@ export const accountSettingChange = createAsyncThunk(
   }
 );
 
+// 공지사항 테스트 요청
+// export const test = createAsyncThunk(
+//   "accountSlice/test",
+//   async (args, { rejectWithValue }) => {
+//     const accessToken = getToken();
+//     const response = await axios({
+//       url: `/admin/notice/${args.id}`,
+//       method: "post",
+//       data: {},
+//       headers: {
+//         "Auth-accessToken": accessToken,
+//       },
+//     });
+//     return response.data;
+//   }
+// );
+
 export const accountSlice = createSlice({
   name: "account",
   initialState: {
@@ -80,17 +134,28 @@ export const accountSlice = createSlice({
     // },
   },
   extraReducers: {
-    [friends.fulfilled]: (state, action) => {},
-    [friends.rejected]: (state, action) => {},
-    [accountSetting.pending]: (state, action) => {
-      console.log("accountSetting pending", action.payload);
-      state.loading = true;
+    [friends.fulfilled]: (state, action) => {
+      console.log("friends fulfilled", action.payload);
+    },
+    [friends.rejected]: (state, action) => {
+      console.log("friends rejected", action.payload);
+    },
+    [friendRequest.fulfilled]: (state, action) => {
+      console.log("friendRequest fulfilled", action.payload);
+    },
+    [friendRequest.rejected]: (state, action) => {
+      console.log("friendRequest rejected", action.payload);
+    },
+    [friendResponse.fulfilled]: (state, action) => {
+      console.log("friendResponse fulfilled", action.payload);
+    },
+    [friendResponse.rejected]: (state, action) => {
+      console.log("friendResponse rejected", action.payload);
     },
     [accountSetting.fulfilled]: (state, action) => {
       console.log("accountSetting fulfilled", action.payload);
-      state.loading = false;
-      state.data = action.payload.userSetting;
-      // console.log(state.data);
+      // state.loading = false;
+      // state.data = action.payload.userSetting;
     },
     [accountSetting.rejected]: (state, action) => {
       console.log("accountSetting rejected", action.payload);
@@ -101,6 +166,12 @@ export const accountSlice = createSlice({
     [accountSettingChange.rejected]: (state, action) => {
       console.log("accountSettingChange rejected", action.payload);
     },
+    // [test.fulfilled]: (state, action) => {
+    //   console.log("test fulfilled", action.payload);
+    // },
+    // [test.rejected]: (state, action) => {
+    //   console.log("test rejected", action.payload);
+    // },
   },
 });
 

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostImgRepository extends JpaRepository<PostImg, Long> {
 
+    PostImg getById(Long id);
+
+
     static void savePostImg(PostImg build) {
 
     }

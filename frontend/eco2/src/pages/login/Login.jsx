@@ -5,12 +5,12 @@ import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { signInGoogle, auth } from "../../store/firebase";
-import { setUserEmail } from "../../store/user/common";
+import { setUserEmail, setUserName } from "../../store/user/common";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [socialType, setSocialType] = useState("email");
+  // const [socialType, setSocialType] = useState("email");
   const [loginFailMsg, setLoginFailMsg] = useState(false);
 
   let currUser = useSelector((state) => state.user);
@@ -19,17 +19,12 @@ function Login() {
   const dispatch = useDispatch();
   const handleSubmit = (event) => {
     event.preventDefault();
-    let type;
-    if (socialType === "email") {
-      let type = 0;
-    } else if (socialType === "google") {
-      let type = 1;
-    }
-    dispatch(login({ email: email, password: password, socialType: type }))
+    dispatch(login({ email: email, password: password, socialType: 0 }))
       .then((res) => {
         if (res.payload.status === 200) {
           setLoginFailMsg(false);
           setUserEmail(email);
+          setUserName(res.payload.user.name);
           navigate("/mainFeed");
         }
         setLoginFailMsg(true);
@@ -47,7 +42,12 @@ function Login() {
             socialType: 1,
             idToken: idToken,
           })
-        ).then((res) => setUserEmail(data.additionalUserInfo.profile.email));
+        ).then((res) => {
+          console.log(data.additionalUserInfo.profile.name);
+          setUserEmail(data.additionalUserInfo.profile.email);
+          setUserName(data.additionalUserInfo.profile.name);
+          navigate("/mainFeed");
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -98,9 +98,9 @@ function Login() {
           />
         </button>
         <button
-          onClick={() => {
-            setSocialType(2);
-          }}
+          // onClick={() => {
+          //   setSocialType(2);
+          // }}
           className={styles.socialButton}
         >
           <img
