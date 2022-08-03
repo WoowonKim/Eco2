@@ -1,4 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+import axios from "axios";
+
+export const dMission = createAsyncThunk("dailymission/list", async (args, { rejectWithValue }) => {
+  const response = await axios({
+    url: "/mission",
+    method: "get",
+    data: {},
+    headers: {
+      Authorization: "Authorization ",
+    },
+  });
+  return response.data;
+});
 
 const DummyMissionState = {
   dailyMissionList: [
@@ -13,12 +27,13 @@ const DummyMissionState = {
 export const dailymissionSlice = createSlice({
   name: "dailyMission",
   initialState: DummyMissionState,
-  reducers: {
-    deleteMission: (state, action) => {
-      return state.filter((it) => it.id !== action.payload.id);
+  reducers: {},
+  extraReducers: {
+    [dMission.fulfilled]: (state, action) => {
+      console.log(action.payload);
     },
+    [dMission.rejected]: (state, action) => {},
   },
-  extraReducers: {},
 });
 
 export const dailymissionActions = dailymissionSlice.actions;

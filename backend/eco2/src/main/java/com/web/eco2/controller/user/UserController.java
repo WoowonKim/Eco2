@@ -102,8 +102,7 @@ public class UserController {
 
             String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
             response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
-
-            return ResponseHandler.generateResponse("회원가입에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
+            return ResponseHandler.generateResponse("회원가입에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", dbUser);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -146,8 +145,8 @@ public class UserController {
     }
 
     //이메일 중복확인
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Object> checkEmail(@PathVariable("email") String email) {
+    @GetMapping("/email")
+    public ResponseEntity<Object> checkEmail(@RequestParam("email") String email) {
         try {
             User emailUser = userService.findByEmail(email);
             if (emailUser == null) {
@@ -236,23 +235,31 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody SignUpRequest user, HttpServletResponse response) throws IOException {
-        try {
-            User loginUser = userService.findByEmail(user.getEmail());
-            if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
-                System.out.println("이메일, 비밀번호 불일치");
-                return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.ACCEPTED);
-            }
-            System.out.println("login==================");
-            String refreshToken = jwtTokenUtil.createRefreshToken();
-            loginUser.setRefreshToken(refreshToken);
-            userService.save(loginUser);
-            response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
+        if (user.getSocialType() == 0) {
+            try {
+                User loginUser = userService.findByEmail(user.getEmail());
+                if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
+                    System.out.println("이메일, 비밀번호 불일치");
+                    return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.ACCEPTED);
+                }
+                String refreshToken = jwtTokenUtil.createRefreshToken();
+                loginUser.setRefreshToken(refreshToken);
+                userService.save(loginUser);
+                response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
 
-            String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
-            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+                String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
+                return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", loginUser);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            Map<String, String> map = new HashMap<>();
+            String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
+            map.put("url", url);
+            map.put("msg", "소셜 로그인");
+//            response.sendRedirect(url);
+            return new ResponseEntity<Map<String, String>>(map, HttpStatus.ACCEPTED);
         }
     }
 
@@ -260,13 +267,13 @@ public class UserController {
     @PostMapping("/auth/{socialType}")
     public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType,
                                                  @RequestBody String idToken, HttpServletResponse response) {
-        try{
+        try {
             FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
             String email = decodedToken.getEmail();
             User user = userService.findByEmail(email);
 
             String refreshToken = jwtTokenUtil.createRefreshToken();
-            if(user == null) {
+            if (user == null) {
                 // 없는 회원: 회원 가입하기
                 userService.save(User.builder().email(email).socialType(socialType).refreshToken(refreshToken).build());
                 user = userService.findByEmail(email);
@@ -293,7 +300,7 @@ public class UserController {
                         .build();
                 statisticService.save(statistic);
 
-            } else if(user.getSocialType() != socialType) {
+            } else if (user.getSocialType() != socialType) {
                 // 다른 소셜로 회원가입한 유저
                 return ResponseHandler.generateResponse("이미 다른 소셜로 가입한 이메일입니다.", HttpStatus.ACCEPTED, "socialType", user.getSocialType());
             } else {

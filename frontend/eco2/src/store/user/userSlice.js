@@ -4,7 +4,8 @@ import {
   getCookie,
   getToken,
   removeUserSession,
-  setUserSession,
+  setAccessToken,
+  setEmail,
 } from "./common";
 
 // login 요청
@@ -186,38 +187,44 @@ const authState = {
   isEcoNameValid: false,
   isEcoNameVerified: false,
   isPasswordValid: false,
+  email: "",
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState: authState,
-  reducers: {},
+  reducers: {
+    logout: (state, action) => {
+      removeUserSession();
+    },
+  },
   extraReducers: {
     [login.fulfilled]: (state, action) => {
       console.log("login fulfilled", action.payload);
       if (action.payload.status === 200) {
-        state.isLoggedIn = 1;
-        state.token = action.payload.accessToken;
+        // state.isLoggedIn = 1;
+        // state.token = action.payload.accessToken;
+        setAccessToken(action.payload.accessToken);
       }
-      setUserSession(action.payload.accessToken);
     },
     [login.rejected]: (state, action) => {
       console.log("login rejected", action.payload);
-      state.isLoggedIn = 0;
-      state.token = null;
+      // state.isLoggedIn = 0;
+      // state.token = null;
       removeUserSession();
     },
     [signUp.fulfilled]: (state, action) => {
       console.log("signup fulfilled", action.payload);
       if (action.payload.status === 200) {
-        state.isLoggedIn = 1;
-        state.token = action.payload.accessToken;
+        // state.isLoggedIn = 1;
+        // state.token = action.payload.accessToken;
+        setAccessToken(action.payload.accessToken);
       }
-      setUserSession(action.payload.accessToken);
     },
     [signUp.rejected]: (state, action) => {
       console.log("signup rejected", action.payload);
-      state.isLoggedIn = 0;
+      // state.isLoggedIn = 0;
+      removeUserSession();
     },
     [emailVerify.fulfilled]: (state, action) => {
       console.log("emailVerify fulfilled", action.payload);
@@ -282,13 +289,15 @@ export const authSlice = createSlice({
     [googleLogin.fulfilled]: (state, action) => {
       console.log("googleLogin fulfilled", action.payload);
       if (action.payload.status === 200) {
-        state.isLoggedIn = 1;
-        state.token = action.payload.accessToken;
+        // state.isLoggedIn = 1;
+        // state.token = action.payload.accessToken;
+        setAccessToken(action.payload.accessToken);
       }
     },
     [googleLogin.rejected]: (state, action) => {
       console.log("googleLogin rejected", action.payload);
       // state.isPasswordValid = false;
+      removeUserSession();
     },
   },
 });

@@ -3,14 +3,24 @@ export const getToken = () => {
   return localStorage.getItem("accessToken") || null;
 };
 
+export const getUserEmail = () => {
+  return localStorage.getItem("email") || null;
+};
+
 // remove the token and user from the session storage
 export const removeUserSession = () => {
   localStorage.removeItem("accessToken");
+  localStorage.removeItem("email");
 };
 
 // set the token and user from the session storage
-export const setUserSession = (token) => {
-  localStorage.setItem("accessToken", token);
+export const setAccessToken = (accessToken) => {
+  localStorage.setItem("accessToken", accessToken);
+};
+
+export const setUserEmail = (email) => {
+  console.log(email);
+  localStorage.setItem("email", email);
 };
 
 export const getCookie = (cookieName) => {

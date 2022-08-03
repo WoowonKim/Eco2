@@ -34,7 +34,7 @@ public class UserInformationController {
     // 회원 조회
     @GetMapping("/{email}")
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
-        if(email == null) {
+        if (email == null) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
         UserDto user = userService.findUserInfoByEmail(email).toDto();
@@ -55,7 +55,7 @@ public class UserInformationController {
             if (updateUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.OK);
             }
-            updateUser.setName(updateUser.getName());
+
             profileImgService.uploadProfileImg(file, updateUser);
             userService.save(updateUser);
             return ResponseHandler.generateResponse("회원정보가 수정되었습니다.", HttpStatus.OK);
@@ -68,19 +68,24 @@ public class UserInformationController {
     // 사용자 탈퇴
     @DeleteMapping
     public ResponseEntity<?> deleteUser(@RequestBody SignUpRequest user) {
-        if(user == null || user.getEmail() == null) {
-            return ResponseHandler.generateResponse("잘못된 요청", HttpStatus.BAD_REQUEST);
+        try {
+            if (user == null || user.getEmail() == null) {
+                return ResponseHandler.generateResponse("잘못된 요청", HttpStatus.BAD_REQUEST);
+            }
+            System.out.println(user);
+            User dbUser = userService.findByEmail(user.getEmail());
+            System.out.println(dbUser);
+            if (dbUser == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 회원", HttpStatus.BAD_REQUEST);
+            }
+            if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+                return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+            }
+            return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-        User dbUser = userService.findByEmail(user.getEmail());
 
-        if(dbUser == null) {
-            return ResponseHandler.generateResponse("존재하지 않는 회원", HttpStatus.BAD_REQUEST);
-        }
-        if(!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
-            return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
-        }
-        userService.delete(dbUser);
-        return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
     }
 
     // 현재 비밀번호 확인

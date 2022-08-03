@@ -2,6 +2,9 @@ package com.web.eco2.domain.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.eco2.domain.dto.user.UserDto;
+import com.web.eco2.domain.entity.Item.Statistic;
+import com.web.eco2.domain.entity.UserSetting;
+import com.web.eco2.domain.entity.calender.Calendar;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,7 +18,7 @@ import java.util.stream.Collectors;
 @Entity
 @NoArgsConstructor
 @Table(name = "tb_user")
-@ToString
+//@ToString
 @Data
 public class User {
 
@@ -41,12 +44,23 @@ public class User {
     @Column(name = "usr_refreshToken")
     private String refreshToken;
 
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "pri_id", nullable = true)
-//    private ProfileImg profileImg;
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProfileImg profileImg;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserSetting userSetting;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Statistic statistic;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Calendar Calendar;
 
     @ElementCollection(fetch = FetchType.EAGER)
-//    @Column(name = "usr_role", nullable = true)
     private List<String> role = new ArrayList<>();
 
     @Builder
