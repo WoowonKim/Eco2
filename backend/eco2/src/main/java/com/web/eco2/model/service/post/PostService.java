@@ -52,15 +52,17 @@ public class PostService {
         File savePostImage = new File(uploadPostImgPath, saveName);
         postImage.transferTo(savePostImage);
 
-        Post post = Post.builder()
-                .content(postCreateDto.getContent())
-                .user(postCreateDto.getUser())
-                .mission(postCreateDto.getMission())
-                .category(postCreateDto.getMission().getCategory())
-                .registTime(LocalDateTime.now())
-                .publicFlag(true)
-                .commentFlag(true)
-                .report(false).build();
+//        Post post = Post.builder()
+//                .content(postCreateDto.getContent())
+//                .user(postCreateDto.getUser())
+//                .mission(postCreateDto.getMission())
+//                .category(postCreateDto.getMission().getCategory())
+//                .registTime(LocalDateTime.now())
+//                .publicFlag(true)
+//                .commentFlag(true)
+//                .report(false).build();
+
+        Post post = postCreateDto.toEntity();
         postImgRepository.save(PostImg.builder().saveFolder(uploadPostImgPath).saveName(saveName).originalName(originalName).post(post).build());
 
 //        if(postCreateDto.getMission() != null) {
