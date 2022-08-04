@@ -2,8 +2,11 @@ package com.web.eco2.model.service.post;
 
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.QuestPost;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.repository.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +64,13 @@ public class PostService {
 //                .publicFlag(true)
 //                .commentFlag(true)
 //                .report(false).build();
-
-        Post post = postCreateDto.toEntity();
+        System.out.println("postCreateDto::"+postCreateDto);
+        Post post;
+        if(postCreateDto.getQuest() != null) {
+            post = postCreateDto.toQuestPostEntity();
+        } else {
+            post = postCreateDto.toEntity();
+        }
         postImgRepository.save(PostImg.builder().saveFolder(uploadPostImgPath).saveName(saveName).originalName(originalName).post(post).build());
 
 //        if(postCreateDto.getMission() != null) {
@@ -151,6 +159,14 @@ public class PostService {
 
         postRepository.delete(post); //게시글 삭제
 
+    }
+
+    public List<QuestPost> findByQuest(Quest quest) {
+        return postRepository.findByQuest(quest);
+    }
+
+    public List<QuestPost> findByUserAndQuestNotNull(User user) {
+        return postRepository.findByUserAndQuestNotNull(user);
     }
 
 
