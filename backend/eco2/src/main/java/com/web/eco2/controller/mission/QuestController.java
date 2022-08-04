@@ -115,8 +115,7 @@ public class QuestController {
             if (quest.isEmpty()) {
                 return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
             }
-            QuestDto quest = quest.get().toDto();
-            return ResponseHandler.generateResponse("퀘스트 상세조회에 성공하였습니다.", HttpStatus.OK, "quest", quest);
+            return ResponseHandler.generateResponse("퀘스트 상세조회에 성공하였습니다.", HttpStatus.OK, "quest", quest.get().toDto());
         } catch (Exception e) {
             log.error("퀘스트 상세 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
