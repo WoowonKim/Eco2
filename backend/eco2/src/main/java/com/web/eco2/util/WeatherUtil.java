@@ -13,14 +13,17 @@ import java.util.Arrays;
 public class WeatherUtil {
     @Value("${api.weather.key}")
 	private String WEATHER_SERVICE_KEY;
-//    private String WEATHER_SERVICE_KEY = "Q687jL5H8eZzVz6i0webM%2F%2BlIdN38B5%2FGU8msgIjvzj81%2FSbffC8xOo0IrFuOn6GrtQhX5snQAOHcCag9h1iog%3D%3D";
 
     @Value("${api.air.key}")
-//	private String AIR_SERVICE_KEY;
-    private String AIR_SERVICE_KEY = "Q687jL5H8eZzVz6i0webM%2F%2BlIdN38B5%2FGU8msgIjvzj81%2FSbffC8xOo0IrFuOn6GrtQhX5snQAOHcCag9h1iog%3D%3D";
+	private String AIR_SERVICE_KEY;
+
+    @Value("${kakao-client-id}")
+    private String KAKAO_KEY;
 
     private static final String ULTRA_SRT_BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrt";
     private static final String AIR_INQUERY_BASE_URL = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/";
+
+    private static final String KAKAO_BASE_URL = "https://dapi.kakao.com/v2/local/geo/coord2address.json";
 
     private final int XO = 43; // 기준점 X좌표 (GRID)
     private final int YO = 136; // 기준점 Y좌표 (GRID)
@@ -53,6 +56,20 @@ public class WeatherUtil {
         xy[1] = (int) (ro - ra * Math.cos(theta) + YO + 0.5);
 
         return xy;
+    }
+
+    public String getKakaoReverseGeocodeUrl(String lat, String lng) {
+        String url = KAKAO_BASE_URL;
+
+        StringBuffer query = new StringBuffer("?");
+        addQuery(query, "x", lng);
+        addQuery(query, "y", lat);
+
+        return url + query.toString();
+    }
+
+    public String getKakaoRestKey() {
+        return KAKAO_KEY;
     }
 
     public String setUltraSrtUrl(String lat, String lng, LocalDateTime time, String type) {
