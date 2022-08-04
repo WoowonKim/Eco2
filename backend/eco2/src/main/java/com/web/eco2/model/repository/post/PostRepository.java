@@ -14,9 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Post getById(Long id);
 
-    // FIXME: save(Post)만 가능!
-
-
 //    List<Post> findByUserIdOrderByIdDesc(Long userid);
 
 

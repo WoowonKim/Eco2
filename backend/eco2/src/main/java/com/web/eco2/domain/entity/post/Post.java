@@ -46,17 +46,18 @@ public class Post {
     @ColumnDefault("1")
     private boolean commentFlag = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "usr_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mis_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Mission mission;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cum_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomMission customMission;
@@ -66,7 +67,17 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;
 
-    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission, Quest quest) {
+    @Column(name = "pos_category", nullable = false)
+    private Integer category;
+
+
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "qul_id")
+//    private Quest quest;
+
+    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission
+//            ,Quest quest
+    ) {
         this.id = id;
         this.registTime = registTime;
         this.content = content;
@@ -76,7 +87,7 @@ public class Post {
         this.user = user;
         this.mission = mission;
         this.customMission = customMission;
-        this.quest = quest;
+//        this.quest = quest;
     }
 
     public Post(Long id, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission) {

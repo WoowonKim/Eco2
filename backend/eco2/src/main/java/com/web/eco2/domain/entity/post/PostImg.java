@@ -35,6 +35,7 @@ public class PostImg {
     @OneToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "pos_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
     @Builder

@@ -100,7 +100,7 @@ public class UserController {
                     .build();
             statisticService.save(statistic);
 
-            String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_USER"));
+            String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
             response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
             return ResponseHandler.generateResponse("회원가입에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", dbUser);
         } catch (Exception e) {
