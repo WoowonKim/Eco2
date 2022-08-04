@@ -19,8 +19,8 @@ public class PostListDto {
     private String userName;
     private String content;
     private String postImgUrl;
-    private Long missionId;
-    private Long customMissionId;
+    private Mission mission;
+    private CustomMission customMission;
 
     public PostListDto() {
 
