@@ -42,14 +42,10 @@ public class Quest {
     @Column(name = "que_achieve_flag", nullable = false)
     @ColumnDefault("false")
     private boolean achieveFlag = false;
-//    @ColumnDefault("0")
-//    private Integer achieveFlag;
 
     @Column(name = "que_finish_flag", nullable = false)
     @ColumnDefault("false")
     private boolean finishFlag = false;
-//    @ColumnDefault("0")
-//    private Integer finishFlag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id", nullable = false)

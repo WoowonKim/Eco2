@@ -47,7 +47,6 @@ public class Post {
     private boolean commentFlag = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "usr_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
