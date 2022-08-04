@@ -7,18 +7,17 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 320px;
+  width: 300px;
   text-align: center;
-  /* height: 50px; */
+  height: 50px;
   line-height: 50px;
 }
 
 .col {
-  display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  width: calc(320px / 7);
+  width: calc(300px / 7);
   border: 0.7px solid rgba(128, 128, 128, 0.1);
   border-radius: 3px;
   font-size: 0.7em;
@@ -26,4 +25,20 @@
 
 .text {
   margin: 0 0 0 5px;
+}
+
+.not_valid {
+  color: darkgray;
+}
+
+.valid:hover {
+  transform: scale(1.01);
+  border: none;
+  background-color: rgba(169, 169, 169, 0.1);
+}
+
+.selected {
+  transform: scale(1.02);
+  border: none;
+  background-color: #d2eaba8c;
 }

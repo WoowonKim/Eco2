@@ -1,0 +1,15 @@
+.titleGroup {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  border: none;
+  background-color: white;
+}
+
+.text {
+  font-size: small;
+}
