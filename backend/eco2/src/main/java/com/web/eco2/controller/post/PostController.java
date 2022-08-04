@@ -3,19 +3,24 @@ package com.web.eco2.controller.post;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.web.eco2.domain.dto.mission.QuestDto;
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
+import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.FavoritePost;
 import com.web.eco2.domain.entity.post.PostImg;
+import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.service.item.StatisticService;
+import com.web.eco2.model.service.mission.CustomMissionService;
 import com.web.eco2.model.service.mission.MissionService;
+import com.web.eco2.model.service.mission.QuestService;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostLikeService;
 import com.web.eco2.model.service.post.PostService;
@@ -35,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -60,13 +66,20 @@ public class PostController {
     private MissionService missionService;
 
     @Autowired
-    private PostLikeService postLikeService;
+    private CustomMissionService customMissionService;
 
+    @Autowired
+    private QuestService questService;
+
+    @Autowired
+    private PostLikeService postLikeService;
 
     @Autowired
     private CommentService commentService;
 
 
+    //게시물 전체 조회
+    // TODO: 전체조회에서 퀘스트 인증글 보여줄건지?
     @ApiOperation(value = "게시물 전체 조회", response = Object.class)
     @GetMapping()
     public ResponseEntity<Object> getPostList() {
@@ -85,12 +98,16 @@ public class PostController {
                 String userName = post.getUser().getName();
                 String content = post.getContent();
                 String postImgUrl = postImgPath;
+
                 Mission mission = null;
                 CustomMission customMission = null;
+                QuestDto quest = null;
                 if (post.getMission() != null) {
                     mission = post.getMission();
                 } else if (post.getCustomMission() != null) {
                     customMission = post.getCustomMission();
+                } else if (post instanceof QuestPost) {
+                    quest = ((QuestPost) post).getQuest().toDto();
                 }
 
                 postListDto.setId(id);
@@ -100,6 +117,7 @@ public class PostController {
                 postListDto.setPostImgUrl(postImgUrl);
                 postListDto.setMission(mission);
                 postListDto.setCustomMission(customMission);
+                postListDto.setQuest(quest);
                 postListDto.setLike(postLikeService.findLike(post.getUser().getId(), post.getId()));
                 postListDtos.add(postListDto);
             }
@@ -117,44 +135,36 @@ public class PostController {
         try {
             log.info("특정 게시물 조회 API 호출");
             PostListDto postListDto = new PostListDto();
+
             Post post = postService.getSpecificPost(postId);
             PostImg postImg = postImgRepository.getById(postId);
             String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
 
             Mission mission = null;
             CustomMission customMission = null;
-            if (post.getMission() != null) {
+            QuestDto quest = null;
+            if (post instanceof QuestPost) {
+                quest = ((QuestPost) post).getQuest().toDto();
+            } else if (post.getMission() != null) {
                 mission = post.getMission();
             } else if (post.getCustomMission() != null) {
                 customMission = post.getCustomMission();
             }
-
+            
+            postListDto.setId(postId);
+            postListDto.setUserId(post.getUser().getId());
+            postListDto.setUserName(post.getUser().getName());
+            postListDto.setContent(post.getContent());
+            postListDto.setPostImgUrl(postImgPath);
+            postListDto.setMission(mission);
+            postListDto.setCustomMission(customMission);
+            postListDto.setQuest(quest);
+            postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
 
             if (post.isCommentFlag()) {
-                postListDto.setId(postId);
-                postListDto.setUserId(post.getUser().getId());
-                postListDto.setUserName(post.getUser().getName());
-                postListDto.setContent(post.getContent());
-                postListDto.setPostImgUrl(postImgPath);
-                postListDto.setMission(mission);
-                postListDto.setCustomMission(customMission);
-                postListDto.setComments(commentService.getComments(postId));
-                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
-                return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
-            } else {
-                postListDto.setId(postId);
-                postListDto.setUserId(post.getUser().getId());
-                postListDto.setUserName(post.getUser().getName());
-                postListDto.setContent(post.getContent());
-                postListDto.setPostImgUrl(postImgPath);
-                postListDto.setMission(mission);
-                postListDto.setCustomMission(customMission);
-                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
-                return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
+                postListDto.setComments(commentService.getComments(postId));   
             }
-
-
-
+            return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
         }catch (Exception e){
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -166,11 +176,37 @@ public class PostController {
     public ResponseEntity<Object> createPost(@RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
         try {
+<<<<<<< backend/eco2/src/main/java/com/web/eco2/controller/post/PostController.java
             log.info("게시물 등록 API 호출"); //TODO fe: 나뭇잎 추가, 조회 //be: 통계 수 증가
-            Mission mission = missionService.findByMisId(postCreateDto.getMission().getId());
-            postCreateDto.getMission().setCategory(mission.getCategory());
-            statisticService.updateCount(postCreateDto.getUser().getId(), mission.getCategory(), mission.isQuestFlag());
+            
+            Integer category = null;
+            boolean isQuest = false;
+
+            if(postCreateDto.getMission() != null) {
+                Mission mission =missionService.findByMisId(postCreateDto.getMission().getId());
+                postCreateDto.getMission().setCategory(mission.getCategory());
+                category = mission.getCategory();
+            } else if(postCreateDto.getCustomMission() != null) {
+                CustomMission mission = customMissionService.findByCumId(postCreateDto.getCustomMission().getId());
+                if(mission == null) {
+                    return ResponseHandler.generateResponse("존재하지 않는 커스텀미션입니다.", HttpStatus.ACCEPTED);
+                }
+                postCreateDto.setCustomMission(mission);
+                category = mission.getCategory();
+            } else if(postCreateDto.getQuest() != null) {
+                Optional<Quest> quest = questService.findById(postCreateDto.getQuest().getId());
+                if(quest.isEmpty()) {
+                    return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+                postCreateDto.setQuest(quest.get());
+                category = quest.get().getMission().getCategory();
+                isQuest = true;
+            } else {
+                return ResponseHandler.generateResponse("요청값이 부족합니다.", HttpStatus.ACCEPTED);
+            }
+
             postService.savePost(postImage, postCreateDto);
+            statisticService.updateCount(postCreateDto.getUser().getId(), category, isQuest);
             return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("게시물 등록 API 에러", e);
