@@ -7,6 +7,8 @@ import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -19,6 +21,7 @@ import javax.persistence.*;
 public class QuestPost extends Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "que_id")
     private Quest quest;
 
