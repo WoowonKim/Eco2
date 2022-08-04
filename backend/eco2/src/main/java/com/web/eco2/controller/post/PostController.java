@@ -105,22 +105,21 @@ public class PostController {
             String userName = post.getUser().getName();
             String content = post.getContent();
             String postImgUrl = postImgPath;
-            Long missionId = null;
-            Long customMissionId = null;
+            Mission mission = null;
+            CustomMission customMission = null;
             if (post.getMission() != null) {
-                missionId = post.getMission().getId();
+                mission = post.getMission();
             } else if (post.getCustomMission() != null) {
-                customMissionId = post.getCustomMission().getId();
+                customMission = post.getCustomMission();
             }
-
 
             postListDto.setId(id);
             postListDto.setUserId(userId);
             postListDto.setUserName(userName);
             postListDto.setContent(content);
             postListDto.setPostImgUrl(postImgUrl);
-            postListDto.setMissionId(missionId);
-            postListDto.setCustomMissionId(customMissionId);
+            postListDto.setMission(mission);
+            postListDto.setCustomMission(customMission);
             postListDtos.add(postListDto);
         }
         return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
@@ -128,19 +127,19 @@ public class PostController {
 
 
     //특정 게시물 조회
-    @GetMapping("/{post_id}")
-    public ResponseEntity<Object> getSpecificPost(@RequestParam("postId") Long postId) {
+    @GetMapping("/{postId}")
+    public ResponseEntity<Object> getSpecificPost(@PathVariable("postId") Long postId) {
         PostListDto postListDto = new PostListDto();
         Post post = postService.getSpecificPost(postId);
         PostImg postImg = postImgRepository.getById(postId);
         String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
 
-        Long missionId = null;
-        Long customMissionId = null;
+        Mission mission = null;
+        CustomMission customMission = null;
         if (post.getMission() != null) {
-            missionId = post.getMission().getId();
+            mission = post.getMission();
         } else if (post.getCustomMission() != null) {
-            customMissionId = post.getCustomMission().getId();
+            customMission = post.getCustomMission();
         }
 
         postListDto.setId(postId);
@@ -148,8 +147,8 @@ public class PostController {
         postListDto.setUserName(post.getUser().getName());
         postListDto.setContent(post.getContent());
         postListDto.setPostImgUrl(postImgPath);
-        postListDto.setMissionId(missionId);
-        postListDto.setCustomMissionId(customMissionId);
+        postListDto.setMission(mission);
+        postListDto.setCustomMission(customMission);
 
         return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "postListDto", postListDto);
     }
@@ -171,8 +170,8 @@ public class PostController {
 
 
     //게시물 수정
-    @PutMapping(value = "/{post_id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> updatePost(@RequestParam Long postId,
+    @PutMapping(value = "/{postId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
                                              @RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postUpdateDto") PostUpdateDto postUpdateDto) {
         postService.updatePost(postId, postImage, postUpdateDto);
