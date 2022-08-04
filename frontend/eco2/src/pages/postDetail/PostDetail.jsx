@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import CommentForm from "../../components/commentForm/CommentForm";
-import CommentList from "../../components/commentList/CommentList";
+import CommentForm from "../../components/comment/commentForm/CommentForm";
+import CommentList from "../../components/comment/commentList/CommentList";
 import styles from "./PostDetail.module.css";
-import PostModal from "../../components/postModal/PostModal";
-import ReportModal from "../../components/reportModal/ReportModal";
+import PostModal from "../../components/modal/postModal/PostModal";
+import ReportModal from "../../components/modal/reportModal/ReportModal";
 
 const PostDetail = () => {
   const [visible, setVisible] = useState(false);
