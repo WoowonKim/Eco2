@@ -14,7 +14,6 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "tb_quest_post")
 @ToString
 @SuperBuilder
 @Data

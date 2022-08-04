@@ -25,11 +25,9 @@ import java.util.stream.Collectors;
 public class WeatherService {
     @Autowired
     private WeatherUtil weatherUtil;
-//    private WeatherUtil weatherUtil = new WeatherUtil();
 
     @Autowired
     private ObjectMapper objectMapper;
-//    private ObjectMapper objectMapper = new ObjectMapper();
 
     public String getCurrentDo(String lat, String lng) throws IOException {
         System.out.println(weatherUtil.getKakaoReverseGeocodeUrl(lat, lng));
@@ -66,7 +64,7 @@ public class WeatherService {
         for(Map<String, String> item : (List<Map<String, String>>) items.get("item")) {
             info.put(item.get("category"), Double.parseDouble(item.get("obsrValue")));
         }
-        System.out.println("info: "+info);
+//        System.out.println("info: "+info);
 
         return UltraShortNowcast.builder()
                 .temperature(info.get("T1H")).rainAmount(info.get("RN1"))
@@ -108,10 +106,10 @@ public class WeatherService {
             jsonNode = objectMapper.readTree(url);
         } while (!jsonNode.get("response").get("header").get("resultCode").asText().equals("00"));
 
-        System.out.println(jsonNode.toPrettyString());
+//        System.out.println(jsonNode.toPrettyString());
         Map<String, Object> m = objectMapper.convertValue(jsonNode.get("response")
                 .get("body").get("items"), Map.class);
-        System.out.println("m: "+m);
+//        System.out.println("m: "+m);
         return m;
     }
 
