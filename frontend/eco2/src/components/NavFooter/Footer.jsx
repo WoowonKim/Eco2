@@ -24,7 +24,12 @@ const Footer = () => {
           navigate("/mainFeed");
         }}
       ></i>
-      <i className="fa-solid fa-map-location-dot"></i>
+      <i
+        className="fa-solid fa-map-location-dot"
+        onClick={() => {
+          navigate("/quest");
+        }}
+      ></i>
       <i className="fa-solid fa-bullhorn"></i>
     </footer>
   );
