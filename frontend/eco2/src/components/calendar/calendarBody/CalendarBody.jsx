@@ -12,7 +12,12 @@ import {
 import React from "react";
 import styles from "./CalendarBody.module.css";
 
-const CalendarBody = ({ currentMonth, selectedDate, onDateClick }) => {
+const CalendarBody = ({
+  currentMonth,
+  selectedDate,
+  onDateClick,
+  rewardDate,
+}) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -29,11 +34,27 @@ const CalendarBody = ({ currentMonth, selectedDate, onDateClick }) => {
       const cloneDay = day;
       days.push(
         <div
-          className={`${styles.col}`}
+          className={`${styles.col} ${
+            !isSameMonth(day, monthStart)
+              ? styles.disabled
+              : isSameDay(day, selectedDate)
+              ? styles.selected
+              : format(currentMonth, "M") !== format(day, "M")
+              ? styles.not_valid
+              : styles.valid
+          }`}
           onClick={() => onDateClick(parse(cloneDay))}
           key={day}
         >
-          <span className={styles.text}>{formattedDate}</span>
+          <span
+            className={`${styles.text} ${
+              format(currentMonth, "M") !== format(day, "M")
+                ? styles.not_valid
+                : ""
+            }`}
+          >
+            {formattedDate}
+          </span>
         </div>
       );
       day = addDays(day, 1);

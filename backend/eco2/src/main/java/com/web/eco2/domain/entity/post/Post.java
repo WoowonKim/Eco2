@@ -61,13 +61,9 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomMission customMission;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "que_id")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private Quest quest;
-
     @Column(name = "pos_category", nullable = false)
     private Integer category;
+
 
     public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission
 //            ,Quest quest

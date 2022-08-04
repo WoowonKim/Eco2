@@ -10,6 +10,8 @@ import com.web.eco2.model.service.mission.QuestService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/quest")
+@Api(tags = {"Quest API"})
+@Slf4j
 public class QuestController {
     /**
      * 퀘스트 생성 시 확인하는 범위 (m)
@@ -41,23 +45,25 @@ public class QuestController {
     UserService userService;
 
     // 퀘스트 조회
+    @ApiOperation(value = "퀘스트 조회", response = Object.class)
     @GetMapping
     public ResponseEntity<?> getQuest() {
         try {
+            log.info("퀘스트 조회 API 호출");
             List<QuestDto> quests = new ArrayList<>();
             questService.findAll().forEach(q -> quests.add(q.toDto()));
             return ResponseHandler.generateResponse("퀘스트 조회에 성공하였습니다.", HttpStatus.OK, "questList", quests);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("퀘스트 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    // 퀘스트 등록
+    @ApiOperation(value = "퀘스트 등록", response = Object.class)
     @PostMapping
     public ResponseEntity<?> createQuest(@RequestBody QuestRequest quest) {
         try {
-            // 해당 지역 주변(20m 이내)에 퀘스트 있는지 확인
+            log.info("퀘스트 등록 API 호출");  // 해당 지역 주변(20m 이내)에 퀘스트 있는지 확인
             if (questService.hasQuestInRange(quest.getLat(), quest.getLng(), RANGE)) {
                 return ResponseHandler.generateResponse(RANGE + "m 근처에 이미 퀘스트 존재", HttpStatus.ACCEPTED);
             }
@@ -73,15 +79,16 @@ public class QuestController {
             questService.save(quest.toEntity());
             return ResponseHandler.generateResponse("퀘스트 등록에 성공하였습니다.", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("퀘스트 등록 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    // 퀘스트 삭제
+    @ApiOperation(value = "퀘스트 삭제", response = Object.class)
     @DeleteMapping("/{questId}")
     public ResponseEntity<?> deleteQuest(@PathVariable("questId") Long questId) {
         try {
+            log.info("퀘스트 삭제 API 호출");
             Optional<Quest> quest = questService.findById(questId);
             if (quest.isEmpty()) {
                 return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
@@ -94,28 +101,33 @@ public class QuestController {
             questService.delete(quest.get());
             return ResponseHandler.generateResponse("퀘스트 삭제에 성공하였습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            log.error("퀘스트 삭제 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    // 퀘스트 상세 조회
+    @ApiOperation(value = "퀘스트 상세 조회", response = Object.class)
     @GetMapping("/detail/{questId}")
     public ResponseEntity<?> getQuestDetail(@PathVariable("questId") Long questId) {
         try {
-            if (questService.findById(questId).isEmpty()) {
+            log.info("퀘스트 상세 조회 API 호출");
+            Optional<Quest> quest = questService.findById(questId);
+            if (quest.isEmpty()) {
                 return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
             }
-            QuestDto quest = questService.findById(questId).get().toDto();
+            QuestDto quest = quest.get().toDto();
             return ResponseHandler.generateResponse("퀘스트 상세조회에 성공하였습니다.", HttpStatus.OK, "quest", quest);
         } catch (Exception e) {
+            log.error("퀘스트 상세 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    // 퀘스트별 피드 조회
+    @ApiOperation(value = "퀘스트별 피드 조회", response = Object.class)
     @GetMapping("/{questId}")
     public ResponseEntity<?> getQuestPost(@PathVariable("questId") Long questId) {
         try {
+            log.info("퀘스트별 피드 조회 API 호출");
             Optional<Quest> quest = questService.findById(questId);
             if (quest.isEmpty()) {
                 return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
@@ -125,7 +137,7 @@ public class QuestController {
 
             return ResponseHandler.generateResponse("퀘스트 별 피드조회에 성공하였습니다.", HttpStatus.OK, "questPosts", posts);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("퀘스트별 피드 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -134,6 +146,7 @@ public class QuestController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getMyQuestPost(@PathVariable("userId") Long userId) {
         try {
+            log.info("내 퀘스트 인증글 조회 API 호출");
             Optional<User> user = userService.findById(userId);
             if (user.isEmpty()) {
                 return ResponseHandler.generateResponse("존재하지 않는 유저입니다.", HttpStatus.ACCEPTED);
@@ -142,6 +155,7 @@ public class QuestController {
                     .map(p -> p.toDto()).collect(Collectors.toList());
             return ResponseHandler.generateResponse("내 퀘스트 인증글 조회에 성공하였습니다.", HttpStatus.OK, "questPosts", posts);
         } catch (Exception e) {
+            log.error("내 퀘스트 인증글 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

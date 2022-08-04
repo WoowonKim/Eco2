@@ -8,6 +8,7 @@ import { accountSlice } from "./user/accountSlice";
 import { dailymissionSlice } from "./mission/dailymissionSlice";
 import { myEcoMissionSlice } from "./mission/missionMainSlice";
 import { cumtomSlice } from "./mission/customMissionSlice";
+import { postSlice } from "./post/postSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     dailyMission: dailymissionSlice.reducer,
     missionMain: myEcoMissionSlice.reducer,
     custom: cumtomSlice.reducer,
+    post: postSlice.reducer,
   },
 });

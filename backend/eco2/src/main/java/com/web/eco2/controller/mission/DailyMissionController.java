@@ -16,6 +16,9 @@ import com.web.eco2.model.service.mission.*;
 import com.web.eco2.model.service.user.RedisService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +38,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/daily")
 @Transactional
+@Api(tags = {"DailyMission API"})
+@Slf4j
 public class DailyMissionController {
     @Autowired
     private UserService userService;
@@ -54,96 +59,96 @@ public class DailyMissionController {
     @Autowired
     private WeatherService weatherService;
 
-    //데일리 미션 등록
+    @ApiOperation(value = "데일리미션 등록", response = Object.class)
     @PostMapping("/{usrId}")
     public ResponseEntity<Object> registerDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRequest dailyMissionRequest) {
         try {
+            log.info("데일리미션 등록 API 호출");
             User user = userService.getById(usrId);
             if (dailyMissionRequest.getDailyMissionList() != null) {
                 for (Long missionId : dailyMissionRequest.getDailyMissionList()) {
-                    System.out.println(missionId);
                     Mission mission = missionService.findByMisId(missionId);
-                    DailyMission dailyMission = dailyMissionRequest.toEntity(user, mission, null);
-                    trendingService.updateCount(dailyMission.getMission().getId());
-                    dailyMissionService.save(dailyMission);
+                    if (mission != null) {
+                        DailyMission dailyMission = dailyMissionRequest.toEntity(user, mission, null);
+                        trendingService.updateCount(dailyMission.getMission().getId());
+                        dailyMissionService.save(dailyMission);
+                    }
                 }
             }
             if (dailyMissionRequest.getCustomMissionList() != null) {
                 for (Long customMissionId : dailyMissionRequest.getCustomMissionList()) {
-                    System.out.println(customMissionId);
                     CustomMission customMission = customMissionService.findByCumId(customMissionId);
-                    DailyMission dailyMission = dailyMissionRequest.toEntity(user, null, customMission);
-                    dailyMissionService.save(dailyMission);
+                    if (customMission != null) {
+                        DailyMission dailyMission = dailyMissionRequest.toEntity(user, null, customMission);
+                        dailyMissionService.save(dailyMission);
+                    }
                 }
             }
             return ResponseHandler.generateResponse("데일리 미션이 등록되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("데일리미션 등록 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //데일리 미션 조회
+    @ApiOperation(value = "데일리미션 조회", response = Object.class)
     @GetMapping("/{usrId}")
     public ResponseEntity<Object> selectDailyMission(@PathVariable("usrId") Long usrId) {
         try {
+            log.info("데일리미션 조회 API 호출");
             List<DailyMission> dailyMissionList = dailyMissionService.findListByUsrId(usrId);
             List<DailyMission> dailyCustomMissionList = dailyMissionService.findCustomListByUsrId(usrId);
-            System.out.println(dailyMissionList);
-            System.out.println(dailyCustomMissionList);
             return ResponseHandler.generateResponse("데일리 미션이 조회되었습니다.", HttpStatus.OK, "dailyMissionList", dailyMissionList, "dailyCustomMissionList", dailyCustomMissionList);
         } catch (Exception e) {
+            log.error("데일리미션 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //데일리 미션 삭제
+    @ApiOperation(value = "데일리미션 삭제", response = Object.class)
     @DeleteMapping("/{usrId}")
     public ResponseEntity<Object> deleteDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRequest dailyMissionRequest) {
         try {
-            DailyMission dailyMission;
-            if (dailyMissionRequest.getMissionType() == 0) {
-                //기본미션 삭제
-                dailyMission = dailyMissionService.findListByUsrIdAndMisId(usrId, dailyMissionRequest.getMissionId());
-                trendingService.reduceCount(dailyMission.getId());
+            log.info("데일리미션 삭제 API 호출");
+            DailyMission dailyMission = dailyMissionService.getById(dailyMissionRequest.getMissionId());
+            if (dailyMission != null) {
+                dailyMissionService.delete(dailyMission);
             } else {
-                dailyMission = dailyMissionService.findListByUsrIdAndCumId(usrId, dailyMissionRequest.getMissionId());
+                return ResponseHandler.generateResponse("존재하지 않는 데일리미션입니다.", HttpStatus.ACCEPTED);
             }
-            System.out.println(dailyMission);
-            dailyMissionService.delete(dailyMission);
             return ResponseHandler.generateResponse("데일리 미션이 삭제되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            log.error("데일리미션 삭제 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //데일리 미션 완료
+    @ApiOperation(value = "데일리미션 완료", response = Object.class)
     @PutMapping("/{usrId}")
     public ResponseEntity<Object> completeDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRequest dailyMissionRequest) {
         try {
-            DailyMission dailyMission;
-            if (dailyMissionRequest.getMissionType() == 0) {
-                //기본미션
-                dailyMission = dailyMissionService.findListByUsrIdAndMisId(usrId, dailyMissionRequest.getMissionId());
+            log.info("데일리미션 완료 API 호출");
+            DailyMission dailyMission = dailyMissionService.getById(dailyMissionRequest.getMissionId());
+            if (dailyMission != null) {
+                dailyMission.setAchieveFlag(true);
+                dailyMissionService.save(dailyMission);
             } else {
-                dailyMission = dailyMissionService.findListByUsrIdAndCumId(usrId, dailyMissionRequest.getMissionId());
+                return ResponseHandler.generateResponse("존재하지 않는 데일리미션입니다.", HttpStatus.ACCEPTED);
             }
-            dailyMission.setAchieveFlag(true);
-            dailyMissionService.save(dailyMission);
             return ResponseHandler.generateResponse("데일리 미션이 완료되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("데일리미션 완료 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //데일리 미션 보상 받기
+    @ApiOperation(value = "데일리미션 보상 받기", response = Object.class)
     @PostMapping("/reward/{usrId}")
     public ResponseEntity<Object> rewardDailyMission(@PathVariable("usrId") Long usrId) {
         try {
+            log.info("데일리미션 보상 받기 API 호출");
             User user = userService.getById(usrId);
             CalendarDto calendarDto = dailyMissionService.getCalendarDto(user);
-            System.out.println(calendarDto);
             //보상 이미지 생성
             BufferedImage img = dailyMissionService.getRewardImage(user, calendarDto);
 
@@ -155,29 +160,30 @@ public class DailyMissionController {
 
             return ResponseHandler.generateResponse("보상 이미지 제공이 완료되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("데일리미션 보상 받기 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //보상이미지 조회
+    @ApiOperation(value = "보상 이미지 조회", response = Object.class)
     @GetMapping("/reward/{calId}")
     public ResponseEntity<Object> selectRewardImage(@PathVariable("calId") Long calId) {
         try {
             //TODO: 프론트에서 이미지 출력할때 뭐 필요한지 모르겠다 구현하기!!
+            log.info("보상 이미지 조회 API 호출");
             Optional<Calendar> calendar = calendarService.getById(calId);
-            System.out.println(calendar);
             return ResponseHandler.generateResponse("미션 보상이미지가 조회되었습니다.", HttpStatus.OK, "calendar", calendar);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("보상 이미지 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //특정일자 미션 보상 여부
+    @ApiOperation(value = "특정일자 미션 보상 여부 조회", response = Object.class)
     @GetMapping("/reward/check/{usrId}")
     public ResponseEntity<Object> selectRewardImage(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
         try {
+            log.info("특정일자 미션 보상 여부 조회 API 호출");
             Calendar calendar = calendarService.findByUsrIdAndDate(usrId, dailyMissionRecommendRequest.getDate());
             boolean rewardFlag = true;
             if (calendar == null) {
@@ -186,16 +192,17 @@ public class DailyMissionController {
             return ResponseHandler.generateResponse("특정일자 미션 보상 여부가 조회되었습니다.", HttpStatus.OK, "rewardFlag", rewardFlag);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("특정일자 미션 보상 여부 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
 
         }
     }
 
-    //데일리 미션 추천
+    @ApiOperation(value = "데일리미션 추천", response = Object.class)
     @PostMapping("/recommend/{usrId}")
     public ResponseEntity<Object> recommendDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
         try {
+            log.info("데일리미션 추천 API 호출");
             List<Long> oldRecommendMission = redisService.getListData(usrId.toString());
             if (oldRecommendMission != null) {
                 System.out.println("이미 추천함");
@@ -213,6 +220,7 @@ public class DailyMissionController {
 
             //위치 받아와서 추천 목록 생성
             List<Mission> missions = (List<Mission>) missionData.get("missions");
+            
             //디비에 넣기
             for (Mission m : missions) {
                 dailyMissionService.save(DailyMission.builder()
@@ -229,34 +237,34 @@ public class DailyMissionController {
 
             return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("데일리미션 추천 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //트렌딩 조회
+    @ApiOperation(value = "트렌딩 조회", response = Object.class)
     @GetMapping("/trending")
     public ResponseEntity<Object> selectTreding() {
         try {
+            log.info("트렌딩 조회 API 호출");
             List<Trending> trendingList = trendingService.findTop5List();
-            System.out.println(trendingList);
             return ResponseHandler.generateResponse("트렌딩 조회되었습니다.", HttpStatus.OK, "trendingList", trendingList);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("트렌딩 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    //캘린더 조회
+    @ApiOperation(value = "캘린더 조회", response = Object.class)
     @GetMapping("/calendar/{usrId}")
     public ResponseEntity<Object> selectCalendar(@PathVariable("usrId") Long usrId) {
         try {
+            log.info("캘린더 조회 API 호출");
             User user = userService.getById(usrId);
             List<Calendar> calendarList = calendarService.findByUsrId(usrId);
-            System.out.println(calendarList);
             return ResponseHandler.generateResponse("캘린더 조회되었습니다.", HttpStatus.OK, "calendarList", calendarList);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("캘린더 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
