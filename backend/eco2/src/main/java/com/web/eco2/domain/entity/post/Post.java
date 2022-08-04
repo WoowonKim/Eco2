@@ -7,6 +7,8 @@ import com.web.eco2.domain.entity.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -46,18 +48,22 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mis_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Mission mission;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cum_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomMission customMission;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "qul_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;
 
     public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission, Quest quest) {
