@@ -31,7 +31,6 @@ public class MissionService {
 
     public List<Mission> selectedDailyMission(List<Mission> missionList, Long usrId) {
         List<DailyMission> dailyMissionList = dailyMissionService.findListByUsrId(usrId);
-        System.out.println(missionList);
         if(dailyMissionList != null) {
             for (DailyMission dailyMission : dailyMissionList) {
                 if(missionList != null) {
@@ -44,7 +43,6 @@ public class MissionService {
                 }
             }
         }
-        System.out.println(missionList);
         return missionList;
     }
 

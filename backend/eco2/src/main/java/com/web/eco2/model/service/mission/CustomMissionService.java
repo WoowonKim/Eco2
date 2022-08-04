@@ -34,7 +34,6 @@ public class CustomMissionService {
 
     public List<CustomMission> selectedCustomDailyMission(List<CustomMission> customMissionList, Long usrId) {
         List<DailyMission> dailyMissionList = dailyMissionService.findCustomListByUsrId(usrId);
-        System.out.println(customMissionList);
         for (DailyMission dailyMission: dailyMissionList){
             for (CustomMission customMission : customMissionList){
                 if(customMission.getId() == dailyMission.getCustomMission().getId()){
@@ -43,7 +42,6 @@ public class CustomMissionService {
                 }
             }
         }
-        System.out.println(customMissionList);
         return customMissionList;
     }
 }

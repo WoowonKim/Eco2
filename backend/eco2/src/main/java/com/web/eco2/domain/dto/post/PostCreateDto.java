@@ -35,7 +35,7 @@ public class PostCreateDto {
                 .mission(getMission())
                 .category(getMission().getCategory())
                 .customMission(getCustomMission())
-                .quest(getQuest())
+//                .quest(getQuest())
                 .registTime(LocalDateTime.now())
                 .publicFlag(true)
                 .commentFlag(true)

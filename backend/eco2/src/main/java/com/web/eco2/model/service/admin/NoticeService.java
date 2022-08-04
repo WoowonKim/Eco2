@@ -25,10 +25,6 @@ public class NoticeService {
         noticeRepository.delete(notice);
     }
 
-    public Page<Notice> list(int page) {
-        return noticeRepository.findAll(PageRequest.of(page,10, Sort.by(Sort.Direction.DESC, "id")));
-    }
-
     public Page<Notice> findByTitleContaining(String word, Pageable pageabl) {
         return noticeRepository.findByTitleContaining(word, pageabl);
     }

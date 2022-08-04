@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.eco2.domain.dto.mission.UltraShortNowcast;
 import com.web.eco2.util.WeatherUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WeatherService {
     @Autowired
     private WeatherUtil weatherUtil;
@@ -37,7 +39,6 @@ public class WeatherService {
         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
         JSONObject object = objectMapper.readValue(br, JSONObject.class);
-
         System.out.println(object.get("document"));
 
         return "";
