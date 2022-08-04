@@ -3,17 +3,21 @@ import styles from "./dailyMissionDetail.module.css";
 import { GreenBtn } from "../../styled";
 import { useDispatch } from "react-redux";
 import { putFavorite } from "../../../store/mission/favoriteSlice";
-
-const DailyEcoMissionitem = ({ ecoId, content, onCreate, onFavorites, id, category }) => {
+//onFavorites
+const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, onFavorites, category }) => {
   const dispatch = useDispatch();
   const [color, setColor] = useState(true);
   const [favorites, setFavorites] = useState(true);
   const favoritesType = favorites ? "fa-regular fa-bookmark" : "fa-solid fa-bookmark";
   const colorType = color ? styles.gray : styles.skyblue;
   const favoriteTrue = true;
-
+  const [testItem, setTestItem] = useState(false);
   const onFavorite = (id, favorites, ecoId, favoriteTrue) => {
-    dispatch(putFavorite({ id, likeFlag: favorites, missionType: favoriteTrue, missionId: ecoId }));
+    dispatch(putFavorite({ id, likeFlag: favorites, missionType: favoriteTrue, missionId: ecoId })).then((res) => {
+      if (res.payload.status === 200) {
+        console.log("putFavorite 성공 ");
+      }
+    });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DailyEcoMissionitem from "../missionItem/dailyEcoMissionitem";
@@ -13,19 +13,20 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [eco, setEco] = useState([]);
   const [ecoId, setEcoId] = useState([]);
   const [arrFavorites, setArrFavorites] = useState([]);
+  //const [favoriteArr, setFavoriteArr] = useState([]);
   const [list, getList] = useState(true);
-  const [favoriteArr, setFavoriteArr] = useState([]);
 
   const dispatch = useDispatch();
   const ecoCount = eco.length;
 
-  useEffect(() => {
-    dispatch(getFavorite({ id })).then((res) => {
-      if (res.payload.status === 200) {
-        setFavoriteArr(res.payload.missionList);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getFavorite({ id })).then((res) => {
+  //     if (res.payload.status === 200) {
+  //       setFavoriteArr(res.payload.missionList);
+  //     }
+  //   });
+  // }, [setFavoriteArr]);
+  // console.log(favoriteArr);
 
   const onCreate = (color, id, content) => {
     if (color === false) {
