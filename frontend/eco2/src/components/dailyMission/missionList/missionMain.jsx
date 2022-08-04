@@ -4,39 +4,11 @@ import { useNavigate } from "react-router-dom";
 import MissionModal from "../missionClear/missionModal";
 
 const MissionMain = ({ id, content, trashCnt }) => {
-  const naviGate = useNavigate();
   const [trash, setTrash] = useState(true);
   const [doitMission, setDoitMission] = useState(false);
   const trashType = trash ? styles.greenTrash : styles.whiteTrash;
   const onListRemove = () => {
     alert(`${id}를 삭제 완료!`);
-  };
-
-  const onClear = () => {
-    if (!doitMission) {
-      if (window.confirm("미션을 완료 했습니까?")) {
-        if (window.confirm("인증게시글에 글을 작성 하시겠어요?")) {
-          naviGate("/missionClear");
-        } else {
-          console.log("미션 완료!");
-        }
-      } else {
-        console.log("das");
-      }
-    }
-  };
-  const onMoved = () => {
-    if (doitMission === false) {
-      if (window.confirm("미션을 완료 했습니까?")) {
-        if (window.confirm("인증게시글에 글을 작성 하시겠어요?")) {
-          naviGate("/missionClear");
-        } else {
-          console.log("미션 완료!");
-        }
-      } else {
-        console.log("das");
-      }
-    }
   };
 
   const [modalOpen, setModalOpen] = useState(false);
