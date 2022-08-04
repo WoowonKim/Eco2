@@ -78,6 +78,7 @@ public class UserInformationController {
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원", HttpStatus.BAD_REQUEST);
             }
+            userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

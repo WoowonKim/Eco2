@@ -11,10 +11,7 @@ import com.web.eco2.domain.entity.mission.Trending;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.item.CalendarService;
 import com.web.eco2.model.service.item.StatisticService;
-import com.web.eco2.model.service.mission.CustomMissionService;
-import com.web.eco2.model.service.mission.DailyMissionService;
-import com.web.eco2.model.service.mission.MissionService;
-import com.web.eco2.model.service.mission.TrendingService;
+import com.web.eco2.model.service.mission.*;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +55,6 @@ public class DailyMissionController {
 
     @Autowired
     private CalendarService calendarService;
-
 
     //데일리 미션 등록
     @PostMapping("/{usrId}")
@@ -201,8 +197,10 @@ public class DailyMissionController {
             dailyMissionService.deleteByUsrId(usrId);
 
             //위치 받아와서 추천 목록 생성
+            List<Mission> missions = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
+            System.out.println(missions);
             //디비에 넣기
-            return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK);
+            return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
