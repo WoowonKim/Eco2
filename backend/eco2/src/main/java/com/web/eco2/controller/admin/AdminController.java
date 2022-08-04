@@ -6,13 +6,12 @@ import com.web.eco2.domain.dto.admin.NoticeRequest;
 import com.web.eco2.domain.entity.admin.CommentReport;
 import com.web.eco2.domain.entity.admin.Notice;
 import com.web.eco2.domain.entity.admin.PostReport;
-import com.web.eco2.domain.entity.admin.Report;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.admin.NoticeService;
 import com.web.eco2.model.service.admin.ReportService;
-import com.web.eco2.model.service.post.PostCommentService;
+import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
@@ -28,7 +27,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin")
@@ -49,7 +47,7 @@ public class AdminController {
     private PostService postService;
 
     @Autowired
-    private PostCommentService postCommentService;
+    private CommentService postCommentService;
 
     @PostMapping("/notice/{usrId}")
     @ApiOperation(value = "공지사항 작성", response = Object.class)

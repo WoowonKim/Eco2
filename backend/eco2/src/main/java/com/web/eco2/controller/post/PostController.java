@@ -8,12 +8,16 @@ import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
+import com.web.eco2.domain.entity.post.Comment;
+import com.web.eco2.domain.entity.post.FavoritePost;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.service.item.StatisticService;
 import com.web.eco2.model.service.mission.MissionService;
+import com.web.eco2.model.service.post.CommentService;
+import com.web.eco2.model.service.post.PostLikeService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
@@ -55,6 +59,13 @@ public class PostController {
     @Autowired
     private MissionService missionService;
 
+    @Autowired
+    private PostLikeService postLikeService;
+
+
+    @Autowired
+    private CommentService commentService;
+
 
     @ApiOperation(value = "게시물 전체 조회", response = Object.class)
     @GetMapping()
@@ -62,10 +73,11 @@ public class PostController {
         try {
             log.info("게시물 전체 조회 API 호출");
             ArrayList<PostListDto> postListDtos = new ArrayList<>();
-
-            PostListDto postListDto = new PostListDto();
             List<Post> postList = postService.getPostList();
+            System.out.println("postList:" + postList);
+
             for (Post post : postList) {
+                PostListDto postListDto = new PostListDto();
                 PostImg postImg = postImgRepository.getById(post.getId());
                 String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
                 Long id = post.getId();
@@ -88,6 +100,7 @@ public class PostController {
                 postListDto.setPostImgUrl(postImgUrl);
                 postListDto.setMission(mission);
                 postListDto.setCustomMission(customMission);
+                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), post.getId()));
                 postListDtos.add(postListDto);
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
@@ -116,17 +129,33 @@ public class PostController {
                 customMission = post.getCustomMission();
             }
 
-            postListDto.setId(postId);
-            postListDto.setUserId(post.getUser().getId());
-            postListDto.setUserName(post.getUser().getName());
-            postListDto.setContent(post.getContent());
-            postListDto.setPostImgUrl(postImgPath);
-            postListDto.setMission(mission);
-            postListDto.setCustomMission(customMission);
 
-            return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
-        } catch (Exception e) {
-            log.error("특정 게시물 조회 API 에러", e);
+            if (post.isCommentFlag()) {
+                postListDto.setId(postId);
+                postListDto.setUserId(post.getUser().getId());
+                postListDto.setUserName(post.getUser().getName());
+                postListDto.setContent(post.getContent());
+                postListDto.setPostImgUrl(postImgPath);
+                postListDto.setMission(mission);
+                postListDto.setCustomMission(customMission);
+                postListDto.setComments(commentService.getComments(postId));
+                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
+                return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
+            } else {
+                postListDto.setId(postId);
+                postListDto.setUserId(post.getUser().getId());
+                postListDto.setUserName(post.getUser().getName());
+                postListDto.setContent(post.getContent());
+                postListDto.setPostImgUrl(postImgPath);
+                postListDto.setMission(mission);
+                postListDto.setCustomMission(customMission);
+                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
+                return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
+            }
+
+
+
+        }catch (Exception e){
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
