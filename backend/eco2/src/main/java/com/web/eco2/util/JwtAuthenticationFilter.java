@@ -37,6 +37,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                     System.out.println("authentication ::" + authentication);
                     //SecurityContext 에 Authentication 객체를 저장합니다.
                     SecurityContextHolder.getContext().setAuthentication((Authentication) authentication);
+
+
                 } else {//access토큰 만료
                     System.out.println("here");
                     ResponseBodyWriteUtil.sendError(response, "토큰이 유효하지 않습니다.");

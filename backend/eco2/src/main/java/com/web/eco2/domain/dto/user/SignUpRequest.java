@@ -35,7 +35,7 @@ public class SignUpRequest {
                 .socialType(socialType)
                 .password(password)
                 .refreshToken(refreshToken)
-                .role(Collections.singletonList("ROLE_USER"))
+                .role(Collections.singletonList("ROLE_ADMIN"))
                 .build();
     }
 }

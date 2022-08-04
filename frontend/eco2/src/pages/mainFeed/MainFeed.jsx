@@ -1,9 +1,22 @@
-import React from "react";
-import FeedList from "../../components/feedList/FeedList";
+import React, { useEffect, useState } from "react";
+import FeedList from "../../components/feed/feedList/FeedList";
 import styles from "./MainFeed.module.css";
 import { Link } from "react-router-dom";
+import { postList } from "../../store/post/postSlice";
+import { useDispatch } from "react-redux";
 
 const MainFeed = () => {
+  const [feed, setFeed] = useState([]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(postList()).then((res) => {
+      if (res.payload.status === 200) {
+        setFeed(res.payload.postListDtos);
+      }
+    });
+  }, []);
   return (
     <div>
       <div className={styles.container}>

@@ -31,16 +31,18 @@ public class MissionService {
 
     public List<Mission> selectedDailyMission(List<Mission> missionList, Long usrId) {
         List<DailyMission> dailyMissionList = dailyMissionService.findListByUsrId(usrId);
-        System.out.println(missionList);
-        for (DailyMission dailyMission: dailyMissionList){
-            for (Mission mission : missionList){
-                if(mission.getId() == dailyMission.getMission().getId()){
-                    missionList.remove(mission);
-                    break;
+        if(dailyMissionList != null) {
+            for (DailyMission dailyMission : dailyMissionList) {
+                if(missionList != null) {
+                    for (Mission mission : missionList) {
+                        if (mission.getId() == dailyMission.getMission().getId()) {
+                            missionList.remove(mission);
+                            break;
+                        }
+                    }
                 }
             }
         }
-        System.out.println(missionList);
         return missionList;
     }
 

@@ -29,4 +29,6 @@ public interface DailyMissionRepository extends JpaRepository<DailyMission, Long
     @Modifying
     @Query(value = "delete from tb_Daily_Mission d where d.usr_id=:usrId", nativeQuery = true)
     void deleteByUsrId(Long usrId);
+
+    DailyMission getById(Long missionId);
 }

@@ -1,6 +1,7 @@
 package com.web.eco2.model.service.user;
 
 import com.web.eco2.domain.dto.user.MailRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
+@Slf4j
 public class MailService {
     @Autowired
     private JavaMailSender javaMailSender;
@@ -23,8 +25,6 @@ public class MailService {
         mail.setTitle("Eco2 이메일 인증 안내");
         mail.setMessage("안녕하세요. Eco2의 이메일 인증 안내 메일입니다. 회원님의 인증 코드는 " + code + " 입니다. 인증 유효 시간은 5분입니다.");
         mail.setCode(code);
-
-        System.out.println("getMailRequest" + mail);
         return mail;
     }
 
@@ -59,7 +59,7 @@ public class MailService {
 
         redisService.setDataExpire(mail.getCode(), email, 60 * 5L);
         javaMailSender.send(message);
-        System.out.println(email + " 이메일 발송 완료");
+        log.debug(email + " 이메일 발송 완료");
     }
 
     public String verifyMail(String code) {

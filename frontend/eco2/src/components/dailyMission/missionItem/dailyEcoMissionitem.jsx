@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./dailyMissionDetail.module.css";
+import { GreenBtn } from "../../styled";
 
 const DailyEcoMissionitem = ({ id, content, onCreate, onFavorites, onEco }) => {
   const [color, setColor] = useState(true);

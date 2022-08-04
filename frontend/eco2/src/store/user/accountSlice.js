@@ -105,6 +105,23 @@ export const accountSettingChange = createAsyncThunk(
   }
 );
 
+// 캘린더 조회
+export const calendar = createAsyncThunk(
+  "accountSlice/calendar",
+  async (args, { rejectWithValue }) => {
+    const accessToken = getToken();
+    const response = await axios({
+      url: `/daily/calendar/${args.id}`,
+      method: "get",
+      data: {},
+      headers: {
+        "Auth-accessToken": accessToken,
+      },
+    });
+    return response.data;
+  }
+);
+
 // 공지사항 테스트 요청
 // export const test = createAsyncThunk(
 //   "accountSlice/test",
@@ -165,6 +182,12 @@ export const accountSlice = createSlice({
     },
     [accountSettingChange.rejected]: (state, action) => {
       console.log("accountSettingChange rejected", action.payload);
+    },
+    [calendar.fulfilled]: (state, action) => {
+      console.log("calendar fulfilled", action.payload);
+    },
+    [calendar.rejected]: (state, action) => {
+      console.log("calendar rejected", action.payload);
     },
     // [test.fulfilled]: (state, action) => {
     //   console.log("test fulfilled", action.payload);

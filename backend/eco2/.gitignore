@@ -38,3 +38,5 @@ out/
 
 application-api-key.properties
 fb_key.json
+serviceAccountKey.json
+*.p12

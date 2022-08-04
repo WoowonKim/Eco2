@@ -6,6 +6,9 @@ import com.web.eco2.domain.entity.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -14,6 +17,8 @@ import javax.persistence.*;
 @Table(name = "tb_report")
 @ToString
 @Data
+@SuperBuilder
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Report {
 
     @Id
@@ -21,22 +26,12 @@ public class Report {
     @Column(name = "rep_id")
     private Long id;
 
-    @Column(name = "rep_dtype", length = 31)
-    private String dType;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ret_id", nullable = false)
     private ReportType reportType;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "pos_id")
-    private Post post;
-
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "com_id")
-    private Comment comment;
 }
