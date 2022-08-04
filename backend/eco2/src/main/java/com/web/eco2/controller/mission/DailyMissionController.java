@@ -1,8 +1,10 @@
 package com.web.eco2.controller.mission;
 
-import com.web.eco2.domain.dto.MissionInformation;
 import com.web.eco2.domain.dto.item.CalendarDto;
-import com.web.eco2.domain.dto.mission.*;
+import com.web.eco2.domain.dto.mission.CustomMissionDto;
+import com.web.eco2.domain.dto.mission.DailyMissionRecommendRequest;
+import com.web.eco2.domain.dto.mission.DailyMissionRequest;
+import com.web.eco2.domain.dto.mission.MissionDto;
 import com.web.eco2.domain.entity.calender.Calendar;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.DailyMission;
@@ -10,32 +12,25 @@ import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Trending;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.item.CalendarService;
-import com.web.eco2.model.service.item.StatisticService;
 import com.web.eco2.model.service.mission.*;
+import com.web.eco2.model.service.user.RedisService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/daily")
@@ -52,9 +47,12 @@ public class DailyMissionController {
     private DailyMissionService dailyMissionService;
     @Autowired
     private TrendingService trendingService;
-
     @Autowired
     private CalendarService calendarService;
+    @Autowired
+    private RedisService redisService;
+    @Autowired
+    private WeatherService weatherService;
 
     //데일리 미션 등록
     @PostMapping("/{usrId}")
@@ -198,13 +196,37 @@ public class DailyMissionController {
     @PostMapping("/recommend/{usrId}")
     public ResponseEntity<Object> recommendDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
         try {
+            List<Long> oldRecommendMission = redisService.getListData(usrId.toString());
+            if (oldRecommendMission != null) {
+                System.out.println("이미 추천함");
+                return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK,
+                        "recommendedMission",
+                        oldRecommendMission.stream()
+                                .map(missionId -> missionService.findByMisId(missionId))
+                                .collect(Collectors.toList())
+                );
+            }
             // 리셋
             dailyMissionService.deleteByUsrId(usrId);
 
+            Map<String, List<?>> missionData = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
+
             //위치 받아와서 추천 목록 생성
-            List<Mission> missions = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
-            System.out.println(missions);
+            List<Mission> missions = (List<Mission>) missionData.get("missions");
             //디비에 넣기
+            for (Mission m : missions) {
+                dailyMissionService.save(DailyMission.builder()
+                        .user(User.builder().id(usrId).build()).mission(m).build());
+            }
+
+            LocalDateTime now = LocalDateTime.now();
+            System.out.println(now.toString());
+            LocalDateTime expireTime = LocalDateTime.parse(now.plusHours(18L).toString().substring(0, 11)+"06:00");
+            // 6시에 새로고침
+            Long duration = expireTime.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
+            if(duration <= 0) duration = 1L;
+            redisService.setListDataExpire(usrId.toString(), (List<Long>) missionData.get("missionsNum"), duration);
+
             return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions);
         } catch (Exception e) {
             e.printStackTrace();
