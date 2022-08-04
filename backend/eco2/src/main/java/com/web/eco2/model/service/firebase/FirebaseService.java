@@ -19,7 +19,7 @@ public class FirebaseService {
         // TODO: 클래스 패스로 변환
 //        System.out.println(System.class.getResource(""));
         try {
-            FileInputStream serviceAccount = new FileInputStream("fb_key.json");
+            FileInputStream serviceAccount = new FileInputStream("path/to/serviceAccountKey.json");
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();

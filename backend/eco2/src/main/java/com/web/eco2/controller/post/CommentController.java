@@ -6,6 +6,8 @@ import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.repository.post.PostRepository;
 import com.web.eco2.model.repository.user.UserRepository;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
@@ -22,8 +24,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/post")
-@CrossOrigin("http://localhost:8002")
 @Transactional
+@Api(tags = {"Comment API"})
+@Slf4j
 public class CommentController {
 
     @Autowired
