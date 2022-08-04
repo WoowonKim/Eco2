@@ -77,7 +77,6 @@ public class PostService {
         postRepository.save(post);
     }
 
-
     //post 목록 가져오기
     public List<Post> getPostList() {
         Sort sort = Sort.by(Sort.Order.desc("id"));
@@ -109,22 +108,23 @@ public class PostService {
 
     //post 수정하기
     public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) {
-        Post post = postRepository.getById(postId);
-        post.setContent(postUpdateDto.getContent());
-        post.setPublicFlag(postUpdateDto.isPublicFlag());
-        post.setCommentFlag(postUpdateDto.isCommentFlag());
+            Post post = postRepository.getById(postId);
+            post.setContent(postUpdateDto.getContent());
+            post.setPublicFlag(postUpdateDto.isPublicFlag());
+            post.setCommentFlag(postUpdateDto.isCommentFlag());
+            postRepository.save(post);
 
-        PostImg postImg = postImgRepository.getById(postId);
-        String originalName = postImage.getOriginalFilename();
+            PostImg postImg = postImgRepository.getById(postId);
+            String originalName = postImage.getOriginalFilename();
 
-        PostImg newPostImg = PostImg.builder()
-                .saveFolder(uploadPostImgPath)
-                .originalName(originalName)
-                .saveName(postImg.getSaveName())
-                .id(postUpdateDto.getId())
-                .build();
+            PostImg newPostImg = PostImg.builder()
+                    .saveFolder(uploadPostImgPath)
+                    .originalName(originalName)
+                    .saveName(postImg.getSaveName())
+                    .id(postId)
+                    .build();
 
-        postImgRepository.save(newPostImg);
+            postImgRepository.save(newPostImg);
     }
 
 
