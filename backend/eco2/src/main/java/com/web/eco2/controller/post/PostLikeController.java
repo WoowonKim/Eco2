@@ -10,6 +10,8 @@ import com.web.eco2.model.service.post.PostLikeService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/post/like")
-@CrossOrigin("http://localhost:8002")
+@Api(tags = {"PostLike API"})
 @Transactional
+@Slf4j
 public class PostLikeController {
 
     @Autowired

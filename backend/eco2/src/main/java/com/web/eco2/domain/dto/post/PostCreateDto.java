@@ -13,11 +13,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
 public class PostCreateDto {
-    private Long id;
+//    private Long id;
     private String content;
     private User user;
     private Mission mission;
@@ -27,12 +29,17 @@ public class PostCreateDto {
 
     public Post toEntity() {
         return Post.builder()
-                .id(getId())
+//                .id(getId())
                 .content(getContent())
                 .user(getUser())
                 .mission(getMission())
+                .category(getMission().getCategory())
                 .customMission(getCustomMission())
 //                .quest(getQuest())
+                .registTime(LocalDateTime.now())
+                .publicFlag(true)
+                .commentFlag(true)
+                .report(false)
                 .build();
     }
 

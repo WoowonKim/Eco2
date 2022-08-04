@@ -19,6 +19,7 @@ public class PostDto {
     private boolean commentFlag;
     private UserDto user;
     private MissionDto mission;
+    private Integer category;
     // TODO: CustomMissionDto 만들기
     private CustomMission customMission;
     private QuestDto quest;
