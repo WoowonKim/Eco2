@@ -17,8 +17,8 @@ const DailyCustomMissionList = ({ id }) => {
     });
   }, []);
 
-  const onDelete = deleteId => {
-    dispatch(customDeleteMission({ id: deleteId }));
+  const onDelete = it => {
+    dispatch(customDeleteMission({ id: it }));
   };
 
   return (
@@ -35,7 +35,7 @@ const DailyCustomMissionList = ({ id }) => {
               <span>{it.content}</span>
               <button
                 onClick={() => {
-                  onDelete(it.id);
+                  dispatch(customDeleteMission({ id: it.id }));
                 }}
               >
                 삭제

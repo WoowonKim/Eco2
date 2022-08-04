@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc128d2f-8b42-4a89-a7e4-f2f83700c518" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/eco2/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/eco2/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/eco2/src/components/dailyMission/missionList/dailyMission.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/eco2/src/components/dailyMission/missionList/dailyMission.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/eco2/src/components/dailyMission/missionList/missionMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/eco2/src/components/dailyMission/missionList/missionMain.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/eco2/src/pages/dmission/dailyMissionMain/dailyMissionMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/eco2/src/pages/dmission/dailyMissionMain/dailyMissionMain.jsx" afterDir="false" />
+    <list default="true" id="bc128d2f-8b42-4a89-a7e4-f2f83700c518" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

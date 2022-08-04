@@ -17,9 +17,11 @@ const DailyCustomMissionList = ({ id }) => {
     });
   }, []);
 
-  const onDelete = deleteId => {
-    dispatch(customDeleteMission({ id: deleteId }));
-  };
+  useEffect(() => {
+    const onDelete = deleteId => {
+      dispatch(customDeleteMission({ id: deleteId }));
+    };
+  }, [cos]);
 
   return (
     <div>

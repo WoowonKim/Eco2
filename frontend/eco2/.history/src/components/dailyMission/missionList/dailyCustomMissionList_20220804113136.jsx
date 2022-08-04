@@ -17,8 +17,8 @@ const DailyCustomMissionList = ({ id }) => {
     });
   }, []);
 
-  const onDelete = deleteId => {
-    dispatch(customDeleteMission({ id: deleteId }));
+  const onDelete = it => {
+    dispatch(customDeleteMission({ id: it }));
   };
 
   return (

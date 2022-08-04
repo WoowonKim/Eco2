@@ -15,7 +15,7 @@ const DailyCustomMissionList = ({ id }) => {
     dispatch(customMission({ id })).then(res => {
       setCos(res.payload.customMissionList);
     });
-  }, []);
+  }, [cos]);
 
   const onDelete = deleteId => {
     dispatch(customDeleteMission({ id: deleteId }));

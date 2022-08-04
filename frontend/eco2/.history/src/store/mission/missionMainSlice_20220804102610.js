@@ -1,23 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const postMission = createAsyncThunk(
-  "dailymission/getlist",
-  async (args, { rejectWithValue }) => {
-    const response = await axios({
-      url: `/daily/${args.id}`,
-      method: "post",
-      data: {
-        dailyMissionList: args.ecoId,
-        dailyCustomMissionList: [],
-      },
-      headers: {
-        Authorization: "Authorization ",
-      },
-    });
-    return response.data;
-  }
-);
+export const postMission = createAsyncThunk("dailymission/getlist", async (args, { rejectWithValue }) => {
+  const response = await axios({
+    url: `/daily/${args.id}`,
+    method: "post",
+    data: {
+      dailyMissionList: args.ecoId,
+      dailyCustomMissionList: [],
+    },
+    headers: {
+      Authorization: "Authorization ",
+    },
+  });
+  return response.data;
+});
 
 export const myEcoMissionSlice = createSlice({
   name: "missionMain",
@@ -36,10 +33,10 @@ export const myEcoMissionSlice = createSlice({
   },
   extraReducers: {
     [postMission.fulfilled]: (state, action) => {
-      console.log("fulfilled", action.payload);
+      console.log(action.payload);
     },
     [postMission.rejected]: (state, action) => {
-      console.log("rejected", action.payload);
+      console.log(action.payload);
     },
   },
 });
