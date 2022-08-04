@@ -16,7 +16,14 @@ import MissionCom from "./components/dailyMission/missionClear/missionCom";
 import DailyCustomMissionList from "./components/dailyMission/missionList/dailyCustomMissionList";
 import CustomPlus from "./components/dailyMission/missionItem/customPlus";
 /* DailyMission End */
-import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -29,6 +36,7 @@ import Profile from "./pages/profile/Profile";
 import UserSettings from "./pages/userSettings/UserSettings";
 import UserFriends from "./pages/userFriends/UserFriends";
 import { dbService, firestore } from "./store/firebase";
+import QuestMain from "./pages/quest/questMain/QuestMain";
 
 function App() {
   let currUser = useSelector((state) => state.user);
@@ -62,11 +70,17 @@ function App() {
           <Route path="/dailymissionmain" element={<DailyMissionMain />} />
           <Route path="/dailymissiondetail" element={<DailyMissionDetail />} />
           <Route path="/missionClear" element={<MissionCom />} />
-          <Route path="/dailyCustomMissionList" element={<DailyCustomMissionList />} />
+          <Route
+            path="/dailyCustomMissionList"
+            element={<DailyCustomMissionList />}
+          />
           <Route path="/customPlus" element={<CustomPlus />} />
           {/*DailyMission */}
           <Route path="/mainFeed" element={<MainFeed />}></Route>
-          <Route path="/mainFeed/:feedCategory" element={<FeedCategory />}></Route>
+          <Route
+            path="/mainFeed/:feedCategory"
+            element={<FeedCategory />}
+          ></Route>
           <Route path="/post/:postId" element={<PostDetail />}></Route>
           <Route path="/post" element={<PostForm />}></Route>
           <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
@@ -74,6 +88,8 @@ function App() {
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/user/settings" element={<UserSettings />}></Route>
           <Route path="/user/friends" element={<UserFriends />}></Route>
+
+          <Route path="/quest" element={<QuestMain />}></Route>
         </Routes>
       </div>
       <Footer></Footer>

@@ -35,7 +35,7 @@ const Profile = () => {
   }, []);
   return (
     <div className={styles.container}>
-      <Calendar />
+      <Calendar id={userId} />
       <div className={styles.userInfo}>
         {/* <button
           onClick={() => {
