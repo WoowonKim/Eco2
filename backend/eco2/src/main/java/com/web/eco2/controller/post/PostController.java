@@ -17,6 +17,9 @@ import com.web.eco2.model.service.mission.MissionService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,8 +35,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/post")
-@CrossOrigin("http://localhost:8002")
+@Api(tags = {"Post API"})
 @Transactional
+@Slf4j
 public class PostController {
 
     @Autowired
@@ -52,11 +56,11 @@ public class PostController {
     private MissionService missionService;
 
 
-
-    //게시물 전체 조회
+    @ApiOperation(value = "게시물 전체 조회", response = Object.class)
     @GetMapping()
     public ResponseEntity<Object> getPostList() {
         try {
+            log.info("게시물 전체 조회 API 호출");
             ArrayList<PostListDto> postListDtos = new ArrayList<>();
 
             PostListDto postListDto = new PostListDto();
@@ -64,7 +68,6 @@ public class PostController {
             for (Post post : postList) {
                 PostImg postImg = postImgRepository.getById(post.getId());
                 String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
-                System.out.println("postImgPath" + postImgPath);
                 Long id = post.getId();
                 Long userId = post.getUser().getId();
                 String userName = post.getUser().getName();
@@ -88,98 +91,99 @@ public class PostController {
                 postListDtos.add(postListDto);
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
-        }catch (Exception e){
+        } catch (Exception e) {
+            log.error("게시물 전체 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    //특정 게시물 조회
+    @ApiOperation(value = "특정 게시물 조회", response = Object.class)
     @GetMapping("/{postId}")
     public ResponseEntity<Object> getSpecificPost(@PathVariable("postId") Long postId) {
-        try{
+        try {
+            log.info("특정 게시물 조회 API 호출");
             PostListDto postListDto = new PostListDto();
-        Post post = postService.getSpecificPost(postId);
-        PostImg postImg = postImgRepository.getById(postId);
-        String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
+            Post post = postService.getSpecificPost(postId);
+            PostImg postImg = postImgRepository.getById(postId);
+            String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
 
-        Mission mission = null;
-        CustomMission customMission = null;
-        if (post.getMission() != null) {
-            mission = post.getMission();
-        } else if (post.getCustomMission() != null) {
-            customMission = post.getCustomMission();
-        }
+            Mission mission = null;
+            CustomMission customMission = null;
+            if (post.getMission() != null) {
+                mission = post.getMission();
+            } else if (post.getCustomMission() != null) {
+                customMission = post.getCustomMission();
+            }
 
-        postListDto.setId(postId);
-        postListDto.setUserId(post.getUser().getId());
-        postListDto.setUserName(post.getUser().getName());
-        postListDto.setContent(post.getContent());
-        postListDto.setPostImgUrl(postImgPath);
-        postListDto.setMission(mission);
-        postListDto.setCustomMission(customMission);
+            postListDto.setId(postId);
+            postListDto.setUserId(post.getUser().getId());
+            postListDto.setUserName(post.getUser().getName());
+            postListDto.setContent(post.getContent());
+            postListDto.setPostImgUrl(postImgPath);
+            postListDto.setMission(mission);
+            postListDto.setCustomMission(customMission);
 
-        return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
-        }catch (Exception e){
+            return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
+        } catch (Exception e) {
+            log.error("특정 게시물 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    //게시물 등록
+    @ApiOperation(value = "게시물 등록", response = Object.class)
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> createPost(@RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
         try {
-            //TODO fe: 나뭇잎 추가, 조회 //be: 통계 수 증가
-            System.out.println(postImage);
-            System.out.println(postCreateDto);
-//            User postUser = userService.findByEmail(postCreateDto.getUser().getEmail());
-            Mission mission =missionService.findByMisId(postCreateDto.getMission().getId());
+            log.info("게시물 등록 API 호출"); //TODO fe: 나뭇잎 추가, 조회 //be: 통계 수 증가
+            Mission mission = missionService.findByMisId(postCreateDto.getMission().getId());
             postCreateDto.getMission().setCategory(mission.getCategory());
             statisticService.updateCount(postCreateDto.getUser().getId(), mission.getCategory(), mission.isQuestFlag());
             postService.savePost(postImage, postCreateDto);
             return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            log.error("게시물 등록 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    //게시물 수정
+    @ApiOperation(value = "게시물 수정", response = Object.class)
     @PutMapping(value = "/{postId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
                                              @RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postUpdateDto") PostUpdateDto postUpdateDto) {
         try {
-            //TODO : 이미지 선택 안됐을 때 처리 필요하지 않을까
+            log.info("게시물 수정 API 호출"); //TODO : 이미지 선택 안됐을 때 처리 필요하지 않을까
 //            if (postImage.getName() == null){
 //                return ResponseHandler.generateResponse("이미지를 선택해주세요.", HttpStatus.ACCEPTED);
 //            }
             postService.updatePost(postId, postImage, postUpdateDto);
             return ResponseHandler.generateResponse("게시물이 수정되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("게시물 수정 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    //게시물 삭제
+    @ApiOperation(value = "게시물 삭제", response = Object.class)
     @DeleteMapping("/{postId}")
     public ResponseEntity<Object> deletePost(@PathVariable("postId") Long postId) {
         try {
+            log.info("게시물 삭제 API 호출");
             Post post = postService.getById(postId);
             if (post == null) {
                 return ResponseHandler.generateResponse("게시물이 존재하지 않습니다.", HttpStatus.ACCEPTED);
             }
-            System.out.println(postId);
             postService.deletePost(postId);
             return ResponseHandler.generateResponse("게시물이 삭제되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            log.error("게시물 삭제 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-
     }
 
 }

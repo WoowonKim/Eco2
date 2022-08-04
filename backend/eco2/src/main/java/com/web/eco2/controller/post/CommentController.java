@@ -5,6 +5,8 @@ import com.web.eco2.domain.dto.post.CommentCreateDto;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.model.repository.post.PostRepository;
 import com.web.eco2.model.repository.user.UserRepository;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/post")
-@CrossOrigin("http://localhost:8002")
 @Transactional
+@Api(tags = {"Comment API"})
+@Slf4j
 public class CommentController {
 
 //    @Autowired
