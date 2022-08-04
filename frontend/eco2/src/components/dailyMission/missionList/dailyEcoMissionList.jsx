@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,21 +6,23 @@ import DailyEcoMissionitem from "../missionItem/dailyEcoMissionitem";
 import styles from "./dailyMissionDetail.module.css";
 import DailyMissionFavoritesList from "./dailyMissionFavoritesList";
 import DailyCustomMissionList from "./dailyCustomMissionList";
+import { postMission } from "../../../store/mission/missionMainSlice";
 import { GreenBtn } from "../../styled";
 import { onEcoArr } from "../../../store/mission/missionMainSlice";
 
-const DailyEcoMissionList = ({}) => {
-  const ecomissionList = useSelector((state) => state.dailyMission.dailyMissionList);
-  //const ecoArr = useSelector((state) => state.missionMain);
+const DailyEcoMissionList = ({ id, ecomissionList }) => {
+  // const ecomissionList = useSelector((state) => state.dailyMission.dailyMissionList);
+  const ecoArr = useSelector((state) => state.missionMain);
   const [eco, setEco] = useState([]);
+  const [ecoId, setEcoId] = useState([]);
   const [arrFavorites, setArrFavorites] = useState([]);
   const [list, getList] = useState(true); // 기본 & 내 목록 창
   const ecoCount = eco.length;
   const naviGate = useNavigate();
   const dispatch = useDispatch();
+
   const onEco = (color, id, content) => {
     if (color === false) {
-      dispatch(onEcoArr({ color, id, content }));
     }
   };
 
@@ -32,9 +34,12 @@ const DailyEcoMissionList = ({}) => {
         content: content,
       };
       setEco([...eco, newEco]);
+      setEcoId([...ecoId, newEco.id]);
     } else {
       const reEco = eco.filter((it) => it.id !== id);
+      const reEcoId = ecoId.filter((it) => it !== id);
       setEco(reEco);
+      setEcoId(reEcoId);
     }
   };
 
@@ -60,8 +65,18 @@ const DailyEcoMissionList = ({}) => {
     }
   };
 
+  const onMissionSub = () => {
+    if (ecoCount >= 1) {
+      dispatch(postMission({ id, ecoId })).then((res) => {
+        if (res.payload?.status === 200) {
+          alert(`${ecoCount}개 저장 완료 메인페이지로 이동합니다.`);
+        }
+      });
+    }
+  };
+
   return (
-    <div>
+    <div className={styles.zero}>
       {/* 최 상단 글 */}
       <div className={styles.Font}>
         <p>오늘은 어떤 도전을 해볼까?</p>
@@ -113,26 +128,20 @@ const DailyEcoMissionList = ({}) => {
 
       {/* 미션 리스트 불러오기 */}
       <div>
-        {list == true ? (
+        {list === true ? (
           <div>
             {ecomissionList.map((it) => (
-              // <DailyEcoMissionitem key={it.id} content={it.title} id={it.id} onCreate={onCreate} onFavorites={onFavorites} />
-              <DailyEcoMissionitem key={it.id} content={it.content} id={it.id} onCreate={onCreate} onEco={onEco} onFavorites={onFavorites} />
+              <DailyEcoMissionitem key={it.id} content={it.title} id={it.id} onCreate={onCreate} onEco={onEco} onFavorites={onFavorites} />
+              // <DailyEcoMissionitem key={it.id} content={it.content} id={it.id} onCreate={onCreate} onEco={onEco} onFavorites={onFavorites} />
             ))}
           </div>
         ) : (
           <div>
-            <DailyCustomMissionList />
+            <DailyCustomMissionList id={id} />
           </div>
         )}
       </div>
       {/* 미션 리스트 불러오기 end */}
-
-      {/* 커스텀 미션 추가하기. */}
-      <div className={styles.plusP}>
-        <i className={"fa-solid fa-circle-plus"}></i>
-      </div>
-      {/* 커스텀 미션 추가하기. end*/}
 
       <div>
         {/* 미션 카운트 */}
@@ -142,7 +151,7 @@ const DailyEcoMissionList = ({}) => {
         {/* 미션 카운트 end*/}
 
         {/* 버튼 클릭 시 데일리 미션 메인으로 항목 이동 */}
-        <GreenBtn onClick={onStore}> 선택한 미션 추가하기</GreenBtn>
+        <GreenBtn onClick={onMissionSub}> 선택한 미션 추가하기</GreenBtn>
         {/* 버튼 클릭 시 데일리 미션 메인으로 항목 이동 end*/}
       </div>
     </div>

@@ -29,6 +29,8 @@ public class Mission {
     private String content;
 
     //추천 필드 추가
+    @Column(name = "mis_clear_flag")
+    private Boolean clearFlag;
 
     @Column(name = "mis_quest_flag", nullable = false)
     private boolean questFlag;

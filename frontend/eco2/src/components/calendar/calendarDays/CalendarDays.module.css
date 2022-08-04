@@ -1,0 +1,21 @@
+.days {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.65em;
+  /* padding: 3px; */
+  color: darkgray;
+  margin: 7px 0;
+}
+
+.col {
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  background-color: #d2eabaa8;
+  padding: 1px 3px;
+  width: 50px;
+  border-radius: 8px;
+}

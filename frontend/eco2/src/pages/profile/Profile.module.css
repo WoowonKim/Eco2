@@ -1,14 +1,8 @@
-.calender {
-  width: 300px;
-  height: 300px;
-  background-color: aliceblue;
-  color: black;
-}
-
 .userInfo {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
 }
 
 .user {
