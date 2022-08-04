@@ -1,5 +1,5 @@
 import React from "react";
-import FeedList from "../../components/feedList/FeedList";
+import FeedList from "../../components/feed/feedList/FeedList";
 import styles from "./MainFeed.module.css";
 import { Link } from "react-router-dom";
 

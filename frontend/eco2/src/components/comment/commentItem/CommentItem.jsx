@@ -1,10 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteComment } from "../../store/mainFeed/commentSlice";
+import { deleteComment } from "../../../store/mainFeed/commentSlice";
 import CommentForm from "../commentForm/CommentForm";
 import ReplyList from "../replyList/ReplyList";
-import ReportModal from "../reportModal/ReportModal";
+import ReportModal from "../../modal/reportModal/ReportModal";
 import styles from "./CommentItem.module.css";
 
 const CommentItem = ({ id, content, user, postId }) => {

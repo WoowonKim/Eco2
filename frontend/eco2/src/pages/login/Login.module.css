@@ -8,22 +8,19 @@
 
 .img {
   height: 200px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .input {
-  border: solid 2px #dadada;
-  border-radius: 8px;
-  margin: 5px 0;
-  height: 40px;
-  width: 100%;
-  background-color: #f7f8f9;
-  padding: 10px 20px;
-  font-size: small;
+  margin: 5px 0 10px 0;
+}
+
+.input:focus {
+  outline: none;
 }
 
 .radio {
-  margin-top: 5px;
+  margin: 10px 0;
   text-align: start;
 }
 
@@ -32,20 +29,34 @@
 }
 
 .lineGroup {
-  text-align: start;
-  width: 100%;
-  border-bottom: 1px solid #797a7e50;
-  color: white;
-  line-height: 0.1em;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin: 30px 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.shortLine {
+  width: 15%;
+  height: 1px;
+  padding: 0;
+  margin: 0 5px 0 0;
+  border: none;
+  background-color: #dadada;
 }
 
 .lineText {
-  background: #fff;
-  margin-left: 40px;
-  padding: 0 10px;
-  color: #6a707cde;
+  color: #6a707c;
+  font-size: small;
+  font-weight: bold;
+}
+
+.longLine {
+  width: 35%;
+  height: 1px;
+  padding: 0;
+  margin: 0 0 0 5px;
+  border: none;
+  background-color: #dadada;
 }
 
 .socialGroup {
@@ -76,7 +87,7 @@
 }
 
 .longLine2 {
-  width: 76%;
+  width: 70%;
   height: 1px;
   padding: 0;
   margin-left: 0 0 0 5px;
@@ -94,4 +105,27 @@
 
 .link {
   text-decoration: none;
+}
+
+.success {
+  color: #949191;
+  margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}
+
+.fail {
+  color: red;
+  margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}
+
+.test {
+  height: 34px;
+  margin: 0;
+}
+
+.loginButton:disabled {
+  background-color: #dadada;
 }

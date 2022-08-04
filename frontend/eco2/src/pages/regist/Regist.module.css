@@ -35,20 +35,62 @@
   display: none;
 }
 
-.inputEmail {
-  border: solid 2px #dadada;
+.label {
+  display: flex;
+  justify-content: start;
+  font-size: small;
+  margin: 0 0 0 10px;
+}
+
+.input {
+  background: white;
+  border: none;
+  border-bottom: 1px solid #dadada;
+  width: 270px;
+  height: 35px;
+  padding-left: 10px;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.button {
+  width: 55px;
+  height: 35px;
+  border: 1px solid #dadada;
   border-radius: 8px;
-  height: 40px;
-  width: 60%;
-  background-color: #f7f8f9;
+  margin-left: 5px;
+  cursor: pointer;
+  background-color: #adc178;
+  color: white;
+}
+
+.buttonEmail:disabled {
+  background-color: #dadada;
+}
+.signupButton:disabled {
+  background-color: #dadada;
+}
+
+.inputEmail {
+  background: white;
+  border: none;
+  border-bottom: 1px solid #dadada;
+  height: 35px;
+  width: 65%;
   font-size: small;
   margin-right: 10px;
-  padding: 10px 20px;
+  padding-left: 10px;
+}
+
+.inputEmail:focus {
+  outline: none;
 }
 
 .buttonEmail {
-  width: 22%;
-  height: 40px;
+  width: 15%;
+  height: 35px;
   border: 1px solid #dadada;
   border-radius: 8px;
   cursor: pointer;
@@ -86,7 +128,7 @@
 }
 
 .longLine {
-  width: 45.5%;
+  width: 45%;
   height: 1px;
   padding: 0;
   margin: 0 0 0 5px;
@@ -108,12 +150,19 @@
 
 .success {
   color: #949191;
-  font-size: small;
   margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
 }
 
 .fail {
   color: red;
-  font-size: small;
   margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}
+
+.test {
+  height: 34px;
+  margin: 0;
 }

@@ -1,0 +1,23 @@
+.header {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.col .col_start {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.text {
+  font-size: 0.5em;
+  margin-right: 5px;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.button {
+  border: none;
+  background-color: white;
+}
