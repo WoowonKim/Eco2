@@ -21,6 +21,7 @@ import javax.persistence.*;
 public class QuestPost extends Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "que_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;

@@ -32,7 +32,8 @@ public class PostImg {
 
 
     @MapsId
-    @OneToOne
+    @OneToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "pos_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;

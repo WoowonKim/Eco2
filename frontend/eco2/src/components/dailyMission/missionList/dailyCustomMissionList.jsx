@@ -1,22 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./dailyMissionDetail.module.css";
-import { GreenBtn } from "../../styled";
+import { customMission } from "../../../store/mission/customMissionSlice";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux/es/exports";
+import { customDeleteMission } from "../../../store/mission/customMissionSlice";
 
-const DailyCustomMissionList = () => {
+const DailyCustomMissionList = ({ id }) => {
+  const [cos, setCos] = useState([]);
+  const customList = useSelector((state) => state.custom);
+  const dispatch = useDispatch();
+  const naviGate = useNavigate();
+
+  useEffect(() => {
+    dispatch(customMission({ id })).then((res) => {
+      setCos(res.payload.customMissionList);
+    });
+  }, []);
+
+  const onDelete = () => {};
+
   return (
     <div>
-      <h2>커스텀 미션이 없습니다.</h2>
-      <h4>아래 버튼을 눌러 생성해보세요!</h4>
+      {cos.length === 0 ? (
+        <div>
+          <h2>커스텀 미션이 없습니다.</h2>
+          <h4> 아래 버튼을 눌러 생성해보세요!</h4>
+        </div>
+      ) : (
+        <div>
+          {cos.map((it) => (
+            <div key={it.id}>
+              <span>{it.content}</span>
+              <button
+                onClick={() => {
+                  dispatch(customDeleteMission({ id: it.id }));
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className={styles.plusP}>
         <i
           className={"fa-solid fa-circle-plus"}
           onClick={() => {
-            alert("모달창");
+            naviGate("/customPlus");
           }}
         ></i>
-      </div>
-      <div>
-        <GreenBtn> 선택한 미션 추가하기</GreenBtn>
       </div>
     </div>
   );

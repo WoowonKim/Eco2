@@ -49,6 +49,7 @@ public class Post {
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "usr_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -61,6 +62,10 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomMission customMission;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "qul_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Quest quest;
 
     @Column(name = "pos_category", nullable = false)
     private Integer category;

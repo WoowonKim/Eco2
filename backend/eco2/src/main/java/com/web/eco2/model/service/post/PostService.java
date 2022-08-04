@@ -36,10 +36,12 @@ public class PostService {
         return postRepository.getById(id);
     }
 
-
+    //post image 저장 경로
     @Value("${postImg.path}")
     private String uploadPostImgPath;
 
+
+    //post 저장하기 (post + postImage)
     @Transactional
     public void savePost(MultipartFile postImage, PostCreateDto postCreateDto) throws IOException {
 //        Long postUserId = postUser.getId();
@@ -80,6 +82,16 @@ public class PostService {
         return postRepository.findAll(sort);
     }
 
+
+    // 특정 게시물 조회
+    public Post getSpecificPost(Long postId) {
+        Post post = postRepository.getById(postId);
+        return post;
+    }
+
+
+
+    //postImg byte로 변환
     public byte[] getImageByte(Long postId) throws IOException {
         Optional<PostImg> postImg = postImgRepository.findById(postId);
         if (postImg.isPresent()) {
@@ -133,6 +145,10 @@ public class PostService {
         File existFile = new File(existSaveFolder + File.separator + existFileName);
         boolean result = existFile.delete();
         System.out.println(result);
+
+
+        postRepository.delete(post); //게시글 삭제
+
     }
 
 

@@ -30,15 +30,6 @@ const DailyMissionMain = () => {
     }
   };
 
-  // const [modalOpen, setModalOpen] = useState(false);
-
-  // const openModal = () => {
-  //   setModalOpen(true);
-  // };
-  // const closeModal = () => {
-  //   setModalOpen(false);
-  // };
-
   return (
     <div className={styles.headerMain}>
       <div className={styles.mainHeader}>
@@ -50,12 +41,7 @@ const DailyMissionMain = () => {
           </span>
         </Link>
       </div>
-      {/* <div>
-        <button onClick={openModal}>모달 TEST</button>
-        <MissionModal open={modalOpen} close={closeModal} header="미션 완료">
-          인증글 작성하러가기!
-        </MissionModal>
-      </div> */}
+
       <div>
         {ecoMainList.map((it) => (
           <MissionMain key={it.id} content={it.content} id={it.id} trashCnt={trashCnt} />

@@ -63,6 +63,7 @@ export const passwordChange = createAsyncThunk(
 );
 
 // 회원 탈퇴
+// 백엔드 코드 확정 시 수정 필요
 export const deleteUser = createAsyncThunk(
   "userInformationSlice/deleteUser",
   async (args, { rejectWithValue }) => {
@@ -72,7 +73,7 @@ export const deleteUser = createAsyncThunk(
       method: "delete",
       data: {
         email: args.email,
-        password: args.password,
+        // password: args.password,
       },
       headers: {
         "Auth-accessToken": accessToken,

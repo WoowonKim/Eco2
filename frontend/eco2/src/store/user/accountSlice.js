@@ -105,6 +105,23 @@ export const accountSettingChange = createAsyncThunk(
   }
 );
 
+// 공지사항 테스트 요청
+// export const test = createAsyncThunk(
+//   "accountSlice/test",
+//   async (args, { rejectWithValue }) => {
+//     const accessToken = getToken();
+//     const response = await axios({
+//       url: `/admin/notice/${args.id}`,
+//       method: "post",
+//       data: {},
+//       headers: {
+//         "Auth-accessToken": accessToken,
+//       },
+//     });
+//     return response.data;
+//   }
+// );
+
 export const accountSlice = createSlice({
   name: "account",
   initialState: {
@@ -149,6 +166,12 @@ export const accountSlice = createSlice({
     [accountSettingChange.rejected]: (state, action) => {
       console.log("accountSettingChange rejected", action.payload);
     },
+    // [test.fulfilled]: (state, action) => {
+    //   console.log("test fulfilled", action.payload);
+    // },
+    // [test.rejected]: (state, action) => {
+    //   console.log("test rejected", action.payload);
+    // },
   },
 });
 
