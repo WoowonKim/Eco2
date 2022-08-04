@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import styles from "./dailyMission.module.css";
 import { useNavigate } from "react-router-dom";
 import MissionModal from "../missionClear/missionModal";
+import { deleteMission } from "../../../store/mission/missionMainSlice";
+import { useDispatch } from "react-redux/es/exports";
 
-const MissionMain = ({ id, content, trashCnt }) => {
+const MissionMain = ({ id, content, trashCnt, missionType, missionId }) => {
   const [trash, setTrash] = useState(true);
   const [doitMission, setDoitMission] = useState(false);
   const trashType = trash ? styles.greenTrash : styles.whiteTrash;
+  const dispatch = useDispatch();
   const onListRemove = () => {
     alert(`${id}를 삭제 완료!`);
   };
@@ -18,6 +21,13 @@ const MissionMain = ({ id, content, trashCnt }) => {
   };
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const onDeleteMission = (deleteId, missionType, missionId) => {
+    dispatch(deleteMission({ id: deleteId, missionId: missionId, missionType: missionType }));
+    console.log(deleteId);
+    console.log(missionId);
+    console.log(missionType);
   };
 
   return (
@@ -36,7 +46,12 @@ const MissionMain = ({ id, content, trashCnt }) => {
           }}
         ></input>
         <span>{content}</span>
-        <i className={`${"fa-solid fa-trash-can"} ${trashType}`} onClick={onListRemove}></i>
+        <i
+          className={`${"fa-solid fa-trash-can"} ${trashType}`}
+          onClick={() => {
+            onDeleteMission(id, missionId, missionType);
+          }}
+        ></i>
       </div>
     </div>
   );

@@ -7,15 +7,25 @@ import DailyMissionFavoritesList from "./dailyMissionFavoritesList";
 import DailyCustomMissionList from "./dailyCustomMissionList";
 import { postMission } from "../../../store/mission/missionMainSlice";
 import { GreenBtn } from "../../styled";
+import { getFavorite } from "../../../store/mission/favoriteSlice";
 
 const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [eco, setEco] = useState([]);
   const [ecoId, setEcoId] = useState([]);
   const [arrFavorites, setArrFavorites] = useState([]);
   const [list, getList] = useState(true);
+  const [favoriteArr, setFavoriteArr] = useState([]);
 
   const dispatch = useDispatch();
   const ecoCount = eco.length;
+
+  useEffect(() => {
+    dispatch(getFavorite({ id })).then((res) => {
+      if (res.payload.status === 200) {
+        setFavoriteArr(res.payload.missionList);
+      }
+    });
+  }, []);
 
   const onCreate = (color, id, content) => {
     if (color === false) {
@@ -27,8 +37,8 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       setEco([...eco, newEco]);
       setEcoId([...ecoId, newEco.id]);
     } else {
-      const reEco = eco.filter(it => it.id !== id);
-      const reEcoId = ecoId.filter(it => it !== id);
+      const reEco = eco.filter((it) => it.id !== id);
+      const reEcoId = ecoId.filter((it) => it !== id);
       setEco(reEco);
       setEcoId(reEcoId);
     }
@@ -43,14 +53,14 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       };
       setArrFavorites([...arrFavorites, newArrFavorites]);
     } else {
-      const reArrFavorits = arrFavorites.filter(it => it.id !== id);
+      const reArrFavorits = arrFavorites.filter((it) => it.id !== id);
       setArrFavorites(reArrFavorits);
     }
   };
 
   const onMissionSub = () => {
     if (ecoCount >= 1) {
-      dispatch(postMission({ id, ecoId })).then(res => {
+      dispatch(postMission({ id, ecoId })).then((res) => {
         if (res.payload?.status === 200) {
           alert(`${ecoCount}개 저장 완료 메인페이지로 이동합니다.`);
         }
@@ -74,12 +84,8 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
           <span className={styles.basicMission}>즐겨찾기</span>
         </div>
         <div>
-          {arrFavorites.map(it => (
-            <DailyMissionFavoritesList
-              key={it.id}
-              content={it.content}
-              id={it.id}
-            ></DailyMissionFavoritesList>
+          {arrFavorites.map((it) => (
+            <DailyMissionFavoritesList key={it.id} content={it.content} ecoId={it.id}></DailyMissionFavoritesList>
           ))}
         </div>
       </div>
@@ -106,14 +112,8 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       <div>
         {list === true ? (
           <div>
-            {ecomissionList.map(it => (
-              <DailyEcoMissionitem
-                key={it.id}
-                content={it.title}
-                id={it.id}
-                onCreate={onCreate}
-                onFavorites={onFavorites}
-              />
+            {ecomissionList.map((it) => (
+              <DailyEcoMissionitem key={it.id} content={it.title} ecoId={it.id} onCreate={onCreate} onFavorites={onFavorites} id={id} category={it.category} />
             ))}
           </div>
         ) : (
