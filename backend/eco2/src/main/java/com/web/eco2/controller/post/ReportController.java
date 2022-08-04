@@ -1,17 +1,14 @@
 package com.web.eco2.controller.post;
 
-import com.google.firebase.database.core.Repo;
 import com.web.eco2.domain.dto.Report.ReportRequest;
 import com.web.eco2.domain.dto.Report.ReportTypeInformation;
-import com.web.eco2.domain.entity.admin.PostReport;
 import com.web.eco2.domain.entity.admin.Report;
 import com.web.eco2.domain.entity.admin.ReportType;
 import com.web.eco2.model.service.admin.ReportService;
-import com.web.eco2.model.service.post.PostCommentService;
+import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +31,7 @@ public class ReportController {
     private PostService postService;
 
     @Autowired
-    private PostCommentService postCommentService;
+    private CommentService postCommentService;
 
     //신고하기
     @PostMapping("/{usrId}")
