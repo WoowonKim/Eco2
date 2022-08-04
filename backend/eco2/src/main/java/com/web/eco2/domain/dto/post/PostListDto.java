@@ -15,10 +15,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class PostListDto {
     private Long id;
-    private User user;
-    private JsonArray postImg;
-    private Mission mission;
-    private CustomMission customMission;
+    private Long userId;
+    private String userName;
+    private String content;
+    private String postImgUrl;
+    private Long missionId;
+    private Long customMissionId;
 
     public PostListDto() {
 
