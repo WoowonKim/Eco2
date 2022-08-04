@@ -176,7 +176,6 @@ public class PostController {
     public ResponseEntity<Object> createPost(@RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
         try {
-<<<<<<< backend/eco2/src/main/java/com/web/eco2/controller/post/PostController.java
             log.info("게시물 등록 API 호출"); //TODO fe: 나뭇잎 추가, 조회 //be: 통계 수 증가
             
             Integer category = null;
