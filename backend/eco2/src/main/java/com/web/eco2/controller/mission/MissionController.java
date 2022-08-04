@@ -43,6 +43,7 @@ public class MissionController {
             System.out.println(missionList);
             return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", selectedMissionList);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

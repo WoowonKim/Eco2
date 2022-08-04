@@ -52,15 +52,17 @@ public class PostService {
         File savePostImage = new File(uploadPostImgPath, saveName);
         postImage.transferTo(savePostImage);
 
-        Post post = Post.builder()
-                .content(postCreateDto.getContent())
-                .user(postCreateDto.getUser())
-                .mission(postCreateDto.getMission())
-                .category(postCreateDto.getMission().getCategory())
-                .registTime(LocalDateTime.now())
-                .publicFlag(true)
-                .commentFlag(true)
-                .report(false).build();
+//        Post post = Post.builder()
+//                .content(postCreateDto.getContent())
+//                .user(postCreateDto.getUser())
+//                .mission(postCreateDto.getMission())
+//                .category(postCreateDto.getMission().getCategory())
+//                .registTime(LocalDateTime.now())
+//                .publicFlag(true)
+//                .commentFlag(true)
+//                .report(false).build();
+
+        Post post = postCreateDto.toEntity();
         postImgRepository.save(PostImg.builder().saveFolder(uploadPostImgPath).saveName(saveName).originalName(originalName).post(post).build());
 
 //        if(postCreateDto.getMission() != null) {
@@ -74,7 +76,6 @@ public class PostService {
         System.out.println("post:: " + post);
         postRepository.save(post);
     }
-
 
     //post 목록 가져오기
     public List<Post> getPostList() {
@@ -107,22 +108,23 @@ public class PostService {
 
     //post 수정하기
     public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) {
-        Post post = postRepository.getById(postId);
-        post.setContent(postUpdateDto.getContent());
-        post.setPublicFlag(postUpdateDto.isPublicFlag());
-        post.setCommentFlag(postUpdateDto.isCommentFlag());
+            Post post = postRepository.getById(postId);
+            post.setContent(postUpdateDto.getContent());
+            post.setPublicFlag(postUpdateDto.isPublicFlag());
+            post.setCommentFlag(postUpdateDto.isCommentFlag());
+            postRepository.save(post);
 
-        PostImg postImg = postImgRepository.getById(postId);
-        String originalName = postImage.getOriginalFilename();
+            PostImg postImg = postImgRepository.getById(postId);
+            String originalName = postImage.getOriginalFilename();
 
-        PostImg newPostImg = PostImg.builder()
-                .saveFolder(uploadPostImgPath)
-                .originalName(originalName)
-                .saveName(postImg.getSaveName())
-                .id(postUpdateDto.getId())
-                .build();
+            PostImg newPostImg = PostImg.builder()
+                    .saveFolder(uploadPostImgPath)
+                    .originalName(originalName)
+                    .saveName(postImg.getSaveName())
+                    .id(postId)
+                    .build();
 
-        postImgRepository.save(newPostImg);
+            postImgRepository.save(newPostImg);
     }
 
 

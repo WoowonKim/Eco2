@@ -61,21 +61,26 @@ public class DailyMissionController {
     public ResponseEntity<Object> registerDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRequest dailyMissionRequest) {
         try {
             User user = userService.getById(usrId);
-            for (MissionDto missionDto : dailyMissionRequest.getDailyMissionList()) {
-                System.out.println(missionDto);
-                Mission mission = missionService.findByMisId(missionDto.getId());
-                DailyMission dailyMission = dailyMissionRequest.toEntity(user, mission, null);
-                trendingService.updateCount(dailyMission.getMission().getId());
-                dailyMissionService.save(dailyMission);
+            if (dailyMissionRequest.getDailyMissionList() != null) {
+                for (Long missionId : dailyMissionRequest.getDailyMissionList()) {
+                    System.out.println(missionId);
+                    Mission mission = missionService.findByMisId(missionId);
+                    DailyMission dailyMission = dailyMissionRequest.toEntity(user, mission, null);
+                    trendingService.updateCount(dailyMission.getMission().getId());
+                    dailyMissionService.save(dailyMission);
+                }
             }
-            for (CustomMissionDto customMissionDto : dailyMissionRequest.getCustomMissionList()) {
-                System.out.println(customMissionDto);
-                CustomMission customMission = customMissionService.findByCumId(customMissionDto.getId());
-                DailyMission dailyMission = dailyMissionRequest.toEntity(user, null, customMission);
-                dailyMissionService.save(dailyMission);
+            if (dailyMissionRequest.getCustomMissionList() != null) {
+                for (Long customMissionId : dailyMissionRequest.getCustomMissionList()) {
+                    System.out.println(customMissionId);
+                    CustomMission customMission = customMissionService.findByCumId(customMissionId);
+                    DailyMission dailyMission = dailyMissionRequest.toEntity(user, null, customMission);
+                    dailyMissionService.save(dailyMission);
+                }
             }
             return ResponseHandler.generateResponse("데일리 미션이 등록되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
