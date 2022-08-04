@@ -1,20 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { axiosService } from "../axiosService";
 import { getToken } from "./common";
 
+// 소셜 로그인한 회원 정보는 조회가 안되는 것 같음 -> 확인 필요
 // 유저 정보 조회
 export const userInformation = createAsyncThunk(
   "userInformationSlice/userInformation",
   async (args, { rejectWithValue }) => {
-    const accessToken = getToken();
-    const response = await axios({
-      url: `/userinformation/${args.email}`,
-      method: "get",
-      headers: {
-        "Auth-accessToken": accessToken,
-      },
-    });
-    return response.data;
+    try {
+      const response = await axiosService.get(`/userinformation/${args.email}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
@@ -22,64 +20,49 @@ export const userInformation = createAsyncThunk(
 export const passwordCheck = createAsyncThunk(
   "userInformationSlice/passwordCheck",
   async (args, { rejectWithValue }) => {
-    const accessToken = getToken();
-    const response = await axios({
-      url: "/userinformation/password",
-      method: "post",
-      data: {
+    try {
+      const response = await axiosService.post("/userinformation/password", {
         email: args.email,
         password: args.password,
-      },
-      headers: {
-        "Auth-accessToken": accessToken,
-      },
-    });
-    return response.data;
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
+// 안됨
 // 비밀번호 수정
 export const passwordChange = createAsyncThunk(
   "userInformationSlice/passwordChange",
   async (args, { rejectWithValue }) => {
     try {
-      const accessToken = getToken();
-      const response = await axios({
-        url: "/userinformation/password",
-        method: "put",
-        data: {
-          email: args.email,
-          password: args.password,
-        },
-        headers: {
-          "Auth-accessToken": accessToken,
-        },
+      const response = await axiosService.put("/userinformation/password", {
+        email: args.email,
+        password: args.password,
       });
       return response.data;
     } catch (err) {
-      console.log(err, args.email, args.password);
+      console.log(err);
     }
   }
 );
 
+// 에러 발생
 // 회원 탈퇴
-// 백엔드 코드 확정 시 수정 필요
 export const deleteUser = createAsyncThunk(
   "userInformationSlice/deleteUser",
   async (args, { rejectWithValue }) => {
-    const accessToken = getToken();
-    const response = await axios({
-      url: `/userinformation`,
-      method: "delete",
-      data: {
+    try {
+      const response = await axiosService.delete("/userinformation", {
         email: args.email,
         // password: args.password,
-      },
-      headers: {
-        "Auth-accessToken": accessToken,
-      },
-    });
-    return response.data;
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
