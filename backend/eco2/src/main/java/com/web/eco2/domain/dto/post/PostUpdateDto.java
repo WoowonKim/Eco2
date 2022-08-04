@@ -10,14 +10,12 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class PostUpdateDto {
-    private Long id;
     private String content;
     private boolean publicFlag;
     private boolean commentFlag;
 
     public Post toEntity() {
         return Post.builder()
-                .id(getId())
                 .content(getContent())
                 .publicFlag(isPublicFlag())
                 .commentFlag(isCommentFlag())
