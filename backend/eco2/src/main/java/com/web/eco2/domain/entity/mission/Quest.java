@@ -4,6 +4,8 @@ import com.web.eco2.domain.dto.mission.QuestDto;
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -51,10 +53,12 @@ public class Quest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mis_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Mission mission;
 
     @Builder

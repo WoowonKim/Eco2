@@ -32,7 +32,7 @@ public class PostCreateDto {
                 .user(getUser())
                 .mission(getMission())
                 .customMission(getCustomMission())
-                .quest(getQuest())
+//                .quest(getQuest())
                 .build();
     }
 
