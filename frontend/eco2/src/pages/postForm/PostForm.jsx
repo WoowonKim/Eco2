@@ -39,7 +39,8 @@ const PostForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
+    const formDataCreate = new FormData();
+    const formDataUpdate = new FormData();
     const postCreateDto = {
       content: editText,
       user: {
@@ -49,26 +50,40 @@ const PostForm = () => {
         id: 1,
       },
     };
-    const json = JSON.stringify(postCreateDto);
-    const blob = new Blob([json], {
-      type: "application/json",
-    });
+    const postUpdateDto = {
+      content: editText,
+      publicFlag: false,
+      commentFlag: false,
+    };
 
-    // formData에 파일과 세부 정보들 append
-    formData.append("postImage", file);
-    formData.append("postCreateDto", blob);
     if (location.state?.postId) {
       // 글 수정 시 해당 글 상세 페이지로 다시 이동
-      dispatch(postUpdate({ postId: location.state?.postId, formData })).then(
-        (res) => {
-          if (res.payload.status === 200) {
-            navigate(`/post/${location.state?.postId}`);
-          }
+
+      const json = JSON.stringify(postUpdateDto);
+      const blob = new Blob([json], {
+        type: "application/json",
+      });
+      formDataUpdate.append("postImage", file);
+      formDataUpdate.append("postUpdateDto", blob);
+
+      dispatch(
+        postUpdate({ postId: location.state?.postId, formData: formDataUpdate })
+      ).then((res) => {
+        if (res.payload?.status === 200) {
+          navigate(`/post/${location.state?.postId}`);
         }
-      );
+      });
     } else {
       // 새 글 작성 시 이동할 페이지 추가 필요
-      dispatch(postCreate({ formData })).then((res) => {});
+
+      const json = JSON.stringify(postCreateDto);
+      const blob = new Blob([json], {
+        type: "application/json",
+      });
+      formDataCreate.append("postImage", file);
+      formDataCreate.append("postCreateDto", blob);
+
+      dispatch(postCreate({ formData: formDataCreate })).then((res) => {});
     }
   };
 

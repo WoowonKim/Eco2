@@ -115,6 +115,14 @@ export const postSlice = createSlice({
     [postCreate.rejected]: (state, action) => {
       console.log("postCreate rejected", action.payload);
     },
+    [postUpdate.fulfilled]: (state, action) => {
+      console.log("postUpdate fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [postUpdate.rejected]: (state, action) => {
+      console.log("postUpdate rejected", action.payload);
+    },
   },
 });
 
