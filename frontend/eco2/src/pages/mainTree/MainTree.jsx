@@ -11,7 +11,7 @@ import {
 const MainTree = () => {
   let dispatch = useDispatch();
   const leaves = useSelector((state) => state.leaves);
-  let currUser = useSelector((state) => state.user);
+  let currUser = useSelector((state) => state.user.user);
   let categoryCounts = useMemo(() => {
     const categoryCounts = [0, 0, 0, 0, 0, 0];
     for (let i in leaves.data) {
@@ -20,11 +20,12 @@ const MainTree = () => {
     return categoryCounts;
   }, [leaves]);
   useEffect(() => {
+    console.log(currUser);
     dispatch(getLeaves(currUser.id));
   }, []);
   const moveLeaf = (id, left, top) => {
     dispatch(changePos({ id, left, top }));
-    dispatch(updateLeaf({ id, left, top }));
+    dispatch(updateLeaf({ userId: currUser.id, leaf: { id, left, top } }));
   };
   const [, drop] = useDrop(
     () => ({

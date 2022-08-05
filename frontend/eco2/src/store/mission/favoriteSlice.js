@@ -2,11 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const putFavorite = createAsyncThunk("favorite/put", async (args, { rejectWithValue }) => {
-  console.log("################################");
-  console.log("ID => ", args.id);
-  console.log("favorites =>", args.likeFlag);
-  console.log("ecoID  => ", args.missionId);
-  console.log("favoriteTrue => ", args.missionType);
   const response = await axios({
     url: `/mission/favorite/${args.id}`,
     method: "put",
