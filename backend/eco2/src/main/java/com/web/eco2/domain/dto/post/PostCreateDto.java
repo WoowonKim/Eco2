@@ -8,6 +8,7 @@ import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,9 +34,9 @@ public class PostCreateDto {
                 .content(getContent())
                 .user(getUser())
                 .mission(getMission())
-                .category(getMission().getCategory())
+                .category(getMission()!=null?getMission().getCategory():6)
                 .customMission(getCustomMission())
-                .quest(getQuest())
+//                .quest(getQuest())
                 .registTime(LocalDateTime.now())
                 .publicFlag(true)
                 .commentFlag(true)
@@ -43,4 +44,17 @@ public class PostCreateDto {
                 .build();
     }
 
+    public QuestPost toQuestPostEntity() {
+        return QuestPost.builder()
+//                .id(getId())
+                .content(getContent())
+                .user(getUser())
+                .category(getQuest().getMission().getCategory())
+                .quest(getQuest())
+                .registTime(LocalDateTime.now())
+                .publicFlag(true)
+                .commentFlag(true)
+                .report(false)
+                .build();
+    }
 }

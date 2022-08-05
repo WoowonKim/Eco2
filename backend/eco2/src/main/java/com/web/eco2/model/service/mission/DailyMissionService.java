@@ -64,13 +64,12 @@ public class DailyMissionService {
 
     public BufferedImage getRewardImage(User user, CalendarDto calendarDto) throws IOException {
         List<DailyMission> dailyMissionList = findRewardList(user.getId());
-        System.out.println(dailyMissionList);
 
         BufferedImage img = ImageIO.read(new File(uploadFolder + "/rewardImage.jpg"));
         Graphics2D graphics = img.createGraphics();
         String rewardFontName = "한컴 울주 반구대 암각화체";
         String rewardDate = calendarDto.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
-        String rewardName = "김은갱" + "님";
+        String rewardName = user.getName() + "님";
         String rewardContent1 = "오늘의 데일리미션 완료!!";
         String rewardContent2 = "축하합니다!!";
         String rewardFooter = "ECO2";
@@ -128,9 +127,9 @@ public class DailyMissionService {
     public void deleteByUsrId(Long usrId) {
         dailyMissionRepository.deleteByUsrId(usrId);
     }
-
     // TODO: 알고리즘 고치기
-    public List<Mission> getRecommendMission(String lat, String lng, String time) throws IOException {
+    // 에어컨/난방 미션의 경우의 처리가 미흡. 플래그 추가 생각 중
+    public Map<String, List<?>> getRecommendMission(String lat, String lng, String time) throws IOException {
         List<Long> recommendMissionsNum = new ArrayList<>();
         List<Mission> recommendMission = new ArrayList<>();
 
@@ -138,20 +137,21 @@ public class DailyMissionService {
         Boolean isClear = null;
         if(ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
             isClear = true;
-        } else if (ultraShortNowcast.getRainAmount() >= 3 && (ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28)) {
+        } else if (ultraShortNowcast.getRainAmount() >= 3 || ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28) {
             isClear = false;
         }
 
         List<Mission> missions = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < 3; ++i) {
-            int num = random.nextInt(4) + 1;
-            if(isClear == null) missions.addAll(missionRepository.findByCategoryAndClearFlagIsNull(num));
-            else missions.addAll(missionRepository.findByCategoryAndClearFlag(num, isClear));
-        }
+        int num = random.nextInt(3) + 1;
+        num = (4 + num) % 5; // 카테고리 4(구매하기) 제외하고 제외할 카테고리 하나 더 선택
+        if(num == 0) num = 5;
+
+        if(isClear != null) missions.addAll(missionRepository.findWithoutCategoryAndClearFlag(4, num, isClear));
+        else missions.addAll(missionRepository.findWithoutCategory(4, num));
 
         while (recommendMissionsNum.size() < 3) {
-            int num = random.nextInt(missions.size() - 1) + 1;
+            num = random.nextInt(missions.size() - 1) + 1;
             if (!recommendMissionsNum.contains(missions.get(num).getId())) {
                 recommendMissionsNum.add(missions.get(num).getId());
                 recommendMission.add(missions.get(num));
@@ -159,6 +159,13 @@ public class DailyMissionService {
             missions.remove(num);
         }
 
-        return recommendMission;
+        Map<String, List<?>> map = new HashMap<>();
+        map.put("missions", recommendMission);
+        map.put("missionsNum", recommendMissionsNum);
+        return map;
+    }
+
+    public DailyMission getById(Long missionId) {
+        return dailyMissionRepository.getById(missionId);
     }
 }

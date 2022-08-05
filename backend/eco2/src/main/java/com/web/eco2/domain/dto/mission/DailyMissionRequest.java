@@ -18,7 +18,7 @@ public class DailyMissionRequest {
     private List<Long> dailyMissionList;
     private List<Long> customMissionList;
     private Long missionId;
-    private Integer missionType;
+//    private Integer missionType;
 
 
     public DailyMission toEntity(User user, Mission mission, CustomMission customMission) {

@@ -2,8 +2,11 @@ package com.web.eco2.model.service.post;
 
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.QuestPost;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.repository.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +51,15 @@ public class PostService {
         UUID uuid = UUID.randomUUID();
         String originalName = postImage.getOriginalFilename();
         String saveName = uuid + "_" + postImage.getOriginalFilename();
-        System.out.println(postCreateDto.getUser());
         File savePostImage = new File(uploadPostImgPath, saveName);
         postImage.transferTo(savePostImage);
 
-//        Post post = Post.builder()
-//                .content(postCreateDto.getContent())
-//                .user(postCreateDto.getUser())
-//                .mission(postCreateDto.getMission())
-//                .category(postCreateDto.getMission().getCategory())
-//                .registTime(LocalDateTime.now())
-//                .publicFlag(true)
-//                .commentFlag(true)
-//                .report(false).build();
-
-        Post post = postCreateDto.toEntity();
+        Post post;
+        if(postCreateDto.getQuest() != null) {
+            post = postCreateDto.toQuestPostEntity();
+        } else {
+            post = postCreateDto.toEntity();
+        }
         postImgRepository.save(PostImg.builder().saveFolder(uploadPostImgPath).saveName(saveName).originalName(originalName).post(post).build());
 
 //        if(postCreateDto.getMission() != null) {
@@ -73,7 +70,6 @@ public class PostService {
 //            post.setQuest(postCreateDto.getQuest());
 //        }
 
-        System.out.println("post:: " + post);
         postRepository.save(post);
     }
 
@@ -131,26 +127,27 @@ public class PostService {
     //post 삭제하기
 
     public void deletePost(Long postId) {
-        //TODO :게시물 삭제 안됨
         Post post = postRepository.getById(postId); //삭제하고자 하는 게시물 찾기
         PostImg postImg = postImgRepository.findById(postId).get();  //삭제하고자 하는 게시물의 이미지 찾기
         String existFileName = postImg.getSaveName(); //삭제하고자 하는 게시물 이미지의 저장이름 찾기
-        System.out.println(post);
-        System.out.println(postImg);
 
-        System.out.println(existFileName);
         String existSaveFolder = postImg.getSaveFolder(); //삭제하고자 하는 게시물 이미지의 저장경로 찾기
-        System.out.println(existSaveFolder);
-        System.out.println("===delete Post");
-        postRepository.delete(post); //게시글 삭제
+        postImgRepository.delete(postImg); //게시글 사진 삭제
 
         File existFile = new File(existSaveFolder + File.separator + existFileName);
         boolean result = existFile.delete();
-        System.out.println(result);
 
 
         postRepository.delete(post); //게시글 삭제
 
+    }
+
+    public List<QuestPost> findByQuest(Quest quest) {
+        return postRepository.findByQuest(quest);
+    }
+
+    public List<QuestPost> findByUserAndQuestNotNull(User user) {
+        return postRepository.findByUserAndQuestNotNull(user);
     }
 
 

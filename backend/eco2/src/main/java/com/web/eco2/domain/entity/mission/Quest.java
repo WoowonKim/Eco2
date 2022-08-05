@@ -58,7 +58,7 @@ public class Quest {
     private Mission mission;
 
     @Builder
-    public Quest(String lat, String lng,Integer achieveCount , User user, Mission mission){
+    public Quest(Long id, String lat, String lng,Integer achieveCount , User user, Mission mission){
         this.lat = lat;
         this.lng = lng;
         this.achieveCount = achieveCount;

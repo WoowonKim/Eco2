@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestService {
@@ -28,8 +29,8 @@ public class QuestService {
         questRepository.delete(quest);
     }
 
-    public Quest findById(Long id) {
-        return questRepository.findById(id).get();
+    public Optional<Quest> findById(Long id) {
+        return questRepository.findById(id);
     }
 
     /**

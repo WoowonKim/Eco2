@@ -24,7 +24,6 @@ public class FriendService {
         List<User> friends = new ArrayList<>();
         friendRepository.findByFromUser(User.builder().id(id).build()).forEach(friend -> friends.add(friend.getToUser()));
         friendRepository.findByToUser(User.builder().id(id).build()).forEach(friend -> friends.add(friend.getFromUser()));
-
         return friends;
     }
 
