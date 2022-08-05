@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { accountSetting } from "../../store/user/accountSlice";
 import { getUserEmail } from "../../store/user/common";
 import {
   deleteUser,
