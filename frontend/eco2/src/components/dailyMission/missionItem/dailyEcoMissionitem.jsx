@@ -1,14 +1,24 @@
 import React, { useState } from "react";
 import styles from "./dailyMissionDetail.module.css";
 import { GreenBtn } from "../../styled";
-
-const DailyEcoMissionitem = ({ id, content, onCreate, onFavorites }) => {
+import { useDispatch } from "react-redux";
+import { putFavorite } from "../../../store/mission/favoriteSlice";
+//onFavorites
+const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, onFavorites, category }) => {
+  const dispatch = useDispatch();
   const [color, setColor] = useState(true);
   const [favorites, setFavorites] = useState(true);
-  const favoritesType = favorites
-    ? "fa-regular fa-bookmark"
-    : "fa-solid fa-bookmark";
+  const favoritesType = favorites ? "fa-regular fa-bookmark" : "fa-solid fa-bookmark";
   const colorType = color ? styles.gray : styles.skyblue;
+  const favoriteTrue = true;
+  const [testItem, setTestItem] = useState(false);
+  const onFavorite = (id, favorites, ecoId, favoriteTrue) => {
+    dispatch(putFavorite({ id, likeFlag: favorites, missionType: favoriteTrue, missionId: ecoId })).then((res) => {
+      if (res.payload.status === 200) {
+        console.log("putFavorite 성공 ");
+      }
+    });
+  };
 
   return (
     <div>
@@ -17,7 +27,7 @@ const DailyEcoMissionitem = ({ id, content, onCreate, onFavorites }) => {
         <span
           onClick={() => {
             setColor(!color);
-            onCreate(!color, id, content);
+            onCreate(!color, ecoId, content);
           }}
           className={styles.itemFont}
         >
@@ -27,7 +37,8 @@ const DailyEcoMissionitem = ({ id, content, onCreate, onFavorites }) => {
           className={`${favoritesType} `}
           onClick={() => {
             setFavorites(!favorites);
-            onFavorites(!favorites, id, content);
+            onFavorites(!favorites, ecoId, content);
+            onFavorite(id, favorites, ecoId, favoriteTrue);
           }}
         ></i>
       </div>

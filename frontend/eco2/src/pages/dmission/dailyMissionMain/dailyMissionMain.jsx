@@ -1,17 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./dailyMission.module.css";
 import { GreenBtn } from "../../../components/styled";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import MissionMain from "../../../components/dailyMission/missionList/missionMain";
 import { useNavigate } from "react-router-dom";
-import MissionModal from "../../../components/dailyMission/missionClear/missionModal";
+import { getMission } from "../../../store/mission/missionMainSlice";
+import { userInformation } from "../../../store/user/userSettingSlice";
+import { getUserEmail } from "../../../store/user/common";
 
 const DailyMissionMain = () => {
   const ecoMainList = useSelector((state) => state.missionMain.ecoMissionList);
   const ecoLength = ecoMainList.length;
   const [tCnt, setTCnt] = useState(0);
   const naviGate = useNavigate();
+  const dispatch = useDispatch();
+  const [id, setId] = useState(0);
+  const [main, setMain] = useState([]);
+  useEffect(() => {
+    dispatch(userInformation({ email: getUserEmail() })).then((res) => {
+      if (res.payload.status === 200) {
+        dispatch(getMission({ id: res.payload.user.id })).then((res) => {
+          console.log(res.payload.dailyMissionList);
+          setMain(res.payload.dailyMissionList);
+        });
+      }
+    });
+  }, []);
 
   const trashCnt = (trash) => {
     if (!trash) {
@@ -43,8 +58,8 @@ const DailyMissionMain = () => {
       </div>
 
       <div>
-        {ecoMainList.map((it) => (
-          <MissionMain key={it.id} content={it.content} id={it.id} trashCnt={trashCnt} />
+        {main.map((it) => (
+          <MissionMain key={it.id} content={it.mission.title} id={it.user.id} trashCnt={trashCnt} missionType={it.mission.category} missionId={it.mission.id} />
         ))}
       </div>
       <div className={styles.btn}>

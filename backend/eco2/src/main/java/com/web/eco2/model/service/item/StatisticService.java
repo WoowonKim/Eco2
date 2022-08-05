@@ -1,14 +1,9 @@
 package com.web.eco2.model.service.item;
 
-import com.web.eco2.domain.dto.user.UserInformation;
 import com.web.eco2.domain.entity.Item.Statistic;
-import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.item.StatisticRepository;
-import com.web.eco2.model.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class StatisticService {
@@ -26,4 +21,10 @@ public class StatisticService {
     }
 
 
+    public void updateCount(Long usrId, Integer category, boolean questFlag) {
+        if(questFlag){
+            statisticRepository.updateQuestCount(usrId);
+        }
+//        statisticRepository.updateCount(usrId, "t.sta_category_"+category);
+    }
 }
