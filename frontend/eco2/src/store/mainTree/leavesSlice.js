@@ -1,19 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { axiosService } from "../axiosService";
 import { getToken } from "../user/common";
 
 export const getLeaves = createAsyncThunk(
   "leavesSlice/getLeaves",
   async (args, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios({
-        url: `/tree/1`,
-        method: "get",
-        Headers: {
-          Authorization: "Authorization" + token,
-        },
-      });
+      const response = await axiosService.get(`/tree/${args}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -26,14 +20,17 @@ export const updateLeaf = createAsyncThunk(
   async (args, { rejectWithValue }) => {
     console.log(args);
     try {
-      const token = getToken();
-      const response = await axios({
-        url: `/tree/1`,
-        method: "put",
-        Headers: {
-          Authorization: "Authorization" + token,
-        },
-        data: args,
+      //   const token = getToken();
+      //   const response = await axios({
+      //     url: `/tree/1`,
+      //     method: "put",
+      //     Headers: {
+      //       Authorization: "Authorization" + token,
+      //     },
+      //     data: args,
+      //   });
+      const response = await axiosService.put(`/tree/${args.userId}`, {
+        ...args.leaf,
       });
       return response.data;
     } catch (err) {
