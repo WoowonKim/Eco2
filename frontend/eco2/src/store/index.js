@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authSlice } from "./user/userSlice";
+import { userSlice } from "./user/userSlice";
 import { feedSlice } from "./mainFeed/feedSlice";
-import { commentSlice } from "./mainFeed/commentSlice";
 import { leavesSlice } from "./mainTree/leavesSlice";
 import { userInformationSlice } from "./user/userSettingSlice";
 import { accountSlice } from "./user/accountSlice";
@@ -11,10 +10,12 @@ import { cumtomSlice } from "./mission/customMissionSlice";
 import { favoriteSlice } from "./mission/favoriteSlice";
 
 import { postSlice } from "./post/postSlice";
+import { commentSlice } from "./post/commentSlice";
+import { noticeSlice } from "./admin/noticeSlice";
 
 export const store = configureStore({
   reducer: {
-    user: authSlice.reducer,
+    user: userSlice.reducer,
     userInformation: userInformationSlice.reducer,
     account: accountSlice.reducer,
     feed: feedSlice.reducer,
@@ -25,5 +26,6 @@ export const store = configureStore({
     custom: cumtomSlice.reducer,
     favorite: favoriteSlice.reducer,
     post: postSlice.reducer,
+    notice: noticeSlice.reducer,
   },
 });

@@ -14,6 +14,9 @@ const PostModal = ({
   category,
   postContent,
   closeModal,
+  noticeId,
+  noticeContent,
+  noticeTitle,
 }) => {
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;

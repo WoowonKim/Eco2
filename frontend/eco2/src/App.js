@@ -37,6 +37,8 @@ import UserSettings from "./pages/userSettings/UserSettings";
 import UserFriends from "./pages/userFriends/UserFriends";
 import { dbService, firestore } from "./store/firebase";
 import QuestMain from "./pages/quest/questMain/QuestMain";
+import NoticeForm from "./pages/notice/noticeForm/NoticeForm";
+import NoticeDetail from "./pages/notice/noticeDetail/NoticeDetail";
 
 function App() {
   let currUser = useSelector((state) => state.user);
@@ -90,6 +92,9 @@ function App() {
           <Route path="/user/friends" element={<UserFriends />}></Route>
 
           <Route path="/quest" element={<QuestMain />}></Route>
+
+          <Route path="/notice" element={<NoticeForm />}></Route>
+          <Route path="/notice/:noticeId" element={<NoticeDetail />}></Route>
         </Routes>
       </div>
       <Footer></Footer>

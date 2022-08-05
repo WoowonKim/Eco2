@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PostForm.module.css";
 import { useDispatch } from "react-redux";
-import { addPost, updatePost } from "../../store/mainFeed/feedSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
 import { postCreate, postUpdate } from "../../store/post/postSlice";

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteComment } from "../../../store/mainFeed/commentSlice";
 import CommentForm from "../commentForm/CommentForm";
 import ReportModal from "../../modal/reportModal/ReportModal";
 import styles from "./ReplyItem.module.css";
+import { commentDelete } from "../../../store/post/commentSlice";
 
 const ReplyItem = ({ id, content, user, postId }) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const ReplyItem = ({ id, content, user, postId }) => {
   const displayType = modalType ? styles.visible : styles.hidden;
 
   const handleDelete = () => {
-    dispatch(deleteComment({ id }));
+    dispatch(commentDelete({ id }));
   };
   return (
     <div>
