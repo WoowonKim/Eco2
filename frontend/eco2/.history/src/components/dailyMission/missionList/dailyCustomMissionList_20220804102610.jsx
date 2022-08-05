@@ -7,19 +7,17 @@ import { customDeleteMission } from "../../../store/mission/customMissionSlice";
 
 const DailyCustomMissionList = ({ id }) => {
   const [cos, setCos] = useState([]);
-  const customList = useSelector(state => state.custom);
+  const customList = useSelector((state) => state.custom);
   const dispatch = useDispatch();
   const naviGate = useNavigate();
 
   useEffect(() => {
-    dispatch(customMission({ id })).then(res => {
+    dispatch(customMission({ id })).then((res) => {
       setCos(res.payload.customMissionList);
     });
   }, []);
 
-  const onDelete = deleteId => {
-    dispatch(customDeleteMission({ id: deleteId }));
-  };
+  const onDelete = () => {};
 
   return (
     <div>
@@ -30,12 +28,12 @@ const DailyCustomMissionList = ({ id }) => {
         </div>
       ) : (
         <div>
-          {cos.map(it => (
+          {cos.map((it) => (
             <div key={it.id}>
               <span>{it.content}</span>
               <button
                 onClick={() => {
-                  onDelete(it.id);
+                  dispatch(customDeleteMission({ id: it.id }));
                 }}
               >
                 삭제

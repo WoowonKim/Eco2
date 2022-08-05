@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DailyEcoMissionitem from "../missionItem/dailyEcoMissionitem";
 import styles from "./dailyMissionDetail.module.css";
 import DailyMissionFavoritesList from "./dailyMissionFavoritesList";
 import DailyCustomMissionList from "./dailyCustomMissionList";
 import { postMission } from "../../../store/mission/missionMainSlice";
 import { GreenBtn } from "../../styled";
+import { onEcoArr } from "../../../store/mission/missionMainSlice";
 
 const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [eco, setEco] = useState([]);
   const [ecoId, setEcoId] = useState([]);
   const [arrFavorites, setArrFavorites] = useState([]);
-  const [list, getList] = useState(true);
-
-  const dispatch = useDispatch();
+  const [list, getList] = useState(true); // 기본 & 내 목록 창
   const ecoCount = eco.length;
+  const naviGate = useNavigate();
+  const dispatch = useDispatch();
 
   const onCreate = (color, id, content) => {
     if (color === false) {
@@ -34,6 +36,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
     }
   };
 
+  // 즐겨찾기
   const onFavorites = (favorites, id, content) => {
     if (favorites === false) {
       const newArrFavorites = {
@@ -91,6 +94,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
             getList(true);
           }}
         >
+          {" "}
           기본
         </span>
         <span
@@ -99,7 +103,8 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
             getList(false);
           }}
         >
-          내목록
+          {" "}
+          내목록{" "}
         </span>
       </div>
 
@@ -112,6 +117,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
                 content={it.title}
                 id={it.id}
                 onCreate={onCreate}
+                onEco={onEco}
                 onFavorites={onFavorites}
               />
             ))}

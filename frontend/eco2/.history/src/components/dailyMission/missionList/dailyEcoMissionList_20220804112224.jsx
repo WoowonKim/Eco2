@@ -12,10 +12,10 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [eco, setEco] = useState([]);
   const [ecoId, setEcoId] = useState([]);
   const [arrFavorites, setArrFavorites] = useState([]);
-  const [list, getList] = useState(true);
+  const [list, getList] = useState(true); // 기본 & 내 목록 창
+  const ecoCount = eco.length;
 
   const dispatch = useDispatch();
-  const ecoCount = eco.length;
 
   const onCreate = (color, id, content) => {
     if (color === false) {
@@ -34,6 +34,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
     }
   };
 
+  // 즐겨찾기
   const onFavorites = (favorites, id, content) => {
     if (favorites === false) {
       const newArrFavorites = {
