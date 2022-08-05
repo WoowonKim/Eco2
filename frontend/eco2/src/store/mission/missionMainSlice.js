@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const postMission = createAsyncThunk("dailymission/postlist", async (args, { rejectWithValue }) => {
+export const postMission = createAsyncThunk("dailymission/Apostlist", async (args, { rejectWithValue }) => {
   const response = await axios({
     url: `/daily/${args.id}`,
     method: "post",
