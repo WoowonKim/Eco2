@@ -36,7 +36,7 @@ const Econame = () => {
   };
 
   const onClick = () => {
-    dispatch(ecoName({ name: econame, email }))
+    dispatch(ecoName({ econame, email }))
       .then((res) => {
         if (res.payload.status === 200) {
           navigate("/mainTree");
