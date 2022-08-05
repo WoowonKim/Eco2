@@ -1,19 +1,29 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import CommentForm from "../../components/comment/commentForm/CommentForm";
 import CommentList from "../../components/comment/commentList/CommentList";
 import styles from "./PostDetail.module.css";
 import PostModal from "../../components/modal/postModal/PostModal";
 import ReportModal from "../../components/modal/reportModal/ReportModal";
+import { post } from "../../store/post/postSlice";
 
 const PostDetail = () => {
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
-  const feedList = useSelector((state) => state.feed);
+  const [feedItem, setFeedItem] = useState({});
   const params = useParams();
-  const feedItem = feedList.find((feed) => feed.id === Number(params.postId));
   const displayType = visible ? styles.visible : styles.hidden;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(post({ postId: params.postId })).then((res) => {
+      if (res.payload?.status === 200) {
+        setFeedItem(res.payload.post);
+        console.log(res.payload.post.postImgUrl);
+      }
+    });
+  }, []);
 
   return (
     <div>
@@ -67,9 +77,9 @@ const PostDetail = () => {
           title={"게시물 수정"}
           content={"게시물을 수정하시겠습니까"}
           type={"수정"}
-          id={feedItem.id}
-          img={feedItem.src}
-          category={feedItem.category}
+          postId={feedItem.id}
+          img={feedItem.postImgUrl}
+          category={feedItem.mission.category}
           postContent={feedItem.content}
           closeModal={() => setVisible(!visible)}
         />
@@ -80,7 +90,7 @@ const PostDetail = () => {
           title={"게시물 삭제"}
           content={"게시물을 삭제하시겠습니까"}
           type={"삭제"}
-          id={feedItem.id}
+          postId={feedItem.id}
           closeModal={() => setVisible(!visible)}
         />
       )}
@@ -89,14 +99,14 @@ const PostDetail = () => {
           className={`${displayType}`}
           title={"게시물 신고"}
           content={"해당 게시물을 신고하시겠습니까?"}
-          id={feedItem.id}
+          postId={feedItem.id}
           type="게시물"
           closeModal={() => setVisible(!visible)}
         />
       )}
-      <img className={styles.img} src={feedItem.src} alt="img" />
+      <img className={styles.img} src={feedItem.postImgUrl} alt="img" />
       <div className={styles.info}>
-        <p className={styles.user}>{feedItem.user}</p>
+        <p className={styles.user}>{feedItem.userName}</p>
         <button className={styles.button}>
           <i className={`fa-solid fa-heart ${styles.heart}`}></i> 30
         </button>
