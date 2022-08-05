@@ -4,11 +4,11 @@ import { useDispatch } from "react-redux";
 import { addPost, updatePost } from "../../store/mainFeed/feedSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
-import { postCreate } from "../../store/post/postSlice";
+import { postCreate, postUpdate } from "../../store/post/postSlice";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { getUserEmail } from "../../store/user/common";
 
-const PostForm = ({ content }) => {
+const PostForm = () => {
   const [fileImage, setFileImage] = useState("");
   const [file, setFile] = useState("");
   const [selected, setSelected] = useState("");
@@ -57,11 +57,15 @@ const PostForm = ({ content }) => {
     // formData에 파일과 세부 정보들 append
     formData.append("postImage", file);
     formData.append("postCreateDto", blob);
-    if (location.state?.id) {
+    if (location.state?.postId) {
       // 글 수정 시 해당 글 상세 페이지로 다시 이동
-      dispatch(postCreate({ formData })).then((res) => {
-        navigate(`/post/${location.state?.id}`);
-      });
+      dispatch(postUpdate({ postId: location.state?.postId, formData })).then(
+        (res) => {
+          if (res.payload.status === 200) {
+            navigate(`/post/${location.state?.postId}`);
+          }
+        }
+      );
     } else {
       // 새 글 작성 시 이동할 페이지 추가 필요
       dispatch(postCreate({ formData })).then((res) => {});

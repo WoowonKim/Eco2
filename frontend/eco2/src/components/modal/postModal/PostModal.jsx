@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { deletePost } from "../../../store/mainFeed/feedSlice";
+import { postDelete } from "../../../store/post/postSlice";
 import styles from "./PostModal.module.css";
 
 const PostModal = ({
   title,
   content,
   type,
-  id,
+  postId,
   img,
   category,
   postContent,
@@ -22,10 +23,11 @@ const PostModal = ({
 
   const onClick = () => {
     if (type === "삭제") {
-      dispatch(deletePost({ id: id }));
-      navigate("/mainFeed");
+      dispatch(postDelete({ postId })).then((res) => {
+        navigate("/mainFeed");
+      });
     } else {
-      window.location.replace(`/post/${id}`);
+      window.location.replace(`/post/${postId}`);
     }
   };
   useEffect(() => {
@@ -52,7 +54,7 @@ const PostModal = ({
           {type === "수정" ? (
             <Link
               to="/post"
-              state={{ id, img, category, content: postContent }}
+              state={{ postId, img, category, content: postContent }}
             >
               <button className={`${colorType}`}>{type}</button>
             </Link>
