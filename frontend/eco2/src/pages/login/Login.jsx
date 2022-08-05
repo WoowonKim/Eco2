@@ -62,7 +62,6 @@ function Login() {
             idToken: idToken,
           })
         ).then((res) => {
-          console.log(data.additionalUserInfo.profile.name);
           setUserEmail(data.additionalUserInfo.profile.email);
           setUserName(data.additionalUserInfo.profile.name);
           navigate("/mainFeed");
