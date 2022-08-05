@@ -23,9 +23,7 @@ export const store = configureStore({
     dailyMission: dailymissionSlice.reducer,
     missionMain: myEcoMissionSlice.reducer,
     custom: cumtomSlice.reducer,
-
     favorite: favoriteSlice.reducer,
-
     post: postSlice.reducer,
   },
 });

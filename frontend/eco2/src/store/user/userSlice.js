@@ -167,6 +167,7 @@ const authState = {
   isEcoNameVerified: false,
   isPasswordValid: false,
   email: "",
+  user: {},
 };
 
 export const authSlice = createSlice({
@@ -182,6 +183,7 @@ export const authSlice = createSlice({
       console.log("login fulfilled", action.payload);
       if (action.payload.status === 200) {
         setAccessToken(action.payload.accessToken);
+        state.user = action.payload.user;
       }
     },
     [login.rejected]: (state, action) => {
