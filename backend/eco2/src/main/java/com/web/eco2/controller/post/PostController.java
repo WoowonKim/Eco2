@@ -126,7 +126,7 @@ public class PostController {
                 postListDto.setMission(mission);
                 postListDto.setCustomMission(customMission);
                 postListDto.setQuest(quest);
-                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), post.getId()));
+                postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
                 postListDtos.add(postListDto);
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
@@ -167,7 +167,7 @@ public class PostController {
             postListDto.setMission(mission);
             postListDto.setCustomMission(customMission);
             postListDto.setQuest(quest);
-            postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
+            postListDto.setLikeCount(postLikeService.likeCount(postId));
 
             if (post.isCommentFlag()) {
                 postListDto.setComments(commentService.getComments(postId));   
