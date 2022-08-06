@@ -26,7 +26,7 @@ public class PostListDto {
     private Mission mission;
     private CustomMission customMission;
     private QuestDto quest;
-    private Integer like;
+    private Long likeCount;
     private List<Comment> comments;
 
     public PostListDto() {
