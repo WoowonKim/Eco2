@@ -157,7 +157,7 @@ export const googleLogin = createAsyncThunk(
   }
 );
 
-const authState = {
+const userState = {
   isLoggedIn: 0,
   token: null,
   isEmailValid: false,
@@ -170,9 +170,9 @@ const authState = {
   user: {},
 };
 
-export const authSlice = createSlice({
-  name: "auth",
-  initialState: authState,
+export const userSlice = createSlice({
+  name: "user",
+  initialState: userState,
   reducers: {
     logout: (state, action) => {
       removeUserSession();
@@ -261,4 +261,4 @@ export const authSlice = createSlice({
   },
 });
 
-export const authActions = authSlice.actions;
+export const userActions = userSlice.actions;

@@ -11,10 +11,16 @@ export const getUserName = () => {
   return localStorage.getItem("name") || null;
 };
 
+export const getUserId = () => {
+  return localStorage.getItem("userId") || null;
+};
+
 // remove the token and user from the session storage
 export const removeUserSession = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("email");
+  localStorage.removeItem("name");
+  localStorage.removeItem("userId");
 };
 
 // set the token and user from the session storage
@@ -28,6 +34,10 @@ export const setUserEmail = (email) => {
 
 export const setUserName = (name) => {
   localStorage.setItem("name", name);
+};
+
+export const setUserId = (userId) => {
+  localStorage.setItem("userId", userId);
 };
 
 export const getCookie = (cookieName) => {

@@ -78,6 +78,22 @@ export const postCreate = createAsyncThunk(
   }
 );
 
+// 게시물 좋아요
+export const postLike = createAsyncThunk(
+  "postSlice/postLike",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.post("/post/like", {
+        postId: args.postId,
+        userId: args.userId,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 export const postSlice = createSlice({
   name: "post",
   initialState: [],
@@ -114,6 +130,22 @@ export const postSlice = createSlice({
     },
     [postCreate.rejected]: (state, action) => {
       console.log("postCreate rejected", action.payload);
+    },
+    [postUpdate.fulfilled]: (state, action) => {
+      console.log("postUpdate fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [postUpdate.rejected]: (state, action) => {
+      console.log("postUpdate rejected", action.payload);
+    },
+    [postLike.fulfilled]: (state, action) => {
+      console.log("postLike fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [postLike.rejected]: (state, action) => {
+      console.log("postLike rejected", action.payload);
     },
   },
 });

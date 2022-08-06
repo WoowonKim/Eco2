@@ -25,7 +25,7 @@ const FeedList = ({ category, display, feeds }) => {
               )
           )
         ) : (
-          <div>게시물이 존재하지 않습니다.</div>
+          <div className={styles.box}></div>
         )}
       </div>
     </div>

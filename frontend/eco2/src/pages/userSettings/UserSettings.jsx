@@ -7,7 +7,7 @@ import {
   passwordCheck,
 } from "../../store/user/userSettingSlice";
 import {
-  authActions,
+  userActions,
   ecoName,
   ecoNameVerify,
   newPassword,
@@ -16,9 +16,10 @@ import styles from "./UserSettings.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { nameLengthValidation, passwordValidationCheck } from "../../utils";
 import Settings from "./settings/Settings";
+import Notice from "./notice/Notice";
 
 const UserSettings = () => {
-  const [userSetting, setUserSetting] = useState(true);
+  const [userSetting, setUserSetting] = useState(1);
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -39,8 +40,9 @@ const UserSettings = () => {
   const location = useLocation();
 
   const socialType = location.state?.socialType;
-  const displayType = userSetting ? styles.selectedMenu : null;
-  const displayType2 = userSetting ? null : styles.selectedMenu;
+  const displayType = userSetting === 1 ? styles.selectedMenu : null;
+  const displayType2 = userSetting === 2 ? styles.selectedMenu : null;
+  const displayType3 = userSetting === 3 ? styles.selectedMenu : null;
 
   const handlePassword = () => {
     dispatch(passwordCheck({ email, password }))
@@ -103,16 +105,20 @@ const UserSettings = () => {
   return (
     <div className={styles.userSettingPage}>
       <div className={styles.header}>
-        <div onClick={() => setUserSetting(true)} className={styles.userInfo}>
+        <div onClick={() => setUserSetting(1)} className={styles.userInfo}>
           <p className={`styles.userInfoText ${displayType}`}>회원정보</p>
-          {userSetting && <hr className={styles.titleLine} />}
+          {userSetting === 1 && <hr className={styles.titleLine} />}
         </div>
-        <div onClick={() => setUserSetting(false)} className={styles.userInfo}>
+        <div onClick={() => setUserSetting(2)} className={styles.userInfo}>
           <p className={`styles.userInfoText ${displayType2}`}>계정 및 알림</p>
-          {!userSetting && <hr className={styles.titleLine} />}
+          {userSetting === 2 && <hr className={styles.titleLine} />}
+        </div>
+        <div onClick={() => setUserSetting(3)} className={styles.userInfo}>
+          <p className={`styles.userInfoText ${displayType3}`}>공지사항</p>
+          {userSetting === 3 && <hr className={styles.titleLine} />}
         </div>
       </div>
-      {userSetting ? (
+      {userSetting === 1 ? (
         <div>
           <div className={styles.profileImg}>
             <img
@@ -171,7 +177,7 @@ const UserSettings = () => {
               <hr className={styles.line} />
               <button
                 onClick={() => {
-                  dispatch(authActions.logout());
+                  dispatch(userActions.logout());
                   navigate("/");
                 }}
                 className={styles.userButton}
@@ -182,7 +188,7 @@ const UserSettings = () => {
                 onClick={() =>
                   dispatch(deleteUser({ email, password })).then((res) => {
                     if (res.payload.status === 200) {
-                      dispatch(authActions.logout());
+                      dispatch(userActions.logout());
                     }
                   })
                 }
@@ -222,7 +228,7 @@ const UserSettings = () => {
                   <hr className={styles.line} />
                   <button
                     onClick={() => {
-                      dispatch(authActions.logout());
+                      dispatch(userActions.logout());
                       navigate("/");
                     }}
                     className={styles.userButton}
@@ -283,7 +289,7 @@ const UserSettings = () => {
                   <div className={styles.userButtonGroup}>
                     <button
                       onClick={() => {
-                        dispatch(authActions.logout());
+                        dispatch(userActions.logout());
                         navigate("/");
                       }}
                       className={styles.userButton}
@@ -295,7 +301,7 @@ const UserSettings = () => {
                         dispatch(deleteUser({ email, password })).then(
                           (res) => {
                             if (res.payload.status === 200) {
-                              dispatch(authActions.logout());
+                              dispatch(userActions.logout());
                             }
                           }
                         )
@@ -310,8 +316,10 @@ const UserSettings = () => {
             </div>
           )}
         </div>
-      ) : (
+      ) : userSetting === 2 ? (
         <Settings email={email} />
+      ) : (
+        <Notice />
       )}
     </div>
   );
