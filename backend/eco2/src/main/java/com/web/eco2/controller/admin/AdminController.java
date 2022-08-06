@@ -6,11 +6,14 @@ import com.web.eco2.domain.dto.admin.NoticeRequest;
 import com.web.eco2.domain.entity.admin.CommentReport;
 import com.web.eco2.domain.entity.admin.Notice;
 import com.web.eco2.domain.entity.admin.PostReport;
+import com.web.eco2.domain.entity.admin.Report;
+import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.admin.NoticeService;
 import com.web.eco2.model.service.admin.ReportService;
+import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
@@ -48,6 +51,9 @@ public class AdminController {
 
     @Autowired
     private CommentService postCommentService;
+
+    @Autowired
+    private AlarmService alarmService;
 
     @PostMapping("/notice/{usrId}")
     @ApiOperation(value = "공지사항 작성", response = Object.class)
@@ -152,12 +158,24 @@ public class AdminController {
         try {
             log.info("신고글 승인 API 호출");
             if (type == 0) {//게시물 삭제
+                Post post = postService.getById(reportId);
                 postService.deletePost(reportId);
+
+                // 신고당한 사용자에게 알림 전송
+                alarmService.insertAlarm(FirebaseAlarm.builder().userId(post.getUser().getId())
+                        .dType("report").content("작성한 글("
+                                + post.getContent().substring(0, Math.min(post.getContent().length(), 10))
+                                + (post.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.").build());
                 return ResponseHandler.generateResponse("신고 게시물 삭제에 성공하였습니다.", HttpStatus.OK);
             } else {//댓글 삭제
-                //TODO : 댓글 구현 후에 다시 확인
                 Comment comment = postCommentService.getById(reportId);
                 postCommentService.delete(comment);
+
+                // 신고당한 사용자에게 알림 전송
+                alarmService.insertAlarm(FirebaseAlarm.builder().userId(comment.getUser().getId())
+                        .dType("report").content("작성한 댓글("
+                                + comment.getContent().substring(0, Math.min(comment.getContent().length(), 10))
+                                + (comment.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.").build());
                 return ResponseHandler.generateResponse("신고 댓글 삭제에 성공하였습니다.", HttpStatus.OK);
             }
         } catch (Exception e) {

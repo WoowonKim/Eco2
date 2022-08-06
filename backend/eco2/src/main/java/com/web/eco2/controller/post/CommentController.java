@@ -2,17 +2,19 @@ package com.web.eco2.controller.post;
 
 
 import com.web.eco2.domain.dto.post.CommentCreateDto;
+import com.web.eco2.domain.entity.UserSetting;
+import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
-import com.web.eco2.model.repository.post.PostRepository;
-import com.web.eco2.model.repository.user.UserRepository;
-import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
+import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
+import com.web.eco2.model.service.user.UserSettingService;
 import com.web.eco2.util.ResponseHandler;
-import io.lettuce.core.dynamic.annotation.CommandNaming;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +40,27 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private AlarmService alarmService;
 
+    @Autowired
+    private UserSettingService userSettingService;
 
     //댓글 등록
-    @PostMapping("/{post_id}/comment")
-    public ResponseEntity<Object> createComment(@RequestParam("postId") Long postId,
+    @PostMapping("/{postId}/comment")
+    public ResponseEntity<Object> createComment(@PathVariable("postId") Long postId,
                                                     @RequestBody CommentCreateDto commentCreateDto) {
-
         try {
             Post post = postService.getById(postId);
+            User user = userService.getById(commentCreateDto.getUserId());
+
+            if(post == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 인증글입니다.", HttpStatus.ACCEPTED);
+            }
+            if(user == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 유저입니다.", HttpStatus.ACCEPTED);
+            }
+
             if (post.isCommentFlag()) {
                 Long commentId = commentCreateDto.getCommentId();
                 if (commentId != null) {
@@ -57,7 +71,20 @@ public class CommentController {
                             .post(postService.getById(commentCreateDto.getPostId()))
                             .comment(commentService.getById(commentCreateDto.getCommentId()))
                             .build();
+
                     commentService.save(comment);
+                    // 대댓글 알림
+                    Comment baseComment = commentService.getById(commentId);
+                    UserSetting userSetting = userSettingService.findById(baseComment.getUser().getId());
+                    System.out.println("commentAlarmFlag::"+userSetting.isCommentAlarmFlag());
+                    System.out.println(user.getId()+" "+baseComment.getUser().getId());
+                    System.out.println(comment.getId());
+                    if(userSetting.isCommentAlarmFlag() && !user.getId().equals(baseComment.getUser().getId())) {
+                        alarmService.insertAlarm(FirebaseAlarm.builder()
+                                .userId(baseComment.getUser().getId()).dType("comment")
+                                .senderId(user.getId()).content(user.getName()+"님이 회원님의 댓글에 대댓글을 남겼습니다.")
+                                .url(postId+"/"+comment.getId()).build());
+                    }
                 } else {
                     Comment comment = Comment.builder()
                             .content(commentCreateDto.getContent())
@@ -67,6 +94,17 @@ public class CommentController {
                             .build();
                     commentService.save(comment);
 
+                    // 댓글 알림
+                    UserSetting userSetting = userSettingService.findById(user.getId());
+                    System.out.println("commentAlarmFlag::"+userSetting.isCommentAlarmFlag());
+                    System.out.println(user.getId()+" "+commentCreateDto.getUserId());
+                    System.out.println(comment.getId());
+                    if(userSetting.isCommentAlarmFlag() && !user.getId().equals(post.getUser().getId())) {
+                        alarmService.insertAlarm(FirebaseAlarm.builder()
+                                .userId(post.getUser().getId()).dType("comment")
+                                .senderId(user.getId()).content(user.getName()+"님이 회원님의 인증글에 댓글을 남겼습니다.")
+                                .url(postId+"/"+comment.getId()).build());
+                    }
                 }
                 return ResponseHandler.generateResponse("댓글이 등록되었습니다.", HttpStatus.OK);
             } else {
