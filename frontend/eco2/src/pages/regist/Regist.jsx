@@ -14,7 +14,7 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
-import { setUserEmail } from "../../store/user/common";
+import { setUserEmail, setUserId } from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
 
 const Regist = () => {
@@ -208,6 +208,7 @@ const Regist = () => {
               )
                 .then((res) => {
                   setUserEmail(email);
+                  setUserId(res.payload.user.id);
                   navigate("/ecoName");
                 })
                 .catch((err) => console.log(err));

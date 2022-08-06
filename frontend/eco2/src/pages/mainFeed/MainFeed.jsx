@@ -25,7 +25,7 @@ const MainFeed = () => {
           <Link
             to={`/mainFeed/${"do"}`}
             className={styles.link}
-            state={{ category: 1 }}
+            state={{ category: 1, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>
             더보기

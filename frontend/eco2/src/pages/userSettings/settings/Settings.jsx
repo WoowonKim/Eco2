@@ -61,6 +61,7 @@ const Settings = ({ email }) => {
               setChecked(data);
             }}
             defaultChecked={checked.publicFlag}
+            checked={checked.publicFlag}
           />
           <label htmlFor="publicFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>
@@ -87,6 +88,7 @@ const Settings = ({ email }) => {
               setChecked(data);
             }}
             defaultChecked={checked.commentAlarmFlag}
+            checked={checked.commentAlarmFlag}
           />
           <label htmlFor="commentAlarmFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>
@@ -113,6 +115,7 @@ const Settings = ({ email }) => {
               setChecked(data);
             }}
             defaultChecked={checked.chatAlarmFlag}
+            checked={checked.chatAlarmFlag}
           />
           <label htmlFor="chatAlarmFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>
@@ -136,6 +139,7 @@ const Settings = ({ email }) => {
               setChecked(data);
             }}
             defaultChecked={checked.darkmodeFlag}
+            checked={checked.darkmodeFlag}
           />
           <label htmlFor="darkmodeFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>

@@ -4,7 +4,7 @@ import { WarningText } from "../../components/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ecoName, ecoNameVerify } from "../../store/user/userSlice";
-import { getUserEmail } from "../../store/user/common";
+import { getUserEmail, setUserName } from "../../store/user/common";
 import { nameLengthValidation } from "../../utils";
 
 const Econame = () => {
@@ -39,6 +39,7 @@ const Econame = () => {
     dispatch(ecoName({ econame, email }))
       .then((res) => {
         if (res.payload.status === 200) {
+          setUserName(econame);
           navigate("/mainTree");
         }
       })
