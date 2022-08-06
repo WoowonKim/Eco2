@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProfileImgRepository extends JpaRepository<ProfileImg, Long> {
 
-
+    ProfileImg getByUser_Id(Long userId);
 
 }

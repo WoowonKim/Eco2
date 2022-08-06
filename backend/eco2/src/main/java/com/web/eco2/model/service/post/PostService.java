@@ -87,6 +87,12 @@ public class PostService {
     }
 
 
+    //게시물 이미지 찾기
+    public PostImg getPostImg(Long postId) {
+        PostImg postImg = postImgRepository.getById(postId);
+        return postImg;
+    }
+
 
     //postImg byte로 변환
     public byte[] getImageByte(Long postId) throws IOException {
@@ -141,6 +147,8 @@ public class PostService {
         postRepository.delete(post); //게시글 삭제
 
     }
+
+
 
     public List<QuestPost> findByQuest(Quest quest) {
         return postRepository.findByQuest(quest);

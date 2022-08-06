@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -36,7 +37,16 @@ public class PostLikeService {
         }
     }
 
-    public int saveLike(Long userId, Long postId) {
+    public Long likeCount(Long postId) {
+        List<FavoritePost> likeList = postLikeRepository.findByPost_Id(postId);
+
+        Long likeCount = Long.valueOf(likeList.size());
+        return likeCount;
+    }
+
+
+
+    public int saveOrDeleteLike(Long userId, Long postId) {
         Optional<FavoritePost> findLike = postLikeRepository.findByUser_IdAndPost_Id(userId, postId);
 
         if (findLike.isEmpty()) {

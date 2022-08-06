@@ -71,4 +71,12 @@ public class ProfileImgService {
     public void save(ProfileImg profileImg) {
         profileImgRepository.save(profileImg);
     }
+
+
+    //프로필 이미지 경로 찾기
+    public String getProfileImgPath(Long userId) {
+        ProfileImg profileImg = profileImgRepository.getByUser_Id(userId);
+        String profileImgPath = profileImg.getSaveFolder() + '/' + profileImg.getSaveName();
+        return profileImgPath;
+    }
 }
