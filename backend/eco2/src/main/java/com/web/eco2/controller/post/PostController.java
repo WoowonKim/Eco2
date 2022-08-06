@@ -7,6 +7,7 @@ import com.web.eco2.domain.dto.mission.QuestDto;
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
@@ -17,6 +18,8 @@ import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.repository.post.PostImgRepository;
+import com.web.eco2.model.service.FriendService;
+import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.item.StatisticService;
 import com.web.eco2.model.service.mission.CustomMissionService;
 import com.web.eco2.model.service.mission.MissionService;
@@ -77,9 +80,14 @@ public class PostController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private FriendService friendService;
+
+    @Autowired
+    private AlarmService alarmService;
+
 
     //게시물 전체 조회
-    // TODO: 전체조회에서 퀘스트 인증글 보여줄건지?
     @ApiOperation(value = "게시물 전체 조회", response = Object.class)
     @GetMapping()
     public ResponseEntity<Object> getPostList() {
@@ -91,7 +99,7 @@ public class PostController {
 
             for (Post post : postList) {
                 PostListDto postListDto = new PostListDto();
-                PostImg postImg = postService.getPostImg(post.getId());
+                PostImg postImg = postImgRepository.getById(post.getId());
                 String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
                 Long id = post.getId();
                 Long userId = post.getUser().getId();
@@ -118,7 +126,7 @@ public class PostController {
                 postListDto.setMission(mission);
                 postListDto.setCustomMission(customMission);
                 postListDto.setQuest(quest);
-                postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
+                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), post.getId()));
                 postListDtos.add(postListDto);
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
@@ -137,7 +145,7 @@ public class PostController {
             PostListDto postListDto = new PostListDto();
 
             Post post = postService.getSpecificPost(postId);
-            PostImg postImg = postService.getPostImg(postId);
+            PostImg postImg = postImgRepository.getById(postId);
             String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
 
             Mission mission = null;
@@ -159,7 +167,7 @@ public class PostController {
             postListDto.setMission(mission);
             postListDto.setCustomMission(customMission);
             postListDto.setQuest(quest);
-            postListDto.setLikeCount(postLikeService.likeCount(postId));
+            postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
 
             if (post.isCommentFlag()) {
                 postListDto.setComments(commentService.getComments(postId));   
@@ -177,7 +185,13 @@ public class PostController {
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
         try {
             log.info("게시물 등록 API 호출"); //TODO fe: 나뭇잎 추가, 조회 //be: 통계 수 증가
-            
+
+            Long userId = postCreateDto.getUser().getId();
+            User user = userService.getById(userId);
+            if(user == null) {
+                return ResponseHandler.generateResponse("존재하지 않는 유저입니다.", HttpStatus.ACCEPTED);
+            }
+
             Integer category = null;
             boolean isQuest = false;
 
@@ -205,10 +219,14 @@ public class PostController {
             }
 
             postService.savePost(postImage, postCreateDto);
-            statisticService.updateCount(postCreateDto.getUser().getId(), category, isQuest);
+            statisticService.updateCount(userId, category, isQuest);
 
-
-
+            // 친구 인증글 알림
+//            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {
+//                alarmService.insertAlarm(FirebaseAlarm.builder()
+//                        .userId(friend.getId()).senderId(userId)
+//                        .dType("friendPost").content("친구 "+user.getName()+"님이 인증글을 올렸습니다.").build());
+//            });
             return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("게시물 등록 API 에러", e);
