@@ -9,13 +9,13 @@ const CommentList = ({ id, comments }) => {
       {comments.length > 0 &&
         comments.map(
           (comment) =>
-            id === comment.postId && (
+            id === comment.post.id && (
               <CommentItem
                 key={comment.id}
                 id={comment.id}
                 content={comment.content}
-                user={comment.user}
-                postId={comment.postId}
+                user={comment.user.name}
+                postId={comment.post.id}
               />
             )
         )}

@@ -6,12 +6,18 @@ import ReplyList from "../replyList/ReplyList";
 import ReportModal from "../../modal/reportModal/ReportModal";
 import styles from "./CommentItem.module.css";
 import { commentDelete } from "../../../store/post/commentSlice";
+import { getUserName } from "../../../store/user/common";
+import PostModal from "../../modal/postModal/PostModal";
 
 const CommentItem = ({ id, content, user, postId }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [replyVisible, setReplyVisible] = useState(false);
-  const [modalType, setModalType] = useState(false);
+  const [modalType, setModalType] = useState("");
+
+  const name = getUserName();
+
   const displayType = modalType ? styles.visible : styles.hidden;
 
   const handleDelete = () => {
@@ -40,50 +46,46 @@ const CommentItem = ({ id, content, user, postId }) => {
                   className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}
                 ></i>
                 <div className={styles.dropdownContent}>
-                  <button
-                    onClick={() => {
-                      setVisible(!visible);
-                    }}
-                    className={styles.dropdownItem}
-                  >
-                    수정
-                    <i
-                      className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
-                    ></i>
-                  </button>
-                  <button
-                    onClick={() => handleDelete()}
-                    className={styles.dropdownItem}
-                  >
-                    삭제
-                    <i
-                      className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-                    ></i>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setModalType(!modalType);
-                      setModalType("신고");
-                    }}
-                    className={styles.dropdownItem}
-                  >
-                    신고
-                    <i
-                      className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
-                    ></i>
-                  </button>
+                  {name === user && (
+                    <div>
+                      <button
+                        onClick={() => {
+                          setVisible(!visible);
+                        }}
+                        className={styles.dropdownItem}
+                      >
+                        수정
+                        <i
+                          className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
+                        ></i>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setModalVisible(!modalVisible);
+                          setModalType("삭제");
+                        }}
+                        className={styles.dropdownItem}
+                      >
+                        삭제
+                        <i
+                          className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
+                        ></i>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          {modalType && (
-            <ReportModal
+          {modalVisible && modalType === "삭제" && (
+            <PostModal
               className={`${displayType}`}
-              title={"댓글 신고"}
-              content={"해당 댓글을 신고하시겠습니까?"}
-              id={postId}
-              type="댓글"
-              closeModal={() => setVisible(!visible)}
+              title={"댓글 삭제"}
+              content={"댓글을 삭제하시겠습니까"}
+              type={"삭제"}
+              postId={postId}
+              commentId={id}
+              closeModal={() => setModalVisible(!modalVisible)}
             />
           )}
           {/* <div>
@@ -102,6 +104,7 @@ const CommentItem = ({ id, content, user, postId }) => {
           <span className={styles.editFormUser}>{user}</span>
           <div className={styles.editForm}>
             <CommentForm
+              postId={postId}
               id={id}
               content={content}
               closeModal={() => setVisible(!visible)}

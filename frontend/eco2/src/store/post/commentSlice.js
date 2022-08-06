@@ -26,7 +26,7 @@ export const commentCreate = createAsyncThunk(
         {
           userId: args.userId,
           content: args.content,
-          // comment_id: args.commentId,
+          postId: args.postId,
         }
       );
       return response.data;
@@ -42,10 +42,8 @@ export const commentUpdate = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.put(
-        `/post/${args.postId}/comment/${args.commentId}`,
-        {
-          content: args.content,
-        }
+        `/post/${args.postId}/comment/${args.commentId}?postId=${args.postId}&commentId=${args.commentId}`,
+        { content: args.content }
       );
       return response.data;
     } catch (err) {
@@ -60,7 +58,7 @@ export const commentDelete = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.delete(
-        `/post/${args.postId}/comment/${args.commentId}`
+        `/post/${args.postId}/comment/${args.commentId}?postId=${args.postId}&commentId=${args.commentId}`
       );
       return response.data;
     } catch (err) {

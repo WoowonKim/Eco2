@@ -23,6 +23,7 @@ export const noticeUpdate = createAsyncThunk(
   "noticeSlice/noticeUpdate",
   async (args, rejectWithValue) => {
     try {
+      console.log(args);
       const response = await axiosService.put(
         `/admin/notice/${args.noticeId}`,
         {
@@ -44,7 +45,7 @@ export const noticeDelete = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.delete(
-        `/admin/notice/${args.userId}`
+        `/admin/notice/${args.noticeId}`
       );
       return response.data;
     } catch (err) {
@@ -58,7 +59,17 @@ export const noticeList = createAsyncThunk(
   "noticeSlice/noticeCreate",
   async (args, rejectWithValue) => {
     try {
-      const response = await axiosService.get("/notice");
+      const query = args?.query ? args.query : "";
+      const page = args?.page;
+      let path = "";
+      if (args?.query && args?.page) {
+        path = `?word=${query}&page=${page}`;
+      } else if (args?.query) {
+        path = `?word=${query}`;
+      } else if (args?.page) {
+        path = `?page=${page}`;
+      }
+      const response = await axiosService.get(`/notice${path}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

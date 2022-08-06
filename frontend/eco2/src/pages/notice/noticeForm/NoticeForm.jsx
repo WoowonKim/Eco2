@@ -6,7 +6,7 @@ import { noticeCreate, noticeUpdate } from "../../../store/admin/noticeSlice";
 import { getUserId } from "../../../store/user/common";
 
 const NoticeForm = () => {
-  const [selected, setSelected] = useState("");
+  const [urgentFlag, setUrgentFlag] = useState(false);
   const [editText, setEditText] = useState("");
   const [text, setText] = useState("");
   const [editTitle, setEditTitle] = useState("");
@@ -20,17 +20,35 @@ const NoticeForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (location.state?.noticeId) {
-      dispatch(noticeUpdate({}));
-    } else {
       dispatch(
-        noticeCreate({ userId, title, content: text, urgentFlag: false })
+        noticeUpdate({
+          noticeId: location.state?.noticeId,
+          title: editTitle,
+          content: editText,
+          urgentFlag,
+        })
       ).then((res) => {
         if (res.payload?.status === 200) {
           navigate("/user/settings");
         }
       });
+    } else {
+      dispatch(noticeCreate({ userId, title, content: text, urgentFlag })).then(
+        (res) => {
+          if (res.payload?.status === 200) {
+            navigate("/user/settings");
+          }
+        }
+      );
     }
   };
+
+  useEffect(() => {
+    if (location.state?.noticeId) {
+      setEditText(location.state?.noticeContent);
+      setEditTitle(location.state?.noticeTitle);
+    }
+  }, []);
   return (
     <div>
       <div className={styles.titleGroup}>
@@ -41,9 +59,27 @@ const NoticeForm = () => {
       <form onSubmit={(e) => onSubmit(e)}>
         <div className={styles.selectBox}>
           <label htmlFor="urgent">긴급</label>
-          <input name="urgent" type="radio" id="urgent" />
+          <input
+            name="urgent"
+            type="radio"
+            id="urgent"
+            onChange={(e) => {
+              if (e.currentTarget.value) {
+                setUrgentFlag(true);
+              }
+            }}
+          />
           <label htmlFor="normal">일반</label>
-          <input name="urgent" type="radio" id="normal" />
+          <input
+            name="urgent"
+            type="radio"
+            id="normal"
+            onChange={(e) => {
+              if (e.currentTarget.value) {
+                setUrgentFlag(false);
+              }
+            }}
+          />
         </div>
         <input
           type="text"

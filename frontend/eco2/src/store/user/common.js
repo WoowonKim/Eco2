@@ -19,6 +19,8 @@ export const getUserId = () => {
 export const removeUserSession = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("email");
+  localStorage.removeItem("name");
+  localStorage.removeItem("userId");
 };
 
 // set the token and user from the session storage

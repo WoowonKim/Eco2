@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { commentCreate, commentUpdate } from "../../../store/post/commentSlice";
 import styles from "./CommentForm.module.css";
 
@@ -19,15 +20,31 @@ const CommentForm = ({
   const onSubmit = (e) => {
     e.preventDefault();
     if (content) {
-      dispatch(commentUpdate({ id, content: editValue }));
+      dispatch(
+        commentUpdate({ postId, commentId: id, content: editValue })
+      ).then((res) => {
+        if (res.payload?.status === 200) {
+          window.location.replace(`/post/${postId}`);
+        }
+      });
       closeModal();
     } else if (replyVisible) {
-      dispatch(
-        commentCreate({ postId, content: value, commentId: id, userId })
+      dispatch(commentCreate({ postId, content: value, userId })).then(
+        (res) => {
+          if (res.payload?.status === 200) {
+            window.location.replace(`/post/${postId}`);
+          }
+        }
       );
       closeModal();
     } else {
-      dispatch(commentCreate({ postId, content: value, userId }));
+      dispatch(commentCreate({ postId, content: value, userId })).then(
+        (res) => {
+          if (res.payload?.status === 200) {
+            window.location.replace(`/post/${postId}`);
+          }
+        }
+      );
     }
     setValue("");
   };
