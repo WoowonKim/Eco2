@@ -91,7 +91,7 @@ public class PostController {
 
             for (Post post : postList) {
                 PostListDto postListDto = new PostListDto();
-                PostImg postImg = postImgRepository.getById(post.getId());
+                PostImg postImg = postService.getPostImg(post.getId());
                 String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
                 Long id = post.getId();
                 Long userId = post.getUser().getId();
@@ -118,7 +118,7 @@ public class PostController {
                 postListDto.setMission(mission);
                 postListDto.setCustomMission(customMission);
                 postListDto.setQuest(quest);
-                postListDto.setLike(postLikeService.findLike(post.getUser().getId(), post.getId()));
+                postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
                 postListDtos.add(postListDto);
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
@@ -137,7 +137,7 @@ public class PostController {
             PostListDto postListDto = new PostListDto();
 
             Post post = postService.getSpecificPost(postId);
-            PostImg postImg = postImgRepository.getById(postId);
+            PostImg postImg = postService.getPostImg(postId);
             String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
 
             Mission mission = null;
@@ -159,7 +159,7 @@ public class PostController {
             postListDto.setMission(mission);
             postListDto.setCustomMission(customMission);
             postListDto.setQuest(quest);
-            postListDto.setLike(postLikeService.findLike(post.getUser().getId(), postId));
+            postListDto.setLikeCount(postLikeService.likeCount(postId));
 
             if (post.isCommentFlag()) {
                 postListDto.setComments(commentService.getComments(postId));   
@@ -206,6 +206,9 @@ public class PostController {
 
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(postCreateDto.getUser().getId(), category, isQuest);
+
+
+
             return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("게시물 등록 API 에러", e);

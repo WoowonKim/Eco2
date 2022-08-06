@@ -47,11 +47,20 @@ public class PostLikeController {
 
     @PostMapping()
     public ResponseEntity<Object> postLike(@RequestBody PostLikeDto postLikeDto) {
-        Long userId = postLikeDto.getUserId();
-        Long postId = postLikeDto.getPostId();
-        Integer like = postLikeService.saveLike(userId, postId);
+        try {
+            Long userId = postLikeDto.getUserId();
+            Long postId = postLikeDto.getPostId();
+            if ( postLikeService.findLike(userId, postId) == 0 ) {
+                Integer like = postLikeService.saveOrDeleteLike(userId, postId);
+                return ResponseHandler.generateResponse("좋아요에 성공하였습니다.", HttpStatus.OK, "like", like);
+            } else {
+                Integer like = postLikeService.saveOrDeleteLike(userId, postId);
+                return ResponseHandler.generateResponse("좋아요를 취소하였습니다.", HttpStatus.OK, "like", like);
+            }
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseHandler.generateResponse("좋아요에 성공하였습니다.", HttpStatus.OK, "like", like);
     }
 
 
