@@ -104,7 +104,6 @@ export const ecoNameVerify = createAsyncThunk(
   }
 );
 
-// 현재 CORS 에러로 요청 안됨
 // EcoName 생성 및 수정
 export const ecoName = createAsyncThunk(
   "userSlice/ecoName",
@@ -123,7 +122,6 @@ export const ecoName = createAsyncThunk(
   }
 );
 
-// 안됨
 // 비밀번호 재설정
 export const newPassword = createAsyncThunk(
   "userSlice/newPassword",
@@ -146,6 +144,7 @@ export const googleLogin = createAsyncThunk(
   "userSlice/googleLogin",
   async (args, { rejectWithValue }) => {
     try {
+      console.log(args.idToken);
       const response = await axiosService.post(
         `/user/auth/${args.socialType}`,
         { idToken: args.idToken }
@@ -182,7 +181,6 @@ export const userSlice = createSlice({
     [login.fulfilled]: (state, action) => {
       console.log("login fulfilled", action.payload);
       if (action.payload.status === 200) {
-        setAccessToken(action.payload.accessToken);
         state.user = action.payload.user;
       }
     },
@@ -193,7 +191,6 @@ export const userSlice = createSlice({
     [signUp.fulfilled]: (state, action) => {
       console.log("signup fulfilled", action.payload);
       if (action.payload.status === 200) {
-        setAccessToken(action.payload.accessToken);
       }
     },
     [signUp.rejected]: (state, action) => {
@@ -251,7 +248,6 @@ export const userSlice = createSlice({
     [googleLogin.fulfilled]: (state, action) => {
       console.log("googleLogin fulfilled", action.payload);
       if (action.payload.status === 200) {
-        setAccessToken(action.payload.accessToken);
       }
     },
     [googleLogin.rejected]: (state, action) => {

@@ -4,6 +4,7 @@ import SearchForm from "../../../components/searchForm/SearchForm";
 import NoticeList from "../../../components/notice/noticeList/NoticeList";
 import { useDispatch } from "react-redux";
 import { noticeList } from "../../../store/admin/noticeSlice";
+import { getUserName } from "../../../store/user/common";
 const Notice = () => {
   const [notices, setNotices] = useState({});
   const [pages, setPages] = useState(0);
@@ -13,6 +14,7 @@ const Notice = () => {
   const dispatch = useDispatch();
 
   const pagenation = [];
+
   for (let i = 0; i < pages; i++) {
     pagenation.push(
       <span
@@ -30,6 +32,7 @@ const Notice = () => {
       </span>
     );
   }
+
   const onSearch = (query) => {
     setQuery(query);
     dispatch(noticeList({ query })).then((res) => {
@@ -62,7 +65,7 @@ const Notice = () => {
         </div>
       </div>
       <NoticeList notices={notices} />
-      {pages && (
+      {!!pages && (
         <div className={styles.pageGroup}>
           <i className={`fa-solid fa-chevron-left ${styles.icon}`}></i>
           <span className={styles.pages}>{pagenation}</span>

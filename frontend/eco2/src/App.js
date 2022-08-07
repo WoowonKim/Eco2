@@ -40,6 +40,7 @@ import QuestMain from "./pages/quest/questMain/QuestMain";
 import NoticeForm from "./pages/notice/noticeForm/NoticeForm";
 import NoticeDetail from "./pages/notice/noticeDetail/NoticeDetail";
 import { getToken } from "./store/user/common";
+import RequireAuth from "./components/auth/requireAuth/RequireAuth";
 
 function App() {
   const [userdata, setUserdata] = useState(null);
@@ -48,7 +49,7 @@ function App() {
   // const [alarm, setAlarm] = useState([]);
 
   useEffect(() => {
-    setUserdata(getToken);
+    setUserdata(getToken());
     // firestore.onSnapshot(
     //   firestore.collection(dbService, "test/2/alarm"),
     //   (snapshot) => {
@@ -71,32 +72,138 @@ function App() {
           <Route path="/findPassword" element={<FindPassword />}></Route>
           <Route path="/ecoName" element={<EcoName />}></Route>
           {/*DailyMission */}
-          <Route path="/dailymissionmain" element={<DailyMissionMain />} />
-          <Route path="/dailymissiondetail" element={<DailyMissionDetail />} />
-          <Route path="/missionClear" element={<MissionCom />} />
+          <Route
+            path="/dailymissionmain"
+            element={
+              <RequireAuth>
+                <DailyMissionMain />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/dailymissiondetail"
+            element={
+              <RequireAuth>
+                <DailyMissionDetail />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/missionClear"
+            element={
+              <RequireAuth>
+                <MissionCom />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/dailyCustomMissionList"
-            element={<DailyCustomMissionList />}
+            element={
+              <RequireAuth>
+                <DailyCustomMissionList />
+              </RequireAuth>
+            }
           />
-          <Route path="/customPlus" element={<CustomPlus />} />
+          <Route
+            path="/customPlus"
+            element={
+              <RequireAuth>
+                <CustomPlus />
+              </RequireAuth>
+            }
+          />
           {/*DailyMission */}
-          <Route path="/mainFeed" element={<MainFeed />}></Route>
+          <Route
+            path="/mainFeed"
+            element={
+              <RequireAuth>
+                <MainFeed />
+              </RequireAuth>
+            }
+          ></Route>
           <Route
             path="/mainFeed/:feedCategory"
-            element={<FeedCategory />}
+            element={
+              <RequireAuth>
+                <FeedCategory />
+              </RequireAuth>
+            }
           ></Route>
-          <Route path="/post/:postId" element={<PostDetail />}></Route>
-          <Route path="/post" element={<PostForm />}></Route>
-          <Route path="/mainTree" element={<MainTree></MainTree>}></Route>
+          <Route
+            path="/post/:postId"
+            element={
+              <RequireAuth>
+                <PostDetail />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/post"
+            element={
+              <RequireAuth>
+                <PostForm />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/mainTree"
+            element={
+              <RequireAuth>
+                <MainTree />
+              </RequireAuth>
+            }
+          ></Route>
 
-          <Route path="/profile" element={<Profile />}></Route>
-          <Route path="/user/settings" element={<UserSettings />}></Route>
-          <Route path="/user/friends" element={<UserFriends />}></Route>
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/user/settings"
+            element={
+              <RequireAuth>
+                <UserSettings />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/user/friends"
+            element={
+              <RequireAuth>
+                <UserFriends />
+              </RequireAuth>
+            }
+          ></Route>
 
-          <Route path="/quest" element={<QuestMain />}></Route>
+          <Route
+            path="/quest"
+            element={
+              <RequireAuth>
+                <QuestMain />
+              </RequireAuth>
+            }
+          ></Route>
 
-          <Route path="/notice" element={<NoticeForm />}></Route>
-          <Route path="/notice/:noticeId" element={<NoticeDetail />}></Route>
+          <Route
+            path="/notice"
+            element={
+              <RequireAuth>
+                <NoticeForm />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/notice/:noticeId"
+            element={
+              <RequireAuth>
+                <NoticeDetail />
+              </RequireAuth>
+            }
+          ></Route>
         </Routes>
       </div>
       {userdata && <Footer></Footer>}

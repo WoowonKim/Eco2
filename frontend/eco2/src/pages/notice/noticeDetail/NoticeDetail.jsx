@@ -11,19 +11,22 @@ const NoticeDetail = () => {
   const [notice, setNotice] = useState({});
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [name, setName] = useState("");
 
   const params = useParams();
   const dispatch = useDispatch();
 
   const displayType = visible ? styles.visible : styles.hidden;
-  const name = getUserName();
+
   useEffect(() => {
+    setName(getUserName());
     dispatch(noticeDetail({ noticeId: params.noticeId })).then((res) => {
       if (res.payload.status === 200) {
         setNotice(res.payload.notice);
       }
     });
   }, []);
+  console.log(name, notice.user?.name);
   return (
     <div className={styles.notice}>
       <div className={styles.header}>
