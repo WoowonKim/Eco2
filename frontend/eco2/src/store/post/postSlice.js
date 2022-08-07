@@ -19,6 +19,7 @@ export const post = createAsyncThunk(
   "postSlice/post",
   async (args, rejectWithValue) => {
     try {
+      console.log(`/post/${args.postId}`);
       const response = await axiosService.get(`/post/${args.postId}`);
       return response.data;
     } catch (err) {
