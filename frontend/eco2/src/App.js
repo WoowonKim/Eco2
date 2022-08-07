@@ -41,6 +41,7 @@ import NoticeForm from "./pages/notice/noticeForm/NoticeForm";
 import NoticeDetail from "./pages/notice/noticeDetail/NoticeDetail";
 import { getToken } from "./store/user/common";
 import RequireAuth from "./components/auth/requireAuth/RequireAuth";
+import Error from "./pages/error/Error";
 
 function App() {
   const [userdata, setUserdata] = useState(null);
@@ -204,6 +205,7 @@ function App() {
               </RequireAuth>
             }
           ></Route>
+          <Route path="/*" element={<Error />}></Route>
         </Routes>
       </div>
       {userdata && <Footer></Footer>}
