@@ -44,6 +44,7 @@ export const putFavorite = createAsyncThunk("favoriteSlice/putFavorite", async (
 
 export const getFavorite = createAsyncThunk("favoriteSlice/getFavorite", async (args, rejectWithValue) => {
   try {
+    //wconsole.log("GetFavorite ID이다 ===>", args.id);
     const response = await axiosService.get(`/mission/favorite/${args.id}`);
     return response.data;
   } catch (err) {
