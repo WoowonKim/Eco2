@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DailyEcoMissionitem from "../missionItem/dailyEcoMissionitem";
@@ -13,20 +13,22 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [eco, setEco] = useState([]);
   const [ecoId, setEcoId] = useState([]);
   const [arrFavorites, setArrFavorites] = useState([]);
-  //const [favoriteArr, setFavoriteArr] = useState([]);
+  const [favoriteArr, setFavoriteArr] = useState([]);
   const [list, getList] = useState(true);
 
+  const naviGate = useNavigate();
   const dispatch = useDispatch();
   const ecoCount = eco.length;
 
-  // useEffect(() => {
-  //   dispatch(getFavorite({ id })).then((res) => {
-  //     if (res.payload.status === 200) {
-  //       setFavoriteArr(res.payload.missionList);
-  //     }
-  //   });
-  // }, [setFavoriteArr]);
-  // console.log(favoriteArr);
+  // 무한루프 발생.
+  useEffect(() => {
+    dispatch(getFavorite({ id })).then((res) => {
+      if (res.payload.status === 200) {
+        console.log("즐겨찾기 ==>", res.payload.missionList);
+        setFavoriteArr(res.payload.missionList);
+      }
+    });
+  }, []);
 
   const onCreate = (color, id, content) => {
     if (color === false) {
@@ -44,7 +46,9 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       setEcoId(reEcoId);
     }
   };
+  console.log(ecoId);
 
+  // 리액트단 즐겨찾기 추가, 삭제
   const onFavorites = (favorites, id, content) => {
     if (favorites === false) {
       const newArrFavorites = {
@@ -61,9 +65,11 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
 
   const onMissionSub = () => {
     if (ecoCount >= 1) {
-      dispatch(postMission({ id, ecoId })).then((res) => {
+      dispatch(postMission({ id, dailyMissionList: ecoId })).then((res) => {
         if (res.payload?.status === 200) {
-          alert(`${ecoCount}개 저장 완료 메인페이지로 이동합니다.`);
+          alert(`${ecoId.length}개 저장 완료 메인페이지로 이동합니다.`);
+          //console.log("ecoIdList에서 ecoId ==> ", ecoId);
+          naviGate("/dailymissionMain");
         }
       });
     }
@@ -74,7 +80,6 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       <div className={styles.Font}>
         <p>오늘은 어떤 도전을 해볼까?</p>
       </div>
-
       <fieldset>
         <legend className={styles.word}>Trending</legend>
         <span className={styles.trending}>텀블러 사용해서 지구 지키기</span>
@@ -85,8 +90,9 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
           <span className={styles.basicMission}>즐겨찾기</span>
         </div>
         <div>
-          {arrFavorites.map((it) => (
-            <DailyMissionFavoritesList key={it.id} content={it.content} ecoId={it.id}></DailyMissionFavoritesList>
+          {favoriteArr.map((it, idx) => (
+            // content={it.content} ecoId={it.id}
+            <div key={idx}>{it.title}</div>
           ))}
         </div>
       </div>
