@@ -3,6 +3,7 @@ package com.web.eco2.controller.user;
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.chat.ChatService;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
 
@@ -32,6 +33,9 @@ public class UserInformationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ChatService chatService;
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 조회", response = Object.class)
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
@@ -87,6 +91,7 @@ public class UserInformationController {
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST);
             }
+            chatService.deleteByToUserOrFromUser(dbUser.getId());
             userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
