@@ -1,24 +1,33 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { signInGoogle, auth } from "../../store/firebase";
-import { setUserEmail, setUserId, setUserName } from "../../store/user/common";
+import {
+  getToken,
+  setAccessToken,
+  setUserEmail,
+  setUserId,
+  setUserName,
+} from "../../store/user/common";
 import { emailValidationCheck } from "../../utils";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailMsg, setLoginFailMsg] = useState(false);
+  const [autoLogin, setAutoLogin] = useState(false);
 
   const [emailMessage, setEmailMessage] = useState("");
   const [isEmail, setIsEmail] = useState(false);
 
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const redirectPath = location.state?.path || "/mainTree";
 
   // 이메일 형식 확인 -> 중복 확인
   const emailValidation = (e) => {
@@ -40,10 +49,11 @@ function Login() {
       .then((res) => {
         if (res.payload.status === 200) {
           setLoginFailMsg(false);
-          setUserEmail(email);
-          setUserName(res.payload.user.name);
-          setUserId(res.payload.user.id);
-          navigate("/mainFeed");
+          setUserEmail(autoLogin, email);
+          setUserName(autoLogin, res.payload.user.name);
+          setUserId(autoLogin, res.payload.user.id);
+          setAccessToken(autoLogin, res.payload.accessToken);
+          navigate(redirectPath, { replace: true });
         }
         setLoginFailMsg(true);
       })
@@ -63,10 +73,11 @@ function Login() {
             idToken: idToken,
           })
         ).then((res) => {
-          setUserEmail(data.additionalUserInfo.profile.email);
-          setUserName(data.additionalUserInfo.profile.name);
+          setUserEmail(autoLogin, data.additionalUserInfo.profile.email);
+          setUserName(autoLogin, data.additionalUserInfo.profile.name);
+          setAccessToken(autoLogin, res.payload.accessToken);
           // setUserId(data.additionalUserInfo.profile.id);
-          navigate("/mainFeed");
+          navigate(redirectPath, { replace: true });
         });
       })
       .catch(function (error) {
@@ -74,9 +85,16 @@ function Login() {
       });
   };
 
+  useEffect(() => {
+    if (!!getToken()) {
+      navigate("/mainTree");
+    }
+  }, []);
+
   const onKakaoLogin = async () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
   }
+
   return (
     <div className={styles.login}>
       <img
@@ -108,7 +126,10 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className={styles.radio}>
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            onChange={(e) => setAutoLogin(e.target.checked)}
+          />
           <span className={styles.radioText}>자동 로그인</span>
         </div>
         {loginFailMsg ? (

@@ -6,6 +6,7 @@ export const commentList = createAsyncThunk(
   "commentSlice/commentList",
   async (args, rejectWithValue) => {
     try {
+      console.log(`/post/${args.postId}/comment?postId=${args.postId}`);
       const response = await axiosService.get(
         `/post/${args.postId}/comment?postId=${args.postId}`
       );
@@ -21,12 +22,14 @@ export const commentCreate = createAsyncThunk(
   "commentSlice/commentCreate",
   async (args, rejectWithValue) => {
     try {
+      console.log(args);
       const response = await axiosService.post(
         `/post/${args.postId}/comment?postId=${args.postId}`,
         {
           userId: args.userId,
           content: args.content,
           postId: args.postId,
+          commentId: args?.commentId,
         }
       );
       return response.data;

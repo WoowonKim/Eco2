@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
-import {
-  getUserName,
-  setUserName,
-  getUserEmail,
-} from "../../store/user/common";
+import { getUserName, getUserEmail } from "../../store/user/common";
 import { useNavigate } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
@@ -12,6 +8,7 @@ import Calendar from "../../components/calendar/calendar/Calendar";
 // import { test } from "../../store/user/accountSlice";
 
 const Profile = () => {
+  const [userSetting, setUserSetting] = useState(1);
   const [socialType, setSocialType] = useState(0);
   const [userId, setUserId] = useState(0);
 
@@ -19,18 +16,14 @@ const Profile = () => {
   const dispatch = useDispatch();
   const email = getUserEmail();
 
+  const displayType = userSetting === 1 ? styles.selectedMenu : null;
+  const displayType2 = userSetting === 2 ? styles.selectedMenu : null;
+
   useEffect(() => {
     // 유저 객체 받아오기
     dispatch(userInformation({ email })).then((res) => {
       setUserId(res.payload.user.id);
       setSocialType(res.payload.user.socialType);
-      if (res.payload.user.name) {
-        setUserName(res.payload.user.name);
-      } else if (getUserName()) {
-        setUserName(getUserName());
-      } else {
-        navigate("/");
-      }
     });
   }, []);
   return (
@@ -68,13 +61,13 @@ const Profile = () => {
         </div>
       </div>
       <div className={styles.missionList}>
-        <div className={styles.missionTitle}>
-          <p className={styles.dailyText}>데일리</p>
-          <hr className={styles.line} />
+        <div onClick={() => setUserSetting(1)} className={styles.missionTitle}>
+          <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
+          {userSetting === 1 && <hr className={styles.line} />}
         </div>
-        <div className={styles.missionTitle}>
-          <p className={styles.questText}>퀘스트</p>
-          <hr className={styles.line} />
+        <div onClick={() => setUserSetting(2)} className={styles.missionTitle}>
+          <p className={`${styles.questText} ${displayType2}`}>퀘스트</p>
+          {userSetting === 2 && <hr className={styles.line} />}
         </div>
       </div>
     </div>

@@ -155,7 +155,7 @@ const PostDetail = () => {
           ) : (
             <i className={`fa-regular fa-heart ${styles.heart}`}></i>
           )}
-          {feedItem.like}
+          {feedItem.likeCount}
         </button>
       </div>
       <p className={styles.content}>{feedItem.content}</p>

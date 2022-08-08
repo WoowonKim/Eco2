@@ -1,28 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import CommentForm from "../commentForm/CommentForm";
 import ReplyList from "../replyList/ReplyList";
 import ReportModal from "../../modal/reportModal/ReportModal";
 import styles from "./CommentItem.module.css";
-import { commentDelete } from "../../../store/post/commentSlice";
-import { getUserName } from "../../../store/user/common";
+import { getUserId, getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
 
-const CommentItem = ({ id, content, user, postId }) => {
+const CommentItem = ({ id, content, user, postId, replys }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [replyVisible, setReplyVisible] = useState(false);
   const [modalType, setModalType] = useState("");
-
-  const name = getUserName();
+  const [name, setName] = useState("");
+  const [userId, setUserId] = useState(0);
 
   const displayType = modalType ? styles.visible : styles.hidden;
 
-  const handleDelete = () => {
-    dispatch(commentDelete({ id }));
-  };
+  useEffect(() => {
+    setName(getUserName());
+    setUserId(getUserId());
+  }, []);
   return (
     <div>
       {!visible && (
@@ -104,6 +104,7 @@ const CommentItem = ({ id, content, user, postId }) => {
           <span className={styles.editFormUser}>{user}</span>
           <div className={styles.editForm}>
             <CommentForm
+              userId={userId}
               postId={postId}
               id={id}
               content={content}
@@ -114,12 +115,14 @@ const CommentItem = ({ id, content, user, postId }) => {
       )}
       {replyVisible && (
         <CommentForm
+          userId={userId}
+          postId={postId}
           id={id}
           replyVisible={replyVisible}
           closeModal={() => setReplyVisible(!replyVisible)}
         />
       )}
-      <ReplyList id={id} />
+      <ReplyList id={id} replys={replys} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -14,7 +14,12 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
-import { setUserEmail, setUserId } from "../../store/user/common";
+import {
+  getToken,
+  setAccessToken,
+  setUserEmail,
+  setUserId,
+} from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
 
 const Regist = () => {
@@ -99,6 +104,11 @@ const Regist = () => {
     }
   };
 
+  useEffect(() => {
+    if (!!getToken()) {
+      navigate("/mainTree");
+    }
+  }, []);
   return (
     <div className={styles.signup}>
       <img
@@ -207,8 +217,9 @@ const Regist = () => {
                 })
               )
                 .then((res) => {
-                  setUserEmail(email);
-                  setUserId(res.payload.user.id);
+                  setUserEmail(false, email);
+                  setUserId(false, res.payload.user.id);
+                  setAccessToken(false, res.payload.accessToken);
                   navigate("/ecoName");
                 })
                 .catch((err) => console.log(err));

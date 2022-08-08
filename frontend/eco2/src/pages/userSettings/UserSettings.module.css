@@ -43,6 +43,10 @@
   align-items: center;
 }
 
+.emailTitle {
+  margin: 10px 0 0 0;
+}
+
 .socialLogo {
   width: 20px;
   margin-left: 10px;
