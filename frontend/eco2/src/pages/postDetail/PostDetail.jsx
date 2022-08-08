@@ -6,68 +6,110 @@ import CommentList from "../../components/comment/commentList/CommentList";
 import styles from "./PostDetail.module.css";
 import PostModal from "../../components/modal/postModal/PostModal";
 import ReportModal from "../../components/modal/reportModal/ReportModal";
-import { post } from "../../store/post/postSlice";
+import { post, postLike } from "../../store/post/postSlice";
+import { getUserId, getUserName } from "../../store/user/common";
+import { commentList } from "../../store/post/commentSlice";
 
 const PostDetail = () => {
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
   const [feedItem, setFeedItem] = useState({});
+  const [comments, setComments] = useState({});
+  const [like, setLike] = useState(false);
+
   const params = useParams();
-  const displayType = visible ? styles.visible : styles.hidden;
   const dispatch = useDispatch();
+
+  const displayType = visible ? styles.visible : styles.hidden;
+  const name = getUserName();
+
+  const handlePostLike = () => {
+    dispatch(postLike({ postId: feedItem.id, userId: feedItem.userId })).then(
+      (res) => {
+        if (res.payload.status === 200) {
+          setLike(!like);
+          dispatch(post({ postId: params.postId })).then((res) => {
+            if (res.payload?.status === 200) {
+              setFeedItem(res.payload.post);
+            }
+          });
+        } else {
+          setLike(!like);
+          dispatch(post({ postId: params.postId })).then((res) => {
+            if (res.payload?.status === 200) {
+              setFeedItem(res.payload.post);
+            }
+          });
+        }
+      }
+    );
+  };
 
   useEffect(() => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
         setFeedItem(res.payload.post);
-        console.log(res.payload.post.postImgUrl);
+      }
+    });
+    dispatch(commentList({ postId: params.postId })).then((res) => {
+      if (res.payload?.status === 200) {
+        setComments(res.payload.comments);
       }
     });
   }, []);
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.title}>
         <h1 className={styles.text}>{feedItem.category}</h1>
         <div className={styles.dropdown}>
           <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
           <div className={styles.dropdownContent}>
-            <button
-              onClick={() => {
-                setVisible(!visible);
-                setModalType("수정");
-              }}
-              className={styles.dropdownItem}
-            >
-              수정
-              <i className={`fa-solid fa-pencil ${styles.dropdownIcon}`}></i>
-            </button>
-            <button
-              onClick={() => {
-                setVisible(!visible);
-                setModalType("삭제");
-              }}
-              className={styles.dropdownItem}
-            >
-              삭제
-              <i className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}></i>
-            </button>
-            <button className={styles.dropdownItem}>
-              비공개
-              <i className={`fa-solid fa-lock ${styles.dropdownIcon}`}></i>
-            </button>
-            <button
-              onClick={() => {
-                setVisible(!visible);
-                setModalType("신고");
-              }}
-              className={styles.dropdownItem}
-            >
-              신고
-              <i
-                className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
-              ></i>
-            </button>
+            {name === feedItem.userName ? (
+              <div>
+                <button
+                  onClick={() => {
+                    setVisible(!visible);
+                    setModalType("수정");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  수정
+                  <i
+                    className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
+                  ></i>
+                </button>
+                <button
+                  onClick={() => {
+                    setVisible(!visible);
+                    setModalType("삭제");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  삭제
+                  <i
+                    className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
+                  ></i>
+                </button>
+                <button className={styles.dropdownItem}>
+                  비공개
+                  <i className={`fa-solid fa-lock ${styles.dropdownIcon}`}></i>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  setVisible(!visible);
+                  setModalType("신고");
+                }}
+                className={styles.dropdownItem}
+              >
+                신고
+                <i
+                  className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
+                ></i>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -107,16 +149,21 @@ const PostDetail = () => {
       <img className={styles.img} src={feedItem.postImgUrl} alt="img" />
       <div className={styles.info}>
         <p className={styles.user}>{feedItem.userName}</p>
-        <button className={styles.button}>
-          <i className={`fa-solid fa-heart ${styles.heart}`}></i> 30
+        <button className={styles.button} onClick={handlePostLike}>
+          {like ? (
+            <i className={`fa-solid fa-heart ${styles.heart}`}></i>
+          ) : (
+            <i className={`fa-regular fa-heart ${styles.heart}`}></i>
+          )}
+          {feedItem.like}
         </button>
       </div>
       <p className={styles.content}>{feedItem.content}</p>
       <hr className={styles.line} />
       <div className={styles.CommentForm}>
-        <CommentForm postId={feedItem.id} />
+        <CommentForm postId={feedItem.id} userId={getUserId()} />
       </div>
-      <CommentList id={feedItem.id} />
+      <CommentList id={feedItem.id} comments={comments} />
     </div>
   );
 };

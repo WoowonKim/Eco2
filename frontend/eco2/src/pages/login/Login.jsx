@@ -5,7 +5,7 @@ import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { signInGoogle, auth } from "../../store/firebase";
-import { setUserEmail, setUserName } from "../../store/user/common";
+import { setUserEmail, setUserId, setUserName } from "../../store/user/common";
 import { emailValidationCheck } from "../../utils";
 
 function Login() {
@@ -42,6 +42,7 @@ function Login() {
           setLoginFailMsg(false);
           setUserEmail(email);
           setUserName(res.payload.user.name);
+          setUserId(res.payload.user.id);
           navigate("/mainFeed");
         }
         setLoginFailMsg(true);
@@ -64,6 +65,7 @@ function Login() {
         ).then((res) => {
           setUserEmail(data.additionalUserInfo.profile.email);
           setUserName(data.additionalUserInfo.profile.name);
+          // setUserId(data.additionalUserInfo.profile.id);
           navigate("/mainFeed");
         });
       })
@@ -71,6 +73,10 @@ function Login() {
         console.log(error);
       });
   };
+
+  const onKakaoLogin = async () => {
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
+  }
   return (
     <div className={styles.login}>
       <img
@@ -131,7 +137,7 @@ function Login() {
             className={styles.socialLogo}
           />
         </button>
-        <button className={styles.socialButton}>
+        <button onClick={onKakaoLogin} className={styles.socialButton}>
           <img
             src="kakao_logo.png"
             alt="social_logo"

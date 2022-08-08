@@ -37,32 +37,38 @@ import UserSettings from "./pages/userSettings/UserSettings";
 import UserFriends from "./pages/userFriends/UserFriends";
 import { dbService, firestore } from "./store/firebase";
 import QuestMain from "./pages/quest/questMain/QuestMain";
+import NoticeForm from "./pages/notice/noticeForm/NoticeForm";
+import NoticeDetail from "./pages/notice/noticeDetail/NoticeDetail";
+import { getToken } from "./store/user/common";
+import KakaoLogin from "./pages/login/KakaoLogin";
 
 function App() {
-  let currUser = useSelector((state) => state.user);
+  const [userdata, setUserdata] = useState(null);
 
   // 친구 신청 알림 기능 구현 예정
   // const [alarm, setAlarm] = useState([]);
 
-  // useEffect(() => {
-  //   firestore.onSnapshot(
-  //     firestore.collection(dbService, "test/2/alarm"),
-  //     (snapshot) => {
-  //       const alarmArray = snapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-  //       console.log(alarmArray);
-  //       setAlarm(alarmArray);
-  //     }
-  //   );
-  // }, []);
+  useEffect(() => {
+    setUserdata(getToken);
+    // firestore.onSnapshot(
+    //   firestore.collection(dbService, "test/2/alarm"),
+    //   (snapshot) => {
+    //     const alarmArray = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     console.log(alarmArray);
+    //     setAlarm(alarmArray);
+    //   }
+    // );
+  }, []);
   return (
     <div className={styles.App}>
-      <Header></Header>
+      {userdata && <Header></Header>}
       <div className={styles.body}>
         <Routes>
           <Route path="/" element={<Login />}></Route>
+          <Route path="/kakao" element={<KakaoLogin />}></Route>
           <Route path="/regist" element={<Regist />}></Route>
           <Route path="/findPassword" element={<FindPassword />}></Route>
           <Route path="/ecoName" element={<EcoName />}></Route>
@@ -90,9 +96,12 @@ function App() {
           <Route path="/user/friends" element={<UserFriends />}></Route>
 
           <Route path="/quest" element={<QuestMain />}></Route>
+
+          <Route path="/notice" element={<NoticeForm />}></Route>
+          <Route path="/notice/:noticeId" element={<NoticeDetail />}></Route>
         </Routes>
       </div>
-      <Footer></Footer>
+      {userdata && <Footer></Footer>}
     </div>
   );
 }

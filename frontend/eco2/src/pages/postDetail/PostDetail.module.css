@@ -1,3 +1,8 @@
+.container {
+  width: 300px;
+  display: block;
+}
+
 .title {
   display: flex;
   justify-content: space-between;
@@ -73,6 +78,7 @@
   margin: 20px 0;
   text-align: left;
   font-size: 16px;
+  word-break: break-all;
 }
 
 .line {

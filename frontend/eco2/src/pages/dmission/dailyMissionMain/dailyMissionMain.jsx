@@ -5,7 +5,7 @@ import { GreenBtn } from "../../../components/styled";
 import { useSelector, useDispatch } from "react-redux";
 import MissionMain from "../../../components/dailyMission/missionList/missionMain";
 import { useNavigate } from "react-router-dom";
-import { getMission } from "../../../store/mission/missionMainSlice";
+import { getMission, deleteMission } from "../../../store/mission/missionMainSlice";
 import { userInformation } from "../../../store/user/userSettingSlice";
 import { getUserEmail } from "../../../store/user/common";
 
@@ -20,13 +20,24 @@ const DailyMissionMain = () => {
   useEffect(() => {
     dispatch(userInformation({ email: getUserEmail() })).then((res) => {
       if (res.payload.status === 200) {
+        setId(res.payload.user.id);
         dispatch(getMission({ id: res.payload.user.id })).then((res) => {
-          console.log(res.payload.dailyMissionList);
+          //console.log("백에서 얻어온 내 미션 리스트 ==> ", res.payload.dailyMissionList);
           setMain(res.payload.dailyMissionList);
         });
       }
     });
   }, []);
+
+  //console.log("Daily Mission List ===> ", main);
+
+  const onMissionDelete = () => {
+    dispatch(userInformation({ email: getUserEmail() })).then((res) => {
+      if (res.payload.status === 200) {
+        dispatch(deleteMission({ id: res.payload.user.id })).then((res) => {});
+      }
+    });
+  };
 
   const trashCnt = (trash) => {
     if (!trash) {
@@ -59,7 +70,7 @@ const DailyMissionMain = () => {
 
       <div>
         {main.map((it) => (
-          <MissionMain key={it.id} content={it.mission.title} id={it.user.id} trashCnt={trashCnt} missionType={it.mission.category} missionId={it.mission.id} />
+          <MissionMain key={it.id} content={it.mission.title} idTest={id} trashCnt={trashCnt} missionType={it.mission.category} missionIdTest={it.id} />
         ))}
       </div>
       <div className={styles.btn}>

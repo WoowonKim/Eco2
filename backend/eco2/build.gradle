@@ -33,6 +33,9 @@ dependencies {
     // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 //    implementation 'io.jsonwebtoken:jjwt:0.9.1'
