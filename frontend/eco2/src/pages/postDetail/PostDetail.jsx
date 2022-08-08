@@ -53,7 +53,7 @@ const PostDetail = () => {
     });
     dispatch(commentList({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
-        setComments(res.payload.comments);
+        setComments(res.payload.commentDto);
       }
     });
   }, []);

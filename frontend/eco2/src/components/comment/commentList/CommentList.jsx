@@ -7,16 +7,16 @@ const CommentList = ({ id, comments }) => {
   console.log(comments);
   return (
     <ul className={styles.ul}>
-      {comments.length > 0 &&
+      {comments?.length > 0 &&
         comments.map(
           (comment) =>
-            id === comment.post.id && (
+            id === comment.postId && (
               <CommentItem
-                key={comment.id}
-                id={comment.id}
+                key={comment.commentId}
+                id={comment.commentId}
                 content={comment.content}
-                user={comment.user.name}
-                postId={comment.post.id}
+                user={comment.userId}
+                postId={comment.postId}
                 replys={comment.comments}
               />
             )

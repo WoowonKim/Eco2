@@ -7,18 +7,19 @@ const ReplyList = ({ id, replys }) => {
   console.log(replys);
   return (
     <ul className={styles.ul}>
-      {replys.map(
-        (reply) =>
-          id === reply.commentId && (
-            <ReplyItem
-              key={reply.id}
-              id={reply.id}
-              content={reply.content}
-              user={reply.user}
-              postId={reply.postId}
-            />
-          )
-      )}
+      {replys?.length > 0 &&
+        replys.map(
+          (reply) =>
+            id === reply.commentId && (
+              <ReplyItem
+                key={reply.id}
+                id={reply.id}
+                content={reply.content}
+                user={reply.user}
+                postId={reply.postId}
+              />
+            )
+        )}
     </ul>
   );
 };

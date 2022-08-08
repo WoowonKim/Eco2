@@ -46,7 +46,7 @@ const PostForm = () => {
         id: id,
       },
       mission: {
-        id: 1,
+        id: location.state?.missionId,
       },
     };
     const postUpdateDto = {
@@ -82,7 +82,11 @@ const PostForm = () => {
       formDataCreate.append("postImage", file);
       formDataCreate.append("postCreateDto", blob);
 
-      dispatch(postCreate({ formData: formDataCreate })).then((res) => {});
+      dispatch(postCreate({ formData: formDataCreate })).then((res) => {
+        if (res.payload?.status === 200) {
+          navigate("/mainTree");
+        }
+      });
     }
   };
 
@@ -131,8 +135,11 @@ const PostForm = () => {
             name="category"
             onChange={(e) => {
               setSelected(e.target.value);
+              console.log(e.target.value);
             }}
-            value={location.state?.category ? location.state?.category : ""}
+            value={
+              location.state?.category ? location.state?.category : selected
+            }
             className={styles.select}
           >
             <option className={styles.option} value="">
