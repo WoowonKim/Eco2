@@ -41,13 +41,13 @@ public class UserInformationController {
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
         try {
             log.info("회원 조회 API 호출");
-            if (email == null) {
+            if (email == null || email.equals("")) {
                 return ResponseHandler.generateResponse("이메일을 입력해주세요.", HttpStatus.ACCEPTED);
             }
-            UserDto user = userService.findUserInfoByEmail(email).toDto();
+            User user = userService.findByEmail(email);
 
             if (user != null) {
-                return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user);
+                return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user.toDto());
             } else {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.ACCEPTED);
             }
