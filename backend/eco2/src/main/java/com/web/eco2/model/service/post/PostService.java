@@ -1,7 +1,6 @@
 package com.web.eco2.model.service.post;
 
 import com.web.eco2.domain.dto.post.PostCreateDto;
-import com.web.eco2.domain.dto.post.PostUpdateDto;
 import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.Post;
@@ -11,16 +10,16 @@ import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.repository.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.*;
-import java.net.URLDecoder;
-import java.time.LocalDateTime;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,9 +38,11 @@ public class PostService {
         return postRepository.getById(id);
     }
 
+
     //post image 저장 경로
     @Value("${postImg.path}")
     private String uploadPostImgPath;
+
 
 
     //post 저장하기 (post + postImage)
@@ -72,6 +73,9 @@ public class PostService {
 
         postRepository.save(post);
     }
+
+
+
 
     //post 목록 가져오기
     public List<Post> getPostList() {
@@ -108,26 +112,26 @@ public class PostService {
     }
 
 
-    //post 수정하기
-    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) {
-            Post post = postRepository.getById(postId);
-            post.setContent(postUpdateDto.getContent());
-            post.setPublicFlag(postUpdateDto.isPublicFlag());
-            post.setCommentFlag(postUpdateDto.isCommentFlag());
-            postRepository.save(post);
-
-            PostImg postImg = postImgRepository.getById(postId);
-            String originalName = postImage.getOriginalFilename();
-
-            PostImg newPostImg = PostImg.builder()
-                    .saveFolder(uploadPostImgPath)
-                    .originalName(originalName)
-                    .saveName(postImg.getSaveName())
-                    .id(postId)
-                    .build();
-
-            postImgRepository.save(newPostImg);
-    }
+//    //post 수정하기
+//    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) {
+//            Post post = postRepository.getById(postId);
+//            post.setContent(postUpdateDto.getContent());
+//            post.setPublicFlag(postUpdateDto.isPublicFlag());
+//            post.setCommentFlag(postUpdateDto.isCommentFlag());
+//            postRepository.save(post);
+//
+//            PostImg postImg = postImgRepository.getById(postId);
+//            String originalName = postImage.getOriginalFilename();
+//
+//            PostImg newPostImg = PostImg.builder()
+//                    .saveFolder(uploadPostImgPath)
+//                    .originalName(originalName)
+//                    .saveName(postImg.getSaveName())
+//                    .id(postId)
+//                    .build();
+//
+//            postImgRepository.save(newPostImg);
+//    }
 
 
     //post 삭제하기

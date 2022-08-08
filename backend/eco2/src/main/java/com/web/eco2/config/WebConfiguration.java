@@ -5,6 +5,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.persistence.EntityManager;
@@ -25,4 +26,6 @@ public class WebConfiguration implements WebMvcConfigurer {
                         HttpMethod.DELETE.name()
                 );
     }
+
+
 }
