@@ -35,6 +35,9 @@ public class Mission {
     @Column(name = "mis_quest_flag", nullable = false)
     private boolean questFlag;
 
+//    @Column(name = "mis_favorite_flag", nullable = true)
+//    private boolean favoriteFlag;
+
     public MissionDto toDto() {
         return MissionDto.builder()
                 .id(id).category(category)

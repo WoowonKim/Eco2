@@ -214,7 +214,11 @@ public class UserController {
             log.info("access 토큰 재발급 API 호출");
             String refreshToken = jwtTokenUtil.getRefreshToken(request);
             String accessToken = jwtTokenUtil.newAccessToken(user, refreshToken);
+
             if (accessToken != null) {
+                User selectUser = userService.findByEmail(user.getEmail());
+                refreshToken = jwtTokenUtil.createRefreshToken();
+                selectUser.setRefreshToken(refreshToken);
                 response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
                 return ResponseHandler.generateResponse("AccessToken이 재발급 되었습니다.", HttpStatus.OK, "accessToken", accessToken);
             } else {
