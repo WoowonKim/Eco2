@@ -50,7 +50,7 @@ const NoticeForm = () => {
     }
   }, []);
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.titleGroup}>
         <i className={`fa-brands fa-pagelines ${styles.titleIcon}`}></i>
         <h2 className={styles.title}>공지 작성</h2>
@@ -83,6 +83,7 @@ const NoticeForm = () => {
         </div>
         <input
           type="text"
+          className={styles.titleInput}
           placeholder="제목을 입력해주세요"
           value={editTitle ? editTitle : title}
           onChange={(e) => {

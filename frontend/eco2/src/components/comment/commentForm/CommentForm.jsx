@@ -29,13 +29,13 @@ const CommentForm = ({
       });
       closeModal();
     } else if (replyVisible) {
-      dispatch(commentCreate({ postId, content: value, userId })).then(
-        (res) => {
-          if (res.payload?.status === 200) {
-            window.location.replace(`/post/${postId}`);
-          }
+      dispatch(
+        commentCreate({ postId, content: value, userId, commentId: id })
+      ).then((res) => {
+        if (res.payload?.status === 200) {
+          window.location.replace(`/post/${postId}`);
         }
-      );
+      });
       closeModal();
     } else {
       dispatch(commentCreate({ postId, content: value, userId })).then(

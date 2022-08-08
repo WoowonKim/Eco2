@@ -27,9 +27,9 @@
 }
 
 .missionList {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  margin-top: 50px;
+  grid-template-columns: 1fr 1fr;
 }
 
 /* .missionTitle {
@@ -39,3 +39,7 @@
 .line {
   width: 100%;
 } */
+
+.selectedMenu {
+  font-weight: bold;
+}

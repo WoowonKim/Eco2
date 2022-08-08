@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getUserEmail } from "../../store/user/common";
+import { getUserEmail, getUserName } from "../../store/user/common";
 import {
   deleteUser,
   passwordChange,
@@ -99,7 +99,7 @@ const UserSettings = () => {
   };
 
   useEffect(() => {
-    setName(location.state?.name);
+    setName(getUserName());
   }, []);
 
   return (
@@ -133,7 +133,7 @@ const UserSettings = () => {
           </div>
           <div className={styles.emailGroup}>
             <div className={styles.emailTitleGroup}>
-              <p className={styles.label}>이메일</p>
+              <p className={styles.emailTitle}>이메일</p>
               {socialType === 1 && (
                 <img
                   src={`${process.env.PUBLIC_URL}/google_logo.png`}

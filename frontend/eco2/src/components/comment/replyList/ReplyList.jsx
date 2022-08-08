@@ -3,9 +3,8 @@ import { useSelector } from "react-redux";
 import ReplyItem from "../replyItem/ReplyItem";
 import styles from "./ReplyList.module.css";
 
-const ReplyList = ({ id }) => {
-  const replys = useSelector((state) => state.comment);
-
+const ReplyList = ({ id, replys }) => {
+  console.log(replys);
   return (
     <ul className={styles.ul}>
       {replys.map(
