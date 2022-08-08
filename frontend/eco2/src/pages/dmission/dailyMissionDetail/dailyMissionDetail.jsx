@@ -5,12 +5,15 @@ import { useDispatch } from "react-redux/es/exports";
 import { userInformation } from "../../../store/user/userSettingSlice";
 import { getUserEmail } from "../../../store/user/common";
 import { getFavorite } from "../../../store/mission/favoriteSlice";
+import { useLocation } from "react-router-dom";
 
 const DailyMissionDetail = () => {
   const [missionList, setMissionList] = useState([]);
   const dispatch = useDispatch();
   const [id, setId] = useState(0);
   const [favoArr, setFavoArr] = useState([]);
+  const location = useLocation();
+
   useEffect(() => {
     dispatch(userInformation({ email: getUserEmail() })).then((res) => {
       if (res.payload.status === 200) {
@@ -19,6 +22,8 @@ const DailyMissionDetail = () => {
       }
     });
   }, []);
+  // console.log("디테일에서 ID를 뿌려준다 ===> ", id);
+  // console.log("TEST 입니다다다다다 ===+> ", location.state?.favorites);
 
   // useEffect(() => {
   //   dispatch(userInformation({ email: getUserEmail() })).then((res) => {
@@ -32,7 +37,7 @@ const DailyMissionDetail = () => {
   // });
   return (
     <div>
-      <DailyEcoMissionList ecomissionList={missionList} id={id} />
+      <DailyEcoMissionList ecomissionList={missionList} id={id} test={location.state?.favorites} />
     </div>
   );
 };
