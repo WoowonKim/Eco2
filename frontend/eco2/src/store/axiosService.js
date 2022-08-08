@@ -6,4 +6,5 @@ export const axiosService = axios.create({
   headers: {
     "Auth-accessToken": getToken(),
   },
+  withCredentials: true,
 });

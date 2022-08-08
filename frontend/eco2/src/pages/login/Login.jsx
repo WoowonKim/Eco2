@@ -74,7 +74,7 @@ function Login() {
           })
         ).then((res) => {
           setUserEmail(autoLogin, data.additionalUserInfo.profile.email);
-          setUserName(autoLogin, data.additionalUserInfo.profile.name);
+          // setUserName(autoLogin, data.additionalUserInfo.profile.name);
           setAccessToken(autoLogin, res.payload.accessToken);
           // setUserId(data.additionalUserInfo.profile.id);
           navigate(redirectPath, { replace: true });
@@ -93,7 +93,7 @@ function Login() {
 
   const onKakaoLogin = async () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
-  }
+  };
 
   return (
     <div className={styles.login}>

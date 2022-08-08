@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getCookie,
   getToken,
+  getUserEmail,
   removeUserSession,
   setAccessToken,
   setEmail,
@@ -138,7 +139,6 @@ export const newPassword = createAsyncThunk(
   }
 );
 
-// 에러 발생으로 안됨
 // Google 로그인
 export const googleLogin = createAsyncThunk(
   "userSlice/googleLogin",
@@ -149,6 +149,7 @@ export const googleLogin = createAsyncThunk(
         `/user/auth/${args.socialType}`,
         { idToken: args.idToken }
       );
+      console.log(response);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -156,20 +157,37 @@ export const googleLogin = createAsyncThunk(
   }
 );
 
+// kakao 로그인
 export const kakaoLogin = createAsyncThunk(
   "userSlice/kakaoLogin",
   async (args, { rejectWithValue }) => {
     try {
+      const response = await axiosService.post(`/user/auth/2`, {
+        idToken: args.idToken,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// accesstoken 재발급
+export const newAccessToken = createAsyncThunk(
+  "userSlice/newAccessToken",
+  async (args, { rejectWithValue }) => {
+    try {
       const response = await axiosService.post(
-        `/user/auth/2`,
-        { idToken: args.idToken }
+        "/user/userinformation",
+        { email: getUserEmail() },
+        { withCredentials: true }
       );
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
     }
   }
-)
+);
 
 const userState = {
   isLoggedIn: 0,
@@ -277,6 +295,16 @@ export const userSlice = createSlice({
     },
     [kakaoLogin.rejected]: (state, action) => {
       console.log("kakaoLogin rejected", action.payload);
+      removeUserSession();
+    },
+    [newAccessToken.fulfilled]: (state, action) => {
+      console.log("newAccessToken fulfilled", action.payload);
+      if (action.payload.status === 200) {
+        setAccessToken(action.payload.accessToken);
+      }
+    },
+    [newAccessToken.rejected]: (state, action) => {
+      console.log("newAccessToken rejected", action.payload);
       removeUserSession();
     },
   },
