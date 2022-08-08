@@ -2,8 +2,11 @@ package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.dto.user.UserDto;
+import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.chat.ChatService;
+import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
 
@@ -18,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/userinformation")
@@ -36,6 +42,10 @@ public class UserInformationController {
 
     @Autowired
     private ChatService chatService;
+
+    @Autowired
+    private PostService postService;
+
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 조회", response = Object.class)
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
@@ -47,7 +57,10 @@ public class UserInformationController {
             User user = userService.findByEmail(email);
 
             if (user != null) {
-                return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user.toDto());
+                List<QuestPost> posts = postService.getPostOnly();
+                List<QuestPost> questPosts = postService.getQuestPostList();
+                return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
+                        Map.of("user", user.toDto(), "postList", posts, "questPostList", questPosts));
             } else {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.ACCEPTED);
             }
