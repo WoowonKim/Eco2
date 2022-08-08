@@ -156,6 +156,21 @@ export const googleLogin = createAsyncThunk(
   }
 );
 
+export const kakaoLogin = createAsyncThunk(
+  "userSlice/kakaoLogin",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.post(
+        `/user/auth/2`,
+        { idToken: args.idToken }
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+)
+
 const userState = {
   isLoggedIn: 0,
   token: null,
@@ -252,6 +267,16 @@ export const userSlice = createSlice({
     },
     [googleLogin.rejected]: (state, action) => {
       console.log("googleLogin rejected", action.payload);
+      removeUserSession();
+    },
+    [kakaoLogin.fulfilled]: (state, action) => {
+      console.log("kakaoLogin fulfilled", action.payload);
+      if (action.payload.status === 200) {
+        setAccessToken(action.payload.accessToken);
+      }
+    },
+    [kakaoLogin.rejected]: (state, action) => {
+      console.log("kakaoLogin rejected", action.payload);
       removeUserSession();
     },
   },

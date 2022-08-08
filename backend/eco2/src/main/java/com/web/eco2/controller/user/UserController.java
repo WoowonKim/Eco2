@@ -2,12 +2,14 @@ package com.web.eco2.controller.user;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
+import com.web.eco2.domain.dto.oauth.OAuthToken;
 import com.web.eco2.domain.dto.user.MailRequest;
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.entity.Item.Statistic;
 import com.web.eco2.domain.entity.UserSetting;
 
 
+import com.web.eco2.model.service.oauth.KakaoOAuth;
 import com.web.eco2.model.service.user.MailService;
 import com.web.eco2.model.service.user.OAuth2Service;
 import com.web.eco2.model.service.user.UserService;
@@ -22,6 +24,7 @@ import com.web.eco2.util.JwtTokenUtil;
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +74,9 @@ public class UserController {
 
     @Autowired
     private FirebaseAuth firebaseAuth;
+
+    @Autowired
+    private KakaoOAuth kakaoOAuth;
 
     @ApiOperation(value = "회원가입", response = Object.class)
     @PostMapping()
@@ -275,14 +281,32 @@ public class UserController {
         }
     }
 
+    @Data
+    static class SocialRequest {
+        private String idToken;
+    }
     @ApiOperation(value = "소셜 로그인", response = Object.class)
     @PostMapping("/auth/{socialType}")
     public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType,
-                                                 @RequestBody String idToken, HttpServletResponse response) {
+                                                 @RequestBody SocialRequest socialRequest, HttpServletResponse response) {
         try {
             log.info("소셜 로그인 API 호출");
-            FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
-            String email = decodedToken.getEmail();
+            String email;
+            String idToken = socialRequest.getIdToken();
+            if(socialType == 1) {
+                FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
+                email = decodedToken.getEmail();
+            } else if(socialType == 2) {
+                // 카카오 인가코드 확인하기
+                OAuthToken token = kakaoOAuth.getAccessToken(idToken);
+                User kakaoUser = kakaoOAuth.getUserInfo(token);
+                email = kakaoUser.getEmail();
+                if(email == null) {
+                    return ResponseHandler.generateResponse("이메일 허용이 필요", HttpStatus.ACCEPTED);
+                }
+            } else {
+                return ResponseHandler.generateResponse("잘못된 socialType", HttpStatus.ACCEPTED);
+            }
             User user = userService.findByEmail(email);
 
             String refreshToken = jwtTokenUtil.createRefreshToken();

@@ -42,6 +42,7 @@ import NoticeDetail from "./pages/notice/noticeDetail/NoticeDetail";
 import { getToken } from "./store/user/common";
 import RequireAuth from "./components/auth/requireAuth/RequireAuth";
 import Error from "./pages/error/Error";
+import KakaoLogin from "./pages/login/KakaoLogin";
 
 function App() {
   const [userdata, setUserdata] = useState(null);
@@ -69,6 +70,7 @@ function App() {
       <div className={styles.body}>
         <Routes>
           <Route path="/" element={<Login />}></Route>
+          <Route path="/kakao" element={<KakaoLogin />}></Route>
           <Route path="/regist" element={<Regist />}></Route>
           <Route path="/findPassword" element={<FindPassword />}></Route>
           <Route path="/ecoName" element={<EcoName />}></Route>

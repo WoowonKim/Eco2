@@ -90,6 +90,11 @@ function Login() {
       navigate("/mainTree");
     }
   }, []);
+
+  const onKakaoLogin = async () => {
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
+  }
+
   return (
     <div className={styles.login}>
       <img
@@ -153,7 +158,7 @@ function Login() {
             className={styles.socialLogo}
           />
         </button>
-        <button className={styles.socialButton}>
+        <button onClick={onKakaoLogin} className={styles.socialButton}>
           <img
             src="kakao_logo.png"
             alt="social_logo"

@@ -3,8 +3,10 @@ import styles from "./dailyMissionDetail.module.css";
 import { GreenBtn } from "../../styled";
 import { useDispatch } from "react-redux";
 import { putFavorite } from "../../../store/mission/favoriteSlice";
+import { useNavigate } from "react-router-dom";
 //onFavorites
-const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, onFavorites, category }) => {
+const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, onFavorites, category, setFmission, fmission, cnt, setCnt }) => {
+  //console.log("ecoId ====> ", ecoId);
   const dispatch = useDispatch();
   const [color, setColor] = useState(true);
   const [favorites, setFavorites] = useState(true);
@@ -12,10 +14,13 @@ const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, onFavorites, catego
   const colorType = color ? styles.gray : styles.skyblue;
   const favoriteTrue = true;
   const [testItem, setTestItem] = useState(false);
+  const naviGate = useNavigate();
   const onFavorite = (id, favorites, ecoId, favoriteTrue) => {
+    //console.log("여기서 ecoId는 뭘까? ===> ", ecoId);
     dispatch(putFavorite({ id, likeFlag: favorites, missionType: favoriteTrue, missionId: ecoId })).then((res) => {
       if (res.payload.status === 200) {
         console.log("putFavorite 성공 ");
+        naviGate("/dailymissiondetail", { favorites: 1 });
       }
     });
   };
@@ -23,7 +28,8 @@ const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, onFavorites, catego
   return (
     <div>
       <div className={`${styles.content} ${colorType}`}>
-        <input type={"checkbox"}></input>
+        <img src={process.env.PUBLIC_URL + `/tree_leaves/Leaf3.png`} className={styles.leafSize}></img>
+        {/* <input type={"checkbox"}></input> */}
         <span
           onClick={() => {
             setColor(!color);
@@ -39,6 +45,8 @@ const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, onFavorites, catego
             setFavorites(!favorites);
             onFavorites(!favorites, ecoId, content);
             onFavorite(id, favorites, ecoId, favoriteTrue);
+            //setFmission(!fmission);
+            setCnt(cnt + 1);
           }}
         ></i>
       </div>
