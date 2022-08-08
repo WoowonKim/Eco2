@@ -1,4 +1,5 @@
 /* global kakao */
+import { add } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { getLocation } from "../../utils";
 import styles from "./Map.module.css";
@@ -8,6 +9,11 @@ const Map = ({ makeFlag }) => {
   const [lon, setLon] = useState(126.570667);
   const [markers, setmarkers] = useState([]);
   let map;
+
+  let clickHandler = (event) => {
+    console.log(event);
+    addMarker(event.latLng);
+  };
 
   useEffect(() => {
     console.log("called useEffect");
@@ -29,37 +35,21 @@ const Map = ({ makeFlag }) => {
     });
     circle.setMap(map);
     moveToMe();
-  }, [lat, lon]);
-  useEffect(() => {
-    console.log(makeFlag);
-    window.kakao.maps.event.addListener(map, "click", (mouseEvent) => {
-      // 클릭한 위치에 마커를 표시합니다
-      let position = mouseEvent.latLng;
-      console.log("called addMarker");
-      // 마커를 생성합니다
-      let marker = new window.kakao.maps.Marker({
-        position: position,
-      });
-      // 마커가 지도 위에 표시되도록 설정합니다
-      marker.setMap(map);
-      // 생성된 마커를 배열에 추가합니다
-      let copy = [...markers];
-      copy.push(marker);
-      setmarkers(marker);
-    });
-  }, []);
+    if (makeFlag) {
+      window.kakao.maps.event.addListener(map, "click", clickHandler);
+    }
+    return () => {
+      window.kakao.maps.event.removeListener(map, "click", clickHandler);
+    };
+  }, [lat, lon, makeFlag]);
+
   function addMarker(position) {
     console.log("called addMarker");
-    // 마커를 생성합니다
+    console.log(position);
     let marker = new window.kakao.maps.Marker({
       position: position,
     });
-    // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
-    // 생성된 마커를 배열에 추가합니다
-    let copy = [...markers];
-    copy.push(marker);
-    setmarkers(marker);
   }
 
   function moveToMe() {
