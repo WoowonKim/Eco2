@@ -8,6 +8,7 @@ import {
   getLeaves,
   updateLeaf,
 } from "../../store/mainTree/leavesSlice";
+import { getUserId } from "../../store/user/common";
 const MainTree = () => {
   let dispatch = useDispatch();
   const leaves = useSelector((state) => state.leaves);
@@ -21,11 +22,11 @@ const MainTree = () => {
   }, [leaves]);
   useEffect(() => {
     console.log(currUser);
-    dispatch(getLeaves(currUser.id));
+    dispatch(getLeaves(getUserId()));
   }, []);
   const moveLeaf = (id, left, top) => {
     dispatch(changePos({ id, left, top }));
-    dispatch(updateLeaf({ userId: currUser.id, leaf: { id, left, top } }));
+    dispatch(updateLeaf({ userId: getUserId(), leaf: { id, left, top } }));
   };
   const [, drop] = useDrop(
     () => ({
