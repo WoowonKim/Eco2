@@ -41,7 +41,7 @@ public class PostService {
 
     //post image 저장 경로
     @Value("${postImg.path}")
-    private String uploadPostImgPath;
+    private String uploadPath;
 
 
 
@@ -51,11 +51,11 @@ public class PostService {
 //        Long postUserId = postUser.getId();
         UUID uuid = UUID.randomUUID();
         String originalName = postImage.getOriginalFilename();
-        String saveName = uuid + "_" + postImage.getOriginalFilename();
-        Path postImgPath = Paths.get(uploadPostImgPath);
+        String saveName = uuid + originalName.substring(originalName.lastIndexOf("."), originalName.length());
+        Path postImgPath = Paths.get(uploadPath);
         File savePostImage = new File(postImgPath.toAbsolutePath().toString(), saveName);
-        if(!savePostImage.exists()) {
-            savePostImage.mkdirs();
+        if(!savePostImage.getParentFile().exists() && !savePostImage.getParentFile().mkdirs()) {
+            throw new IOException("폴더 생성 실패");
         }
         postImage.transferTo(savePostImage);
 
@@ -65,7 +65,7 @@ public class PostService {
         } else {
             post = postCreateDto.toEntity();
         }
-        postImgRepository.save(PostImg.builder().saveFolder(uploadPostImgPath).saveName(saveName).originalName(originalName).post(post).build());
+        postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
 
 //        if(postCreateDto.getMission() != null) {
 //            post.setMission(postCreateDto.getMission());
@@ -129,24 +129,24 @@ public class PostService {
 
 
     //post 수정하기
-    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) {
-            Post post = postRepository.getById(postId);
-            post.setContent(postUpdateDto.getContent());
-            post.setPublicFlag(postUpdateDto.isPublicFlag());
-            post.setCommentFlag(postUpdateDto.isCommentFlag());
-            postRepository.save(post);
+    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) throws IOException {
+        Post post = postRepository.getById(postId);
+        post.setContent(postUpdateDto.getContent());
+        post.setPublicFlag(postUpdateDto.isPublicFlag());
+        post.setCommentFlag(postUpdateDto.isCommentFlag());
+        postRepository.save(post);
 
-            PostImg postImg = postImgRepository.getById(postId);
-            String originalName = postImage.getOriginalFilename();
+        PostImg oldImage = postImgRepository.getById(postId);
+        String originalName = postImage.getOriginalFilename();
 
-            PostImg newPostImg = PostImg.builder()
-                    .saveFolder(uploadPostImgPath)
-                    .originalName(originalName)
-                    .saveName(postImg.getSaveName())
-                    .id(postId)
-                    .build();
-
-            postImgRepository.save(newPostImg);
+        PostImg newPostImg = PostImg.builder()
+                .saveFolder(uploadPath)
+                .originalName(originalName)
+                .saveName(oldImage.getSaveName())
+                .id(postId)
+                .build();
+        postImage.transferTo(Paths.get(uploadPath + File.separator + oldImage.getSaveName()));
+        postImgRepository.save(newPostImg);
     }
 
 

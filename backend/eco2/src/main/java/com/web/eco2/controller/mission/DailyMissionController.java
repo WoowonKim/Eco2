@@ -155,6 +155,7 @@ public class DailyMissionController {
             //디비, 로컬에 파일 저장
             File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".jpg");
             ImageIO.write(img, "jpg", saveFile);               // write메소드를 이용해 파일을 만든다
+            calendarDto.setSaveName(calendarDto.getSaveName()+".jpg");
             calendarService.save(calendarDto.toEntity());
             //TODO : 프론트에서 이미지 출력시 뭐 필요한지 모름,, response에 담아주기
 
@@ -205,7 +206,6 @@ public class DailyMissionController {
             log.info("데일리미션 추천 API 호출");
             List<Long> oldRecommendMission = redisService.getListData(usrId.toString());
             if (oldRecommendMission != null) {
-                System.out.println("이미 추천함");
                 return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK,
                         "recommendedMission",
                         oldRecommendMission.stream()
@@ -228,7 +228,6 @@ public class DailyMissionController {
             }
 
             LocalDateTime now = LocalDateTime.now();
-            System.out.println(now.toString());
             LocalDateTime expireTime = LocalDateTime.parse(now.plusHours(18L).toString().substring(0, 11)+"06:00");
             // 6시에 새로고침
             Long duration = expireTime.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
