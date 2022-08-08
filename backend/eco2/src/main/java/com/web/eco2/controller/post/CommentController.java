@@ -2,8 +2,11 @@ package com.web.eco2.controller.post;
 
 
 import com.web.eco2.domain.dto.post.CommentCreateDto;
+import com.web.eco2.domain.dto.post.CommentDto;
+import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.model.repository.post.CommentRepository;
 import com.web.eco2.model.repository.post.PostRepository;
 import com.web.eco2.model.repository.user.UserRepository;
 import io.swagger.annotations.Api;
@@ -19,8 +22,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/post")
@@ -38,7 +44,11 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+//    @Autowired
+//    private CommentDto commentDto;
 
+    @Autowired
+    private CommentRepository commentRepository;
 
     //댓글 등록
     @PostMapping("/{post_id}/comment")
@@ -82,10 +92,28 @@ public class CommentController {
     //댓글 조회
     @GetMapping("/{post_id}/comment")
     public ResponseEntity<Object> getComments (@RequestParam("postId") Long postId) {
+        try {
+            List<Comment> comments = commentService.getComments(postId);
+            ArrayList<CommentDto> commentDtos = new ArrayList<>();
+            for (Comment comment : comments) {
+                CommentDto commentDto = new CommentDto();
+                commentDto.setUserId(comment.getUser().getId());
+                commentDto.setPostId(comment.getPost().getId());
+                commentDto.setContent(comment.getContent());
 
-        List<Comment> comments = commentService.getComments(postId);
-
-        return ResponseHandler.generateResponse("댓글을 조회하였습니다.", HttpStatus.OK, "comments", comments);
+                if (comment.getComment() != null) {
+                    Long commentId = comment.getComment().getId();
+                    commentDto.setCommentId(commentId);
+                } else {
+                    commentDto.setCommentId(null);
+                }
+                commentDtos.add(commentDto);
+            }
+            return ResponseHandler.generateResponse("댓글을 조회하였습니다.", HttpStatus.OK, "commentDto", commentDtos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
 
