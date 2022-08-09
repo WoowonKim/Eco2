@@ -63,7 +63,7 @@ public class PostService {
         } else {
             post = postCreateDto.toEntity();
         }
-        postImgRepository.save(PostImg.builder().saveFolder(uploadPostImgPath).saveName(saveName).originalName(originalName).post(post).build());
+        postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
         postRepository.save(post);
     }
 
