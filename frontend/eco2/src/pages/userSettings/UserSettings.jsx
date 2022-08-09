@@ -11,6 +11,7 @@ import {
   ecoName,
   ecoNameVerify,
   newPassword,
+  newAccessToken,
 } from "../../store/user/userSlice";
 import styles from "./UserSettings.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -118,6 +119,15 @@ const UserSettings = () => {
           {userSetting === 3 && <hr className={styles.titleLine} />}
         </div>
       </div>
+      {/* <button
+        onClick={() => {
+          dispatch(newAccessToken()).then((res) => {
+            console.log(res);
+          });
+        }}
+      >
+        test button
+      </button> */}
       {userSetting === 1 ? (
         <div>
           <div className={styles.profileImg}>
