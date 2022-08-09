@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @ToString
 @Data
@@ -24,7 +25,7 @@ public class ChatMessageDto {
                 .chatRoom(chatRoom)
                 .user(user)
                 .message(message)
-                .sendDate(LocalDateTime.now())
+                .sendDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm")))
                 .build();
     }
 }
