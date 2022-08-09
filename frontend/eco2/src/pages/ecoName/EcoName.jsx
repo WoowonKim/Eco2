@@ -21,7 +21,7 @@ const Econame = () => {
   const location = useLocation();
 
   const email = getUserEmail();
-  const autoLogin = sessionStorage.getItem("accessToken") || false;
+  const autoLogin = sessionStorage.getItem("accessToken") ? false : true;
   const redirectPath = location.state?.path || "/mainTree";
 
   const ecoNameValidation = (e) => {
@@ -47,6 +47,7 @@ const Econame = () => {
       .then((res) => {
         if (res.payload.status === 200) {
           setUserName(autoLogin, econame);
+          console.log(res.payload);
           navigate(redirectPath, { replace: true });
         }
       })

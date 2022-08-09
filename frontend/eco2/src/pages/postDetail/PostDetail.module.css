@@ -52,8 +52,9 @@
   color: black;
 }
 
-.img {
+.postImg {
   width: 70%;
+  height: 70%;
 }
 
 .info {
@@ -68,6 +69,21 @@
 
 .button:hover {
   cursor: pointer;
+}
+
+.userProfile {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.profileImg {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  margin-right: 5px;
 }
 
 .heart {

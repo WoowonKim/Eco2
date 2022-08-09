@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
-import { getUserName, getUserEmail } from "../../store/user/common";
+import { getUserName, getUserEmail, getUserId } from "../../store/user/common";
 import { useNavigate } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
+import { profileImg } from "../../store/img/imgSlice";
 // import { test } from "../../store/user/accountSlice";
 
 const Profile = () => {
   const [userSetting, setUserSetting] = useState(1);
   const [socialType, setSocialType] = useState(0);
   const [userId, setUserId] = useState(0);
+  const [imgSrc, setImgSrc] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ const Profile = () => {
   useEffect(() => {
     // 유저 객체 받아오기
     dispatch(userInformation({ email })).then((res) => {
-      setUserId(res.payload.user.id);
+      setUserId(getUserId());
       setSocialType(res.payload.user.socialType);
     });
   }, []);
@@ -38,11 +40,16 @@ const Profile = () => {
           test
         </button> */}
         <div className={styles.user}>
-          <p>UserName</p>
+          <img
+            src={`http://localhost:8002/img/profile/${userId}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
+          <p>{getUserName()}</p>
           <button
             onClick={() =>
               navigate("/user/settings", {
-                state: { socialType: socialType, name: getUserName() },
+                state: { socialType: socialType, name: getUserName(), userId },
               })
             }
             className={styles.button}

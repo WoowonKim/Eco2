@@ -94,6 +94,39 @@ export const postLike = createAsyncThunk(
   }
 );
 
+// 신고
+export const report = createAsyncThunk(
+  "postSlice/report",
+  async (args, rejectWithValue) => {
+    try {
+      console.log(args.userId, args.retId);
+      const response = await axiosService.post(`/report/${args.userId}`, {
+        retId: args.retId,
+        posId: args.posId,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 신고 취소
+export const reportCancle = createAsyncThunk(
+  "postSlice/reportCancle",
+  async (args, rejectWithValue) => {
+    try {
+      console.log(args.userId, args.retId);
+      const response = await axiosService.delete(`/report/${args.userId}`, {
+        posId: args.posId,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 export const postSlice = createSlice({
   name: "post",
   initialState: [],
@@ -146,6 +179,22 @@ export const postSlice = createSlice({
     },
     [postLike.rejected]: (state, action) => {
       console.log("postLike rejected", action.payload);
+    },
+    [report.fulfilled]: (state, action) => {
+      console.log("report fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [report.rejected]: (state, action) => {
+      console.log("report rejected", action.payload);
+    },
+    [reportCancle.fulfilled]: (state, action) => {
+      console.log("reportCancle fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [reportCancle.rejected]: (state, action) => {
+      console.log("reportCancle rejected", action.payload);
     },
   },
 });

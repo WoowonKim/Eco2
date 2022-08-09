@@ -146,9 +146,20 @@ const PostDetail = () => {
           closeModal={() => setVisible(!visible)}
         />
       )}
-      <img className={styles.img} src={feedItem.postImgUrl} alt="img" />
+      <img
+        src={`http://localhost:8002/img/post/${feedItem.id}`}
+        alt="postImg"
+        className={styles.postImg}
+      />
       <div className={styles.info}>
-        <p className={styles.user}>{feedItem.userName}</p>
+        <div className={styles.userProfile}>
+          <img
+            src={`http://localhost:8002/img/profile/${feedItem.userId}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
+          <p className={styles.user}>{feedItem.userName}</p>
+        </div>
         <button className={styles.button} onClick={handlePostLike}>
           {like ? (
             <i className={`fa-solid fa-heart ${styles.heart}`}></i>
