@@ -16,7 +16,12 @@ const FeedItem = ({
     <Link to={`/post/${id}`} className={styles.link}>
       <div className={styles.list}>
         <div className={styles.title}>
-          <p className={styles.user}>{userName}님의 인증글</p>
+          <img
+            src={`http://localhost:8002/img/profile/${userId}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
+          <p className={styles.user}>{userName}님</p>
           {/* <div className={styles.buttonGroup}>
             <button className={styles.button}>
               <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
@@ -27,7 +32,11 @@ const FeedItem = ({
           </div> */}
         </div>
         <hr className={styles.line} />
-        {/* <img className={styles.img} src={postImgUrl} alt="img" /> */}
+        <img
+          src={`http://localhost:8002/img/post/${id}`}
+          alt="postImg"
+          className={styles.postImg}
+        />
         <div className={styles.iconGroup}>
           <div className={styles.heart}>
             <i className={`fa-solid fa-heart ${styles.heartIcon}`}></i> {like}

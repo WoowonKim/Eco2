@@ -27,10 +27,6 @@ const Profile = () => {
       setUserId(getUserId());
       setSocialType(res.payload.user.socialType);
     });
-    // dispatch(profileImg({ userId: getUserId() })).then((res) => {
-    //   // console.log(res.payload);
-    //   setImgSrc(res.payload);
-    // });
   }, []);
   return (
     <div className={styles.container}>

@@ -19,9 +19,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { nameLengthValidation, passwordValidationCheck } from "../../utils";
 import Settings from "./settings/Settings";
 import Notice from "./notice/Notice";
+import PostModal from "../../components/modal/postModal/PostModal";
 
 const UserSettings = () => {
   const [userSetting, setUserSetting] = useState(1);
+  const [visible, setVisible] = useState(false);
+  const [modalType, setModalType] = useState("");
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -45,6 +48,7 @@ const UserSettings = () => {
   const location = useLocation();
 
   const socialType = location.state?.socialType;
+  const modalDisplayType = visible ? styles.visible : styles.hidden;
   const displayType = userSetting === 1 ? styles.selectedMenu : null;
   const displayType2 = userSetting === 2 ? styles.selectedMenu : null;
   const displayType3 = userSetting === 3 ? styles.selectedMenu : null;
@@ -234,13 +238,33 @@ const UserSettings = () => {
               {nameMessage}
             </p>
           </div>
+          {visible && modalType === "로그아웃" && (
+            <PostModal
+              // className={`${displayType} ${scrollType}`}
+              title={"로그아웃"}
+              content={"로그아웃 하시겠습니까"}
+              type={"로그아웃"}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
+          {visible && modalType === "탈퇴" && (
+            <PostModal
+              className={`${modalDisplayType}`}
+              title={"회원탈퇴"}
+              content={"회원탈퇴 하시겠습니까"}
+              type={"탈퇴"}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
           {!!socialType && (
             <div>
               <hr className={styles.line} />
               <button
                 onClick={() => {
-                  dispatch(userActions.logout());
-                  navigate("/");
+                  // dispatch(userActions.logout());
+                  // navigate("/");
+                  setVisible(!visible);
+                  setModalType("로그아웃");
                 }}
                 className={styles.userButton}
               >
@@ -248,11 +272,15 @@ const UserSettings = () => {
               </button>
               <button
                 onClick={() =>
-                  dispatch(deleteUser({ email, password })).then((res) => {
-                    if (res.payload.status === 200) {
-                      dispatch(userActions.logout());
-                    }
-                  })
+                  // dispatch(deleteUser({ email, password })).then((res) => {
+                  //   if (res.payload.status === 200) {
+                  //     dispatch(userActions.logout());
+                  //   }
+                  // })
+                  {
+                    setVisible(!visible);
+                    setModalType("탈퇴");
+                  }
                 }
                 className={styles.userButton}
               >
@@ -290,8 +318,11 @@ const UserSettings = () => {
                   <hr className={styles.line} />
                   <button
                     onClick={() => {
-                      dispatch(userActions.logout());
-                      navigate("/");
+                      // dispatch(userActions.logout());
+                      // navigate("/");
+
+                      setVisible(!visible);
+                      setModalType("탈퇴");
                     }}
                     className={styles.userButton}
                   >
@@ -351,8 +382,11 @@ const UserSettings = () => {
                   <div className={styles.userButtonGroup}>
                     <button
                       onClick={() => {
-                        dispatch(userActions.logout());
-                        navigate("/");
+                        // dispatch(userActions.logout());
+                        // navigate("/");
+
+                        setVisible(!visible);
+                        setModalType("탈퇴");
                       }}
                       className={styles.userButton}
                     >
@@ -360,13 +394,17 @@ const UserSettings = () => {
                     </button>
                     <button
                       onClick={() =>
-                        dispatch(deleteUser({ email, password })).then(
-                          (res) => {
-                            if (res.payload.status === 200) {
-                              dispatch(userActions.logout());
-                            }
-                          }
-                        )
+                        // dispatch(deleteUser({ email, password })).then(
+                        //   (res) => {
+                        //     if (res.payload.status === 200) {
+                        //       dispatch(userActions.logout());
+                        //     }
+                        //   }
+                        // )
+                        {
+                          setVisible(!visible);
+                          setModalType("탈퇴");
+                        }
                       }
                       className={styles.userButton}
                     >

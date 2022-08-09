@@ -221,3 +221,11 @@
   height: 34px;
   margin: 0;
 }
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}

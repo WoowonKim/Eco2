@@ -64,6 +64,7 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+// 프로필 이미지 수정
 export const profileImgChange = createAsyncThunk(
   "userInformationSlice/profileImgChange",
   async (args, { rejectWithValue }) => {

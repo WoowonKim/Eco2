@@ -20,11 +20,17 @@
 }
 
 .profileImg {
-  width: 25px;
+  width: 30px;
+  height: 30px;
   background-color: white;
   border: 1px solid black;
   border-radius: 50%;
   margin-right: 5px;
+}
+
+.profileButton {
+  background-color: white;
+  border: none;
 }
 
 i {
