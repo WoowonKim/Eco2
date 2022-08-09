@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { noticeDelete } from "../../../store/admin/noticeSlice";
 import { deletePost } from "../../../store/mainFeed/feedSlice";
 import { commentDelete } from "../../../store/post/commentSlice";
-import { postDelete } from "../../../store/post/postSlice";
+import { postDelete, report } from "../../../store/post/postSlice";
+import { getUserId } from "../../../store/user/common";
 import styles from "./PostModal.module.css";
 
 const PostModal = ({
@@ -20,6 +21,7 @@ const PostModal = ({
   noticeContent,
   noticeTitle,
   commentId,
+  selected,
 }) => {
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
@@ -46,11 +48,23 @@ const PostModal = ({
           navigate("/user/settings/");
         });
       }
+    } else if (type === "신고") {
+      dispatch(
+        report({ userId: getUserId(), retId: selected, posId: postId })
+      ).then((res) => {
+        if (res.payload.status === 200) {
+          window.location.replace(`/post/${postId}`);
+        }
+      });
+    } else if (type === "로그아웃") {
+      dispatch();
+    } else if (type === "탈퇴") {
     } else {
       window.location.replace(`/post/${postId}`);
     }
   };
   useEffect(() => {
+    console.log(type);
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
   }, []);

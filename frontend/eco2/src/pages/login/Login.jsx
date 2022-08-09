@@ -75,9 +75,9 @@ function Login() {
           })
         ).then((res) => {
           setUserEmail(autoLogin, data.additionalUserInfo.profile.email);
-          // setUserName(autoLogin, data.additionalUserInfo.profile.name);
           setAccessToken(autoLogin, res.payload.accessToken);
-          // setUserId(data.additionalUserInfo.profile.id);
+          setUserId(autoLogin, res.payload.user.id);
+          setUserName(autoLogin, res.payload.user?.name)
           navigate(redirectPath, { replace: true });
         });
       })

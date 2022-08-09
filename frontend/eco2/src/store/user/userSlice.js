@@ -290,7 +290,6 @@ export const userSlice = createSlice({
     [kakaoLogin.fulfilled]: (state, action) => {
       console.log("kakaoLogin fulfilled", action.payload);
       if (action.payload.status === 200) {
-        setAccessToken(action.payload.accessToken);
       }
     },
     [kakaoLogin.rejected]: (state, action) => {
@@ -300,7 +299,6 @@ export const userSlice = createSlice({
     [newAccessToken.fulfilled]: (state, action) => {
       console.log("newAccessToken fulfilled", action.payload);
       if (action.payload.status === 200) {
-        setAccessToken(action.payload.accessToken);
       }
     },
     [newAccessToken.rejected]: (state, action) => {

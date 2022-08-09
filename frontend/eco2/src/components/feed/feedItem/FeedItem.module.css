@@ -14,8 +14,18 @@
   align-items: center;
 }
 
-/* .icon {
+.profileImg {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.icon {
   font-size: 10px;
+  color: black;
 }
 
 .button {
@@ -23,13 +33,14 @@
   background-color: white;
   transition: all 2s ease-in;
   padding: 0px;
+  margin: 0;
 }
 
 .button :hover {
   cursor: pointer;
-  color: #adc178;
+  /* color: #adc178; */
   transform: scale(1.1);
-} */
+}
 
 .user {
   text-align: start;
@@ -43,8 +54,9 @@
   border: 0.5px solid #dadada;
 }
 
-.img {
-  width: 50%;
+.postImg {
+  width: 70%;
+  height: 70%;
 }
 
 .iconGroup {
