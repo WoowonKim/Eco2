@@ -4,6 +4,7 @@ import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<QuestPost> findByQuest(Quest quest);
 
     List<QuestPost> findByUserAndQuestNotNull(User user);
+
+    List<QuestPost> findByQuestNotNull(Sort sort);
+
+    List<QuestPost> findByQuestIsNull(Sort sort);
 
 //    List<Post> findByUserIdOrderByIdDesc(Long userid);
 

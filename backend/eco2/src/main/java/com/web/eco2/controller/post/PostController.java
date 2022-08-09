@@ -236,23 +236,23 @@ public class PostController {
     }
 
 
-//    @ApiOperation(value = "게시물 수정", response = Object.class)
-//    @PutMapping(value = "/{postId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
-//                                             @RequestPart(value = "postImage") MultipartFile postImage,
-//                                             @RequestPart(value = "postUpdateDto") PostUpdateDto postUpdateDto) {
-//        try {
-//            log.info("게시물 수정 API 호출"); //TODO : 이미지 선택 안됐을 때 처리 필요하지 않을까
-////            if (postImage.getName() == null){
-////                return ResponseHandler.generateResponse("이미지를 선택해주세요.", HttpStatus.ACCEPTED);
-////            }
-//            postService.updatePost(postId, postImage, postUpdateDto);
-//            return ResponseHandler.generateResponse("게시물이 수정되었습니다.", HttpStatus.OK);
-//        } catch (Exception e) {
-//            log.error("게시물 수정 API 에러", e);
-//            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @ApiOperation(value = "게시물 수정", response = Object.class)
+    @PutMapping(value = "/{postId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
+                                             @RequestPart(value = "postImage") MultipartFile postImage,
+                                             @RequestPart(value = "postUpdateDto") PostUpdateDto postUpdateDto) {
+        try {
+            log.info("게시물 수정 API 호출"); //TODO : 이미지 선택 안됐을 때 처리 필요하지 않을까
+//            if (postImage.getName() == null){
+//                return ResponseHandler.generateResponse("이미지를 선택해주세요.", HttpStatus.ACCEPTED);
+//            }
+            postService.updatePost(postId, postImage, postUpdateDto);
+            return ResponseHandler.generateResponse("게시물이 수정되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("게시물 수정 API 에러", e);
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
     @ApiOperation(value = "게시물 삭제", response = Object.class)
