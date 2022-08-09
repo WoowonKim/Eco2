@@ -46,7 +46,7 @@ const CommentItem = ({ id, content, user, postId, replys }) => {
                   className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}
                 ></i>
                 <div className={styles.dropdownContent}>
-                  {name === user && (
+                  {userId === user && (
                     <div>
                       <button
                         onClick={() => {

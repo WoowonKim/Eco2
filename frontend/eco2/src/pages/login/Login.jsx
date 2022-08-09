@@ -42,7 +42,8 @@ function Login() {
   };
 
   // 로그인 요청
-  // 요청 성공시 localstorage에 이메일과 이름 저장 후 메인피드로 이동
+  // 요청 성공시 sessionstorage에 이메일과 이름 저장 후 메인피드로 이동
+  // 자동 로그인 체크 시 localstorage에 저장됨
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(login({ email: email, password: password, socialType: 0 }))
@@ -61,7 +62,7 @@ function Login() {
   };
 
   // 구글 로그인
-  // 요청 성공시 localstorage에 이메일과 이름 저장 후 메인피드로 이동
+  // 요청 성공시 sessionstorage에 이메일과 이름 저장 후 메인피드로 이동
   const onGoogleLogin = async () => {
     const data = await signInGoogle();
     auth.currentUser
@@ -74,7 +75,7 @@ function Login() {
           })
         ).then((res) => {
           setUserEmail(autoLogin, data.additionalUserInfo.profile.email);
-          setUserName(autoLogin, data.additionalUserInfo.profile.name);
+          // setUserName(autoLogin, data.additionalUserInfo.profile.name);
           setAccessToken(autoLogin, res.payload.accessToken);
           // setUserId(data.additionalUserInfo.profile.id);
           navigate(redirectPath, { replace: true });
@@ -93,7 +94,7 @@ function Login() {
 
   const onKakaoLogin = async () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
-  }
+  };
 
   return (
     <div className={styles.login}>
