@@ -11,8 +11,10 @@ import java.util.Optional;
 @Builder
 @AllArgsConstructor
 public class CommentDto {
+    private Long id;
     private String content;
     private Long userId;
+    private String userName;
     private Long postId;
     private Long commentId;
 
