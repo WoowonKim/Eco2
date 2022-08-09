@@ -16,6 +16,7 @@ import {
 } from "../../components/styled";
 import { setUserEmail, setUserId } from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
+import axiosService from "../../store/axiosService";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -207,6 +208,9 @@ const Regist = () => {
                 })
               )
                 .then((res) => {
+                  axiosService.defaults.headers.common[
+                    "Auth-accessToken"
+                  ] = `${res.payload.user.accessToken}`;
                   setUserEmail(false, email);
                   setUserId(false, res.payload.user.id);
                   navigate("/ecoName");

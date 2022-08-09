@@ -44,14 +44,14 @@ function Login() {
     dispatch(login({ email: email, password: password, socialType: 0 }))
       .then((res) => {
         if (res.payload?.status === 200) {
+          axiosService.defaults.headers.common[
+            "Auth-accessToken"
+          ] = `${res.payload.user.name}`;
           setLoginFailMsg(false);
           setUserEmail(autoLogin, email);
           setUserName(autoLogin, res.payload.user.name);
           setUserId(autoLogin, res.payload.user.id);
           navigate(redirectPath, { replace: true });
-          axiosService.defaults.headers.common[
-            "Auth-accessToken"
-          ] = `${res.payload.user.name}`;
         }
         setLoginFailMsg(true);
       })
@@ -71,9 +71,12 @@ function Login() {
             idToken: idToken,
           })
         ).then((res) => {
-          setUserEmail(autoLogin, data.additionalUserInfo.profile.email);
-          setUserId(autoLogin, res.payload.user.id);
-          setUserName(autoLogin, res.payload.user?.name);
+          axiosService.defaults.headers.common[
+            "Auth-accessToken"
+          ] = `${res.payload.user.accessToken}`;
+          setUserEmail(false, data.additionalUserInfo.profile.email);
+          setUserId(false, res.payload.user.id);
+          setUserName(false, res.payload.user?.name);
           navigate(redirectPath, { replace: true });
         });
       })

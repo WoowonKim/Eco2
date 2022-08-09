@@ -7,62 +7,65 @@ const axiosService = axios.create({
 });
 
 // axios intercepter를 활용하여 accessToken 검증 및 재발급
-let isTokenRefreshing = false;
-let refreshSubscribers = [];
+// let isTokenRefreshing = false;
+// let refreshSubscribers = [];
 
-const onTokenRefreshed = (accessToken) => {
-  refreshSubscribers.map((callback) => callback(accessToken));
-};
+// const onTokenRefreshed = (accessToken) => {
+//   refreshSubscribers.map((callback) => callback(accessToken));
+// };
 
-const addRefreshSubscriber = (callback) => {
-  refreshSubscribers.push(callback);
-};
+// const addRefreshSubscriber = (callback) => {
+//   refreshSubscribers.push(callback);
+// };
 
-axiosService.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const {
-      config,
-      response: { status },
-    } = error;
-    const originalRequest = config;
+// axiosService.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   async (error) => {
+//     const {
+//       config,
+//       response: { status },
+//     } = error;
+//     const originalRequest = config;
 
-    if (status === 401) {
-      try {
-        if (!isTokenRefreshing) {
-          isTokenRefreshing = true;
+//     if (status === 401) {
+//       if (!isTokenRefreshing) {
+//         isTokenRefreshing = true;
 
-          const { data } = await axiosService.post("/user/newaccesstoken", {
-            email: getUserEmail(),
-          });
+//         const { data } = await axiosService
+//           .post("/user/newaccesstoken", {
+//             email: getUserEmail(),
+//           })
+//           .then((res) => {
+//             console.log(res);
+//             const newAccessToken = res.data.accessToken;
+//             isTokenRefreshing = false;
 
-          const newAccessToken = data.accessToken;
-          isTokenRefreshing = false;
+//             axiosService.defaults.headers.common[
+//               "Auth-accessToken"
+//             ] = `${newAccessToken}`;
 
-          // 새로운 accessToken을 default header로 설정
-          axiosService.defaults.headers.common[
-            "Auth-accessToken"
-          ] = `${newAccessToken}`;
-
-          onTokenRefreshed(newAccessToken);
-        }
-        const retryOriginalRequest = new Promise((resolve) => {
-          addRefreshSubscriber((accessToken) => {
-            originalRequest.headers.common[
-              "Auth-accessToken"
-            ] = `${accessToken}`;
-            resolve(axiosService(originalRequest));
-          });
-        });
-        return retryOriginalRequest;
-      } catch {
-        (err) => console.log(err);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+//             onTokenRefreshed(newAccessToken);
+//           })
+//           .catch((err) => {
+//             console.log(err);
+//             if (err.payload?.status === 401) {
+//               window.location.replace("/");
+//             }
+//           });
+//       }
+//       const retryOriginalRequest = new Promise((resolve) => {
+//         addRefreshSubscriber((accessToken) => {
+//           console.log(originalRequest.headers);
+//           originalRequest.headers.post["Auth-accessToken"] = `${accessToken}`;
+//           resolve(axiosService(originalRequest));
+//         });
+//       });
+//       return retryOriginalRequest;
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default axiosService;

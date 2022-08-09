@@ -11,11 +11,11 @@ const NoticeForm = () => {
   const [text, setText] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [title, setTitle] = useState("");
+  const [userId, setUserId] = useState(0);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const userId = getUserId();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -33,6 +33,7 @@ const NoticeForm = () => {
         }
       });
     } else {
+      console.log(getUserId());
       dispatch(noticeCreate({ userId, title, content: text, urgentFlag })).then(
         (res) => {
           if (res.payload?.status === 200) {
@@ -48,6 +49,7 @@ const NoticeForm = () => {
       setEditText(location.state?.noticeContent);
       setEditTitle(location.state?.noticeTitle);
     }
+    setUserId(getUserId());
   }, []);
   return (
     <div className={styles.container}>

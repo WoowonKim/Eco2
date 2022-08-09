@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import axiosService from "../../store/axiosService";
 import { setUserEmail, setUserId, setUserName } from "../../store/user/common";
 import { kakaoLogin } from "../../store/user/userSlice";
 
@@ -19,6 +20,9 @@ function KakaoLogin() {
     ).then((res) => {
       console.log(res);
       if (res.payload.status === 200) {
+        axiosService.defaults.headers.common[
+          "Auth-accessToken"
+        ] = `${res.payload.accessToken}`;
         setUserEmail(false, res.payload.user.email);
         setUserId(false, res.payload.user.id);
         if (res.payload.user?.name === null || !res.payload.user.name) {

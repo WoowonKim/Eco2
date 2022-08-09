@@ -47,16 +47,29 @@ export const passwordChange = createAsyncThunk(
   }
 );
 
-// 에러 발생
 // 회원 탈퇴
 export const deleteUser = createAsyncThunk(
   "userInformationSlice/deleteUser",
   async (args, { rejectWithValue }) => {
     try {
       const response = await axiosService.delete("/userinformation", {
-        email: args.email,
-        // password: args.password,
+        data: {
+          email: args.email,
+        },
       });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 로그아웃
+export const logout = createAsyncThunk(
+  "userInformationSlice/logout",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.delete("/userinformation/logout");
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -114,6 +127,12 @@ export const userInformationSlice = createSlice({
     },
     [deleteUser.rejected]: (state, action) => {
       console.log("deleteUser rejected", action.payload);
+    },
+    [logout.fulfilled]: (state, action) => {
+      console.log("logout fulfilled", action.payload);
+    },
+    [logout.rejected]: (state, action) => {
+      console.log("logout rejected", action.payload);
     },
     [profileImgChange.fulfilled]: (state, action) => {
       console.log("profileImgChange fulfilled", action.payload);

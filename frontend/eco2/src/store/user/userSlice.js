@@ -198,11 +198,7 @@ const userState = {
 export const userSlice = createSlice({
   name: "user",
   initialState: userState,
-  reducers: {
-    logout: (state, action) => {
-      removeUserSession();
-    },
-  },
+  reducers: {},
   extraReducers: {
     [login.fulfilled]: (state, action) => {
       console.log("login fulfilled", action.payload);
