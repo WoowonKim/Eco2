@@ -14,12 +14,7 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
-import {
-  getToken,
-  setAccessToken,
-  setUserEmail,
-  setUserId,
-} from "../../store/user/common";
+import { setUserEmail, setUserId } from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
 
 const Regist = () => {
@@ -104,11 +99,6 @@ const Regist = () => {
     }
   };
 
-  useEffect(() => {
-    if (!!getToken()) {
-      navigate("/mainTree");
-    }
-  }, []);
   return (
     <div className={styles.signup}>
       <img
@@ -219,7 +209,6 @@ const Regist = () => {
                 .then((res) => {
                   setUserEmail(false, email);
                   setUserId(false, res.payload.user.id);
-                  setAccessToken(false, res.payload.accessToken);
                   navigate("/ecoName");
                 })
                 .catch((err) => console.log(err));

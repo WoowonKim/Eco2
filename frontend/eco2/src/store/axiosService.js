@@ -1,11 +1,8 @@
 import axios from "axios";
-import { getToken, getUserEmail } from "./user/common";
+import { getUserEmail } from "./user/common";
 
-export const axiosService = axios.create({
+const axiosService = axios.create({
   baseURL: process.env.REACT_APP_BE_HOST,
-  headers: {
-    "Auth-accessToken": getToken(),
-  },
   withCredentials: true,
 });
 
@@ -31,28 +28,41 @@ axiosService.interceptors.response.use(
       response: { status },
     } = error;
     const originalRequest = config;
-    if (error.response.status === 401) {
-      if (!isTokenRefreshing) {
-        isTokenRefreshing = true;
 
-        const { data } = await axiosService.post("/user/newaccesstoken", {
-          email: getUserEmail(),
+    if (status === 401) {
+      try {
+        if (!isTokenRefreshing) {
+          isTokenRefreshing = true;
+
+          const { data } = await axiosService.post("/user/newaccesstoken", {
+            email: getUserEmail(),
+          });
+
+          const newAccessToken = data.accessToken;
+          isTokenRefreshing = false;
+
+          // 새로운 accessToken을 default header로 설정
+          axiosService.defaults.headers.common[
+            "Auth-accessToken"
+          ] = `${newAccessToken}`;
+
+          onTokenRefreshed(newAccessToken);
+        }
+        const retryOriginalRequest = new Promise((resolve) => {
+          addRefreshSubscriber((accessToken) => {
+            originalRequest.headers.common[
+              "Auth-accessToken"
+            ] = `${accessToken}`;
+            resolve(axiosService(originalRequest));
+          });
         });
-        // log로 return 값 확인 후 새로운 accessToken 저장하는 로직 작성
-
-        isTokenRefreshing = false;
-        // 새로운 accessToken을 default header로 설정
-        // axiosService.defaults.headers.common['Auth-AccessToken'] = `${newAccessToekn}`
-        // onTokenRefreshed(newAccessToken);
+        return retryOriginalRequest;
+      } catch {
+        (err) => console.log(err);
       }
-      const retryOriginalRequest = new Promise((resolve) => {
-        addRefreshSubscriber((accessToken) => {
-          originalRequest.headers.common["Auth-AccessToken"] = `${accessToken}`;
-          resolve(axios(originalRequest));
-        });
-      });
-      return retryOriginalRequest;
     }
     return Promise.reject(error);
   }
 );
+
+export default axiosService;

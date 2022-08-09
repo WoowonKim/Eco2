@@ -39,13 +39,12 @@ import { dbService, firestore } from "./store/firebase";
 import QuestMain from "./pages/quest/questMain/QuestMain";
 import NoticeForm from "./pages/notice/noticeForm/NoticeForm";
 import NoticeDetail from "./pages/notice/noticeDetail/NoticeDetail";
-import { getToken } from "./store/user/common";
+import { getUserEmail } from "./store/user/common";
 import RequireAuth from "./components/auth/requireAuth/RequireAuth";
 import Error from "./pages/error/Error";
 import KakaoLogin from "./pages/login/KakaoLogin";
 import Chatting from "./pages/chat/chatting/Chatting";
 import ChattingRoom from "./pages/chat/chattingRoom/ChattingRoom";
-
 
 function App() {
   const [userdata, setUserdata] = useState(null);
@@ -54,7 +53,7 @@ function App() {
   // const [alarm, setAlarm] = useState([]);
 
   useEffect(() => {
-    setUserdata(getToken());
+    setUserdata(getUserEmail());
     // firestore.onSnapshot(
     //   firestore.collection(dbService, "test/2/alarm"),
     //   (snapshot) => {
@@ -211,7 +210,7 @@ function App() {
             }
           ></Route>
 
-<Route
+          <Route
             path="/chatting/:userId"
             element={
               <RequireAuth>
@@ -220,7 +219,7 @@ function App() {
             }
           ></Route>
 
-<Route
+          <Route
             path="/chatting/room/:roomId"
             element={
               <RequireAuth>

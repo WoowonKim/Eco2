@@ -5,14 +5,9 @@ import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { signInGoogle, auth } from "../../store/firebase";
-import {
-  getToken,
-  setAccessToken,
-  setUserEmail,
-  setUserId,
-  setUserName,
-} from "../../store/user/common";
+import { setUserEmail, setUserId, setUserName } from "../../store/user/common";
 import { emailValidationCheck } from "../../utils";
+import axiosService from "../../store/axiosService";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -48,13 +43,15 @@ function Login() {
     event.preventDefault();
     dispatch(login({ email: email, password: password, socialType: 0 }))
       .then((res) => {
-        if (res.payload.status === 200) {
+        if (res.payload?.status === 200) {
           setLoginFailMsg(false);
           setUserEmail(autoLogin, email);
           setUserName(autoLogin, res.payload.user.name);
           setUserId(autoLogin, res.payload.user.id);
-          setAccessToken(autoLogin, res.payload.accessToken);
           navigate(redirectPath, { replace: true });
+          axiosService.defaults.headers.common[
+            "Auth-accessToken"
+          ] = `${res.payload.user.name}`;
         }
         setLoginFailMsg(true);
       })
@@ -75,9 +72,8 @@ function Login() {
           })
         ).then((res) => {
           setUserEmail(autoLogin, data.additionalUserInfo.profile.email);
-          setAccessToken(autoLogin, res.payload.accessToken);
           setUserId(autoLogin, res.payload.user.id);
-          setUserName(autoLogin, res.payload.user?.name)
+          setUserName(autoLogin, res.payload.user?.name);
           navigate(redirectPath, { replace: true });
         });
       })
@@ -85,12 +81,6 @@ function Login() {
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    if (!!getToken()) {
-      navigate("/mainTree");
-    }
-  }, []);
 
   const onKakaoLogin = async () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;

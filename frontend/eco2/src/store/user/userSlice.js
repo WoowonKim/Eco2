@@ -1,14 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  getCookie,
-  getToken,
-  getUserEmail,
-  removeUserSession,
-  setAccessToken,
-  setEmail,
-} from "./common";
+import { getUserEmail, removeUserSession } from "./common";
 
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
 
 // login 요청
 export const login = createAsyncThunk(

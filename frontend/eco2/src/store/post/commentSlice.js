@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
 
 // 전체 댓글 조회
 export const commentList = createAsyncThunk(

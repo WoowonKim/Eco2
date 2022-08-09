@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { noticeDelete } from "../../../store/admin/noticeSlice";
-import { deletePost } from "../../../store/mainFeed/feedSlice";
 import { commentDelete } from "../../../store/post/commentSlice";
 import { postDelete, report } from "../../../store/post/postSlice";
 import { getUserId } from "../../../store/user/common";

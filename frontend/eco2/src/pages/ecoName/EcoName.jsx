@@ -21,7 +21,7 @@ const Econame = () => {
   const location = useLocation();
 
   const email = getUserEmail();
-  const autoLogin = sessionStorage.getItem("accessToken") ? false : true;
+  const autoLogin = sessionStorage.getItem("userId") ? false : true;
   const redirectPath = location.state?.path || "/mainTree";
 
   const ecoNameValidation = (e) => {

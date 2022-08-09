@@ -1,12 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import {
-  setAccessToken,
-  setUserEmail,
-  setUserId,
-  setUserName,
-} from "../../store/user/common";
+import { setUserEmail, setUserId, setUserName } from "../../store/user/common";
 import { kakaoLogin } from "../../store/user/userSlice";
 
 function KakaoLogin() {
@@ -25,7 +20,6 @@ function KakaoLogin() {
       console.log(res);
       if (res.payload.status === 200) {
         setUserEmail(false, res.payload.user.email);
-        setAccessToken(false, res.payload.accessToken);
         setUserId(false, res.payload.user.id);
         if (res.payload.user?.name === null || !res.payload.user.name) {
           navigate("/ecoName");

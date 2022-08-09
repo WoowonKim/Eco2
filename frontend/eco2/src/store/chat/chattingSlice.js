@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
 
 // 채팅방 조회
 export const chattingList = createAsyncThunk(
@@ -34,7 +34,6 @@ export const chattingSlice = createSlice({
   initialState: [],
   reducers: {},
   extraReducers: {
-    
     [chattingList.fulfilled]: (state, action) => {
       console.log("chattingList fulfilled", action.payload);
       if (action.payload.status === 200) {

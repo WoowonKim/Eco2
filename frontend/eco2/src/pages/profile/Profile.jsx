@@ -25,7 +25,8 @@ const Profile = () => {
     // 유저 객체 받아오기
     dispatch(userInformation({ email })).then((res) => {
       setUserId(getUserId());
-      setSocialType(res.payload.user.socialType);
+      console.log(res);
+      // setSocialType(res.payload.user.socialType);
     });
   }, []);
   return (
