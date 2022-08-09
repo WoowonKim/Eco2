@@ -43,6 +43,9 @@ import { getToken } from "./store/user/common";
 import RequireAuth from "./components/auth/requireAuth/RequireAuth";
 import Error from "./pages/error/Error";
 import KakaoLogin from "./pages/login/KakaoLogin";
+import Chatting from "./pages/chat/chatting/Chatting";
+import ChattingRoom from "./pages/chat/chattingRoom/ChattingRoom";
+
 
 function App() {
   const [userdata, setUserdata] = useState(null);
@@ -204,6 +207,24 @@ function App() {
             element={
               <RequireAuth>
                 <NoticeDetail />
+              </RequireAuth>
+            }
+          ></Route>
+
+<Route
+            path="/chatting/:userId"
+            element={
+              <RequireAuth>
+                <Chatting />
+              </RequireAuth>
+            }
+          ></Route>
+
+<Route
+            path="/chatting/room/:roomId"
+            element={
+              <RequireAuth>
+                <ChattingRoom />
               </RequireAuth>
             }
           ></Route>

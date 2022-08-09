@@ -20,7 +20,6 @@ public class DailyMissionRequest {
     private Long missionId;
 //    private Integer missionType;
 
-
     public DailyMission toEntity(User user, Mission mission, CustomMission customMission) {
         return DailyMission.builder()
                 .user(user)
