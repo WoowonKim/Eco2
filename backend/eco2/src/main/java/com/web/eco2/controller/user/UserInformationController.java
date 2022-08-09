@@ -57,8 +57,9 @@ public class UserInformationController {
             User user = userService.findByEmail(email);
 
             if (user != null) {
-                List<QuestPost> posts = postService.getPostOnly();
-                List<QuestPost> questPosts = postService.getQuestPostList();
+                System.out.println(user.getId());
+                List<Post> posts = postService.getPostOnly(user.getId());
+                List<QuestPost> questPosts = postService.getQuestPostOnly(user.getId());
                 return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
                         Map.of("user", user.toDto(), "postList", posts, "questPostList", questPosts));
             } else {
