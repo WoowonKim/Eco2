@@ -82,11 +82,13 @@ public class ProfileImgService {
 
     public void deleteImage(Long userId) {
         ProfileImg img = profileImgRepository.getByUser_Id(userId);
+        System.out.println("img=====    "+img);
+        if(img.getSaveFolder() != null) {
+            Path path = Paths.get(img.getSaveFolder());
+            File realFile = new File(path.toAbsolutePath().toString(), img.getSaveName());
+            realFile.delete();
 
-        Path path = Paths.get(img.getSaveFolder());
-        File realFile = new File(path.toAbsolutePath().toString(), img.getSaveName());
-        realFile.delete();
-
+        }
         profileImgRepository.deleteById(userId);
     }
 
