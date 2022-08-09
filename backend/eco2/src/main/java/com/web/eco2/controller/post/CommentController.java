@@ -139,7 +139,9 @@ public class CommentController {
             ArrayList<CommentDto> commentDtos = new ArrayList<>();
             for (Comment comment : comments) {
                 CommentDto commentDto = new CommentDto();
+                commentDto.setId(comment.getId());
                 commentDto.setUserId(comment.getUser().getId());
+                commentDto.setUserName(comment.getUser().getName());
                 commentDto.setPostId(comment.getPost().getId());
                 commentDto.setContent(comment.getContent());
 
