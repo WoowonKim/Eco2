@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,7 +29,7 @@ public class ProfileImgService {
 
 
     @Value("${profileImg.path}")
-    private String uploadFolder;
+    private String uploadPath;
 
     @Transactional
     public void uploadProfileImg(MultipartFile file, User updateUser) throws IOException {
@@ -37,7 +39,7 @@ public class ProfileImgService {
         UUID uuid = UUID.randomUUID();
 
         ProfileImg profileImg = ProfileImg.builder()
-                .saveFolder(uploadFolder).originalName(originalName)
+                .saveFolder(uploadPath).originalName(originalName)
                 .saveName(uuid.toString() + updateUserId + originalName.substring(originalName.lastIndexOf(".")))
                 .build();
 
@@ -55,14 +57,12 @@ public class ProfileImgService {
             // 생성
             profileImg.setUser(updateUser);
         }
-        
-        File folder = new File(profileImg.getSaveFolder());
-        if(!folder.exists()) {
-            folder.mkdirs();
+        Path profileImgPath = Paths.get(uploadPath);
+        File saveFile = new File(profileImgPath.toAbsolutePath().toString(), profileImg.getSaveName());
+        if(!saveFile.getParentFile().exists() && !saveFile.getParentFile().mkdirs()) {
+            throw new IOException("폴더 생성 실패");
         }
-        System.out.println(profileImg);
 
-        File saveFile = new File(profileImg.getSaveFolder(), profileImg.getSaveName());
         file.transferTo(saveFile);
 
         profileImgRepository.save(profileImg);
@@ -78,5 +78,19 @@ public class ProfileImgService {
         ProfileImg profileImg = profileImgRepository.getByUser_Id(userId);
         String profileImgPath = profileImg.getSaveFolder() + '/' + profileImg.getSaveName();
         return profileImgPath;
+    }
+
+    public void deleteImage(Long userId) {
+        ProfileImg img = profileImgRepository.getByUser_Id(userId);
+
+        Path path = Paths.get(img.getSaveFolder());
+        File realFile = new File(path.toAbsolutePath().toString(), img.getSaveName());
+        realFile.delete();
+
+        profileImgRepository.deleteById(userId);
+    }
+
+    public ProfileImg findById(Long userId) {
+        return profileImgRepository.getByUser_Id(userId);
     }
 }

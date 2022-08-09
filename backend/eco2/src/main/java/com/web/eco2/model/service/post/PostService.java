@@ -11,8 +11,6 @@ import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.repository.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
@@ -20,7 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.*;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +41,7 @@ public class PostService {
 
     //post image 저장 경로
     @Value("${postImg.path}")
-    private String uploadPostImgPath;
+    private String uploadPath;
 
 
     //post 저장하기 (post + postImage)
@@ -50,8 +49,12 @@ public class PostService {
     public void savePost(MultipartFile postImage, PostCreateDto postCreateDto) throws IOException {
         UUID uuid = UUID.randomUUID();
         String originalName = postImage.getOriginalFilename();
-        String saveName = uuid + "_" + postImage.getOriginalFilename();
-        File savePostImage = new File(uploadPostImgPath, saveName);
+        String saveName = uuid + originalName.substring(originalName.lastIndexOf("."), originalName.length());
+        Path postImgPath = Paths.get(uploadPath);
+        File savePostImage = new File(postImgPath.toAbsolutePath().toString(), saveName);
+        if(!savePostImage.getParentFile().exists() && !savePostImage.getParentFile().mkdirs()) {
+            throw new IOException("폴더 생성 실패");
+        }
         postImage.transferTo(savePostImage);
 
         Post post;
@@ -69,6 +72,18 @@ public class PostService {
     public List<Post> getPostList() {
         Sort sort = Sort.by(Sort.Order.desc("id"));
         return postRepository.findAll(sort);
+    }
+
+    // quest 인증글 아닌 post 목록 가져오기
+    public List<QuestPost> getPostOnly() {
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        return postRepository.findByQuestIsNull(sort);
+    }
+
+    // QuestPost 목록 가져오기
+    public List<QuestPost> getQuestPostList() {
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        return postRepository.findByQuestNotNull(sort);
     }
 
 
@@ -101,24 +116,24 @@ public class PostService {
 
 
     //post 수정하기
-    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) {
-            Post post = postRepository.getById(postId);
-            post.setContent(postUpdateDto.getContent());
-            post.setPublicFlag(postUpdateDto.isPublicFlag());
-            post.setCommentFlag(postUpdateDto.isCommentFlag());
-            postRepository.save(post);
+    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) throws IOException {
+        Post post = postRepository.getById(postId);
+        post.setContent(postUpdateDto.getContent());
+        post.setPublicFlag(postUpdateDto.isPublicFlag());
+        post.setCommentFlag(postUpdateDto.isCommentFlag());
+        postRepository.save(post);
 
-            PostImg postImg = postImgRepository.getById(postId);
-            String originalName = postImage.getOriginalFilename();
+        PostImg oldImage = postImgRepository.getById(postId);
+        String originalName = postImage.getOriginalFilename();
 
-            PostImg newPostImg = PostImg.builder()
-                    .saveFolder(uploadPostImgPath)
-                    .originalName(originalName)
-                    .saveName(postImg.getSaveName())
-                    .id(postId)
-                    .build();
-
-            postImgRepository.save(newPostImg);
+        PostImg newPostImg = PostImg.builder()
+                .saveFolder(uploadPath)
+                .originalName(originalName)
+                .saveName(oldImage.getSaveName())
+                .id(postId)
+                .build();
+        postImage.transferTo(Paths.get(uploadPath + File.separator + oldImage.getSaveName()));
+        postImgRepository.save(newPostImg);
     }
 
 

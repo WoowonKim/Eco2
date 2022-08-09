@@ -2,7 +2,9 @@ package com.web.eco2.controller.mission;
 
 import com.web.eco2.domain.dto.mission.CustomMissionRequest;
 import com.web.eco2.domain.dto.mission.FavoriteMissionRequest;
+import com.web.eco2.domain.dto.mission.MissionDto;
 import com.web.eco2.domain.entity.mission.CustomMission;
+import com.web.eco2.domain.entity.mission.FavoriteMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.mission.CustomMissionService;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,7 +49,18 @@ public class MissionController {
             log.info("기본 미션 리스트 조회 API 호출");
             List<Mission> missionList = missionService.findAll();
             List<Mission> selectedMissionList = missionService.selectedDailyMission(missionList, usrId);
-            return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", selectedMissionList);
+            List<MissionDto> missionDtos = new ArrayList<>();
+            List<FavoriteMission> favoriteMissionList = favoriteMissionService.findByUser_Id(usrId);
+            for (Mission mission : selectedMissionList) {
+                MissionDto missionDto = mission.toDto();
+                for (FavoriteMission favoriteMission : favoriteMissionList){
+                    if(favoriteMission.getMission().getId() == mission.getId()){
+                        missionDto.setFavoriteFlag(true);
+                    }
+                }
+                missionDtos.add(missionDto);
+            }
+            return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", missionDtos);
         } catch (Exception e) {
             log.error("기본 미션 리스트 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -99,33 +113,36 @@ public class MissionController {
 
     @ApiOperation(value = "즐겨찾기 추가 / 삭제", response = Object.class)
     @PutMapping("/favorite/{usrId}")
-    public ResponseEntity<Object> registerFavoriteMission(@PathVariable("usrId") Long usrId, @RequestBody FavoriteMissionRequest favoriteMission) {
+    public ResponseEntity<Object> registerFavoriteMission(@PathVariable("usrId") Long usrId, @RequestBody FavoriteMissionRequest favoriteMissionRequest) {
         try {
             log.info("즐겨찾기 추가 / 삭제 API 호출");
             User selectUser = userService.getById(usrId);
-            favoriteMission.setUser(selectUser);
+            favoriteMissionRequest.setUser(selectUser);
 
-            if (favoriteMission.isLikeFlag()) { //즐겨찾기 추가
-                if (favoriteMission.isMissionType()) {//기본미션
-                    Mission mission = missionService.findByMisId(favoriteMission.getMissionId());
-                    favoriteMission.setMission(mission);
-                } else {//사용자 미션
-                    CustomMission customMission = customMissionService.findByCumId(favoriteMission.getMissionId());
-                    favoriteMission.setCustomMission(customMission);
+            if (favoriteMissionRequest.isMissionType()) {//기본미션
+                FavoriteMission favoriteMission = favoriteMissionService.findByUser_IdAndMission_Id(usrId, favoriteMissionRequest.getMissionId());
+                if (favoriteMission != null) {//삭제
+                    favoriteMissionService.delete(favoriteMission);
+                    return ResponseHandler.generateResponse("즐겨찾기 삭제 성공하였습니다.", HttpStatus.OK);
+                } else {//추가
+                    Mission mission = missionService.findByMisId(favoriteMissionRequest.getMissionId());
+                    favoriteMissionRequest.setMission(mission);
                 }
-                if (favoriteMission.getMission() == null && favoriteMission.getCustomMission() == null) {
-                    return ResponseHandler.generateResponse("해당 미션이 존재하지 않습니다.", HttpStatus.ACCEPTED);
+            } else {//사용자 미션
+                FavoriteMission favoriteMission = favoriteMissionService.findByUser_IdAndCustomMission_Id(usrId, favoriteMissionRequest.getMissionId());
+                if (favoriteMission != null) {//삭제
+                    favoriteMissionService.delete(favoriteMission);
+                    return ResponseHandler.generateResponse("즐겨찾기 삭제 성공하였습니다.", HttpStatus.OK);
+                } else {//추가
+                    CustomMission customMission = customMissionService.findByCumId(favoriteMissionRequest.getMissionId());
+                    favoriteMissionRequest.setCustomMission(customMission);
                 }
-                favoriteMissionService.save(favoriteMission.toEntity());
-                return ResponseHandler.generateResponse("즐겨찾기 추가 성공하였습니다.", HttpStatus.OK);
-            } else {//삭제
-                if (favoriteMission.isMissionType()) {//기본미션
-                    favoriteMissionService.deleteByMisId(usrId, favoriteMission.getMissionId());
-                } else {//사용자 미션
-                    favoriteMissionService.deleteByCumId(usrId, favoriteMission.getMissionId());
-                }
-                return ResponseHandler.generateResponse("즐겨찾기 삭제 성공하였습니다.", HttpStatus.OK);
             }
+            if (favoriteMissionRequest.getMission() == null && favoriteMissionRequest.getCustomMission() == null) {
+                return ResponseHandler.generateResponse("해당 미션이 존재하지 않습니다.", HttpStatus.ACCEPTED);
+            }
+            favoriteMissionService.save(favoriteMissionRequest.toEntity());
+            return ResponseHandler.generateResponse("즐겨찾기 추가 성공하였습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("즐겨찾기 추가 / 삭제 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -139,10 +156,14 @@ public class MissionController {
             log.info("즐겨찾기 조회 API 호출");
             List<Mission> missionList = favoriteMissionService.findMissionByUsrId(usrId);
             List<Mission> selectedMissionList = missionService.selectedDailyMission(missionList, usrId);
+            List<MissionDto> missionDtos = new ArrayList<>();
+            for (Mission mission : selectedMissionList) {
+                missionDtos.add(mission.toDto());
+            }
             List<CustomMission> customMissionList = favoriteMissionService.findCustomMissionByUsrId(usrId);
             List<CustomMission> selectedCustomMissionList = customMissionService.selectedCustomDailyMission(customMissionList, usrId);
 
-            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK, "missionList", selectedMissionList, "customMissionList", selectedCustomMissionList);
+            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK, "missionList", missionDtos, "customMissionList", selectedCustomMissionList);
         } catch (Exception e) {
             log.error("즐겨찾기 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);

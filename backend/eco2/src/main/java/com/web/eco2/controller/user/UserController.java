@@ -214,7 +214,11 @@ public class UserController {
             log.info("access 토큰 재발급 API 호출");
             String refreshToken = jwtTokenUtil.getRefreshToken(request);
             String accessToken = jwtTokenUtil.newAccessToken(user, refreshToken);
+
             if (accessToken != null) {
+                User selectUser = userService.findByEmail(user.getEmail());
+                refreshToken = jwtTokenUtil.createRefreshToken();
+                selectUser.setRefreshToken(refreshToken);
                 response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
                 return ResponseHandler.generateResponse("AccessToken이 재발급 되었습니다.", HttpStatus.OK, "accessToken", accessToken);
             } else {
@@ -257,24 +261,17 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody SignUpRequest user, HttpServletResponse response) throws IOException {
         log.info("로그인 API 호출");
         try {
-            if (user.getSocialType() == 0) {
-                User loginUser = userService.findByEmail(user.getEmail());
-                if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
-                    System.out.println("이메일, 비밀번호 불일치");
-                    return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.ACCEPTED);
-                }
-                String refreshToken = jwtTokenUtil.createRefreshToken();
-                loginUser.setRefreshToken(refreshToken);
-                userService.save(loginUser);
-                response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
-
-                String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
-                return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", loginUser);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                String url = oAuth2Service.getOAuthRedirectUrl(user.getSocialType());
-                return ResponseHandler.generateResponse("소셜 로그인.", HttpStatus.ACCEPTED, "url", url);
+            User loginUser = userService.findByEmail(user.getEmail());
+            if (loginUser == null || !passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
+                return ResponseHandler.generateResponse("이메일, 비밀번호를 다시 확인해주세요.", HttpStatus.ACCEPTED);
             }
+            String refreshToken = jwtTokenUtil.createRefreshToken();
+            loginUser.setRefreshToken(refreshToken);
+            userService.save(loginUser);
+            response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
+
+            String accessToken = jwtTokenUtil.createAccessToken(loginUser.getEmail(), loginUser.getRole());
+            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", loginUser);
         } catch (Exception e) {
             log.error("로그인 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -348,7 +345,7 @@ public class UserController {
             String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
             response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
 
-            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken);
+            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", user);
         } catch (Exception e) {
             log.error("소셜 로그인 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);

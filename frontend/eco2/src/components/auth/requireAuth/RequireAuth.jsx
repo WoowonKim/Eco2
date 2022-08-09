@@ -9,7 +9,7 @@ const RequireAuth = ({ children }) => {
 
   if (!accessToken) {
     return <Navigate to="/" state={{ path: location.pathname }} />;
-  } else if (!userName) {
+  } else if (!userName || userName === null) {
     return <Navigate to="/ecoName" state={{ path: location.pathname }} />;
   }
   return children;

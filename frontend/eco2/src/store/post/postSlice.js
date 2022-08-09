@@ -2,62 +2,81 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosService } from "../axiosService";
 
 // 전체 게시물 조회
-export const postList = createAsyncThunk("postSlice/postList", async (args, rejectWithValue) => {
-  try {
-    const response = await axiosService.get("/post");
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const postList = createAsyncThunk(
+  "postSlice/postList",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.get("/post");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
 // 특정 게시물 조회
-export const post = createAsyncThunk("postSlice/post", async (args, rejectWithValue) => {
-  try {
-    const response = await axiosService.get(`/post/${args.postId}`);
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const post = createAsyncThunk(
+  "postSlice/post",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.get(`/post/${args.postId}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
 // 특정 게시물 수정
-export const postUpdate = createAsyncThunk("postSlice/postUpdate", async (args, rejectWithValue) => {
-  try {
-    const response = await axiosService.put(`/post/${args.postId}`, args.formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const postUpdate = createAsyncThunk(
+  "postSlice/postUpdate",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.put(
+        `/post/${args.postId}`,
+        args.formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
 // 특정 게시물 삭제
-export const postDelete = createAsyncThunk("postSlice/postDelete", async (args, rejectWithValue) => {
-  try {
-    const response = await axiosService.delete(`/post/${args.postId}`);
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const postDelete = createAsyncThunk(
+  "postSlice/postDelete",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.delete(`/post/${args.postId}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
 // 게시물 작성
-export const postCreate = createAsyncThunk("postSlice/postCreate", async (args, rejectWithValue) => {
-  try {
-    const response = await axiosService.post("/post", args.formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const postCreate = createAsyncThunk(
+  "postSlice/postCreate",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.post("/post", args.formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
 // 게시물 좋아요
 export const postLike = createAsyncThunk(
