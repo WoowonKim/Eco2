@@ -22,8 +22,6 @@ public class FavoriteMissionRequest {
 
     private Long missionId;
 
-    private boolean likeFlag;
-
     private boolean missionType;
 
     public FavoriteMission toEntity() {
