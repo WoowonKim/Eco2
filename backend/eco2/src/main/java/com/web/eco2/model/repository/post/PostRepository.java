@@ -20,9 +20,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<QuestPost> findByUserAndQuestNotNull(User user);
 
-    List<QuestPost> findByQuestNotNull(Sort sort);
-
     List<QuestPost> findByQuestIsNull(Sort sort);
+
+    List<QuestPost> findByQuestNotNull(Sort sort);
 
 //    List<Post> findByUserIdOrderByIdDesc(Long userid);
 
