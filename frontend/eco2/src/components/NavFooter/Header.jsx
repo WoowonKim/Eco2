@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserId } from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
@@ -21,12 +22,14 @@ const Header = () => {
         ></img>
       </div>
       <nav>
-        <i
+        <img
+          src={`http://localhost:8002/img/profile/${getUserId()}`}
+          alt="profileImg"
+          className={styles.profileImg}
           onClick={() => {
             navigate("/profile");
           }}
-          className="fa-solid fa-users"
-        ></i>
+        />
         <i className="fa-solid fa-comments"></i>
       </nav>
     </header>

@@ -64,6 +64,27 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+export const profileImgChange = createAsyncThunk(
+  "userInformationSlice/profileImgChange",
+  async (args, { rejectWithValue }) => {
+    try {
+      console.log(args);
+      const response = await axiosService.put(
+        `/userinformation?email=${args.email}`,
+        { file: args.img },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 export const userInformationSlice = createSlice({
   name: "userInformation",
   initialState: [],
@@ -92,6 +113,12 @@ export const userInformationSlice = createSlice({
     },
     [deleteUser.rejected]: (state, action) => {
       console.log("deleteUser rejected", action.payload);
+    },
+    [profileImgChange.fulfilled]: (state, action) => {
+      console.log("profileImgChange fulfilled", action.payload);
+    },
+    [profileImgChange.rejected]: (state, action) => {
+      console.log("profileImgChange rejected", action.payload);
     },
   },
 });

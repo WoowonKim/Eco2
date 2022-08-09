@@ -14,8 +14,17 @@
   width: 330px;
   z-index: 1;
 }
+
 .Img {
   height: 30px;
+}
+
+.profileImg {
+  width: 25px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  margin-right: 5px;
 }
 
 i {

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getUserEmail, getUserName } from "../../store/user/common";
+import { getUserEmail, getUserId, getUserName } from "../../store/user/common";
 import {
   deleteUser,
   passwordChange,
   passwordCheck,
+  profileImgChange,
 } from "../../store/user/userSettingSlice";
 import {
   userActions,
@@ -31,6 +32,9 @@ const UserSettings = () => {
   const [nameMessage, setNameMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  const [profileEdit, setProfileEdit] = useState(false);
+  const [fileImage, setFileImage] = useState("");
+  const [file, setFile] = useState("");
 
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
@@ -99,6 +103,20 @@ const UserSettings = () => {
     }
   };
 
+  const saveFileImage = (e) => {
+    setFile(e.target.files[0]);
+    setFileImage(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const profileImg = () => {
+    dispatch(profileImgChange({ email, img: file })).then((res) => {
+      if (res.payload.status === 200) {
+        // window.location.reload("/user/settings");
+        setProfileEdit(false);
+      }
+    });
+  };
+
   useEffect(() => {
     setName(getUserName());
   }, []);
@@ -131,15 +149,49 @@ const UserSettings = () => {
       {userSetting === 1 ? (
         <div>
           <div className={styles.profileImg}>
-            <img
-              src={`${process.env.PUBLIC_URL}/logo.png`}
-              alt="earth"
-              className={styles.img}
-            />
-            <div className={styles.profileImgGroup}>
-              <p className={styles.profileImgText}>프로필 사진</p>
-              <i className={`fa-solid fa-pencil ${styles.editIcon}`}></i>
+            <div>
+              {fileImage ? (
+                <img className={styles.img} alt="profileImg" src={fileImage} />
+              ) : (
+                <img
+                  className={styles.img}
+                  alt="profileImg"
+                  src={`http://localhost:8002/img/profile/${getUserId()}`}
+                />
+              )}
             </div>
+            {!profileEdit ? (
+              <div className={styles.profileImgGroup}>
+                <p className={styles.profileImgText}>프로필 사진</p>
+                <i
+                  className={`fa-solid fa-pencil ${styles.editIcon}`}
+                  onClick={() => setProfileEdit(true)}
+                ></i>
+              </div>
+            ) : (
+              <div>
+                <div className={styles.fileInputGroup}>
+                  <input className={styles.fileInput} placeholder="첨부파일" />
+                  <label htmlFor="file" className={styles.imgLabel}>
+                    파일찾기
+                  </label>
+                  <input
+                    encType="multipart/form-data"
+                    type="file"
+                    id="file"
+                    name="post_file"
+                    onChange={saveFileImage}
+                    className={`${styles.fileInput} ${styles.baseFileInput}`}
+                  />
+                  <button onClick={profileImg} className={styles.button}>
+                    수정완료
+                  </button>
+                  {/* <button onClick={() => deleteFileImage()} className={styles.button}>
+            삭제
+          </button> */}
+                </div>
+              </div>
+            )}
           </div>
           <div className={styles.emailGroup}>
             <div className={styles.emailTitleGroup}>

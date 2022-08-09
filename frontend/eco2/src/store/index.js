@@ -12,6 +12,7 @@ import { favoriteSlice } from "./mission/favoriteSlice";
 import { postSlice } from "./post/postSlice";
 import { commentSlice } from "./post/commentSlice";
 import { noticeSlice } from "./admin/noticeSlice";
+import { imgSlice } from "./img/imgSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,5 +28,6 @@ export const store = configureStore({
     favorite: favoriteSlice.reducer,
     post: postSlice.reducer,
     notice: noticeSlice.reducer,
+    img: imgSlice.reducer,
   },
 });
