@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -63,7 +65,7 @@ public class ChatController {
 
     @GetMapping(value = "/room/{usrId}")
     @ApiOperation(value = "채팅방 목록 조회", response = Object.class)
-    public ResponseEntity<Object> selectChatRoom(@PathVariable("usrId") Long usrId) {
+    public ResponseEntity<Object> selectChatRoom(HttpServletResponse response, @PathVariable("usrId") Long usrId) {
         try {
             log.info("채팅방 목록 조회 API 호출");
             User user = userService.getById(usrId);
