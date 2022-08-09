@@ -2,6 +2,7 @@ package com.web.eco2.controller.mission;
 
 import com.web.eco2.domain.dto.mission.CustomMissionRequest;
 import com.web.eco2.domain.dto.mission.FavoriteMissionRequest;
+import com.web.eco2.domain.dto.mission.MissionDto;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.user.User;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,7 +48,11 @@ public class MissionController {
             log.info("기본 미션 리스트 조회 API 호출");
             List<Mission> missionList = missionService.findAll();
             List<Mission> selectedMissionList = missionService.selectedDailyMission(missionList, usrId);
-            return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", selectedMissionList);
+            List<MissionDto> missionDtos = new ArrayList<>();
+            for (Mission mission: selectedMissionList){
+                missionDtos.add(mission.toDto());
+            }
+            return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", missionDtos);
         } catch (Exception e) {
             log.error("기본 미션 리스트 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -139,10 +145,14 @@ public class MissionController {
             log.info("즐겨찾기 조회 API 호출");
             List<Mission> missionList = favoriteMissionService.findMissionByUsrId(usrId);
             List<Mission> selectedMissionList = missionService.selectedDailyMission(missionList, usrId);
+            List<MissionDto> missionDtos = new ArrayList<>();
+            for (Mission mission: selectedMissionList){
+                missionDtos.add(mission.toDto());
+            }
             List<CustomMission> customMissionList = favoriteMissionService.findCustomMissionByUsrId(usrId);
             List<CustomMission> selectedCustomMissionList = customMissionService.selectedCustomDailyMission(customMissionList, usrId);
 
-            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK, "missionList", selectedMissionList, "customMissionList", selectedCustomMissionList);
+            return ResponseHandler.generateResponse("즐겨찾기 조회 성공하였습니다.", HttpStatus.OK, "missionList", missionDtos, "customMissionList", selectedCustomMissionList);
         } catch (Exception e) {
             log.error("즐겨찾기 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);

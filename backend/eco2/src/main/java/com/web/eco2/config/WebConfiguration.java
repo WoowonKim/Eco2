@@ -24,7 +24,8 @@ public class WebConfiguration implements WebMvcConfigurer {
                         HttpMethod.POST.name(),
                         HttpMethod.PUT.name(),
                         HttpMethod.DELETE.name()
-                );
+                )
+                .allowCredentials(true);
     }
 
 
