@@ -169,6 +169,7 @@ public class PostController {
             }
             return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
         }catch (Exception e){
+            log.error("특정 게시물 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
