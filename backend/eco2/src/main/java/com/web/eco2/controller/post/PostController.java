@@ -1,18 +1,13 @@
 package com.web.eco2.controller.post;
 
 
-import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 import com.web.eco2.domain.dto.mission.QuestDto;
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
-import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
-import com.web.eco2.domain.entity.post.Comment;
-import com.web.eco2.domain.entity.post.FavoritePost;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
@@ -40,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -228,7 +222,7 @@ public class PostController {
 //                        .userId(friend.getId()).senderId(userId)
 //                        .dType("friendPost").content("친구 "+user.getName()+"님이 인증글을 올렸습니다.").build());
 //            });
-            return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK);
+            return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK, "postCreateDto", postCreateDto);
         } catch (Exception e) {
             log.error("게시물 등록 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
