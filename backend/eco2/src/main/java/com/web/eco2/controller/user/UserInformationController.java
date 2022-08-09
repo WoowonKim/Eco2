@@ -106,7 +106,7 @@ public class UserInformationController {
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST);
             }
-            chatService.deleteByToUserOrFromUser(dbUser.getId());
+            chatService.deleteByToUserOrFromUser(dbUser.getName());
             profileImgService.deleteImage(dbUser.getId());
             userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
