@@ -30,12 +30,11 @@ const DailyCustomMissionList = ({ id }) => {
   };
 
   const onCusMission = (postId) => {
-    dispatch(postMission({ id, dailyCustomMissionList: postId })).then((res) => {
-      if (res.payload.status === 200) {
-        console.log("postId ===> ", postId);
-        console.log("ID여기서 ===> ", id);
-      }
-    });
+    if (window.confirm("데일리 미션으로 옮기시겠어요?")) {
+      dispatch(postMission({ id, customMissionList: postId }));
+      alert(`이동완료!\n삭제버튼을 누를 경우 다시 목록에 추가됩니다!`);
+      window.location.replace("/dailymissionDetail");
+    }
   };
 
   // console.log("CustomMissionList ID확인 용도 ===> ", cos);
