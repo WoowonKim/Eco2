@@ -19,13 +19,24 @@ import { axiosService } from "../axiosService";
 
 export const postMission = createAsyncThunk("missionMainSlice/postMission", async (args, rejectWithValue) => {
   try {
+    // console.log("ARGS ====> ", args);
     const response = await axiosService.post(`/daily/${args.id}`, {
       dailyMissionList: args.dailyMissionList,
-      dailyCustomMissionList: [],
+      dailyCustomMissionList: args.dailyCustomMissionList,
     });
-    // console.log("postMission에서 ecoUserId ==>", args.id);
-    // console.log("postMission에서 ecoId ==> ", args.dailyMissionList);
-    // console.log("postMission에서 args 정보 ==>", args);
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
+  }
+});
+
+export const postTodayMission = createAsyncThunk("missionMainSlice/postTodayMission", async (args, rejectWithValue) => {
+  try {
+    const response = await axiosService.post(`daily/recommend/${args.id}`, {
+      lat: args.lat,
+      lng: args.lng,
+      date: args.date,
+    });
     return response.data;
   } catch (err) {
     return rejectWithValue(err.response);
@@ -59,6 +70,17 @@ export const deleteMission = createAsyncThunk("missionMainSlice/deleteMission", 
   }
 });
 
+export const clearMission = createAsyncThunk("missionMainSlice/clearMission", async (args, { rejectWithValue }) => {
+  try {
+    const response = await axiosService.put(`/daily/${args.id}`, {
+      missionId: args.missionId,
+    });
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
+  }
+});
+
 export const myEcoMissionSlice = createSlice({
   name: "missionMain",
   initialState: {
@@ -86,6 +108,12 @@ export const myEcoMissionSlice = createSlice({
     },
     [getMission.rejected]: (state, action) => {
       console.log("getMissionRejected ==> ", action.payload);
+    },
+    [clearMission.fulfilled]: (state, action) => {
+      console.log("clearMission Fulfilled ===> ", action.payload);
+    },
+    [clearMission.rejected]: (state, action) => {
+      console.log("clearMission Rejected", action.payload);
     },
   },
 });
