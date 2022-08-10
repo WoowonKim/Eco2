@@ -46,7 +46,7 @@ const PostForm = () => {
         id: id,
       },
       mission: {
-        id: location.state?.missionId,
+        id: location.state?.missionId ? location.state.missionId : 1,
       },
     };
     const postUpdateDto = {
@@ -73,20 +73,21 @@ const PostForm = () => {
         }
       });
     } else {
-      // 새 글 작성 시 이동할 페이지 추가 필요
-
       const json = JSON.stringify(postCreateDto);
       const blob = new Blob([json], {
         type: "application/json",
       });
       formDataCreate.append("postImage", file);
       formDataCreate.append("postCreateDto", blob);
+      console.log(file);
+      dispatch(postCreate({ formData: formDataCreate }))
+        .then((res) => {
+          if (res.payload?.status === 200) {
+            navigate("/mainTree");
+          }
+        })
 
-      dispatch(postCreate({ formData: formDataCreate })).then((res) => {
-        if (res.payload?.status === 200) {
-          navigate("/mainTree");
-        }
-      });
+        .catch((err) => console.log(err));
     }
   };
 

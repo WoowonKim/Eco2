@@ -22,9 +22,9 @@ public class FavoriteMissionRequest {
 
     private Long missionId;
 
+    private boolean missionType;
     private boolean likeFlag;
 
-    private boolean missionType;
 
     public FavoriteMission toEntity() {
         return FavoriteMission.builder()

@@ -26,13 +26,16 @@ public class ChatRoom {
     private Long id;
 
     @Column(name = "chr_to_user")
-    private Long toUser;
+    private String toUser;
 
     @Column(name = "chr_from_user")
-    private Long fromUser;
+    private String fromUser;
+
+    @Column(name = "chr_last_send_message")
+    private String lastSendMessage;
 
     @Column(name = "chr_last_send_time")
-    private LocalDateTime lastSendTime;
+    private String lastSendTime;
 
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

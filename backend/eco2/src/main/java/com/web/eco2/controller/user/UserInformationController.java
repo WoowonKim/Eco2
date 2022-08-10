@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -109,7 +111,7 @@ public class UserInformationController {
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST);
             }
-            chatService.deleteByToUserOrFromUser(dbUser.getId());
+            chatService.deleteByToUserOrFromUser(dbUser.getName());
             profileImgService.deleteImage(dbUser.getId());
             calendarService.deleteByUserId(dbUser.getId());
             userService.delete(dbUser);
@@ -159,8 +161,29 @@ public class UserInformationController {
             dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.save(dbUser);
             return ResponseHandler.generateResponse("비밀번호가 변경되었습니다.", HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("비밀번호 변경 API 에러", e);
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/logout")
+    @ApiOperation(value = "로그아웃", response = Object.class)
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        try {
+            log.info("로그아웃 API 호출");
+            Cookie cookie = new Cookie("Auth-refreshToken", null);
+            if (cookie != null) {
+                System.out.println(cookie);
+                cookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
+                cookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
+                response.addCookie(cookie);
+            }else {
+                return ResponseHandler.generateResponse("잘못된 요청입니다.", HttpStatus.ACCEPTED);
+            }
+            return ResponseHandler.generateResponse("로그아웃 되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("로그아웃 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

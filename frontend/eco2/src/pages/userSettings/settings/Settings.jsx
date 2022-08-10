@@ -24,7 +24,7 @@ const Settings = ({ email }) => {
         publicFlag: checked.publicFlag,
         commentAlarmFlag: checked.commentAlarmFlag,
         chatAlarmFlag: checked.chatAlarmFlag,
-        darkmodeFlag: checked.darkmodeFlag,
+        darkmodeFlag: false,
       })
     );
   };
@@ -122,8 +122,8 @@ const Settings = ({ email }) => {
           </label>
         </div>
       </div>
-      <hr className={styles.line} />
-      <div className={styles.setting}>
+      {/* <hr className={styles.line} /> */}
+      {/* <div className={styles.setting}>
         <div className={styles.settingGroup}>
           <p className={styles.settingTitle}>다크모드</p>
         </div>
@@ -145,7 +145,7 @@ const Settings = ({ email }) => {
             <span className={styles.toggleButton}></span>
           </label>
         </div>
-      </div>
+      </div> */}
       <button className={styles.settingButton} onClick={onClick}>
         설정 저장하기
       </button>

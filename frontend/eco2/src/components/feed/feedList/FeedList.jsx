@@ -19,7 +19,6 @@ const FeedList = ({ category, display, feeds }) => {
                   userName={feed.userName}
                   category={feed.mission.category}
                   content={feed.content}
-                  postImgUrl={feed.postImgUrl}
                   like={feed.like}
                 />
               )

@@ -1,0 +1,21 @@
+.chatting {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.img {
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.createRoomButton {
+  text-align: start;
+  font-size: xx-large;
+  background-color: #adc178;
+  color:aliceblue;
+}
+
+

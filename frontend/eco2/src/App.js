@@ -16,7 +16,14 @@ import MissionCom from "./components/dailyMission/missionClear/missionCom";
 import DailyCustomMissionList from "./components/dailyMission/missionList/dailyCustomMissionList";
 import CustomPlus from "./components/dailyMission/missionItem/customPlus";
 /* DailyMission End */
-import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useSelector } from "react-redux";
@@ -36,6 +43,9 @@ import { getToken } from "./store/user/common";
 import RequireAuth from "./components/auth/requireAuth/RequireAuth";
 import Error from "./pages/error/Error";
 import KakaoLogin from "./pages/login/KakaoLogin";
+import Chatting from "./pages/chat/chatting/Chatting";
+import ChattingRoom from "./pages/chat/chattingRoom/ChattingRoom";
+
 
 function App() {
   const [userdata, setUserdata] = useState(null);
@@ -197,6 +207,24 @@ function App() {
             element={
               <RequireAuth>
                 <NoticeDetail />
+              </RequireAuth>
+            }
+          ></Route>
+
+<Route
+            path="/chatting/:userId"
+            element={
+              <RequireAuth>
+                <Chatting />
+              </RequireAuth>
+            }
+          ></Route>
+
+<Route
+            path="/chatting/room/:roomId"
+            element={
+              <RequireAuth>
+                <ChattingRoom />
               </RequireAuth>
             }
           ></Route>

@@ -44,11 +44,9 @@ public class PostService {
     private String uploadPath;
 
 
-
     //post 저장하기 (post + postImage)
     @Transactional
     public void savePost(MultipartFile postImage, PostCreateDto postCreateDto) throws IOException {
-//        Long postUserId = postUser.getId();
         UUID uuid = UUID.randomUUID();
         String originalName = postImage.getOriginalFilename();
         String saveName = uuid + originalName.substring(originalName.lastIndexOf("."), originalName.length());
@@ -66,19 +64,8 @@ public class PostService {
             post = postCreateDto.toEntity();
         }
         postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
-
-//        if(postCreateDto.getMission() != null) {
-//            post.setMission(postCreateDto.getMission());
-//        } else if (postCreateDto.getCustomMission() != null) {
-//            post.setCustomMission(postCreateDto.getCustomMission());
-//        } else if (postCreateDto.getQuest() != null) {
-//            post.setQuest(postCreateDto.getQuest());
-//        }
-
         postRepository.save(post);
     }
-
-
 
 
     //post 목록 가져오기

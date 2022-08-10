@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-    List<ChatRoom> findByToUserOrFromUser(Long toUser, Long fromUser);
+    List<ChatRoom> findByToUserOrFromUser(String toUser, String fromUser);
 
-    ChatRoom findByToUserAndFromUser(Long toUser, Long fromUser);
+    ChatRoom findByToUserAndFromUser(String toUser, String fromUser);
 
     ChatRoom getById(Long roomId);
 
-    void deleteByToUserOrFromUser(Long usrId1, Long usrId2);
+    void deleteByToUserOrFromUser(String usrName1, String usrName2);
 }

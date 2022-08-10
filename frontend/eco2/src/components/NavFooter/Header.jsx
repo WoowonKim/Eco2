@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserId } from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
+  const [userId, setUserId] = useState(null);
   let navigate = useNavigate();
+
+  useEffect(() => {
+    setUserId(getUserId());
+  }, [userId]);
   return (
     <header className={styles.Header}>
       <div
@@ -21,12 +27,18 @@ const Header = () => {
         ></img>
       </div>
       <nav>
-        <i
+        <button
+          className={styles.profileButton}
           onClick={() => {
             navigate("/profile");
           }}
-          className="fa-solid fa-users"
-        ></i>
+        >
+          <img
+            src={`http://localhost:8002/img/profile/${userId}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
+        </button>
         <i className="fa-solid fa-comments"></i>
       </nav>
     </header>

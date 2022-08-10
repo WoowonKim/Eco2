@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,9 +16,13 @@ import java.util.Set;
 public class ChatRoomDto {
     private Long id;
 
-    private Long toUser;
+    private Long toUserId;
 
-    private Long fromUser;
+    private Long fromUserId;
+    private String fromUser;
+    private String toUser;
+
+    private String lastSendMessage;
 
     private LocalDateTime lastSendTime;
 
@@ -27,7 +32,8 @@ public class ChatRoomDto {
         return ChatRoom.builder()
                 .toUser(toUser)
                 .fromUser(fromUser)
-                .lastSendTime(LocalDateTime.now())
+                .lastSendMessage(null)
+                .lastSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm")))
                 .build();
     }
 }

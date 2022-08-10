@@ -30,4 +30,10 @@ public interface FavoriteMissionRepository extends JpaRepository<FavoriteMission
 
     @Query(value = "select m.cum_id as id, cum_category as category, cum_content as content, cum_title as title from tb_favorite_mission f join tb_custom_mission m on f.cum_id = m.cum_id where f.usr_id=:usrId", nativeQuery = true)
     List<MissionInformation> findCustomMissionByUsrId(@Param("usrId") Long usrId);
+
+    FavoriteMission findByUser_IdAndMission_Id(Long usrId, Long missionId);
+
+    FavoriteMission findByUser_IdAndCustomMission_Id(Long usrId, Long missionId);
+
+    List<FavoriteMission> findByUser_Id(Long usrId);
 }

@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosService } from "../axiosService";
-import { getToken } from "./common";
 
-// 친구 조회 => 현재 안됨
+// 친구 조회
 export const friends = createAsyncThunk(
   "accountSlice/friends",
   async (args, { rejectWithValue }) => {
@@ -22,10 +21,9 @@ export const friendRequest = createAsyncThunk(
   "accountSlice/friendRequest",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await axiosService.post("/account/friend", {
-        fromId: args.fromId,
-        toId: args.toId,
-      });
+      const response = await axiosService.post(
+        `/account/friend?fromId=${args.fromId}&toId=${args.toId}`
+      );
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

@@ -1,0 +1,80 @@
+.list {
+  /* display: inline-block; */
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  margin-bottom: 7px;
+}
+
+.profileImg {
+  margin-right: 7px;
+  float: left;
+}
+
+.img {
+  height: 40px;
+  width: 40px;
+}
+
+.userName {
+  display: flex;
+  justify-content: start;
+  color: #6a707c;
+  font-size: x-small;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.message {
+  display: flex;
+  justify-content: start;
+  color: #6a707c;
+  font-size: 12px;
+  font-weight: bold;
+  width: 150px;
+  border: none;
+  background-color: #adc178;
+  color: #FFF;
+  padding: 7px;
+  border-radius: 10px;
+}
+
+
+.sendDate {
+  justify-content: start;
+  right: 0px;
+  color: #6a707c;
+  font-size: 7px;
+  font-weight: bold;
+  border-radius: 10px;
+  
+}
+
+.userContent {
+  /* float: right; */
+  /* display: flex; */
+  /* justify-content: space; */
+  text-align: right;
+}
+
+.userSendDate {
+  justify-content: start;
+  color: #6a707c;
+  font-size: 7px;
+  font-weight: bold;
+  
+}
+
+.userMessage {
+  display: flex;
+  justify-content: start;
+  color: #6a707c;
+  font-size: 12px;
+  font-weight: bold;
+  width: 150px;
+  border: none;
+  background-color: beige;
+  color: #6a707c;
+  padding: 7px;
+  border-radius: 10px;
+}

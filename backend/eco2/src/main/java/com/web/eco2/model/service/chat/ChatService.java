@@ -21,11 +21,11 @@ public class ChatService {
         chatRoomRepository.save(chatRoom);
     }
 
-    public List<ChatRoom> findByToUserOrFromUser(Long toUser, Long fromUser) {
+    public List<ChatRoom> findByToUserOrFromUser(String toUser, String fromUser) {
         return chatRoomRepository.findByToUserOrFromUser(toUser, fromUser);
     }
 
-    public ChatRoom findByToUserAndFromUser(Long toUser, Long fromUser) {
+    public ChatRoom findByToUserAndFromUser(String toUser, String fromUser) {
         return chatRoomRepository.findByToUserAndFromUser(toUser, fromUser);
     }
 
@@ -41,7 +41,7 @@ public class ChatService {
         chatRoomRepository.delete(chatRoom);
     }
 
-    public void deleteByToUserOrFromUser(Long usrId) {
-        chatRoomRepository.deleteByToUserOrFromUser(usrId,usrId);
+    public void deleteByToUserOrFromUser(String usrName) {
+        chatRoomRepository.deleteByToUserOrFromUser(usrName,usrName);
     }
 }

@@ -36,9 +36,8 @@ public class ChatMessage {
     @Column(name = "crm_message")
     private String message;
 
-    @CreationTimestamp
     @Column(name = "crm_send_date", updatable = false)
-    private LocalDateTime sendDate;
+    private String sendDate;
 
 //    @Override
 //    public String toString() {

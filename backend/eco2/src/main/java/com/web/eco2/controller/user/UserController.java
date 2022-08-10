@@ -209,10 +209,14 @@ public class UserController {
 
     @ApiOperation(value = "access 토큰 재발급", response = Object.class)
     @PostMapping("/newaccesstoken")
-    public ResponseEntity<Object> newAccessToken(HttpServletRequest request, HttpServletResponse response, @RequestBody SignUpRequest user) {
+    public ResponseEntity<Object> newAccessToken(HttpServletResponse response, @RequestBody SignUpRequest user, @CookieValue(name = "Auth-refreshToken", required = false) String refreshToken) {
         try {
             log.info("access 토큰 재발급 API 호출");
-            String refreshToken = jwtTokenUtil.getRefreshToken(request);
+            if(refreshToken == null){
+                return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+            }
+//            String refreshToken = jwtTokenUtil.getRefreshToken(request);
+//            System.out.println(refreshToken);
             String accessToken = jwtTokenUtil.newAccessToken(user, refreshToken);
 
             if (accessToken != null) {
@@ -230,31 +234,31 @@ public class UserController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-
-    @ApiOperation(value = "refresh 토큰 재발급(앱 접속시에도 발급)", response = Object.class)
-    @PostMapping("/newrefreshtoken")
-    public ResponseEntity<Object> newRefreshToken(HttpServletRequest request, HttpServletResponse response, @RequestBody SignUpRequest user) {
-        try {
-            log.info("refresh 토큰 재발급 API 호출");
-            String refreshToken = jwtTokenUtil.getRefreshToken(request);
-            if (jwtTokenUtil.validateToken(refreshToken)) { //refreshtoken 유효
-                User selectUser = userService.findByEmail(user.getEmail());
-                if (refreshToken.equals(selectUser.getRefreshToken())) {
-                    refreshToken = jwtTokenUtil.createRefreshToken();
-                    selectUser.setRefreshToken(refreshToken);
-                    response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
-
-                    return ResponseHandler.generateResponse("RefreshToken이 재발급 되었습니다.", HttpStatus.OK);
-                }
-                return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
-            } else {
-                return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception e) {
-            log.error("refresh 토큰 재발급 API 에러", e);
-            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-        }
-    }
+//
+//    @ApiOperation(value = "refresh 토큰 재발급(앱 접속시에도 발급)", response = Object.class)
+//    @PostMapping("/newrefreshtoken")
+//    public ResponseEntity<Object> newRefreshToken( HttpServletResponse response, @RequestBody SignUpRequest user, @CookieValue(name = "Auth-refreshToken", required = false) String refreshToken) {
+//        try {
+//            log.info("refresh 토큰 재발급 API 호출");
+////            String refreshToken = jwtTokenUtil.getRefreshToken(request);
+//            if (jwtTokenUtil.validateToken(refreshToken)) { //refreshtoken 유효
+//                User selectUser = userService.findByEmail(user.getEmail());
+//                if (refreshToken.equals(selectUser.getRefreshToken())) {
+//                    refreshToken = jwtTokenUtil.createRefreshToken();
+//                    selectUser.setRefreshToken(refreshToken);
+//                    response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
+//
+//                    return ResponseHandler.generateResponse("RefreshToken이 재발급 되었습니다.", HttpStatus.OK);
+//                }
+//                return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+//            } else {
+//                return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+//            }
+//        } catch (Exception e) {
+//            log.error("refresh 토큰 재발급 API 에러", e);
+//            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @ApiOperation(value = "로그인", response = Object.class)
     @PostMapping("/login")
