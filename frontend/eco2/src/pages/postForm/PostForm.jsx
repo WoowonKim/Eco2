@@ -24,6 +24,7 @@ const PostForm = () => {
   }, []);
   const saveFileImage = (e) => {
     setFile(e.target.files[0]);
+    console.log(e.target.files);
     setFileImage(URL.createObjectURL(e.target.files[0]));
   };
 
@@ -37,7 +38,6 @@ const PostForm = () => {
   // 글 작성 요청보내기
   const onSubmit = (e) => {
     e.preventDefault();
-
     const formDataCreate = new FormData();
     const formDataUpdate = new FormData();
     const postCreateDto = {
@@ -94,6 +94,7 @@ const PostForm = () => {
   // 유저 아이디 가져오기
   useEffect(() => {
     setUserId(getUserId());
+    console.log(location);
   }, []);
   return (
     <div>

@@ -14,7 +14,8 @@ const PostDetail = () => {
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
   const [feedItem, setFeedItem] = useState({});
-  const [comments, setComments] = useState({});
+  const [comments, setComments] = useState([]);
+  const [replys, setReplys] = useState([]);
   const [like, setLike] = useState(false);
 
   const params = useParams();
@@ -49,13 +50,19 @@ const PostDetail = () => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
         setFeedItem(res.payload.post);
+        setComments(
+          res.payload.post?.comments.filter((comment) => !comment.commentId)
+        );
+        setReplys(
+          res.payload.post?.comments.filter((comment) => !!comment.commentId)
+        );
       }
     });
-    dispatch(commentList({ postId: params.postId })).then((res) => {
-      if (res.payload?.status === 200) {
-        setComments(res.payload.commentDto);
-      }
-    });
+    // dispatch(commentList({ postId: params.postId })).then((res) => {
+    //   if (res.payload?.status === 200) {
+    //     setComments(res.payload.commentDto);
+    //   }
+    // });
   }, []);
 
   return (
@@ -174,7 +181,7 @@ const PostDetail = () => {
       <div className={styles.CommentForm}>
         <CommentForm postId={feedItem.id} userId={getUserId()} />
       </div>
-      <CommentList id={feedItem.id} comments={comments} />
+      <CommentList id={feedItem.id} comments={comments} replys={replys} />
     </div>
   );
 };

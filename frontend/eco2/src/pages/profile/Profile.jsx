@@ -13,6 +13,8 @@ const Profile = () => {
   const [socialType, setSocialType] = useState(0);
   const [userId, setUserId] = useState(0);
   const [imgSrc, setImgSrc] = useState("");
+  const [missionList, setMissionList] = useState([]);
+  const [questList, setQuestList] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,9 +27,21 @@ const Profile = () => {
     // 유저 객체 받아오기
     dispatch(userInformation({ email })).then((res) => {
       setUserId(getUserId());
-      console.log(res);
-      // setSocialType(res.payload.user.socialType);
+      setMissionList(res.payload.postList);
+      setQuestList(res.payload.questPostList);
+      setSocialType(res.payload.user.socialType);
     });
+
+    const options = {
+      headers: {
+        "Auth-accessToken":
+          "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2EwNTE0MkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDExMjQ1NywiZXhwIjoxNjYwMjMyNDU3fQ.Z8ihJRXyWxk-H30hVqE8fX4AYuvdcWBp8UUV9FJm1ww",
+      },
+    };
+    // dispatch(profileImg({ userId: getUserId() }))
+    fetch(`http://localhost:8002/img/profile/${userId}`, options)
+      .then((res) => res.blob())
+      .then((blob) => setImgSrc(URL.createObjectURL(blob)));
   }, []);
   return (
     <div className={styles.container}>
@@ -41,11 +55,12 @@ const Profile = () => {
           test
         </button> */}
         <div className={styles.user}>
-          {/* <img
-            src={`http://localhost:8002/img/profile/${userId}`}
-            alt="profileImg"
+          <img
+            // src={`http://localhost:8002/img/profile/${userId}`}
+            src={`${imgSrc}`}
+            // alt="profileImg"
             className={styles.profileImg}
-          /> */}
+          />
           <p>{getUserName()}</p>
           <button
             onClick={() =>
@@ -78,6 +93,30 @@ const Profile = () => {
           {userSetting === 2 && <hr className={styles.line} />}
         </div>
       </div>
+      {userSetting === 1 && (
+        <div className={`${styles.mission}`}>
+          {missionList.map((mission) => (
+            <img
+              key={mission.id}
+              src={`http://localhost:8002/img/post/${mission.id}`}
+              alt="profileImg"
+              className={styles.missionImg}
+            />
+          ))}
+        </div>
+      )}
+      {userSetting === 2 && (
+        <div className={`${styles.quest} ${displayType2}`}>
+          {questList.map((mission) => (
+            <img
+              key={mission.id}
+              src={`http://localhost:8002/img/post/${mission.id}`}
+              alt="profileImg"
+              className={styles.missionImg}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -18,6 +18,7 @@ const Notice = () => {
   for (let i = 0; i < pages; i++) {
     pagenation.push(
       <span
+        key={i}
         onClick={() => {
           dispatch(noticeList({ page: i, query })).then((res) => {
             if (res.payload.status === 200) {

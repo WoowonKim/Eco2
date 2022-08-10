@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import ReplyItem from "../replyItem/ReplyItem";
 import styles from "./ReplyList.module.css";
 
-const ReplyList = ({ id, replys }) => {
+const ReplyList = ({ id, commentId, replys }) => {
   console.log(replys);
   return (
     <ul className={styles.ul}>
@@ -15,7 +15,7 @@ const ReplyList = ({ id, replys }) => {
                 key={reply.id}
                 id={reply.id}
                 content={reply.content}
-                user={reply.user}
+                user={reply.userName}
                 postId={reply.postId}
               />
             )
