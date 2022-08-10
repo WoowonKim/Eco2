@@ -6,6 +6,7 @@ import styles from "./Map.module.css";
 const Map = ({ makeFlag, open }) => {
   const [lat, setLat] = useState(33.450701);
   const [lon, setLon] = useState(126.570667);
+  const [questMarkers, setQuestMarkers] = useState([]);
   let map;
   useEffect(() => {
     getLocation().then((res) => {
@@ -56,7 +57,6 @@ const Map = ({ makeFlag, open }) => {
       fillOpacity: 0.5, // 채우기 불투명도 입니다
     });
     circle.setMap(map);
-
     if (makeFlag) {
       kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
         // 클릭한 위치에 마커를 표시합니다
