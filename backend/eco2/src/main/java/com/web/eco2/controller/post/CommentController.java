@@ -4,6 +4,7 @@ package com.web.eco2.controller.post;
 import com.web.eco2.domain.dto.post.CommentCreateDto;
 
 import com.web.eco2.domain.dto.post.CommentDto;
+import com.web.eco2.domain.dto.post.CommentUpdateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.model.repository.post.CommentRepository;
 import com.web.eco2.model.repository.post.PostRepository;
@@ -165,12 +166,24 @@ public class CommentController {
     //댓글 수정
     @PutMapping("/{post_id}/comment/{comment_id}")
     public ResponseEntity<Object> updateComment(@RequestParam("postId") Long postId,
-                                                    @RequestParam("commentId") Long commentId,
-                                                    @RequestBody String content) {
+                                                @RequestParam("commentId") Long commentId,
+                                                @RequestBody CommentUpdateDto commentUpdateDto) {
         try {
-
-            commentService.update(commentId, content);
-            return ResponseHandler.generateResponse("댓글이 수정되었습니다.", HttpStatus.OK);
+            commentService.update(commentId, commentUpdateDto.getContent());
+            Comment comment = commentService.getById(commentId);
+            CommentDto commentDto = new CommentDto();
+            commentDto.setId(comment.getId());
+            commentDto.setUserId(comment.getUser().getId());
+            commentDto.setUserName(comment.getUser().getName());
+            commentDto.setPostId(comment.getPost().getId());
+            commentDto.setContent(comment.getContent());
+            if (comment.getComment() != null) {
+                Long reCommentId = comment.getComment().getId();
+                commentDto.setCommentId(reCommentId);
+            } else {
+                commentDto.setCommentId(null);
+            }
+            return ResponseHandler.generateResponse("댓글이 수정되었습니다.", HttpStatus.OK, "commentDto", commentDto);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);

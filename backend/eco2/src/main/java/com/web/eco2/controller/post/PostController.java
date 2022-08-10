@@ -120,6 +120,8 @@ public class PostController {
                 postListDto.setUserName(userName);
                 postListDto.setContent(content);
                 postListDto.setPostImgUrl(postImgUrl);
+                postListDto.setPublicFlag(post.isPublicFlag());
+                postListDto.setCommentFlag(post.isCommentFlag());
                 postListDto.setMission(mission);
                 postListDto.setCustomMission(customMission);
                 postListDto.setQuest(quest);
@@ -161,6 +163,8 @@ public class PostController {
             postListDto.setUserName(post.getUser().getName());
             postListDto.setContent(post.getContent());
             postListDto.setPostImgUrl(postImgPath);
+            postListDto.setPublicFlag(post.isPublicFlag());
+            postListDto.setCommentFlag(post.isCommentFlag());
             postListDto.setMission(mission);
             postListDto.setCustomMission(customMission);
             postListDto.setQuest(quest);
