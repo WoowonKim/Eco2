@@ -24,6 +24,8 @@ public class PostListDto {
     private String userName;
     private String content;
     private String postImgUrl;
+    private boolean publicFlag;
+    private boolean commentFlag;
     private Mission mission;
     private CustomMission customMission;
     private QuestDto quest;
