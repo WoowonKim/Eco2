@@ -7,7 +7,7 @@ import { commentDelete } from "../../../store/post/commentSlice";
 import { getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
 
-const ReplyItem = ({ id, content, user, postId }) => {
+const ReplyItem = ({ id, content, user, postId, commentUserId }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState(false);
@@ -25,7 +25,15 @@ const ReplyItem = ({ id, content, user, postId }) => {
         <li className={styles.list}>
           <div className={styles.commentContainer}>
             <div className={styles.comment}>
-              <p className={styles.user}>{user}</p>
+              <div className={styles.userInfo}>
+                <img
+                  src={`http://localhost:8002/img/profile/${commentUserId}`}
+                  // src={`${imgSrc}`}
+                  alt="profileImg"
+                  className={styles.profileImg}
+                />
+                <p className={styles.user}>{user}</p>
+              </div>{" "}
               <p className={styles.content}>{content}</p>
             </div>
             <div className={styles.dropdown}>

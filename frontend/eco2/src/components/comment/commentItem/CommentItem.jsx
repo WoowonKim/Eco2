@@ -9,7 +9,15 @@ import { getUserId, getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
 import ReplyItem from "../replyItem/ReplyItem";
 
-const CommentItem = ({ id, content, user, postId, commentId, replys }) => {
+const CommentItem = ({
+  id,
+  commentUserId,
+  content,
+  user,
+  postId,
+  commentId,
+  replys,
+}) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -30,7 +38,15 @@ const CommentItem = ({ id, content, user, postId, commentId, replys }) => {
         <li className={styles.list}>
           <div className={styles.commentContainer}>
             <div className={styles.comment}>
-              <p className={styles.user}>{user}</p>
+              <div className={styles.userInfo}>
+                <img
+                  src={`http://localhost:8002/img/profile/${commentUserId}`}
+                  // src={`${imgSrc}`}
+                  alt="profileImg"
+                  className={styles.profileImg}
+                />
+                <p className={styles.user}>{user}</p>
+              </div>
               <p className={styles.content}>{content}</p>
             </div>
             <div>
@@ -124,7 +140,12 @@ const CommentItem = ({ id, content, user, postId, commentId, replys }) => {
         />
       )}
 
-      <ReplyList commentId={commentId} id={id} replys={replys} />
+      <ReplyList
+        commentId={commentId}
+        id={id}
+        replys={replys}
+        commentUserId={commentUserId}
+      />
     </div>
   );
 };

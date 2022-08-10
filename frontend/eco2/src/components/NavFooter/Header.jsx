@@ -39,7 +39,7 @@ const Header = () => {
             className={styles.profileImg}
           />
         </button>
-        <i className="fa-solid fa-comments"></i>
+        <i className={`fa-solid fa-comments ${styles.icon}`}></i>
       </nav>
     </header>
   );

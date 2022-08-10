@@ -38,7 +38,6 @@ const Profile = () => {
           "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2EwNTE0MkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDExMjQ1NywiZXhwIjoxNjYwMjMyNDU3fQ.Z8ihJRXyWxk-H30hVqE8fX4AYuvdcWBp8UUV9FJm1ww",
       },
     };
-    // dispatch(profileImg({ userId: getUserId() }))
     fetch(`http://localhost:8002/img/profile/${userId}`, options)
       .then((res) => res.blob())
       .then((blob) => setImgSrc(URL.createObjectURL(blob)));

@@ -8,7 +8,6 @@ import PostModal from "../../components/modal/postModal/PostModal";
 import ReportModal from "../../components/modal/reportModal/ReportModal";
 import { post, postLike } from "../../store/post/postSlice";
 import { getUserId, getUserName } from "../../store/user/common";
-import { commentList } from "../../store/post/commentSlice";
 
 const PostDetail = () => {
   const [visible, setVisible] = useState(false);
@@ -17,6 +16,7 @@ const PostDetail = () => {
   const [comments, setComments] = useState([]);
   const [replys, setReplys] = useState([]);
   const [like, setLike] = useState(false);
+  const [test, setTest] = useState(0);
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const PostDetail = () => {
     //     setComments(res.payload.commentDto);
     //   }
     // });
-  }, []);
+  }, [test]);
 
   return (
     <div className={styles.container}>
@@ -178,10 +178,18 @@ const PostDetail = () => {
       </div>
       <p className={styles.content}>{feedItem.content}</p>
       <hr className={styles.line} />
-      <div className={styles.CommentForm}>
-        <CommentForm postId={feedItem.id} userId={getUserId()} />
-      </div>
-      <CommentList id={feedItem.id} comments={comments} replys={replys} />
+      {feedItem.commentFlag && (
+        <div>
+          <div className={styles.CommentForm}>
+            <CommentForm
+              postId={feedItem.id}
+              userId={getUserId()}
+              setTest={setTest}
+            />
+          </div>
+          <CommentList id={feedItem.id} comments={comments} replys={replys} />
+        </div>
+      )}
     </div>
   );
 };

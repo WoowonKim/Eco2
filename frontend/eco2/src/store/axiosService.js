@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getUserEmail } from "./user/common";
+import { getUserEmail, removeUserSession } from "./user/common";
 
 const axiosService = axios.create({
   baseURL: process.env.REACT_APP_BE_HOST,
@@ -47,6 +47,12 @@ const axiosService = axios.create({
 //             ] = `${newAccessToken}`;
 
 //             onTokenRefreshed(newAccessToken);
+//           })
+//           .catch((err) => {
+//             if (err) {
+//               removeUserSession();
+//               window.location.replace("/");
+//             }
 //           });
 //       }
 //       const retryOriginalRequest = new Promise((resolve) => {
