@@ -180,7 +180,7 @@ public class DailyMissionController {
 //    }
 
     @ApiOperation(value = "특정일자 미션 보상 여부 조회", response = Object.class)
-    @GetMapping("/reward/check/{usrId}")
+    @PostMapping("/reward/check/{usrId}")
     public ResponseEntity<Object> selectRewardImage(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
         try {
             log.info("특정일자 미션 보상 여부 조회 API 호출");
