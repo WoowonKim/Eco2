@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +56,7 @@ public class RedisService {
 
     private String convertListToString(List<Long> list) {
         if(list == null) return null;
+        if(list.size() == 0) return "";
 
         StringBuffer stringBuffer = new StringBuffer();
         for (Long item : list) {
@@ -66,6 +68,7 @@ public class RedisService {
 
     private List<Long> convertStringToList(String str) {
         if(str == null) return null;
+        if(str.equals("")) return new ArrayList<>();
         return Arrays.stream(str.split(",")).map(Long::parseLong).collect(Collectors.toList());
     }
 }

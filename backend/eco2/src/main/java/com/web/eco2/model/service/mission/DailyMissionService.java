@@ -134,6 +134,10 @@ public class DailyMissionService {
         List<Mission> recommendMission = new ArrayList<>();
 
         UltraShortNowcast ultraShortNowcast = weatherService.getUltraSrtNcst(lat, lng, time);
+        if(ultraShortNowcast == null) {
+            return null;
+        }
+
         Boolean isClear = null;
         if(ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
             isClear = true;
