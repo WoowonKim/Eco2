@@ -15,6 +15,10 @@ import DailyCustomMissionList from "./dailyCustomMissionList";
 import { GreenBtn } from "../../styled";
 import styles from "./dailyMissionDetail.module.css";
 
+// scroll
+import InfiniteScroll from "react-infinite-scroller";
+import { useInView } from "react-intersection-observer";
+
 const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [ecoId, setEcoId] = useState([]);
   const [list, getList] = useState(true); //미션 목록과 커스텀 미션을 구분하기 위한 State
@@ -32,6 +36,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
    * 서버의 즐겨찾기 목록을 갖고 오기 위한 함수.
    * id : id가 접속 되었을 때 첫 번째 렌더링
    * cnt : cnt 값이 변경 될 때 마다 렌더링 => 현재 완성X 한박자 느리게 화면에 노출됨.
+   * ==> 추가시 새로고침으로 임시적으로 해결 상태
    */
   useEffect(() => {
     dispatch(getFavorite({ id })).then((res) => {
@@ -117,6 +122,16 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
         </div>
       </div>
 
+      {/* <div style={{ height: "700px", overflow: "auto" }}>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadFunc}
+          hasMore={true||false}
+          loader={<div className="loader" key={0}>Loading...</div>}
+          useWindow={false}
+        ></InfiniteScroll>
+      </div> */}
+
       <div className={styles.heading}>
         <span
           className={styles.basicMission}
@@ -138,7 +153,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
 
       <div>
         {list === true ? (
-          <div>
+          <div className={styles.scrollMission}>
             {ecomissionList.map((it) => (
               <DailyEcoMissionitem key={it.id} content={it.title} ecoId={it.id} onCreate={onCreate} id={id} category={it.category} cnt={cnt} setCnt={setCnt} />
             ))}
@@ -150,12 +165,16 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
         )}
       </div>
 
-      <div>
-        <div className={styles.onmove}>
-          <p className={styles.btn}>{ecoCount}</p>
+      {list === true ? (
+        <div>
+          <div className={styles.onmove}>
+            <p className={styles.btn}>{ecoCount}</p>
+          </div>
+          <GreenBtn onClick={onMissionSub}> 선택한 미션 추가하기</GreenBtn>
         </div>
-        <GreenBtn onClick={onMissionSub}> 선택한 미션 추가하기</GreenBtn>
-      </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };
