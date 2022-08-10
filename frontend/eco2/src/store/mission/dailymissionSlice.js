@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-import axios from "axios";
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
 
 // export const dMission = createAsyncThunk("dailymission/list", async (args, { rejectWithValue }) => {
 //   const response = await axios({
@@ -15,14 +13,17 @@ import { axiosService } from "../axiosService";
 //   return response.data;
 // });
 
-export const dMission = createAsyncThunk("dailymissionSlice/dmission", async (args, { rejectWithValue }) => {
-  try {
-    const response = await axiosService.get(`/mission/${args.id}`);
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const dMission = createAsyncThunk(
+  "dailymissionSlice/dmission",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.get(`/mission/${args.id}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
 export const dailymissionSlice = createSlice({
   name: "dailyMission",

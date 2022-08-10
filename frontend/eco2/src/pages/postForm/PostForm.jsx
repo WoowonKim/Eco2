@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
 import { postCreate, postUpdate } from "../../store/post/postSlice";
 import { userInformation } from "../../store/user/userSettingSlice";
-import { getUserEmail } from "../../store/user/common";
+import { getUserEmail, getUserId } from "../../store/user/common";
 
 const PostForm = () => {
   const [fileImage, setFileImage] = useState("");
@@ -13,7 +13,7 @@ const PostForm = () => {
   const [selected, setSelected] = useState("");
   const [editText, setEditText] = useState("");
   const [text, setText] = useState("");
-  const [id, setId] = useState(0);
+  const [id, setUserId] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -93,11 +93,7 @@ const PostForm = () => {
 
   // 유저 아이디 가져오기
   useEffect(() => {
-    dispatch(userInformation({ email: getUserEmail() })).then((res) => {
-      if (res.payload.status === 200) {
-        setId(res.payload.user.id);
-      }
-    });
+    setUserId(getUserId());
   }, []);
   return (
     <div>

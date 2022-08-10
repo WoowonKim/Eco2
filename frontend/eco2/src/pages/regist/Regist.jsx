@@ -14,13 +14,9 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
-import {
-  getToken,
-  setAccessToken,
-  setUserEmail,
-  setUserId,
-} from "../../store/user/common";
+import { setUserEmail, setUserId } from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
+import axiosService from "../../store/axiosService";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -104,11 +100,6 @@ const Regist = () => {
     }
   };
 
-  useEffect(() => {
-    if (!!getToken()) {
-      navigate("/mainTree");
-    }
-  }, []);
   return (
     <div className={styles.signup}>
       <img
@@ -217,9 +208,11 @@ const Regist = () => {
                 })
               )
                 .then((res) => {
+                  axiosService.defaults.headers.common[
+                    "Auth-accessToken"
+                  ] = `${res.payload.user.accessToken}`;
                   setUserEmail(false, email);
                   setUserId(false, res.payload.user.id);
-                  setAccessToken(false, res.payload.accessToken);
                   navigate("/ecoName");
                 })
                 .catch((err) => console.log(err));

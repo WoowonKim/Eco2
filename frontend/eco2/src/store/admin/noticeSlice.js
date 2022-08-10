@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
 
 // 공지사항 작성
 export const noticeCreate = createAsyncThunk(

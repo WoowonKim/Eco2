@@ -25,7 +25,8 @@ const Profile = () => {
     // 유저 객체 받아오기
     dispatch(userInformation({ email })).then((res) => {
       setUserId(getUserId());
-      setSocialType(res.payload.user.socialType);
+      console.log(res);
+      // setSocialType(res.payload.user.socialType);
     });
   }, []);
   return (
@@ -40,11 +41,11 @@ const Profile = () => {
           test
         </button> */}
         <div className={styles.user}>
-          <img
+          {/* <img
             src={`http://localhost:8002/img/profile/${userId}`}
             alt="profileImg"
             className={styles.profileImg}
-          />
+          /> */}
           <p>{getUserName()}</p>
           <button
             onClick={() =>

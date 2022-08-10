@@ -1,11 +1,3 @@
-export const getToken = () => {
-  return (
-    localStorage.getItem("accessToken") ||
-    sessionStorage.getItem("accessToken") ||
-    null
-  );
-};
-
 export const getUserEmail = () => {
   return (
     localStorage.getItem("email") || sessionStorage.getItem("email") || null
@@ -25,14 +17,6 @@ export const getUserId = () => {
 export const removeUserSession = () => {
   localStorage.clear();
   sessionStorage.clear();
-};
-
-export const setAccessToken = (autoLogin, accessToken) => {
-  if (autoLogin) {
-    localStorage.setItem("accessToken", accessToken);
-  } else {
-    sessionStorage.setItem("accessToken", accessToken);
-  }
 };
 
 export const setUserEmail = (autoLogin, email) => {

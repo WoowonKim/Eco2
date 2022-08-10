@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
 
 // 채팅방 조회
 export const chattingList = createAsyncThunk(

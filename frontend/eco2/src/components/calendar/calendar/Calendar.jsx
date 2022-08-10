@@ -28,9 +28,10 @@ const Calendar = ({ id }) => {
 
   useEffect(() => {
     dispatch(calendar({ id })).then((res) => {
-      if (res.payload.status === 200) {
-        setRewardDate(res.payload.calendarList);
-      }
+      // if (res.payload.status === 200) {
+      //   setRewardDate(res.payload.calendarList);
+      // }
+      console.log(res);
     });
   }, []);
   return (

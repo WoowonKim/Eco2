@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userSlice } from "./user/userSlice";
-import { feedSlice } from "./mainFeed/feedSlice";
 import { leavesSlice } from "./mainTree/leavesSlice";
 import { userInformationSlice } from "./user/userSettingSlice";
 import { accountSlice } from "./user/accountSlice";
@@ -19,7 +18,6 @@ export const store = configureStore({
     user: userSlice.reducer,
     userInformation: userInformationSlice.reducer,
     account: accountSlice.reducer,
-    feed: feedSlice.reducer,
     comment: commentSlice.reducer,
     leaves: leavesSlice.reducer,
     dailyMission: dailymissionSlice.reducer,

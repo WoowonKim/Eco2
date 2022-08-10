@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
+import { getUserId } from "./common";
 
 // 친구 조회
 export const friends = createAsyncThunk(
@@ -93,7 +94,7 @@ export const calendar = createAsyncThunk(
   "accountSlice/calendar",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await axiosService.get(`/daily/calendar/${args.id}`);
+      const response = await axiosService.get(`/daily/calendar/${getUserId()}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
