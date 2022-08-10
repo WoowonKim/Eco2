@@ -11,7 +11,7 @@ import MissionCustomItem from "../../../components/dailyMission/missionItem/miss
 import MissionTodayItem from "../../../components/dailyMission/missionItem/missionTodayItem";
 
 // Store
-import { getMission, postTodayMission } from "../../../store/mission/missionMainSlice";
+import { getMission, missionPost, postTodayMission, missionItem } from "../../../store/mission/missionMainSlice";
 import { getUserId } from "../../../store/user/common";
 import { getLocation } from "../../../utils";
 
@@ -80,6 +80,20 @@ const DailyMissionMain = () => {
       setTCnt(tCnt - 1);
     }
   };
+  function getToday() {
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+
+    return year + "-" + month + "-" + day;
+  }
+  const toDayGet = getToday();
+  // console.log(toDayGet);
+
+  // useEffect(() => {
+  //   dispatch(missionItem({ id, date: toDayGet }));
+  // }, [id]);
 
   /**
    *  미션들의 길이와 미션 완료값이 동일할 경우 오늘 미션 완료로 간주.
@@ -91,14 +105,29 @@ const DailyMissionMain = () => {
   const sumMission = main.length + cusMain.length;
 
   const onSucsses = () => {
-    if (sumClearMission === sumMission) {
-      alert(`축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`);
-      naviGate("/mainTree");
-    } else {
-      alert("미션을 완료하고 눌러주세요!");
-    }
+    // if (sumClearMission === sumMission) {
+    //   alert(`축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`);
+    //   naviGate("/mainTree");
+    // } else {
+    //   alert("미션을 완료하고 눌러주세요!");
+    // }
+    dispatch(missionPost({ id })).then((res) => {
+      if (res.payload.status === 200) {
+        console.log("성공했다.");
+        console.log("RES정보 ===>", res.payload);
+      }
+    });
   };
 
+  useEffect(() => {
+    dispatch(missionItem({ id, date: toDayGet })).then((res) => {
+      if (res.payload.status === 200) {
+        console.log("res.payload===>", res.payload.rewardFlag);
+      }
+    });
+  }, [id]);
+
+  // console.log("메인이다===>", main[0].mission.category);
   return (
     <div className={styles.headerMain}>
       <div className={styles.mainHeader}>
@@ -126,7 +155,7 @@ const DailyMissionMain = () => {
 
       <div>
         {main.map((it) => (
-          <MissionMain key={it.id} content={it.mission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} />
+          <MissionMain key={it.id} content={it.mission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} category={it.mission.category} />
         ))}
       </div>
 

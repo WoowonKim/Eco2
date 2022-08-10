@@ -81,6 +81,7 @@
 }
 
 .basicMission {
+  width: 180px;
   cursor: pointer;
   padding: 10px;
   font-weight: bold;
@@ -161,4 +162,15 @@ fieldset {
 
 .zero {
   margin-bottom: 70px;
+}
+
+.scrollHead {
+  height: 100vh;
+}
+
+.scrollMission {
+  height: 250px;
+  width: 360px;
+  overflow-x: auto;
+  overflow-y: scroll;
 }

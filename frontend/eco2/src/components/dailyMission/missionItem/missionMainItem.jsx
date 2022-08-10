@@ -9,8 +9,8 @@ import { deleteMission, clearMission } from "../../../store/mission/missionMainS
 // CSS
 import styles from "./dailyMission.module.css";
 
-const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
-  const flagType = missionFlag ? "fa-solid fa-circle" : "fa-regular fa-circle"; // 미션 인증 색 변화
+const MissionMain = ({ idTest, content, missionIdTest, missionFlag, category }) => {
+  // const flagType = missionFlag ? "fa-solid fa-circle" : "fa-regular fa-circle"; // 미션 인증 색 변화
   const realTrashType = missionFlag ? styles.whiteTrash : styles.greenTrash; // 미션 여부에 따른 쓰레기통
 
   const naviGate = useNavigate();
@@ -29,7 +29,7 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
         alert("포기하지 말고 화이팅!");
       }
     } else {
-      // dispatch(deleteMission({ id: idTest, missionId: missionIdTest }));
+      dispatch(deleteMission({ id: idTest, missionId: missionIdTest }));
       alert("미션 완료시 삭제 불가합니다!");
     }
   };
@@ -53,12 +53,16 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
   return (
     <div>
       <div className={styles.mainList}>
-        <i
-          className={`${flagType}`}
-          onClick={() => {
-            boolCheck(idTest, missionIdTest);
-          }}
-        ></i>
+        {missionFlag ? (
+          <img src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`} className={styles.leafSize}></img>
+        ) : (
+          <i
+            className={"fa-regular fa-circle"}
+            onClick={() => {
+              boolCheck(idTest, missionIdTest);
+            }}
+          ></i>
+        )}
         <span>{content}</span>
         <i className={`${"fa-solid fa-trash-can"} ${realTrashType}`} onClick={onDeleButton}></i>
       </div>
