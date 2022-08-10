@@ -47,12 +47,6 @@ const axiosService = axios.create({
 //             ] = `${newAccessToken}`;
 
 //             onTokenRefreshed(newAccessToken);
-//           })
-//           .catch((err) => {
-//             console.log(err);
-//             if (err.payload?.status === 401) {
-//               window.location.replace("/");
-//             }
 //           });
 //       }
 //       const retryOriginalRequest = new Promise((resolve) => {
