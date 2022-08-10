@@ -6,6 +6,7 @@ import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.chat.ChatService;
+import com.web.eco2.model.service.item.CalendarService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
@@ -45,6 +46,9 @@ public class UserInformationController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CalendarService calendarService;
 
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 조회", response = Object.class)
@@ -107,6 +111,7 @@ public class UserInformationController {
             }
             chatService.deleteByToUserOrFromUser(dbUser.getId());
             profileImgService.deleteImage(dbUser.getId());
+            calendarService.deleteByUserId(dbUser.getId());
             userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
