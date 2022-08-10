@@ -14,7 +14,6 @@ const ChatModal = ({
 }) => {
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
-  const colorType = type === "수정" ? styles.editButton : styles.warningButton;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [friends, setFriends] = useState([]);
@@ -36,9 +35,10 @@ const ChatModal = ({
         <div className={styles.modalTitle}>
           <h2 className={styles.title}>{title}</h2>
         </div>
-        
-        <ChatModalList friends={friends} />
-
+        <hr className={styles.line} />
+        <div className={styles.friends}>
+          <ChatModalList friends={friends} />
+        </div>
         <div className={styles.buttonGroup}>
           <button
             onClick={() => {

@@ -59,6 +59,20 @@ export const createRoom = createAsyncThunk(
   }
 );
 
+// 채팅방 삭제
+export const deleteRoom = createAsyncThunk(
+  "chattingSlice/deleteRoom",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.delete(`/chat/room/${args.roodId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 export const chattingSlice = createSlice({
   name: "chatting",
   initialState: [],
@@ -90,6 +104,16 @@ export const chattingSlice = createSlice({
     [chattingMessageList.rejected]: (state, action) => {
       console.log("chattingFriendSelect rejected", action.payload);
     },
+
+    [deleteRoom.fulfilled]: (state, action) => {
+      console.log("deleteRoom fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [deleteRoom.rejected]: (state, action) => {
+      console.log("deleteRoom rejected", action.payload);
+    },
+
   },
 });
 

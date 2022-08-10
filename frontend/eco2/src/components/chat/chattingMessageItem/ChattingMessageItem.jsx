@@ -21,7 +21,7 @@ const ChattingMessageItem = ({
         </div>
       ) : (
         <div>
-          {/* <div className={styles.leftContent}> */}
+          <div className={styles.leftContent}>
             <div className={styles.profileImg}>
               <img
                 src={`${process.env.PUBLIC_URL}/logo.png`}
@@ -29,12 +29,12 @@ const ChattingMessageItem = ({
                 className={styles.img}
               />
             </div>
-          {/* </div> */}
-          {/* <div className={styles.rightContent}> */}
             <span className={`${styles.userName}`}>{user}</span>
             <span className={`${styles.message}`}>{message}</span>
+          </div>
+          <div className={styles.rightContent}>
             <span className={`${styles.sendDate}`}>{sendDate}</span>
-          {/* </div> */}
+          </div>
         </div>
       )}
 

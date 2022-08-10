@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   justify-content: center;
-  margin-bottom: 7px;
+  margin-bottom: 13px;
 }
 
 .profileImg {
@@ -14,6 +14,11 @@
 .img {
   height: 40px;
   width: 40px;
+}
+.leftContent{
+  /* display: inline-block; */
+  /* text-align: left; */
+  /* float: left; */
 }
 
 .userName {
@@ -47,14 +52,15 @@
   font-size: 7px;
   font-weight: bold;
   border-radius: 10px;
-  
+  /* float: right; */
 }
 
 .userContent {
   /* float: right; */
+    display: inline-block;
   /* display: flex; */
   /* justify-content: space; */
-  text-align: right;
+  /* text-align: right; */
 }
 
 .userSendDate {
@@ -62,7 +68,10 @@
   color: #6a707c;
   font-size: 7px;
   font-weight: bold;
-  
+  float: right;
+  margin-top: 15px;
+  margin-right: 7px;
+
 }
 
 .userMessage {
@@ -77,4 +86,5 @@
   color: #6a707c;
   padding: 7px;
   border-radius: 10px;
+  float: right;
 }

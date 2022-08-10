@@ -14,27 +14,27 @@ const Chatting = () => {
   const params = useParams();
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
-  const displayType = visible ? styles.visible : styles.hidden;
+  const [deleteFlag, setDeleteFlag] = useState(0);
 
   useEffect(() => {
     dispatch(chattingList({ userId: params.userId })).then((res) => {
       if (res.payload.status === 200) {
-        console.log(res.payload.chatRoomList);
         setChattings(res.payload.chatRoomList);
-        console.log(chattings);
       }
     });
-  }, []);
+  }, [deleteFlag]);
 
   return (
     <div className={styles.chatting}>
-      <ChattingList chattings={chattings} />
+      <ChattingList chattings={chattings}
+      setDeleteFlag = {setDeleteFlag}
+       />
       <i 
        onClick={() => {
         setVisible(!visible);
         setModalType("친구목록");
       }} 
-      className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+      className={`${"fa-solid fa-circle-plus"} ${styles.createRoomButton}`}></i>
 
       {visible && modalType === "친구목록" && (
         <ChatModal
