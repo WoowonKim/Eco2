@@ -6,6 +6,7 @@ import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.chat.ChatService;
+import com.web.eco2.model.service.item.CalendarService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
@@ -48,6 +49,9 @@ public class UserInformationController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private CalendarService calendarService;
+
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 조회", response = Object.class)
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
@@ -59,8 +63,9 @@ public class UserInformationController {
             User user = userService.findByEmail(email);
 
             if (user != null) {
-                List<QuestPost> posts = postService.getPostOnly();
-                List<QuestPost> questPosts = postService.getQuestPostList();
+                System.out.println(user.getId());
+                List<Post> posts = postService.getPostOnly(user.getId());
+                List<QuestPost> questPosts = postService.getQuestPostOnly(user.getId());
                 return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
                         Map.of("user", user.toDto(), "postList", posts, "questPostList", questPosts));
             } else {
@@ -108,6 +113,7 @@ public class UserInformationController {
             }
             chatService.deleteByToUserOrFromUser(dbUser.getName());
             profileImgService.deleteImage(dbUser.getId());
+            calendarService.deleteByUserId(dbUser.getId());
             userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {

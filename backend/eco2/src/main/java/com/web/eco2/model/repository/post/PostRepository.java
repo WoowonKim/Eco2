@@ -6,6 +6,7 @@ import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,9 +21,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<QuestPost> findByUserAndQuestNotNull(User user);
 
-    List<QuestPost> findByQuestIsNull(Sort sort);
+    @Query(value = "select * from tb_post p where p.usr_id=:usrId and p.que_id is null", nativeQuery = true)
+    List<Post> findOnlyPostById(Long usrId);
 
-    List<QuestPost> findByQuestNotNull(Sort sort);
+    @Query(value = "select * from tb_post p where p.usr_id=:usrId and p.que_id is not null", nativeQuery = true)
+    List<QuestPost> findOnlyQuestPostById(Long usrId);
 
 //    List<Post> findByUserIdOrderByIdDesc(Long userid);
 
