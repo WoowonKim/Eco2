@@ -1,5 +1,6 @@
 package com.web.eco2.controller.mission;
 
+import com.web.eco2.controller.ImageController;
 import com.web.eco2.domain.dto.item.CalendarDto;
 import com.web.eco2.domain.dto.mission.CustomMissionDto;
 import com.web.eco2.domain.dto.mission.DailyMissionRecommendRequest;
@@ -144,7 +145,7 @@ public class DailyMissionController {
 
     @ApiOperation(value = "데일리미션 보상 받기", response = Object.class)
     @PostMapping("/reward/{usrId}")
-    public ResponseEntity<Object> rewardDailyMission(@PathVariable("usrId") Long usrId) {
+    public ResponseEntity<?> rewardDailyMission(@PathVariable("usrId") Long usrId) {
         try {
             log.info("데일리미션 보상 받기 API 호출");
             User user = userService.getById(usrId);
@@ -154,31 +155,29 @@ public class DailyMissionController {
 
             //디비, 로컬에 파일 저장
             File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".jpg");
-            ImageIO.write(img, "jpg", saveFile);               // write메소드를 이용해 파일을 만든다
+            ImageIO.write(img, "jpg", saveFile);
             calendarDto.setSaveName(calendarDto.getSaveName()+".jpg");
             calendarService.save(calendarDto.toEntity());
-            //TODO : 프론트에서 이미지 출력시 뭐 필요한지 모름,, response에 담아주기
+            return ImageController.getFileResponse(calendarDto.getSaveFolder(),  calendarDto.getSaveName());
 
-            return ResponseHandler.generateResponse("보상 이미지 제공이 완료되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("데일리미션 보상 받기 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @ApiOperation(value = "보상 이미지 조회", response = Object.class)
-    @GetMapping("/reward/{calId}")
-    public ResponseEntity<Object> selectRewardImage(@PathVariable("calId") Long calId) {
-        try {
-            //TODO: 프론트에서 이미지 출력할때 뭐 필요한지 모르겠다 구현하기!!
-            log.info("보상 이미지 조회 API 호출");
-            Optional<Calendar> calendar = calendarService.getById(calId);
-            return ResponseHandler.generateResponse("미션 보상이미지가 조회되었습니다.", HttpStatus.OK, "calendar", calendar);
-        } catch (Exception e) {
-            log.error("보상 이미지 조회 API 에러", e);
-            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @ApiOperation(value = "보상 이미지 조회", response = Object.class)
+//    @GetMapping("/reward/{calId}")
+//    public ResponseEntity<Object> selectRewardImage(@PathVariable("calId") Long calId) {
+//        try {
+//            log.info("보상 이미지 조회 API 호출");
+//            Optional<Calendar> calendar = calendarService.getById(calId);
+//            return ResponseHandler.generateResponse("미션 보상이미지가 조회되었습니다.", HttpStatus.OK, "calendar", calendar);
+//        } catch (Exception e) {
+//            log.error("보상 이미지 조회 API 에러", e);
+//            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @ApiOperation(value = "특정일자 미션 보상 여부 조회", response = Object.class)
     @GetMapping("/reward/check/{usrId}")
