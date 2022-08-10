@@ -55,12 +55,11 @@ const Settings = ({ email }) => {
             id="publicFlag"
             hidden
             className={styles.toggle}
-            onClick={() => {
+            onChange={(e) => {
               let data = { ...checked };
               data.publicFlag = !checked.publicFlag;
               setChecked(data);
             }}
-            defaultChecked={checked.publicFlag}
             checked={checked.publicFlag}
           />
           <label htmlFor="publicFlag" className={styles.toggleSwitch}>
@@ -82,12 +81,11 @@ const Settings = ({ email }) => {
             id="commentAlarmFlag"
             hidden
             className={styles.toggle}
-            onClick={() => {
+            onChange={(e) => {
               let data = { ...checked };
               data.commentAlarmFlag = !checked.commentAlarmFlag;
               setChecked(data);
             }}
-            defaultChecked={checked.commentAlarmFlag}
             checked={checked.commentAlarmFlag}
           />
           <label htmlFor="commentAlarmFlag" className={styles.toggleSwitch}>
@@ -109,12 +107,11 @@ const Settings = ({ email }) => {
             id="chatAlarmFlag"
             hidden
             className={styles.toggle}
-            onClick={() => {
+            onChange={(e) => {
               let data = { ...checked };
               data.chatAlarmFlag = !checked.chatAlarmFlag;
               setChecked(data);
             }}
-            defaultChecked={checked.chatAlarmFlag}
             checked={checked.chatAlarmFlag}
           />
           <label htmlFor="chatAlarmFlag" className={styles.toggleSwitch}>

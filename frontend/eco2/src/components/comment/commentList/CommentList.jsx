@@ -3,24 +3,22 @@ import { useSelector } from "react-redux";
 import CommentItem from "../commentItem/CommentItem";
 import styles from "./CommentList.module.css";
 
-const CommentList = ({ id, comments }) => {
-  console.log(comments);
+const CommentList = ({ comments, replys }) => {
+  console.log(replys);
   return (
     <ul className={styles.ul}>
       {comments?.length > 0 &&
-        comments.map(
-          (comment) =>
-            id === comment.postId && (
-              <CommentItem
-                key={comment.commentId}
-                id={comment.commentId}
-                content={comment.content}
-                user={comment.userId}
-                postId={comment.postId}
-                replys={comment.comments}
-              />
-            )
-        )}
+        comments.map((comment) => (
+          <CommentItem
+            key={comment.id}
+            id={comment.id}
+            content={comment.content}
+            user={comment.userName}
+            postId={comment.postId}
+            commentId={comment.commentId}
+            replys={replys}
+          />
+        ))}
     </ul>
   );
 };

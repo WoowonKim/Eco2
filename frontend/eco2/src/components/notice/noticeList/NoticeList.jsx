@@ -5,7 +5,7 @@ import styles from "./NoticeList.module.css";
 const NoticeList = ({ notices }) => {
   return (
     <div>
-      {notices.content &&
+      {!!notices.content &&
         notices.content.map((notice) => (
           <NoticeItem
             key={notice.id}
