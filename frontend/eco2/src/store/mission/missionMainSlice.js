@@ -1,24 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosService from "../axiosService";
 
-// export const postMission = createAsyncThunk("dailymission/Apostlist", async (args, { rejectWithValue }) => {
-//   const response = await axios({
-//     url: `/daily/${args.id}`,
-//     method: "post",
-//     data: {
-//       dailyMissionList: args.ecoId,
-//       dailyCustomMissionList: [],
-//     },
-//     headers: {
-//       Authorization: "Authorization ",
-//     },
-//   });
-//   return response.data;
-// });
-
 export const postMission = createAsyncThunk("missionMainSlice/postMission", async (args, rejectWithValue) => {
   try {
-    // console.log("ARGS ====> ", args);
     const response = await axiosService.post(`/daily/${args.id}`, {
       dailyMissionList: args.dailyMissionList,
       customMissionList: args.customMissionList,
@@ -52,9 +36,6 @@ export const getMission = createAsyncThunk("missionMainSlice/getMission", async 
 });
 
 export const deleteMission = createAsyncThunk("missionMainSlice/deleteMission", async (args, { rejectWithValue }) => {
-  //console.log("서버 받은 ID ===> ", args.id);
-  //console.log("서버 받은 missionId ===> ", args.missionId);
-  //const data = JSON.stringify({args.missio})
   try {
     const response = await axiosService.delete(`/daily/${args.id}`, {
       data: {
@@ -73,6 +54,27 @@ export const clearMission = createAsyncThunk("missionMainSlice/clearMission", as
   try {
     const response = await axiosService.put(`/daily/${args.id}`, {
       missionId: args.missionId,
+    });
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
+  }
+});
+
+export const missionPost = createAsyncThunk("missionMainSlice/missionPost", async (args, { rejectWithValue }) => {
+  try {
+    const response = await axiosService.post(`/daily/reward/${args.id}`);
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
+  }
+});
+
+export const missionItem = createAsyncThunk("missionMainSlice/missionItem", async (args, { rejectWithValue }) => {
+  try {
+    console.log("missionItem ARGS===>", args);
+    const response = await axiosService.post(`/daily/reward/check/${args.id}`, {
+      date: args.date,
     });
     return response.data;
   } catch (err) {
@@ -113,6 +115,18 @@ export const myEcoMissionSlice = createSlice({
     },
     [clearMission.rejected]: (state, action) => {
       console.log("clearMission Rejected", action.payload);
+    },
+    [missionPost.fulfilled]: (state, action) => {
+      console.log("missionPost Fulfilled ===>", action.payload);
+    },
+    [missionPost.rejected]: (state, action) => {
+      console.log("missionPost Rejected ===>", action.payload);
+    },
+    [missionItem.fulfilled]: (state, action) => {
+      console.log("missionItem Fulfiled ===>", action.payload);
+    },
+    [missionItem.rejected]: (state, action) => {
+      console.log("missionItem Rejected===>", action.payload);
     },
   },
 });
