@@ -1,168 +1,80 @@
-.signup {
-  display: inline-block;
+.list {
+  /* display: inline-block; */
   margin: 0;
   padding: 0;
   justify-content: center;
-  margin-top: 100px;
+  margin-bottom: 7px;
+}
+
+.profileImg {
+  margin-right: 7px;
+  float: left;
 }
 
 .img {
-  height: 200px;
-  margin-bottom: 10px;
+  height: 40px;
+  width: 40px;
 }
 
-.emailCheckText {
-  text-align: start;
-  font-size: xx-small;
-}
-
-.EmailInput {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.visible {
-  visibility: visible;
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.hidden {
-  display: none;
-}
-
-.label {
-  display: flex;
-  justify-content: start;
-  font-size: small;
-  margin: 0 0 0 10px;
-}
-
-.input {
-  background: white;
-  border: none;
-  border-bottom: 1px solid #dadada;
-  width: 270px;
-  height: 35px;
-  padding-left: 10px;
-}
-
-.input:focus {
-  outline: none;
-}
-
-.button {
-  width: 55px;
-  height: 35px;
-  border: 1px solid #dadada;
-  border-radius: 8px;
-  margin-left: 5px;
-  cursor: pointer;
-  background-color: #adc178;
-  color: white;
-}
-
-.buttonEmail:disabled {
-  background-color: #dadada;
-}
-.signupButton:disabled {
-  background-color: #dadada;
-}
-
-.inputEmail {
-  background: white;
-  border: none;
-  border-bottom: 1px solid #dadada;
-  height: 35px;
-  width: 65%;
-  font-size: small;
-  margin-right: 10px;
-  padding-left: 10px;
-}
-
-.inputEmail:focus {
-  outline: none;
-}
-
-.buttonEmail {
-  width: 15%;
-  height: 35px;
-  border: 1px solid #dadada;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #adc178;
-  color: white;
-}
-
-.timer {
-  font-size: small;
-  color: red;
-  margin: 0 8px;
-  text-align: center;
-}
-
-.lineGroup {
-  margin: 30px 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-
-.shortLine {
-  width: 15%;
-  height: 1px;
-  padding: 0;
-  margin: 0 5px 0 0;
-  border: none;
-  background-color: #dadada;
-}
-
-.lineText {
-  color: #6a707c;
-  font-size: small;
-  font-weight: bold;
-}
-
-.longLine {
-  width: 45%;
-  height: 1px;
-  padding: 0;
-  margin: 0 0 0 5px;
-  border: none;
-  background-color: #dadada;
-}
-
-.text {
+.userName {
   display: flex;
   justify-content: start;
   color: #6a707c;
-  font-size: small;
+  font-size: x-small;
   font-weight: bold;
+  margin-bottom: 3px;
 }
 
-.link {
-  text-decoration: none;
+.message {
+  display: flex;
+  justify-content: start;
+  color: #6a707c;
+  font-size: 12px;
+  font-weight: bold;
+  width: 150px;
+  border: none;
+  background-color: #adc178;
+  color: #FFF;
+  padding: 7px;
+  border-radius: 10px;
 }
 
-.success {
-  color: #949191;
-  margin: 5px 0 20px 0;
-  font-size: x-small;
-  text-align: start;
+
+.sendDate {
+  justify-content: start;
+  right: 0px;
+  color: #6a707c;
+  font-size: 7px;
+  font-weight: bold;
+  border-radius: 10px;
+  
 }
 
-.fail {
-  color: red;
-  margin: 5px 0 20px 0;
-  font-size: x-small;
-  text-align: start;
+.userContent {
+  /* float: right; */
+  /* display: flex; */
+  /* justify-content: space; */
+  text-align: right;
 }
 
-.test {
-  height: 34px;
-  margin: 0;
+.userSendDate {
+  justify-content: start;
+  color: #6a707c;
+  font-size: 7px;
+  font-weight: bold;
+  
+}
+
+.userMessage {
+  display: flex;
+  justify-content: start;
+  color: #6a707c;
+  font-size: 12px;
+  font-weight: bold;
+  width: 150px;
+  border: none;
+  background-color: beige;
+  color: #6a707c;
+  padding: 7px;
+  border-radius: 10px;
 }

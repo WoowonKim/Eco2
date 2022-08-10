@@ -12,7 +12,8 @@ const ChattingMessage = ({ chattingMessages }) => {
           <ChattingMessageItem
             key={chattingMessage.id}
             id={chattingMessage.id}
-            user={chattingMessage.user.email}
+            message={chattingMessage.message}
+            user={chattingMessage.user.name}
             sendDate={chattingMessage.sendDate}
           />
         ))}

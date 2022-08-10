@@ -17,7 +17,6 @@ public class MissionDto {
     private String title;
     private String content;
     private boolean questFlag;
-    private boolean favoriteFlag = false;
 //    public Mission toEntity() {
 //        return Mission.builder()
 //                .id(id)
