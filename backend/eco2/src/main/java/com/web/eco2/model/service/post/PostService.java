@@ -163,6 +163,18 @@ public class PostService {
         return postRepository.findByUserAndQuestNotNull(user);
     }
 
+    public void deletePostImage(Long userId) {
+        postRepository.findByUserId(userId).forEach(post -> {
+            PostImg postImg = postImgRepository.getById(post.getId());
+            Path path = Paths.get(postImg.getSaveFolder());
+            File file = new File(path.toAbsolutePath().toString(), postImg.getSaveName());
+//            System.out.println(path.toAbsolutePath());
+//            System.out.println(calendar);
+            file.delete();
+            postImgRepository.delete(postImg);
+        });
+    }
+
 
 //    @Transactional()
 //    public List<Post> getPostList() {
