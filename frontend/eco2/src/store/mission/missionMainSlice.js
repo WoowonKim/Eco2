@@ -16,19 +16,16 @@ import axiosService from "../axiosService";
 //   return response.data;
 // });
 
-export const postMission = createAsyncThunk(
-  "missionMainSlice/postMission",
-  async (args, rejectWithValue) => {
-    try {
-      // console.log("ARGS ====> ", args);
-      const response = await axiosService.post(`/daily/${args.id}`, {
-        dailyMissionList: args.dailyMissionList,
-        dailyCustomMissionList: args.dailyCustomMissionList,
-      });
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
+export const postMission = createAsyncThunk("missionMainSlice/postMission", async (args, rejectWithValue) => {
+  try {
+    // console.log("ARGS ====> ", args);
+    const response = await axiosService.post(`/daily/${args.id}`, {
+      dailyMissionList: args.dailyMissionList,
+      customMissionList: args.customMissionList,
+    });
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
   }
 );
 

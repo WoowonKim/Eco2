@@ -22,6 +22,8 @@ public class ChatRoomDto {
     private String fromUser;
     private String toUser;
 
+    private String lastSendMessage;
+
     private LocalDateTime lastSendTime;
 
     private Set<WebSocketSession> sessions = new HashSet<>();
@@ -30,6 +32,7 @@ public class ChatRoomDto {
         return ChatRoom.builder()
                 .toUser(toUser)
                 .fromUser(fromUser)
+                .lastSendMessage(null)
                 .lastSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm")))
                 .build();
     }

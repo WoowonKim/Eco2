@@ -7,6 +7,8 @@ import { getUserName } from "../../../store/user/common";
 const ChattingList = ({ chattings }) => {
 
   const [name, setName] = useState("");
+  const [toUserName, setToUserName] = useState("");
+
   useEffect(() => {
     setName(getUserName());
   }, []);
@@ -15,12 +17,17 @@ const ChattingList = ({ chattings }) => {
     <div>
       {chattings &&
         chattings.map((chatting) => (
+          // if(chatting.toUser === name){
+          //   setToUserName(chatting.fromUser);
+          // }else{
+          //   setToUserName(chatting.toUser);
+          // }
           <ChattingItem
             key={chatting.id}
             id={chatting.id}
-            toUser={chatting.toUser}
-            fromUser={chatting.fromUser}
+            toUser={chatting.fromUser}
             lastSendTime={chatting.lastSendTime}
+            lastSendMessage={chatting.lastSendMessage}
           />
         ))}
     </div>

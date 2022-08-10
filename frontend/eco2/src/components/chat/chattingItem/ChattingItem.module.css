@@ -1,3 +1,31 @@
+.link {
+  width: 300px;
+  margin: 30px;
+}
+
+.list{
+  width: 270px;
+  margin: 20px;
+}
+
+.leftContent{
+  display: inline-block;
+  float: left;
+}
+
+.rightContent{
+  display: inline-block;
+}
+
+.img{
+  display: inline-block;
+float: left;
+}
+
+.line {
+  border: solid 0.3px #6a707c;
+}
+
 .signup {
   display: inline-block;
   margin: 0;
@@ -69,6 +97,7 @@
 .buttonEmail:disabled {
   background-color: #dadada;
 }
+
 .signupButton:disabled {
   background-color: #dadada;
 }
