@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux/es/exports";
 
 // Store
-import { deleteMission, clearMission } from "../../../store/mission/missionMainSlice";
+import {
+  deleteMission,
+  clearMission,
+} from "../../../store/mission/missionMainSlice";
 
 // CSS
 import styles from "./dailyMission.module.css";
@@ -41,7 +44,7 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
     if (!missionFlag) {
       if (window.confirm("미션완료!! 인증게시글 업로드 하시겠어요?")) {
         dispatch(clearMission({ id: idTest, missionId: missionIdTest }));
-        naviGate("/post", { customId: idTest });
+        naviGate("/post", { state: { missionId: idTest } });
       } else {
         alert("인증게시글 업로드시 완료 인증됩니다!!");
       }
@@ -60,7 +63,10 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
           }}
         ></i>
         <span>{content}</span>
-        <i className={`${"fa-solid fa-trash-can"} ${realTrashType}`} onClick={onDeleButton}></i>
+        <i
+          className={`${"fa-solid fa-trash-can"} ${realTrashType}`}
+          onClick={onDeleButton}
+        ></i>
       </div>
     </div>
   );

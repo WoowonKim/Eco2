@@ -7,8 +7,9 @@ import ReportModal from "../../modal/reportModal/ReportModal";
 import styles from "./CommentItem.module.css";
 import { getUserId, getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
+import ReplyItem from "../replyItem/ReplyItem";
 
-const CommentItem = ({ id, content, user, postId, replys }) => {
+const CommentItem = ({ id, content, user, postId, commentId, replys }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -46,7 +47,7 @@ const CommentItem = ({ id, content, user, postId, replys }) => {
                   className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}
                 ></i>
                 <div className={styles.dropdownContent}>
-                  {userId === user && (
+                  {name === user && (
                     <div>
                       <button
                         onClick={() => {
@@ -122,7 +123,8 @@ const CommentItem = ({ id, content, user, postId, replys }) => {
           closeModal={() => setReplyVisible(!replyVisible)}
         />
       )}
-      <ReplyList id={id} replys={replys} />
+
+      <ReplyList commentId={commentId} id={id} replys={replys} />
     </div>
   );
 };
