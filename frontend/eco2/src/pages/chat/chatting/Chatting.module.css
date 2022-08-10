@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .img {
@@ -12,10 +12,9 @@
 }
 
 .createRoomButton {
-  text-align: start;
-  font-size: xx-large;
-  background-color: #adc178;
-  color:aliceblue;
+  font-size: 50px;
+  position: fixed;
+  bottom: 70px;
 }
 
 

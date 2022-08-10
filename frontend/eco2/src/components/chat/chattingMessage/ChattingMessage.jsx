@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
 import styles from "./ChattingMessage.module.css";
 import ChattingMessageItem from "../chattingMessageItem/ChattingMessageItem";
 
