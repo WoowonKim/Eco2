@@ -7,19 +7,19 @@ const ChattingItem = ({
   id,
   toUser,
   fromUser,
-  lastSendTime
+  lastSendTime,
+  lastSendMessage
 }) => {
   return (
     <Link to={`/chatting/room/${id}`} className={styles.link}>
       <div className={styles.list}>
         <div className={styles.leftContent}>
-
-
-        </div>
-        <div className={styles.rightContent}>
-          <span className={`${styles.text}`}>{id}</span>
+          {/* <img className={styles.img}></img> */}
           <span className={`${styles.text}`}>{toUser}</span>
           <span className={`${styles.text}`}>{fromUser}</span>
+        </div>
+        <div className={styles.rightContent}>
+        <span className={`${styles.text}`}>{lastSendMessage}</span>
           <span className={`${styles.text}`}>{lastSendTime}</span>
         </div>
       </div>

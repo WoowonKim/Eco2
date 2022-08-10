@@ -64,6 +64,7 @@ public class StompChatController {
         ChatMessage chatMessage = message.toEntity();
         chatService.saveChatMessage(chatMessage);
 
+        chatRoom.setLastSendMessage(chatMessage.getMessage());
         chatRoom.setLastSendTime(chatMessage.getSendDate());
         chatService.save(chatRoom);
 
