@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { axiosService } from "../axiosService";
-import { getToken } from "../user/common";
+import axiosService from "../axiosService";
 
 export const getLeaves = createAsyncThunk(
   "leavesSlice/getLeaves",

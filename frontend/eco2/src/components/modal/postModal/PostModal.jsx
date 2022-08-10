@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { noticeDelete } from "../../../store/admin/noticeSlice";
-import { deletePost } from "../../../store/mainFeed/feedSlice";
 import { commentDelete } from "../../../store/post/commentSlice";
 import { postDelete, report } from "../../../store/post/postSlice";
-import { getUserId } from "../../../store/user/common";
+import {
+  getUserEmail,
+  getUserId,
+  removeUserSession,
+} from "../../../store/user/common";
+import { deleteUser, logout } from "../../../store/user/userSettingSlice";
 import styles from "./PostModal.module.css";
 
 const PostModal = ({
@@ -28,6 +32,8 @@ const PostModal = ({
   const colorType = type === "수정" ? styles.editButton : styles.warningButton;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const email = getUserEmail();
 
   const onClick = () => {
     if (type === "삭제") {
@@ -57,8 +63,17 @@ const PostModal = ({
         }
       });
     } else if (type === "로그아웃") {
-      dispatch();
+      dispatch(logout()).then((res) => {
+        removeUserSession();
+        navigate("/");
+      });
     } else if (type === "탈퇴") {
+      dispatch(deleteUser({ email })).then((res) => {
+        if (res.payload.status === 200) {
+          removeUserSession();
+          navigate("/");
+        }
+      });
     } else {
       window.location.replace(`/post/${postId}`);
     }

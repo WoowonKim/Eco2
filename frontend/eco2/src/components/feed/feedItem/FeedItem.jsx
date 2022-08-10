@@ -17,7 +17,7 @@ const FeedItem = ({
       <div className={styles.list}>
         <div className={styles.title}>
           <img
-            src={`http://localhost:8002/img/profile/${userId}`}
+            // src={`http://localhost:8002/img/profile/${userId}`}
             alt="profileImg"
             className={styles.profileImg}
           />
@@ -33,7 +33,7 @@ const FeedItem = ({
         </div>
         <hr className={styles.line} />
         <img
-          src={`http://localhost:8002/img/post/${id}`}
+          // src={`http://localhost:8002/img/post/${id}`}
           alt="postImg"
           className={styles.postImg}
         />

@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getUserEmail, getUserId, getUserName } from "../../store/user/common";
 import {
-  deleteUser,
   passwordChange,
   passwordCheck,
   profileImgChange,
 } from "../../store/user/userSettingSlice";
 import {
-  userActions,
   ecoName,
   ecoNameVerify,
   newPassword,
-  newAccessToken,
 } from "../../store/user/userSlice";
 import styles from "./UserSettings.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -141,15 +138,6 @@ const UserSettings = () => {
           {userSetting === 3 && <hr className={styles.titleLine} />}
         </div>
       </div>
-      {/* <button
-        onClick={() => {
-          dispatch(newAccessToken()).then((res) => {
-            console.log(res);
-          });
-        }}
-      >
-        test button
-      </button> */}
       {userSetting === 1 ? (
         <div>
           <div className={styles.profileImg}>
@@ -160,7 +148,7 @@ const UserSettings = () => {
                 <img
                   className={styles.img}
                   alt="profileImg"
-                  src={`http://localhost:8002/img/profile/${getUserId()}`}
+                  // src={`http://localhost:8002/img/profile/${getUserId()}`}
                 />
               )}
             </div>
@@ -271,17 +259,10 @@ const UserSettings = () => {
                 로그아웃
               </button>
               <button
-                onClick={() =>
-                  // dispatch(deleteUser({ email, password })).then((res) => {
-                  //   if (res.payload.status === 200) {
-                  //     dispatch(userActions.logout());
-                  //   }
-                  // })
-                  {
-                    setVisible(!visible);
-                    setModalType("탈퇴");
-                  }
-                }
+                onClick={() => {
+                  setVisible(!visible);
+                  setModalType("탈퇴");
+                }}
                 className={styles.userButton}
               >
                 회원탈퇴
@@ -322,7 +303,7 @@ const UserSettings = () => {
                       // navigate("/");
 
                       setVisible(!visible);
-                      setModalType("탈퇴");
+                      setModalType("로그아웃");
                     }}
                     className={styles.userButton}
                   >
@@ -386,7 +367,7 @@ const UserSettings = () => {
                         // navigate("/");
 
                         setVisible(!visible);
-                        setModalType("탈퇴");
+                        setModalType("로그아웃");
                       }}
                       className={styles.userButton}
                     >

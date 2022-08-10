@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosService } from "../axiosService";
+import axiosService from "../axiosService";
 
 // 소셜 로그인한 회원 정보는 조회가 안되는 것 같음 -> 확인 필요
 // 유저 정보 조회
@@ -47,16 +47,29 @@ export const passwordChange = createAsyncThunk(
   }
 );
 
-// 에러 발생
 // 회원 탈퇴
 export const deleteUser = createAsyncThunk(
   "userInformationSlice/deleteUser",
   async (args, { rejectWithValue }) => {
     try {
       const response = await axiosService.delete("/userinformation", {
-        email: args.email,
-        // password: args.password,
+        data: {
+          email: args.email,
+        },
       });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 로그아웃
+export const logout = createAsyncThunk(
+  "userInformationSlice/logout",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.delete("/userinformation/logout");
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -114,6 +127,12 @@ export const userInformationSlice = createSlice({
     },
     [deleteUser.rejected]: (state, action) => {
       console.log("deleteUser rejected", action.payload);
+    },
+    [logout.fulfilled]: (state, action) => {
+      console.log("logout fulfilled", action.payload);
+    },
+    [logout.rejected]: (state, action) => {
+      console.log("logout rejected", action.payload);
     },
     [profileImgChange.fulfilled]: (state, action) => {
       console.log("profileImgChange fulfilled", action.payload);

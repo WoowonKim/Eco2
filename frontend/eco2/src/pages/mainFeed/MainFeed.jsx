@@ -12,7 +12,8 @@ const MainFeed = () => {
 
   useEffect(() => {
     dispatch(postList()).then((res) => {
-      if (res.payload.status === 200) {
+      console.log(res);
+      if (res.payload?.status === 200) {
         setFeeds(res.payload.postListDtos);
       }
     });
