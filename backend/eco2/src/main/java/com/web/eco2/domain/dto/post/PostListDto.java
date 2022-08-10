@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,7 +28,7 @@ public class PostListDto {
     private CustomMission customMission;
     private QuestDto quest;
     private Long likeCount;
-    private List<Comment> comments;
+    private ArrayList<CommentDto> comments;
 
     public PostListDto() {
 
