@@ -2,12 +2,14 @@ package com.web.eco2.controller.post;
 
 
 import com.web.eco2.domain.dto.mission.QuestDto;
+import com.web.eco2.domain.dto.post.CommentDto;
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
+import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
@@ -165,7 +167,23 @@ public class PostController {
             postListDto.setLikeCount(postLikeService.likeCount(postId));
 
             if (post.isCommentFlag()) {
-                postListDto.setComments(commentService.getComments(postId));   
+                ArrayList<CommentDto> commentDtos = new ArrayList<>();
+                List<Comment> comments = commentService.getComments(postId);
+                if (comments != null) {
+                    for (Comment comment : comments) {
+                        CommentDto commentDto = new CommentDto();
+                        commentDto.setId(comment.getId());
+                        commentDto.setContent(comment.getContent());
+                        commentDto.setUserId(comment.getUser().getId());
+                        commentDto.setUserName(comment.getUser().getName());
+                        commentDto.setPostId(comment.getPost().getId());
+                        if (comment.getComment() != null) {
+                            commentDto.setCommentId(comment.getComment().getId());
+                        }
+                        commentDtos.add(commentDto);
+                    }
+                    postListDto.setComments(commentDtos);
+                }
             }
             return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
         }catch (Exception e){
