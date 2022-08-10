@@ -62,7 +62,23 @@ public class ChatController {
 
         }
     }
+    @DeleteMapping(value = "/room/{roomId}")
+    @ApiOperation(value = "채팅방 삭제", response = Object.class)
+    public ResponseEntity<Object> deleteChatRoom(@PathVariable("roomId") Long roomId) {
+        try {
+            log.info("채팅방 삭제 delete API 호출");
+            ChatRoom chatRoom = chatService.getById(roomId);
+//            if (chatRoom == null) {
+//                return ResponseHandler.generateResponse("채팅방이 존재하지 않습니다.", HttpStatus.ACCEPTED);
+//            }
+            chatService.delete(chatRoom);
+            return ResponseHandler.generateResponse("채팅방이 삭제되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("채팅방 삭제 API 에러", e);
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
 
+        }
+    }
     @GetMapping(value = "/room/{usrId}")
     @ApiOperation(value = "채팅방 목록 조회", response = Object.class)
     public ResponseEntity<Object> selectChatRoom(HttpServletResponse response, @PathVariable("usrId") Long usrId) {
@@ -94,21 +110,5 @@ public class ChatController {
         }
     }
 
-    @DeleteMapping(value = "/message/{roomId}")
-    @ApiOperation(value = "채팅방 삭제", response = Object.class)
-    public ResponseEntity<Object> deleteChatRoom(@PathVariable("roomId") Long roomId) {
-        try {
-            log.info("채팅방 삭제 API 호출");
-            ChatRoom chatRoom = chatService.getById(roomId);
-//            if (chatRoom == null) {
-//                return ResponseHandler.generateResponse("채팅방이 존재하지 않습니다.", HttpStatus.ACCEPTED);
-//            }
-            chatService.delete(chatRoom);
-            return ResponseHandler.generateResponse("채팅방이 삭제되었습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("채팅방 삭제 API 에러", e);
-            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
 
-        }
-    }
 }

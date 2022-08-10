@@ -98,7 +98,7 @@ public class ImageController {
         }
     }
 
-    private static ResponseEntity<?> getFileResponse(String saveFolder, String saveName) throws IOException {
+    public static ResponseEntity<?> getFileResponse(String saveFolder, String saveName) throws IOException {
         Resource resource = new FileSystemResource(saveFolder + File.separator + saveName);
 
         if (!resource.exists()) {
