@@ -1,17 +1,16 @@
-// React
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux/es/exports";
 
-// Store
+//Store
 import { deleteMission, clearMission } from "../../../store/mission/missionMainSlice";
 
 // CSS
 import styles from "./dailyMission.module.css";
 
-const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
+const MissionCustomItem = ({ idTest, content, missionIdTest, missionFlag }) => {
   const flagType = missionFlag ? "fa-solid fa-circle" : "fa-regular fa-circle"; // 미션 인증 색 변화
-  const realTrashType = missionFlag ? styles.whiteTrash : styles.greenTrash; // 미션 여부에 따른 쓰레기통
+  const realTrashType = missionFlag ? styles.greenTrash : styles.greenTrash; // 미션 여부에 따른 쓰레기통
 
   const naviGate = useNavigate();
   const dispatch = useDispatch();
@@ -21,16 +20,17 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
    */
   const onDeleButton = () => {
     if (!missionFlag) {
-      if (window.confirm("미션을 삭제 하시겠습니까?")) {
+      if (window.confirm("미션 목록을 변경하시겠습니까?")) {
         dispatch(deleteMission({ id: idTest, missionId: missionIdTest }));
-        alert("삭제 완료!");
+        alert("이동 완료!");
         window.location.replace("/dailymissionMain");
       } else {
         alert("포기하지 말고 화이팅!");
       }
     } else {
-      // dispatch(deleteMission({ id: idTest, missionId: missionIdTest }));
-      alert("미션 완료시 삭제 불가합니다!");
+      alert("커스텀 미션 목록으로 변경 합니다!");
+      dispatch(deleteMission({ id: idTest, missionId: missionIdTest }));
+      //alert("미션 완료시 삭제 불가합니다!");
     }
   };
 
@@ -66,4 +66,4 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag }) => {
   );
 };
 
-export default MissionMain;
+export default MissionCustomItem;

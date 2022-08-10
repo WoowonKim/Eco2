@@ -60,3 +60,8 @@
 .whiteTrash {
   color: white;
 }
+
+.mainList {
+  display: flex;
+  justify-content: space-between;
+}

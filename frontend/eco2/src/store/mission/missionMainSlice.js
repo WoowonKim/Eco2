@@ -22,7 +22,7 @@ export const postMission = createAsyncThunk("missionMainSlice/postMission", asyn
     // console.log("ARGS ====> ", args);
     const response = await axiosService.post(`/daily/${args.id}`, {
       dailyMissionList: args.dailyMissionList,
-      dailyCustomMissionList: args.dailyCustomMissionList,
+      customMissionList: args.customMissionList,
     });
     return response.data;
   } catch (err) {
