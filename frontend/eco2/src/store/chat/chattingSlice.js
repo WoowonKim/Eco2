@@ -28,13 +28,43 @@ export const chattingMessageList = createAsyncThunk(
     }
   }
 );
+// 채팅방 친구 조회
+export const chattingFriendList = createAsyncThunk(
+  "chattingSlice/chattingFriendSelect",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.get(`/account/friend?id=${args.userId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 채팅방 생성
+export const createRoom = createAsyncThunk(
+  "chattingSlice/createRoom",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.post(`/chat/room`, {
+        toUserId: args.id,
+        fromUserId: args.userId
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 
 export const chattingSlice = createSlice({
   name: "chatting",
   initialState: [],
   reducers: {},
   extraReducers: {
-    
+
     [chattingList.fulfilled]: (state, action) => {
       console.log("chattingList fulfilled", action.payload);
       if (action.payload.status === 200) {
@@ -51,6 +81,14 @@ export const chattingSlice = createSlice({
     },
     [chattingMessageList.rejected]: (state, action) => {
       console.log("chattingMessageList rejected", action.payload);
+    },
+    [chattingMessageList.fulfilled]: (state, action) => {
+      console.log("chattingFriendSelect fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [chattingMessageList.rejected]: (state, action) => {
+      console.log("chattingFriendSelect rejected", action.payload);
     },
   },
 });

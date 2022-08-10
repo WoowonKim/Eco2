@@ -31,6 +31,9 @@ public class ChatRoom {
     @Column(name = "chr_from_user")
     private String fromUser;
 
+    @Column(name = "chr_last_send_message")
+    private String lastSendMessage;
+
     @Column(name = "chr_last_send_time")
     private String lastSendTime;
 
