@@ -75,15 +75,13 @@ public class PostService {
     }
 
     // quest 인증글 아닌 post 목록 가져오기
-    public List<QuestPost> getPostOnly() {
-        Sort sort = Sort.by(Sort.Order.desc("id"));
-        return postRepository.findByQuestIsNull(sort);
+    public List<Post> getPostOnly(Long userId) {
+        return postRepository.findOnlyPostById(userId);
     }
 
     // QuestPost 목록 가져오기
-    public List<QuestPost> getQuestPostList() {
-        Sort sort = Sort.by(Sort.Order.desc("id"));
-        return postRepository.findByQuestNotNull(sort);
+    public List<QuestPost> getQuestPostOnly(Long userId) {
+        return postRepository.findOnlyQuestPostById(userId);
     }
 
 
