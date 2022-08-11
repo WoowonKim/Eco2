@@ -11,7 +11,12 @@ import MissionCustomItem from "../../../components/dailyMission/missionItem/miss
 import MissionTodayItem from "../../../components/dailyMission/missionItem/missionTodayItem";
 
 // Store
-import { getMission, missionPost, postTodayMission, missionItem } from "../../../store/mission/missionMainSlice";
+import {
+  getMission,
+  missionPost,
+  postTodayMission,
+  missionItem,
+} from "../../../store/mission/missionMainSlice";
 import { getUserId } from "../../../store/user/common";
 import { getLocation } from "../../../utils";
 
@@ -40,29 +45,36 @@ const DailyMissionMain = () => {
    * setLng : 경도?
    */
   useEffect(() => {
-    getLocation().then((res) => {
+    getLocation().then(res => {
       setNowTime(res.timeTwo);
       setLat(res.latitude);
       setLng(res.longitude);
+      console.log("res.timTwo===>", res.timeTwo);
     });
-  });
+  }, [main]);
+
+  //console.log("날짜 ===>", nowTime);
 
   /**
    * 나의 미션을 불러오기 위한 getMission
    */
   useEffect(() => {
     setId(getUserId());
-    dispatch(getMission({ id: getUserId() })).then((res) => {
+    dispatch(getMission({ id: getUserId() })).then(res => {
       setMain(res.payload.dailyMissionList);
       setcusMain(res.payload.dailyCustomMissionList);
     });
-  }, []);
+  }, [id]);
 
   /**
    * 매일 추천 미션제공을 위한 postTodayMission
    */
   useEffect(() => {
-    dispatch(postTodayMission({ id, lat, lng, date: nowTime })).then((res) => {
+    if (id === 0) {
+      return;
+    }
+
+    dispatch(postTodayMission({ id, lat, lng, date: nowTime })).then(res => {
       if (res.payload?.status === 200) {
         setTodayMission(res.payload.recommendedMission);
         //console.log("오늘의 미션 ===> ", res.payload.recommendedMission);
@@ -70,16 +82,16 @@ const DailyMissionMain = () => {
     });
   }, [id]);
 
-  /**
-   * 미션 완료 버튼 클릭 시 미션을 모두 완료 했는지 여부 확인
-   */
-  const trashCnt = (trash) => {
-    if (!trash) {
-      setTCnt(tCnt + 1);
-    } else {
-      setTCnt(tCnt - 1);
-    }
-  };
+  // /**
+  //  * 미션 완료 버튼 클릭 시 미션을 모두 완료 했는지 여부 확인
+  //  */
+  // const trashCnt = trash => {
+  //   if (!trash) {
+  //     setTCnt(tCnt + 1);
+  //   } else {
+  //     setTCnt(tCnt - 1);
+  //   }
+  // };
   function getToday() {
     var date = new Date();
     var year = date.getFullYear();
@@ -99,28 +111,35 @@ const DailyMissionMain = () => {
    *  미션들의 길이와 미션 완료값이 동일할 경우 오늘 미션 완료로 간주.
    */
   //완료한 미션들의 길이를 구하기 위한 변수들
-  const mainResult = main.filter((it) => it.achieveFlag === true);
-  const cusMainResult = cusMain.filter((it) => it.achieveFlag === true);
+  const mainResult = main.filter(it => it.achieveFlag === true);
+  const cusMainResult = cusMain.filter(it => it.achieveFlag === true);
   const sumClearMission = mainResult.length + cusMainResult.length;
   const sumMission = main.length + cusMain.length;
 
   const onSucsses = () => {
-    // if (sumClearMission === sumMission) {
-    //   alert(`축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`);
-    //   naviGate("/mainTree");
-    // } else {
-    //   alert("미션을 완료하고 눌러주세요!");
-    // }
-    dispatch(missionPost({ id })).then((res) => {
-      if (res.payload.status === 200) {
-        console.log("성공했다.");
-        console.log("RES정보 ===>", res.payload);
-      }
-    });
+    if (sumClearMission === sumMission) {
+      //   alert(`축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`);
+      dispatch(missionPost({ id })).then(res => {
+        if (res.payload.status === 200) {
+          console.log("성공했다.");
+          console.log("RES정보 ===>", res.payload);
+        }
+      });
+      //   naviGate("/mainTree");
+    } else {
+      alert("미션을 완료하고 눌러주세요!");
+    }
   };
 
+  /**
+   * false이면 오늘 미션 보상받기 활성화
+   * true 이면 오늘 미션 보상받기 비 활성화
+   */
   useEffect(() => {
-    dispatch(missionItem({ id, date: toDayGet })).then((res) => {
+    if (id === 0) {
+      return;
+    }
+    dispatch(missionItem({ id, date: toDayGet })).then(res => {
       if (res.payload.status === 200) {
         console.log("res.payload===>", res.payload.rewardFlag);
       }
@@ -135,27 +154,42 @@ const DailyMissionMain = () => {
         <Link to="/dailymissionDetail" className={styles.mainHeaderRight}>
           <span>
             추가하기
-            <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
+            ></i>
           </span>
         </Link>
       </div>
 
       {/* 추천 미션 테이블에 안들어 와있으면 활성화 해야함. */}
       {/* <div>
-        {todayMission.map((it) => (
+        {todayMission.map(it => (
           <MissionTodayItem key={it.id} content={it.title} />
         ))}
       </div> */}
 
       <div>
-        {cusMain.map((it) => (
-          <MissionCustomItem key={it.id} content={it.customMission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} />
+        {cusMain.map(it => (
+          <MissionCustomItem
+            key={it.id}
+            content={it.customMission.title}
+            idTest={id}
+            missionIdTest={it.id}
+            missionFlag={it.achieveFlag}
+          />
         ))}
       </div>
 
       <div>
-        {main.map((it) => (
-          <MissionMain key={it.id} content={it.mission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} category={it.mission.category} />
+        {main.map(it => (
+          <MissionMain
+            key={it.id}
+            content={it.mission.title}
+            idTest={id}
+            missionIdTest={it.id}
+            missionFlag={it.achieveFlag}
+            category={it.mission.category}
+          />
         ))}
       </div>
 
