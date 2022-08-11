@@ -27,6 +27,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "select * from tb_post p where p.usr_id=:usrId and p.que_id is not null", nativeQuery = true)
     List<QuestPost> findOnlyQuestPostById(Long usrId);
 
+    @Query(value = "select * from tb_post p where p.usr_id=:userId", nativeQuery = true)
+    List<Post> findByUserId(Long userId);
+
 //    List<Post> findByUserIdOrderByIdDesc(Long userid);
 
 

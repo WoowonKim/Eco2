@@ -114,13 +114,13 @@ public class UserInformationController {
             chatService.deleteByToUserOrFromUser(dbUser.getName());
             profileImgService.deleteImage(dbUser.getId());
             calendarService.deleteByUserId(dbUser.getId());
+            postService.deletePostImage(dbUser.getId());
             userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("회원 탈퇴 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @PostMapping("/password")

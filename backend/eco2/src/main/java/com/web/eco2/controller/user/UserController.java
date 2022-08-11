@@ -349,7 +349,7 @@ public class UserController {
             String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
             response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
 
-            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", user);
+            return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", user.toDto());
         } catch (Exception e) {
             log.error("소셜 로그인 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
