@@ -60,6 +60,9 @@ public class WeatherService {
         LocalDateTime localDateTime = stringToTime(time);
 
         Map<String, Object> items = getWeatherInformation(lat, lng, localDateTime, "Ncst");
+        if(items == null) {
+            return null;
+        }
 
         for(Map<String, String> item : (List<Map<String, String>>) items.get("item")) {
             info.put(item.get("category"), Double.parseDouble(item.get("obsrValue")));
