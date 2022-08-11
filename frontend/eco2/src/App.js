@@ -9,6 +9,8 @@ import MainFeed from "./pages/mainFeed/MainFeed";
 
 import Header from "./components/NavFooter/Header";
 
+import Alarm from "./pages/alarm/Alarm";
+
 /* DailyMission */
 import DailyMissionMain from "./pages/dmission/dailyMissionMain/dailyMissionMain";
 import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMissionDetail";
@@ -226,6 +228,14 @@ function App() {
               <RequireAuth>
                 <ChattingRoom />
               </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/alarm"
+            element={
+              // <RequireAuth>
+              <Alarm />
+              // </RequireAuth>
             }
           ></Route>
           <Route path="/*" element={<Error />}></Route>

@@ -26,6 +26,7 @@ const PostModal = ({
   noticeTitle,
   commentId,
   selected,
+  setTest,
 }) => {
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
@@ -37,11 +38,14 @@ const PostModal = ({
 
   const onClick = () => {
     if (type === "삭제") {
+      console.log(commentId, postId);
       if (postId) {
         if (commentId) {
           dispatch(commentDelete({ postId, commentId })).then((res) => {
             if (res.payload?.status === 200) {
-              window.location.replace(`/post/${postId}`);
+              navigate(`/post/${postId}`, { replace: true });
+              closeModal();
+              setTest((curr) => curr + 1);
             }
           });
         } else {

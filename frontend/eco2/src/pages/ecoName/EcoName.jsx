@@ -60,6 +60,9 @@ const Econame = () => {
     if (!!getUserName()) {
       navigate("/mainTree");
     }
+    if (!getUserEmail()) {
+      navigate("/regist");
+    }
   }, []);
   return (
     <div className={styles.login}>

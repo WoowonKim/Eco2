@@ -47,7 +47,6 @@ const Header = () => {
           }}
         >
         <i className="fa-solid fa-comments"></i>
-
         </button>
       </nav>
     </header>

@@ -5,7 +5,13 @@ import { login, googleLogin } from "../../store/user/userSlice";
 import styles from "./Login.module.css";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { signInGoogle, auth } from "../../store/firebase";
-import { setUserEmail, setUserId, setUserName } from "../../store/user/common";
+import {
+  getUserId,
+  getUserName,
+  setUserEmail,
+  setUserId,
+  setUserName,
+} from "../../store/user/common";
 import { emailValidationCheck } from "../../utils";
 import axiosService from "../../store/axiosService";
 
@@ -88,6 +94,12 @@ function Login() {
   const onKakaoLogin = async () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
   };
+
+  useEffect(() => {
+    if (!!getUserId() && getUserId() != null) {
+      navigate("/mainTree");
+    }
+  });
 
   return (
     <div className={styles.login}>

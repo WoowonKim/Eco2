@@ -31,6 +31,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -203,41 +204,54 @@ public class DailyMissionController {
     public ResponseEntity<Object> recommendDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
         try {
             log.info("데일리미션 추천 API 호출");
+
             List<Long> oldRecommendMission = redisService.getListData(usrId.toString());
-            if (oldRecommendMission != null) {
+            if (oldRecommendMission != null && oldRecommendMission.size() > 0) {
                 return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK,
                         "recommendedMission",
                         oldRecommendMission.stream()
                                 .map(missionId -> missionService.findByMisId(missionId))
                                 .collect(Collectors.toList())
                 );
+            } else if (oldRecommendMission == null) {
+                // 하루가 지났을 경우에만 리셋
+                dailyMissionService.deleteByUsrId(usrId);
             }
-            // 리셋
-            dailyMissionService.deleteByUsrId(usrId);
 
             Map<String, List<?>> missionData = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
+            System.out.println(missionData);
+            if(missionData == null) {
+                redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
+                return ResponseHandler.generateResponse("미션 추천에 실패했습니다.", HttpStatus.ACCEPTED);
+            }
 
             //위치 받아와서 추천 목록 생성
             List<Mission> missions = (List<Mission>) missionData.get("missions");
-            
+
             //디비에 넣기
             for (Mission m : missions) {
                 dailyMissionService.save(DailyMission.builder()
                         .user(User.builder().id(usrId).build()).mission(m).build());
             }
 
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expireTime = LocalDateTime.parse(now.plusHours(18L).toString().substring(0, 11)+"06:00");
-            // 6시에 새로고침
-            Long duration = expireTime.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
-            if(duration <= 0) duration = 1L;
-            redisService.setListDataExpire(usrId.toString(), (List<Long>) missionData.get("missionsNum"), duration);
+            redisService.setListDataExpire(usrId.toString(), (List<Long>) missionData.get("missionsNum"), getDuration());
 
             return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions);
         } catch (Exception e) {
             log.error("데일리미션 추천 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private static Long getDuration() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expireTime = LocalDateTime.parse(now.plusHours(18L).toString().substring(0, 11)+"06:00");
+
+        // 6시에 새로고침
+        Long duration = expireTime.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
+        if(duration <= 0) duration = 1L;
+
+        return duration;
     }
 
     @ApiOperation(value = "트렌딩 조회", response = Object.class)
