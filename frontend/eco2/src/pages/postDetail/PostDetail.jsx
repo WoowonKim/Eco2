@@ -50,12 +50,14 @@ const PostDetail = () => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
         setFeedItem(res.payload.post);
-        setComments(
-          res.payload.post?.comments.filter((comment) => !comment.commentId)
-        );
-        setReplys(
-          res.payload.post?.comments.filter((comment) => !!comment.commentId)
-        );
+        if (res.payload.post.comments !== null) {
+          setComments(
+            res.payload.post?.comments.filter((comment) => !comment.commentId)
+          );
+          setReplys(
+            res.payload.post?.comments.filter((comment) => !!comment.commentId)
+          );
+        }
       }
     });
     // dispatch(commentList({ postId: params.postId })).then((res) => {
@@ -153,18 +155,18 @@ const PostDetail = () => {
           closeModal={() => setVisible(!visible)}
         />
       )}
-      {/* <img
+      <img
         src={`http://localhost:8002/img/post/${feedItem.id}`}
         alt="postImg"
         className={styles.postImg}
-      /> */}
+      />
       <div className={styles.info}>
         <div className={styles.userProfile}>
-          {/* <img
+          <img
             src={`http://localhost:8002/img/profile/${feedItem.userId}`}
             alt="profileImg"
             className={styles.profileImg}
-          /> */}
+          />
           <p className={styles.user}>{feedItem.userName}</p>
         </div>
         <button className={styles.button} onClick={handlePostLike}>

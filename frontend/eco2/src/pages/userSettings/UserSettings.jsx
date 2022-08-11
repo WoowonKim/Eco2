@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getUserEmail, getUserId, getUserName } from "../../store/user/common";
+import {
+  getUserEmail,
+  getUserId,
+  getUserName,
+  setUserName,
+} from "../../store/user/common";
 import {
   passwordChange,
   passwordCheck,
@@ -35,6 +40,7 @@ const UserSettings = () => {
   const [profileEdit, setProfileEdit] = useState(false);
   const [fileImage, setFileImage] = useState("");
   const [file, setFile] = useState("");
+  const [autoLogin, setAutoLogin] = useState(false);
 
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
@@ -120,6 +126,7 @@ const UserSettings = () => {
 
   useEffect(() => {
     setName(getUserName());
+    setAutoLogin(localStorage.getItem("email") ? true : false);
   }, []);
 
   return (
@@ -148,7 +155,7 @@ const UserSettings = () => {
                 <img
                   className={styles.img}
                   alt="profileImg"
-                  // src={`http://localhost:8002/img/profile/${getUserId()}`}
+                  src={`http://localhost:8002/img/profile/${getUserId()}`}
                 />
               )}
             </div>
@@ -214,7 +221,11 @@ const UserSettings = () => {
               />
               <button
                 onClick={() => {
-                  dispatch(ecoName({ email, econame: name }));
+                  dispatch(ecoName({ email, econame: name })).then((res) => {
+                    if (res.payload?.status === 200) {
+                      setUserName(autoLogin, name);
+                    }
+                  });
                 }}
                 disabled={!isName}
                 className={styles.passwordFormButton}

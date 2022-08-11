@@ -34,7 +34,7 @@ const Header = () => {
           }}
         >
           <img
-            // src={`http://localhost:8002/img/profile/${userId}`}
+            src={`http://localhost:8002/img/profile/${userId}`}
             alt="profileImg"
             className={styles.profileImg}
           />
@@ -46,7 +46,7 @@ const Header = () => {
             navigate("/chatting");
           }}
         >
-        <i className="fa-solid fa-comments"></i>
+          <i className="fa-solid fa-comments"></i>
         </button>
       </nav>
     </header>

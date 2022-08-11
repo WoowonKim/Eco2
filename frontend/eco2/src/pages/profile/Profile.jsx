@@ -68,8 +68,8 @@ const Profile = () => {
         </button> */}
         <div className={styles.user}>
           <img
-            // src={`http://localhost:8002/img/profile/${userId}`}
-            src={`${imgSrc}`}
+            src={`http://localhost:8002/img/profile/${userId}`}
+            // src={`${imgSrc}`}
             // alt="profileImg"
             className={styles.profileImg}
           />
@@ -117,6 +117,7 @@ const Profile = () => {
               src={`http://localhost:8002/img/post/${mission.id}`}
               alt="profileImg"
               className={styles.missionImg}
+              onClick={() => navigate(`/post/${mission.id}`)}
             />
           ))}
         </div>
@@ -129,6 +130,7 @@ const Profile = () => {
               src={`http://localhost:8002/img/post/${mission.id}`}
               alt="profileImg"
               className={styles.missionImg}
+              onClick={() => navigate(`/post/${mission.id}`)}
             />
           ))}
         </div>

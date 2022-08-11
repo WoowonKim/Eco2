@@ -19,6 +19,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailMsg, setLoginFailMsg] = useState(false);
+  const [message, setMessage] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
 
   const [emailMessage, setEmailMessage] = useState("");
@@ -60,6 +61,7 @@ function Login() {
           navigate(redirectPath, { replace: true });
         }
         setLoginFailMsg(true);
+        setMessage("등록된 이메일이 없거나 비밀번호가 일치하지 않습니다.");
       })
       .catch((err) => console.log(err));
   };
@@ -77,13 +79,26 @@ function Login() {
             idToken: idToken,
           })
         ).then((res) => {
-          axiosService.defaults.headers.common[
-            "Auth-accessToken"
-          ] = `${res.payload.user.accessToken}`;
-          setUserEmail(false, data.additionalUserInfo.profile.email);
-          setUserId(false, res.payload.user.id);
-          setUserName(false, res.payload.user?.name);
-          navigate(redirectPath, { replace: true });
+          if (res.payload?.status === 200) {
+            setLoginFailMsg(false);
+            axiosService.defaults.headers.common[
+              "Auth-accessToken"
+            ] = `${res.payload.user.accessToken}`;
+
+            if (!res.payload.user.name) {
+              setUserEmail(false, data.additionalUserInfo.profile.email);
+              setUserId(false, res.payload.user.id);
+              navigate("/ecoName");
+            } else {
+              setUserEmail(false, data.additionalUserInfo.profile.email);
+              setUserId(false, res.payload.user.id);
+              setUserName(false, res.payload.user?.name);
+              navigate(redirectPath, { replace: true });
+            }
+          } else if (res.payload?.status === 202) {
+            setLoginFailMsg(true);
+            setMessage("이미 다른 소셜로 가입한 이메일입니다.");
+          }
         });
       })
       .catch(function (error) {
@@ -138,11 +153,7 @@ function Login() {
           />
           <span className={styles.radioText}>자동 로그인</span>
         </div>
-        {loginFailMsg ? (
-          <WarningText>
-            등록된 이메일이 없거나 비밀번호가 일치하지 않습니다.
-          </WarningText>
-        ) : null}
+        {loginFailMsg ? <WarningText>{message}</WarningText> : null}
         <GreenBtn
           type="submit"
           disabled={!(isEmail && password)}

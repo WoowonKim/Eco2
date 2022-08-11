@@ -11,6 +11,9 @@ const MainFeed = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // if (feeds === null) {
+    //   return;
+    // }
     dispatch(postList()).then((res) => {
       console.log(res);
       if (res.payload?.status === 200) {
