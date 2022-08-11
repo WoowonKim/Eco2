@@ -38,7 +38,22 @@ export const deleteAlarm = createAsyncThunk(
       );
       return response;
     } catch (err) {
-      console.log("alarmSlice::deleteAlarm:", err);
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+export const responseFriendRequest = createAsyncThunk(
+  "alarmSlice/responseFriendRequest",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.put("account/friend", {
+        id: args.id,
+        friendId: args.friendId,
+        response: args.response,
+      });
+      return response.data;
+    } catch (err) {
       return rejectWithValue(err.response);
     }
   }
@@ -50,5 +65,14 @@ export const alarmSlice = createSlice({
   reducers: {
     getAlarms: (state, action) => {},
   },
-  extraReducers: {},
+  extraReducers: {
+    [responseFriendRequest.fulfilled]: (state, action) => {
+      console.log("responseFriendRequest fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [responseFriendRequest.rejected]: (state, action) => {
+      console.log("responseFriendRequest rejected", action.payload);
+    },
+  },
 });
