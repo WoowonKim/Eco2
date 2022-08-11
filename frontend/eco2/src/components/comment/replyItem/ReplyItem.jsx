@@ -7,7 +7,7 @@ import { commentDelete } from "../../../store/post/commentSlice";
 import { getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
 
-const ReplyItem = ({ id, content, user, postId }) => {
+const ReplyItem = ({ id, content, user, postId, commentUserId, setTest }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState(false);
@@ -16,16 +16,24 @@ const ReplyItem = ({ id, content, user, postId }) => {
   const name = getUserName();
   const displayType = modalType ? styles.visible : styles.hidden;
 
-  const handleDelete = () => {
-    dispatch(commentDelete({ id }));
-  };
+  // const handleDelete = () => {
+  //   dispatch(commentDelete({ id }));
+  // };
   return (
     <div>
       {!visible && (
         <li className={styles.list}>
           <div className={styles.commentContainer}>
             <div className={styles.comment}>
-              <p className={styles.user}>{user}</p>
+              <div className={styles.userInfo}>
+                <img
+                  src={`http://localhost:8002/img/profile/${commentUserId}`}
+                  // src={`${imgSrc}`}
+                  alt="profileImg"
+                  className={styles.profileImg}
+                />
+                <p className={styles.user}>{user}</p>
+              </div>{" "}
               <p className={styles.content}>{content}</p>
             </div>
             <div className={styles.dropdown}>
@@ -45,7 +53,11 @@ const ReplyItem = ({ id, content, user, postId }) => {
                       ></i>
                     </button>
                     <button
-                      onClick={() => handleDelete()}
+                      // onClick={() => handleDelete()}
+                      onClick={() => {
+                        setModalVisible(!modalVisible);
+                        setModalType("삭제");
+                      }}
                       className={styles.dropdownItem}
                     >
                       삭제
@@ -80,10 +92,11 @@ const ReplyItem = ({ id, content, user, postId }) => {
               type={"삭제"}
               postId={postId}
               commentId={id}
+              setTest={setTest}
               closeModal={() => setModalVisible(!modalVisible)}
             />
           )}
-          {modalType && (
+          {modalVisible && modalType === "신고" && (
             <ReportModal
               className={`${displayType}`}
               title={"댓글 신고"}
@@ -103,6 +116,7 @@ const ReplyItem = ({ id, content, user, postId }) => {
               id={id}
               postId={postId}
               content={content}
+              setTest={setTest}
               closeModal={() => setVisible(!visible)}
             />
           </div>

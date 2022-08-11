@@ -1,7 +1,7 @@
 import React from "react";
 
-const FriendItem = () => {
-  return <div></div>;
+const FriendItem = ({ friend }) => {
+  return <div>{friend}</div>;
 };
 
 export default FriendItem;

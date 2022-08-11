@@ -12,6 +12,7 @@ const CommentForm = ({
   id,
   closeModal,
   userId,
+  setTest,
 }) => {
   const [value, setValue] = useState("");
   const [editValue, setEditValue] = useState(content);
@@ -24,7 +25,8 @@ const CommentForm = ({
         commentUpdate({ postId, commentId: id, content: editValue })
       ).then((res) => {
         if (res.payload?.status === 200) {
-          window.location.replace(`/post/${postId}`);
+          setTest((curr) => curr + 1);
+          // window.location.reload(`/post/${postId}`);
         }
       });
       closeModal();
@@ -33,7 +35,8 @@ const CommentForm = ({
         commentCreate({ postId, content: value, userId, commentId: id })
       ).then((res) => {
         if (res.payload?.status === 200) {
-          window.location.replace(`/post/${postId}`);
+          setTest((curr) => curr + 1);
+          // window.location.reload(`/post/${postId}`);
         }
       });
       closeModal();
@@ -41,7 +44,8 @@ const CommentForm = ({
       dispatch(commentCreate({ postId, content: value, userId })).then(
         (res) => {
           if (res.payload?.status === 200) {
-            window.location.replace(`/post/${postId}`);
+            setTest((curr) => curr + 1);
+            // window.location.replace(`/post/${postId}`);
           }
         }
       );

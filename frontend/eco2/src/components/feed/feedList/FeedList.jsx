@@ -11,7 +11,8 @@ const FeedList = ({ category, display, feeds }) => {
         {!!feeds ? (
           feeds.map(
             (feed) =>
-              category === feed.mission.category && (
+              category === feed.mission.category &&
+              feed.publicFlag && (
                 <FeedItem
                   key={feed.id}
                   id={feed.id}

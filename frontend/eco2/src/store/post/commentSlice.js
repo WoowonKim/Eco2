@@ -60,6 +60,7 @@ export const commentDelete = createAsyncThunk(
   "commentSlice/commentDelete",
   async (args, rejectWithValue) => {
     try {
+      console.log(args);
       const response = await axiosService.delete(
         `/post/${args.postId}/comment/${args.commentId}?postId=${args.postId}&commentId=${args.commentId}`
       );

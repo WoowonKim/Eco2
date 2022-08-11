@@ -37,6 +37,7 @@ const PostForm = () => {
 
   // 글 작성 요청보내기
   const onSubmit = (e) => {
+    console.log(location.state?.missionId);
     e.preventDefault();
     const formDataCreate = new FormData();
     const formDataUpdate = new FormData();
