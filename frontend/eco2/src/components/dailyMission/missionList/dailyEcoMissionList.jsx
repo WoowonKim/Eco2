@@ -15,10 +15,6 @@ import DailyCustomMissionList from "./dailyCustomMissionList";
 import { GreenBtn } from "../../styled";
 import styles from "./dailyMissionDetail.module.css";
 
-// scroll
-import InfiniteScroll from "react-infinite-scroller";
-import { useInView } from "react-intersection-observer";
-
 const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [ecoId, setEcoId] = useState([]);
   const [list, getList] = useState(true); //미션 목록과 커스텀 미션을 구분하기 위한 State
