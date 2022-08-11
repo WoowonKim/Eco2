@@ -63,8 +63,18 @@ public class PostService {
         } else {
             post = postCreateDto.toEntity();
         }
-        postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
         postRepository.save(post);
+
+//        Post post;
+//        if(postCreateDto.getQuest() != null) {
+//            postRepository.save()
+//        } else {
+//            post = postCreateDto.toEntity();
+//        }
+
+
+        postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
+
     }
 
 

@@ -13,6 +13,7 @@ public class UserDto {
     private String email;
     private String name;
     private Integer socialType;
+    private String role;
 
     public User toEntity() {
         return User.builder()
