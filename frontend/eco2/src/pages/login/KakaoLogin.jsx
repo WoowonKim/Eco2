@@ -30,8 +30,12 @@ function KakaoLogin() {
         } else {
           setUserName(false, res.payload.user.name);
         }
-        navigate("/mainFeed");
+        navigate("/mainTree");
       } else if (res.payload.status === 202) {
+        alert(res.payload.msg);
+        navigate("/");
+      } else if (res.payload.status === 203) {
+        alert(res.payload.msg);
         window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
       }
     });

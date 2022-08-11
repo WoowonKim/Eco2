@@ -303,7 +303,7 @@ public class UserController {
                 User kakaoUser = kakaoOAuth.getUserInfo(token);
                 email = kakaoUser.getEmail();
                 if(email == null) {
-                    return ResponseHandler.generateResponse("이메일 허용이 필요", HttpStatus.ACCEPTED);
+                    return ResponseHandler.generateResponse("이메일 허용이 필요합니다.", HttpStatus.NON_AUTHORITATIVE_INFORMATION);
                 }
             } else {
                 return ResponseHandler.generateResponse("잘못된 socialType", HttpStatus.ACCEPTED);
