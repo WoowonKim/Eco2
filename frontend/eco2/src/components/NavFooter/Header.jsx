@@ -48,6 +48,15 @@ const Header = () => {
         >
         <i className="fa-solid fa-comments"></i>
         </button>
+
+        <button
+          className={styles.profileButton}
+          onClick={() => {
+            navigate("/report");
+          }}
+        >
+        <i className="fa-solid">신고</i>
+        </button>
       </nav>
     </header>
   );

@@ -27,7 +27,10 @@ const PostModal = ({
   commentId,
   selected,
   setTest,
+  message
 }) => {
+
+  console.log(commentId);
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
   const colorType = type === "수정" ? styles.editButton : styles.warningButton;
@@ -60,10 +63,10 @@ const PostModal = ({
       }
     } else if (type === "신고") {
       dispatch(
-        report({ userId: getUserId(), retId: selected, posId: postId })
+        report({ userId: getUserId(), retId: selected, posId: postId, comId: commentId, message: message })
       ).then((res) => {
         if (res.payload.status === 200) {
-          window.location.replace(`/post/${postId}`);
+          setHidden(true);
         }
       });
     } else if (type === "로그아웃") {
