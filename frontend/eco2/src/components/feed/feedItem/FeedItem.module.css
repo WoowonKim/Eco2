@@ -1,4 +1,5 @@
 .list {
+  width: 180px;
   flex-shrink: 0;
   flex-basis: 50%;
   border: 1px solid #dadada;
@@ -12,6 +13,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile {
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
 .profileImg {
@@ -20,12 +28,13 @@
   background-color: white;
   border: 1px solid black;
   border-radius: 50%;
-  margin-right: 5px;
+  /* margin-right: 5px; */
 }
 
 .icon {
   font-size: 10px;
   color: black;
+  margin: 3px;
 }
 
 .button {
@@ -55,8 +64,8 @@
 }
 
 .postImg {
-  width: 70%;
-  height: 70%;
+  width: 50%;
+  height: 50%;
 }
 
 .iconGroup {
