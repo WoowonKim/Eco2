@@ -212,7 +212,7 @@ function App() {
           ></Route>
 
           <Route
-            path="/chatting/:userId"
+            path="/chatting"
             element={
               <RequireAuth>
                 <Chatting />
@@ -221,7 +221,7 @@ function App() {
           ></Route>
 
           <Route
-            path="/chatting/room/:roomId"
+            path="/chatting/room"
             element={
               <RequireAuth>
                 <ChattingRoom />

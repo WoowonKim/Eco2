@@ -39,7 +39,16 @@ const Header = () => {
             className={styles.profileImg}
           />
         </button>
+
+        <button
+          className={styles.profileButton}
+          onClick={() => {
+            navigate("/chatting");
+          }}
+        >
         <i className="fa-solid fa-comments"></i>
+
+        </button>
       </nav>
     </header>
   );

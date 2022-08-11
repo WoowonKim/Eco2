@@ -37,7 +37,13 @@ const ChatModal = ({
         </div>
         <hr className={styles.line} />
         <div className={styles.friends}>
-          <ChatModalList friends={friends} />
+          {friends.length > 0 ? (
+            <ChatModalList friends={friends} />
+          ) : (
+            <div className={styles.noFriendList}>
+              <span className={styles.noFriendMessage}>친구 목록이 없습니다.</span>
+            </div>
+          )}
         </div>
         <div className={styles.buttonGroup}>
           <button

@@ -33,7 +33,7 @@ const navigate = useNavigate();
           onClick={() => {
             dispatch(createRoom({ userId, id })).then((res) => {
               if (res.payload?.status === 200) {
-                navigate(`/chatting/room/${res.payload.roomId}`);
+                navigate(`/chatting/room`, { state: {roomId: res.payload.roomId} });
               }
             });
           }} className={`${styles.cancleButton}`}> 채팅</button>

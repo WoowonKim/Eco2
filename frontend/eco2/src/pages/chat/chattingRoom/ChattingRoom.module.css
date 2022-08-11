@@ -101,3 +101,12 @@ height: 35px;
   background-color: #adc178;
   color: white;
 } */
+.noChattingList{
+  padding-top: 30px;
+}
+.noChattingMessage{
+  font-size: small;
+  font-weight: bold;
+  color: grey;
+}
+
