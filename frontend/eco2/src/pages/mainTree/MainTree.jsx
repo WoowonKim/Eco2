@@ -1,11 +1,12 @@
 import styles from "./MainTree.module.css";
 import { Leaf } from "./Leaf.jsx";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDrop } from "react-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import {
   changePos,
   getLeaves,
+  statisticLeaves,
   updateLeaf,
 } from "../../store/mainTree/leavesSlice";
 import { getUserId } from "../../store/user/common";
@@ -41,6 +42,14 @@ const MainTree = () => {
     }),
     [moveLeaf]
   );
+  const [statistic, setStatistic] = useState([]);
+  useEffect(() => {
+    dispatch(statisticLeaves({ userId: getUserId() })).then((res) => {
+      if (res.payload?.status === 200) {
+        setStatistic(res.payload.statistic);
+      }
+    });
+  }, []);
   return (
     <div className={styles.Tree} ref={drop}>
       <img
@@ -61,12 +70,28 @@ const MainTree = () => {
         );
       })}
       <div className={styles.Statis}>
-        <p>수질 {categoryCounts[0]}회</p>
-        <p>토양 {categoryCounts[1]}회</p>
-        <p>대기 {categoryCounts[2]}회</p>
-        <p>몰라 {categoryCounts[3]}회</p>
-        <p>생태계 {categoryCounts[4]}회</p>
-        <p>기타 {categoryCounts[5]}회</p>
+        <p>
+          <i className="fa-solid fa-person-walking"></i>실천{" "}
+          {statistic.category1}회
+        </p>
+        <p>
+          <i className="fa-solid fa-cookie-bite"></i>사용 {statistic.category2}
+          회
+        </p>
+        <p>
+          <i className="fa-solid fa-arrows-down-to-line"></i>절약{" "}
+          {statistic.category3}회
+        </p>
+        <p>
+          <i className="fa-solid fa-basket-shopping"></i>구매{" "}
+          {statistic.category4}회
+        </p>
+        <p>
+          <i className="fa-solid fa-recycle"></i>재활용 {statistic.category5}회
+        </p>
+        <p>
+          <i className="fa-solid fa-clover"></i>기타 {statistic.category6}회
+        </p>
       </div>
     </div>
   );

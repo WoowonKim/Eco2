@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import ReplyItem from "../replyItem/ReplyItem";
 import styles from "./ReplyList.module.css";
 
-const ReplyList = ({ id, commentId, replys, commentUserId }) => {
+const ReplyList = ({ id, commentId, replys, commentUserId, setTest }) => {
   return (
     <ul className={styles.ul}>
       {replys?.length > 0 &&
@@ -17,6 +17,7 @@ const ReplyList = ({ id, commentId, replys, commentUserId }) => {
                 user={reply.userName}
                 postId={reply.postId}
                 commentUserId={commentUserId}
+                setTest={setTest}
               />
             )
         )}

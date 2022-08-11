@@ -7,7 +7,7 @@ import { commentDelete } from "../../../store/post/commentSlice";
 import { getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
 
-const ReplyItem = ({ id, content, user, postId, commentUserId }) => {
+const ReplyItem = ({ id, content, user, postId, commentUserId, setTest }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState(false);
@@ -16,9 +16,9 @@ const ReplyItem = ({ id, content, user, postId, commentUserId }) => {
   const name = getUserName();
   const displayType = modalType ? styles.visible : styles.hidden;
 
-  const handleDelete = () => {
-    dispatch(commentDelete({ id }));
-  };
+  // const handleDelete = () => {
+  //   dispatch(commentDelete({ id }));
+  // };
   return (
     <div>
       {!visible && (
@@ -53,7 +53,11 @@ const ReplyItem = ({ id, content, user, postId, commentUserId }) => {
                       ></i>
                     </button>
                     <button
-                      onClick={() => handleDelete()}
+                      // onClick={() => handleDelete()}
+                      onClick={() => {
+                        setModalVisible(!modalVisible);
+                        setModalType("삭제");
+                      }}
                       className={styles.dropdownItem}
                     >
                       삭제
@@ -88,10 +92,11 @@ const ReplyItem = ({ id, content, user, postId, commentUserId }) => {
               type={"삭제"}
               postId={postId}
               commentId={id}
+              setTest={setTest}
               closeModal={() => setModalVisible(!modalVisible)}
             />
           )}
-          {modalType && (
+          {modalVisible && modalType === "신고" && (
             <ReportModal
               className={`${displayType}`}
               title={"댓글 신고"}
@@ -111,6 +116,7 @@ const ReplyItem = ({ id, content, user, postId, commentUserId }) => {
               id={id}
               postId={postId}
               content={content}
+              setTest={setTest}
               closeModal={() => setVisible(!visible)}
             />
           </div>

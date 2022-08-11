@@ -7,9 +7,7 @@ export const friends = createAsyncThunk(
   "accountSlice/friends",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await axiosService.get("/account/friend", {
-        id: args.id,
-      });
+      const response = await axiosService.get(`/account/friend?id=${args.id}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

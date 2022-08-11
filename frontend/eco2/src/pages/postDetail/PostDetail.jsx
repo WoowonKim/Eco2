@@ -187,7 +187,12 @@ const PostDetail = () => {
               setTest={setTest}
             />
           </div>
-          <CommentList id={feedItem.id} comments={comments} replys={replys} />
+          <CommentList
+            id={feedItem.id}
+            comments={comments}
+            replys={replys}
+            setTest={setTest}
+          />
         </div>
       )}
     </div>

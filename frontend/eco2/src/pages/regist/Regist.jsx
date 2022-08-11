@@ -14,7 +14,12 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
-import { setUserEmail, setUserId } from "../../store/user/common";
+import {
+  getUserId,
+  getUserName,
+  setUserEmail,
+  setUserId,
+} from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
 import axiosService from "../../store/axiosService";
 
@@ -100,6 +105,11 @@ const Regist = () => {
     }
   };
 
+  useEffect(() => {
+    if (!!getUserId() && getUserId() != null) {
+      navigate("/mainTree");
+    }
+  });
   return (
     <div className={styles.signup}>
       <img

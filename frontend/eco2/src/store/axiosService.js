@@ -1,4 +1,5 @@
 import axios from "axios";
+import fetcher from "./fetchService";
 import { getUserEmail, removeUserSession } from "./user/common";
 
 const axiosService = axios.create({
@@ -47,6 +48,10 @@ const axiosService = axios.create({
 //             ] = `${newAccessToken}`;
 
 //             onTokenRefreshed(newAccessToken);
+
+//             // fetcher(process.env.REACT_APP_BE_HOST, {
+//             //   headers: { "Auth-accessToken": `${newAccessToken}` },
+//             // });
 //           })
 //           .catch((err) => {
 //             if (err) {

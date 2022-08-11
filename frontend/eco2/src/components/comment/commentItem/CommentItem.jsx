@@ -17,6 +17,7 @@ const CommentItem = ({
   postId,
   commentId,
   replys,
+  setTest,
 }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
@@ -102,6 +103,7 @@ const CommentItem = ({
               type={"삭제"}
               postId={postId}
               commentId={id}
+              setTest={setTest}
               closeModal={() => setModalVisible(!modalVisible)}
             />
           )}
@@ -125,6 +127,7 @@ const CommentItem = ({
               postId={postId}
               id={id}
               content={content}
+              setTest={setTest}
               closeModal={() => setVisible(!visible)}
             />
           </div>
@@ -136,6 +139,7 @@ const CommentItem = ({
           postId={postId}
           id={id}
           replyVisible={replyVisible}
+          setTest={setTest}
           closeModal={() => setReplyVisible(!replyVisible)}
         />
       )}
@@ -145,6 +149,7 @@ const CommentItem = ({
         id={id}
         replys={replys}
         commentUserId={commentUserId}
+        setTest={setTest}
       />
     </div>
   );

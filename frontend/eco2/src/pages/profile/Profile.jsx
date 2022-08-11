@@ -6,6 +6,8 @@ import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
 import { profileImg } from "../../store/img/imgSlice";
+import fetcher from "../../store/fetchService";
+import { friends } from "../../store/user/accountSlice";
 // import { test } from "../../store/user/accountSlice";
 
 const Profile = () => {
@@ -15,6 +17,7 @@ const Profile = () => {
   const [imgSrc, setImgSrc] = useState("");
   const [missionList, setMissionList] = useState([]);
   const [questList, setQuestList] = useState([]);
+  const [friendList, setFriendList] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,13 +35,23 @@ const Profile = () => {
       setSocialType(res.payload.user.socialType);
     });
 
-    const options = {
-      headers: {
-        "Auth-accessToken":
-          "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2EwNTE0MkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDExMjQ1NywiZXhwIjoxNjYwMjMyNDU3fQ.Z8ihJRXyWxk-H30hVqE8fX4AYuvdcWBp8UUV9FJm1ww",
-      },
-    };
-    fetch(`http://localhost:8002/img/profile/${userId}`, options)
+    // 친구조회
+    dispatch(friends({ id: getUserId() })).then((res) => {
+      if (res.payload?.status === 200) {
+        setFriendList(res.payload?.friendList);
+      }
+    });
+
+    // const options = {
+    //   headers: {
+    //     "Auth-accessToken":
+    //       "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2EwNTE0MkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDExMjQ1NywiZXhwIjoxNjYwMjMyNDU3fQ.Z8ihJRXyWxk-H30hVqE8fX4AYuvdcWBp8UUV9FJm1ww",
+    //   },
+    // };
+    // fetch(`http://localhost:8002/img/profile/${userId}`, options)
+    //   .then((res) => res.blob())
+    //   .then((blob) => setImgSrc(URL.createObjectURL(blob)));
+    fetcher(`http://localhost:8002/img/profile/${userId}`, false)
       .then((res) => res.blob())
       .then((blob) => setImgSrc(URL.createObjectURL(blob)));
   }, []);
@@ -74,12 +87,16 @@ const Profile = () => {
         </div>
         <div className={styles.friend}>
           <button
-            onClick={() => navigate("/user/friends", { state: userId })}
+            onClick={() =>
+              navigate("/user/friends", {
+                state: { userId: userId, friendList: friendList },
+              })
+            }
             className={styles.button}
           >
             <i className={`fa-solid fa-users ${styles.friendIcon}`}></i>
           </button>
-          30
+          {friendList.length}
         </div>
       </div>
       <div className={styles.missionList}>
