@@ -1,46 +1,52 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import styles from "./ChattingRoom.module.css";
 import ChattingMessage from "../../../components/chat/chattingMessage/ChattingMessage";
 import { chattingMessageList } from "../../../store/chat/chattingSlice";
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+// import SockJS from 'sockjs-client';
+// import Stomp from 'stompjs';
 import { getUserName, getUserId } from "../../../store/user/common";
 import React, { useRef } from "react";
+import { useLocation } from 'react-router-dom';
+import { getStompClient } from "../../../store/socket";
 
-
-let sockJS = new SockJS("http://localhost:8002/chat");
-let stompClient = Stomp.over(sockJS);
-stompClient.debug = () => {};
+// let url = process.env.REACT_APP_BE_HOST + "socket";
+// let sockJS = new SockJS(url);
+// let stompClient = Stomp.over(sockJS);
+// stompClient.debug = () => { };
 
 const ChattingRoom = () => {
-
+  const roomId = useLocation().state.roomId;
   const [chattingMessages, setChattingMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [userId, setUserId] = useState("");
   const [users, setUserList] = useState([]);
-  const params = useParams();
+  let stompClient = getStompClient();
 
   const dispatch = useDispatch();
   const scrollRef = useRef();
-  
+  let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLjhYzjhYwiLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDE0MTE2MCwiZXhwIjoxNjYwMjYxMTYwfQ.Y0IZGYTOCu4y0-CKzWSzwvosdKp2LRlY26kFU9dDUnU";
+
   useEffect(() => {
-    stompClient.connect({}, () => {
-      stompClient.subscribe('/sub/chat/room/' + params.roomId, (data) => {
+    stompClient.connect({ "Auth-accessToken": accessToken }, (frame) => {
+      stompClient.subscribe('/sub/chat/room/' + roomId, (data) => {
         const newMessage = JSON.parse(data.body);
-          addMessage(newMessage);
-      });
-    })
-    setUserId(getUserId()); 
-    setName(getUserName());
-    dispatch(chattingMessageList({ roomId: params.roomId })).then((res) => {
+        addMessage(newMessage);
+        console.log(newMessage.message);
+      })
+    }, (error) => {
+      console.log(error);
+    });
+    dispatch(chattingMessageList({ roomId: roomId })).then((res) => {
       if (res.payload.status === 200) {
+        console.log("dddd");
         setChattingMessages(res.payload.chatMessageList);
         setUserList(res.payload.userList);
       }
     });
+    setUserId(getUserId());
+    setName(getUserName());
 
   }, []);
 
@@ -51,11 +57,9 @@ const ChattingRoom = () => {
   const addMessage = (message) => {
     setChattingMessages(prev => [...prev, message]);
   };
-  
-
   const sendMessage = () => {
     if (message != "") {
-      stompClient.send("/pub/message", {}, JSON.stringify({ message: message, user: { id: userId }, chatRoom: { id: params.roomId } }));
+      stompClient.send("/pub/message", {}, JSON.stringify({ message: message, user: { id: userId }, chatRoom: { id: roomId } }));
       scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
     setMessage("");
@@ -78,9 +82,16 @@ const ChattingRoom = () => {
         }
 
       </div>
-      <div className={styles.chatting}>
-        <ChattingMessage chattingMessages={chattingMessages} />
-      </div>
+
+      {chattingMessages.length > 0 ? (
+        <div className={styles.chatting}>
+          <ChattingMessage chattingMessages={chattingMessages} />
+        </div>
+      ) : (
+        <div className={styles.noChattingList}>
+          <span className={styles.noChattingMessage}>대화를 시작해보세요!</span>
+        </div>
+      )}
       <div><br /><br /><br /></div>
       <div className={styles.chattingForm}>
         <div className={styles.sendMessage}>
@@ -93,12 +104,12 @@ const ChattingRoom = () => {
             className={styles.messageInput}
           />
         </div>
-          <button
-            onClick={sendMessage}
-            className={styles.sendButton}
-          >
-            전송
-          </button>
+        <button
+          onClick={sendMessage}
+          className={styles.sendButton}
+        >
+          전송
+        </button>
       </div>
     </div>
   );

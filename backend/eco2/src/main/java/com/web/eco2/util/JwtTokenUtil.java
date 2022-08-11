@@ -22,7 +22,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
 import java.security.Key;
 import java.util.*;
 
@@ -147,4 +149,15 @@ public class JwtTokenUtil {
         return cookie;
     }
 
+    public boolean socketValidateToken( String token) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(token);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+//            ResponseBodyWriteUtil.sendSocketError(response, "토큰이 유효하지 않습니다.");
+//            return false;
+        }
+    }
 }

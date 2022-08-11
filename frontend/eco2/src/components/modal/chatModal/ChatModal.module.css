@@ -96,3 +96,11 @@ font-size: small;
 .hidden {
   display: none;
 }
+.noFriendList{
+  padding-top: 30px;
+}
+.noFriendMessage{
+  font-size: small;
+  font-weight: bold;
+  color: grey;
+}

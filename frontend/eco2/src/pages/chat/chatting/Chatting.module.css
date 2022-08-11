@@ -17,4 +17,12 @@
   bottom: 70px;
 }
 
+.noChattingList{
+  padding-top: 30px;
+}
+.noChattingMessage{
+  font-size: small;
+  font-weight: bold;
+  color: grey;
+}
 
