@@ -11,6 +11,7 @@ const Calendar = ({ id }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [rewardDate, setRewardDate] = useState([]);
+  // const []
 
   const dispatch = useDispatch();
 
@@ -28,9 +29,10 @@ const Calendar = ({ id }) => {
 
   useEffect(() => {
     dispatch(calendar({ id })).then((res) => {
-      // if (res.payload.status === 200) {
-      //   setRewardDate(res.payload.calendarList);
-      // }
+      if (res.payload.status === 200) {
+        // res.payload.calendarList.map((cal) => setRewardDate([...rewardDate, ]));
+        setRewardDate(res.payload.calendarList);
+      }
       console.log(res);
     });
   }, []);

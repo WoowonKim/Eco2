@@ -10,13 +10,12 @@ import { getUserEmail, getUserId } from "../../store/user/common";
 const PostForm = () => {
   const [fileImage, setFileImage] = useState("");
   const [file, setFile] = useState("");
-  const [selected, setSelected] = useState("");
   const [editText, setEditText] = useState("");
   const [text, setText] = useState("");
   const [id, setUserId] = useState(0);
   const [publicFlag, setPublicFlag] = useState(false);
   const [commentFlag, setCommentFlag] = useState(false);
-
+  const [postCreateDto, setPostCreateDto] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -44,20 +43,45 @@ const PostForm = () => {
     e.preventDefault();
     const formDataCreate = new FormData();
     const formDataUpdate = new FormData();
-    const missionId = location.state?.missionId
-      ? location.state.missionId
-      : location.state?.customId
-      ? location.state.customId
-      : null;
-    const postCreateDto = {
-      content: editText,
-      user: {
-        id: id,
-      },
-      mission: {
-        id: location.state?.missionId ? location.state.missionId : 1,
-      },
-    };
+
+    if (location.state?.missionId) {
+      setPostCreateDto({
+        content: editText,
+        user: {
+          id: id,
+        },
+        mission: {
+          id: location.state.missionId,
+        },
+        publicFlag: !publicFlag,
+        commentFlag: !commentFlag,
+      });
+    } else if (location.state?.customId) {
+      setPostCreateDto({
+        content: editText,
+        user: {
+          id: id,
+        },
+        customMission: {
+          id: location.state.customId,
+        },
+        publicFlag: !publicFlag,
+        commentFlag: !commentFlag,
+      });
+    } else {
+      setPostCreateDto({
+        content: editText,
+        user: {
+          id: id,
+        },
+        quest: {
+          id: location.state?.questId,
+        },
+        publicFlag: !publicFlag,
+        commentFlag: !commentFlag,
+      });
+    }
+
     const postUpdateDto = {
       content: editText,
       publicFlag: !publicFlag,
@@ -86,6 +110,7 @@ const PostForm = () => {
       const blob = new Blob([json], {
         type: "application/json",
       });
+      console.log(postCreateDto);
       formDataCreate.append("postImage", file);
       formDataCreate.append("postCreateDto", blob);
       console.log(file);

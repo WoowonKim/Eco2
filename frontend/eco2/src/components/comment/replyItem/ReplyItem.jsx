@@ -6,26 +6,44 @@ import styles from "./ReplyItem.module.css";
 import { commentDelete } from "../../../store/post/commentSlice";
 import { getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
+import { useNavigate } from "react-router-dom";
 
-const ReplyItem = ({ id, content, user, postId, commentUserId, setTest }) => {
+const ReplyItem = ({
+  id,
+  content,
+  user,
+  postId,
+  commentUserId,
+  setTest,
+  userEmail,
+}) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const name = getUserName();
+  const navigate = useNavigate();
   const displayType = modalType ? styles.visible : styles.hidden;
 
   // const handleDelete = () => {
   //   dispatch(commentDelete({ id }));
   // };
+  console.log(userEmail);
   return (
     <div>
       {!visible && (
         <li className={styles.list}>
           <div className={styles.commentContainer}>
             <div className={styles.comment}>
-              <div className={styles.userInfo}>
+              <div
+                className={styles.userInfo}
+                onClick={() =>
+                  navigate(`/profile/${commentUserId}`, {
+                    state: { userEmail },
+                  })
+                }
+              >
                 <img
                   src={`http://localhost:8002/img/profile/${commentUserId}`}
                   // src={`${imgSrc}`}
