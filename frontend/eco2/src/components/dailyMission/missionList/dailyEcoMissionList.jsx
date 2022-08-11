@@ -15,9 +15,9 @@ import DailyCustomMissionList from "./dailyCustomMissionList";
 import { GreenBtn } from "../../styled";
 import styles from "./dailyMissionDetail.module.css";
 
-// scroll
-import InfiniteScroll from "react-infinite-scroller";
-import { useInView } from "react-intersection-observer";
+// // scroll
+// import InfiniteScroll from "react-infinite-scroller";
+// import { useInView } from "react-intersection-observer";
 
 const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [ecoId, setEcoId] = useState([]);

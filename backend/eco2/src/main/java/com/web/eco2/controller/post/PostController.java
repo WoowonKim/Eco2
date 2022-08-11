@@ -6,6 +6,7 @@ import com.web.eco2.domain.dto.post.CommentDto;
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.Item.Item;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
@@ -17,6 +18,7 @@ import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.service.FriendService;
 import com.web.eco2.model.service.alarm.AlarmService;
+import com.web.eco2.model.service.item.ItemService;
 import com.web.eco2.model.service.item.StatisticService;
 import com.web.eco2.model.service.mission.CustomMissionService;
 import com.web.eco2.model.service.mission.MissionService;
@@ -82,6 +84,10 @@ public class PostController {
 
     @Autowired
     private AlarmService alarmService;
+
+
+    @Autowired
+    private ItemService itemService;
 
 
     //게시물 전체 조회
@@ -238,6 +244,8 @@ public class PostController {
 
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
+            itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
+
 
             // 친구 인증글 알림
 //            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {
