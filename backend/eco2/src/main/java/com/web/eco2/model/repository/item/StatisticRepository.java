@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface StatisticRepository extends JpaRepository<Statistic, Long> {
-    @Query(value = "select * from tb_Statistic s where s.usr_id=:usrId", nativeQuery = true)
+    @Query(value = "select * from tb_statistic s where s.usr_id=:usrId", nativeQuery = true)
     Statistic findByUsrId(@Param("usrId") Long usrId);
 
 //    @Modifying

@@ -9,9 +9,9 @@ import java.util.List;
 
 @Repository
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
-    @Query(value = "select * from tb_Calendar c where c.usr_id=:usrId", nativeQuery = true)
+    @Query(value = "select * from tb_calendar c where c.usr_id=:usrId", nativeQuery = true)
     List<Calendar> findByUsrId(Long usrId);
 
-    @Query(value = "select * from tb_Calendar c where c.usr_id=:usrId and c.cal_date=:date", nativeQuery = true)
+    @Query(value = "select * from tb_calendar c where c.usr_id=:usrId and c.cal_date=:date", nativeQuery = true)
     Calendar findByUsrIdAndDate(Long usrId, String date);
 }
