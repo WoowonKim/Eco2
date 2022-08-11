@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserId } from "../../store/user/common";
+import { getUserEmail, getUserId } from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
@@ -30,7 +30,7 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate("/profile");
+            navigate(`/profile/${getUserId()}`);
           }}
         >
           <img

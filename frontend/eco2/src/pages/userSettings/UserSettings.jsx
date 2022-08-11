@@ -374,9 +374,6 @@ const UserSettings = () => {
                   <div className={styles.userButtonGroup}>
                     <button
                       onClick={() => {
-                        // dispatch(userActions.logout());
-                        // navigate("/");
-
                         setVisible(!visible);
                         setModalType("로그아웃");
                       }}
@@ -385,19 +382,10 @@ const UserSettings = () => {
                       로그아웃
                     </button>
                     <button
-                      onClick={() =>
-                        // dispatch(deleteUser({ email, password })).then(
-                        //   (res) => {
-                        //     if (res.payload.status === 200) {
-                        //       dispatch(userActions.logout());
-                        //     }
-                        //   }
-                        // )
-                        {
-                          setVisible(!visible);
-                          setModalType("탈퇴");
-                        }
-                      }
+                      onClick={() => {
+                        setVisible(!visible);
+                        setModalType("탈퇴");
+                      }}
                       className={styles.userButton}
                     >
                       회원탈퇴

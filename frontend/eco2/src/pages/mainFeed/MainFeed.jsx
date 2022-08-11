@@ -11,9 +11,6 @@ const MainFeed = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (feeds === null) {
-    //   return;
-    // }
     dispatch(postList()).then((res) => {
       console.log(res);
       if (res.payload?.status === 200) {
@@ -45,14 +42,14 @@ const MainFeed = () => {
           <Link
             to={`/mainFeed/${"use"}`}
             className={styles.link}
-            state={{ category: 2 }}
+            state={{ category: 2, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={2} display={"list"} />
+          <FeedList category={2} display={"list"} feeds={feeds} />
         </div>
       </div>
       <div className={styles.container}>
@@ -61,14 +58,14 @@ const MainFeed = () => {
           <Link
             to={`/mainFeed/${"save"}`}
             className={styles.link}
-            state={{ category: 3 }}
+            state={{ category: 3, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={3} display={"list"} />
+          <FeedList category={3} display={"list"} feeds={feeds} />
         </div>
       </div>
       <div className={styles.container}>
@@ -77,14 +74,14 @@ const MainFeed = () => {
           <Link
             to={`/mainFeed/${"buy"}`}
             className={styles.link}
-            state={{ category: 4 }}
+            state={{ category: 4, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={4} display={"list"} />
+          <FeedList category={4} display={"list"} feeds={feeds} />
         </div>
       </div>
       <div className={styles.container}>
@@ -93,14 +90,14 @@ const MainFeed = () => {
           <Link
             to={`/mainFeed/${"recycle"}`}
             className={styles.link}
-            state={{ category: 5 }}
+            state={{ category: 5, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={5} display={"list"} />
+          <FeedList category={5} display={"list"} feeds={feeds} />
         </div>
       </div>
     </div>

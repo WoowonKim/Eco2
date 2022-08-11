@@ -23,14 +23,14 @@ const FeedItem = ({
             />
             <p className={styles.user}>{userName}님</p>
           </div>
-          <div className={styles.buttonGroup}>
+          {/* <div className={styles.buttonGroup}>
             <button className={styles.button}>
               <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
             </button>
             <button className={styles.button}>
               <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
             </button>
-          </div>
+          </div> */}
         </div>
         {/* <hr className={styles.line} /> */}
         <img

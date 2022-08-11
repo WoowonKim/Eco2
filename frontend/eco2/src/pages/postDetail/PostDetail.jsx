@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CommentForm from "../../components/comment/commentForm/CommentForm";
 import CommentList from "../../components/comment/commentList/CommentList";
 import styles from "./PostDetail.module.css";
@@ -20,12 +20,13 @@ const PostDetail = () => {
 
   const params = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const displayType = visible ? styles.visible : styles.hidden;
   const name = getUserName();
 
   const handlePostLike = () => {
-    dispatch(postLike({ postId: feedItem.id, userId: feedItem.userId })).then(
+    dispatch(postLike({ postId: feedItem.id, userId: getUserId() })).then(
       (res) => {
         if (res.payload.status === 200) {
           setLike(!like);
@@ -161,7 +162,11 @@ const PostDetail = () => {
         className={styles.postImg}
       />
       <div className={styles.info}>
-        <div className={styles.userProfile}>
+        <div
+          className={styles.userProfile}
+          // 추후 이메일 정보 추가하기
+          onClick={() => navigate(`/profile/${feedItem.userId}`)}
+        >
           <img
             src={`http://localhost:8002/img/profile/${feedItem.userId}`}
             alt="profileImg"

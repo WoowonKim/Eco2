@@ -14,6 +14,9 @@ const PostForm = () => {
   const [editText, setEditText] = useState("");
   const [text, setText] = useState("");
   const [id, setUserId] = useState(0);
+  const [publicFlag, setPublicFlag] = useState(false);
+  const [commentFlag, setCommentFlag] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -52,8 +55,8 @@ const PostForm = () => {
     };
     const postUpdateDto = {
       content: editText,
-      publicFlag: false,
-      commentFlag: false,
+      publicFlag: !publicFlag,
+      commentFlag: !commentFlag,
     };
 
     if (location.state?.postId) {
@@ -129,37 +132,23 @@ const PostForm = () => {
             삭제
           </button> */}
         </div>
-        <div className={styles.selectBox}>
-          <select
-            name="category"
+        <div>
+          <label htmlFor="post">게시물 비공개</label>
+          <input
+            type="checkbox"
+            id="post"
             onChange={(e) => {
-              setSelected(e.target.value);
-              console.log(e.target.value);
+              setPublicFlag(e.target.checked);
             }}
-            value={
-              location.state?.category ? location.state?.category : selected
-            }
-            className={styles.select}
-          >
-            <option className={styles.option} value="">
-              카테고리 선택
-            </option>
-            <option className={styles.option} value="do">
-              실천하기
-            </option>
-            <option className={styles.option} value="use">
-              사용하기
-            </option>
-            <option className={styles.option} value="save">
-              절약하기
-            </option>
-            <option className={styles.option} value="buy">
-              구매하기
-            </option>
-            <option className={styles.option} value="recycle">
-              재활용하기
-            </option>
-          </select>
+          />
+          <label htmlFor="comment">댓글 비공개</label>
+          <input
+            type="checkbox"
+            id="comment"
+            onChange={(e) => {
+              setCommentFlag(e.target.checked);
+            }}
+          />
         </div>
         <p className={styles.missionTitle}>미션 제목</p>
         <textarea

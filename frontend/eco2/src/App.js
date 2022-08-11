@@ -55,7 +55,6 @@ function App() {
   // const [alarm, setAlarm] = useState([]);
 
   useEffect(() => {
-
     setUserdata(getUserEmail());
     // firestore.onSnapshot(
     //   firestore.collection(dbService, "test/2/alarm"),
@@ -163,7 +162,7 @@ function App() {
           ></Route>
 
           <Route
-            path="/profile"
+            path="/profile/:userId"
             element={
               <RequireAuth>
                 <Profile />
