@@ -12,7 +12,14 @@ import {
 // CSS
 import styles from "./dailyMission.module.css";
 
-const MissionMain = ({ idTest, content, missionIdTest, missionFlag, category }) => {
+const MissionMain = ({
+  idTest,
+  content,
+  missionIdTest,
+  missionFlag,
+  category,
+  missionId,
+}) => {
   // const flagType = missionFlag ? "fa-solid fa-circle" : "fa-regular fa-circle"; // 미션 인증 색 변화
   const realTrashType = missionFlag ? styles.whiteTrash : styles.greenTrash; // 미션 여부에 따른 쓰레기통
 
@@ -44,7 +51,7 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag, category }) 
     if (!missionFlag) {
       if (window.confirm("미션완료!! 인증게시글 업로드 하시겠어요?")) {
         dispatch(clearMission({ id: idTest, missionId: missionIdTest }));
-        naviGate("/post", { state: { missionId: idTest } });
+        naviGate("/post", { state: { missionId: missionId } });
       } else {
         alert("인증게시글 업로드시 완료 인증됩니다!!");
       }
@@ -57,7 +64,10 @@ const MissionMain = ({ idTest, content, missionIdTest, missionFlag, category }) 
     <div>
       <div className={styles.mainList}>
         {missionFlag ? (
-          <img src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`} className={styles.leafSize}></img>
+          <img
+            src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`}
+            className={styles.leafSize}
+          ></img>
         ) : (
           <i
             className={"fa-regular fa-circle"}

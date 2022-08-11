@@ -73,7 +73,9 @@
 }
 
 .mission {
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  justify-content: start;
+  /* grid-template-columns: 1fr 1fr 1fr; */
 }
 
 .missionImg {

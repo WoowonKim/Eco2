@@ -125,7 +125,6 @@ const PostDetail = () => {
       </div>
       {visible && modalType === "수정" && (
         <PostModal
-          // className={`${displayType} ${scrollType}`}
           title={"게시물 수정"}
           content={"게시물을 수정하시겠습니까"}
           type={"수정"}

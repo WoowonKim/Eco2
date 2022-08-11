@@ -44,6 +44,11 @@ const PostForm = () => {
     e.preventDefault();
     const formDataCreate = new FormData();
     const formDataUpdate = new FormData();
+    const missionId = location.state?.missionId
+      ? location.state.missionId
+      : location.state?.customId
+      ? location.state.customId
+      : null;
     const postCreateDto = {
       content: editText,
       user: {
