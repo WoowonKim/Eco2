@@ -184,7 +184,7 @@ public class PostController {
                         commentDto.setContent(comment.getContent());
                         commentDto.setUserId(comment.getUser().getId());
                         commentDto.setUserName(comment.getUser().getName());
-                        commentDto.setUserEmail(comment.getUser().getName());
+                        commentDto.setUserEmail(comment.getUser().getEmail());
                         commentDto.setPostId(comment.getPost().getId());
                         if (comment.getComment() != null) {
                             commentDto.setCommentId(comment.getComment().getId());
