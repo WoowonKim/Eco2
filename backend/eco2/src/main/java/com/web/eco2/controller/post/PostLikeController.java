@@ -62,34 +62,4 @@ public class PostLikeController {
         }
 
     }
-
-
-
-
-
-//    @PostMapping()
-//    public ResponseEntity<Object> postLike(@RequestBody Long postId,
-//                                           @RequestBody Long userId,
-//                                           @RequestBody boolean like) {
-//
-//        FavoritePost favoritePost = FavoritePost.builder()
-//                .user(userRepository.getById(userId))
-//                .post(postRepository.getById(postId))
-//                .build();
-//
-//
-//        PostLikeDto postLikeDto = null;
-//        postLikeDto.setPostId(postId);
-//        postLikeDto.setUserId(userId);
-//        if (like == true) {
-//            like = false;
-//            postLikeDto.setLike(like);
-//            postLikeRepository.delete(favoritePost);
-//        } else {
-//            like = true;
-//            postLikeDto.setLike(like);
-//            postLikeRepository.save(favoritePost);
-//        }
-//        return ResponseHandler.generateResponse("좋아요에 성공하였습니다.", HttpStatus.OK, "postLikeDto", postLikeDto);
-//    }
 }

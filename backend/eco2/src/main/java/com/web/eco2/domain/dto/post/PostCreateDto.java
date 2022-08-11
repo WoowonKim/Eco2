@@ -20,33 +20,32 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class PostCreateDto {
-//    private Long id;
     private String content;
     private User user;
     private Mission mission;
     private CustomMission customMission;
     private Quest quest;
+    private boolean publicFlag;
+    private boolean commentFlag;
+
 
 
     public Post toEntity() {
         return Post.builder()
-//                .id(getId())
                 .content(getContent())
                 .user(getUser())
                 .mission(getMission())
-                .category(getMission()!=null?getMission().getCategory():6)
+                .category(getMission()!=null?getMission().getCategory(): getCustomMission().getCategory())
                 .customMission(getCustomMission())
-//                .quest(getQuest())
                 .registTime(LocalDateTime.now())
-                .publicFlag(true)
-                .commentFlag(true)
+                .publicFlag(isPublicFlag())
+                .commentFlag(isCommentFlag())
                 .report(false)
                 .build();
     }
 
     public QuestPost toQuestPostEntity() {
         return QuestPost.builder()
-//                .id(getId())
                 .content(getContent())
                 .user(getUser())
                 .category(getQuest().getMission().getCategory())
