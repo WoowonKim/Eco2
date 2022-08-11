@@ -37,6 +37,18 @@ export const updateLeaf = createAsyncThunk(
   }
 );
 
+export const statisticLeaves = createAsyncThunk(
+  "leavesSlice/statisticLeaves",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.get(`/tree/statistic/${args.userId}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 export let leavesSlice = createSlice({
   name: "leaves",
   initialState: {
@@ -71,6 +83,12 @@ export let leavesSlice = createSlice({
     },
     [updateLeaf.pending]: (state, action) => {
       console.log("updateLeaf pendeing");
+    },
+    [statisticLeaves.fulfilled]: (state, action) => {
+      console.log("statisticLeaves fullfilled");
+    },
+    [statisticLeaves.rejected]: (state, action) => {
+      console.log("statisticLeaves rejected");
     },
   },
 });
