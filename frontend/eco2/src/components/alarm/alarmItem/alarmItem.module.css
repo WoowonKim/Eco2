@@ -67,3 +67,7 @@ p {
   text-align: left;
   font-size: small;
 }
+
+.buttons {
+  background-color: beige;
+}
