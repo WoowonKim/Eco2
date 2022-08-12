@@ -202,10 +202,10 @@ public class DailyMissionController {
     @ApiOperation(value = "데일리미션 추천", response = Object.class)
     @PostMapping("/recommend/{usrId}")
     public ResponseEntity<Object> recommendDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
+        List<Long> oldRecommendMission = null;
         try {
             log.info("데일리미션 추천 API 호출");
-
-            List<Long> oldRecommendMission = redisService.getListData(usrId.toString());
+            oldRecommendMission = redisService.getListData(usrId.toString());
             if (oldRecommendMission != null && oldRecommendMission.size() > 0) {
                 return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK,
                         "recommendedMission",
@@ -219,8 +219,7 @@ public class DailyMissionController {
             }
 
             Map<String, List<?>> missionData = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
-            System.out.println(missionData);
-            if(missionData == null) {
+            if (missionData == null) {
                 redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
                 return ResponseHandler.generateResponse("미션 추천에 실패했습니다.", HttpStatus.ACCEPTED);
             }
@@ -239,6 +238,7 @@ public class DailyMissionController {
             return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions);
         } catch (Exception e) {
             log.error("데일리미션 추천 API 에러", e);
+            if (oldRecommendMission == null) redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -281,5 +281,9 @@ public class DailyMissionController {
         }
     }
 
-
+    // 테스트용 레디스 리셋 url
+    @GetMapping("/reset/{id}")
+    public void resetRedis(@PathVariable Long id) {
+        redisService.setListDataExpire(id.toString(), new ArrayList<>(), 1L);
+    }
 }

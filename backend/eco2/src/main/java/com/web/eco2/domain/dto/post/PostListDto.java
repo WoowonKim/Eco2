@@ -22,6 +22,7 @@ public class PostListDto {
     private Long id;
     private Long userId;
     private String userName;
+    private String userEmail;
     private String content;
     private String postImgUrl;
     private boolean publicFlag;
@@ -30,6 +31,7 @@ public class PostListDto {
     private CustomMission customMission;
     private QuestDto quest;
     private Long likeCount;
+    private List<Long> postLikeUserIds;
     private ArrayList<CommentDto> comments;
 
     public PostListDto() {

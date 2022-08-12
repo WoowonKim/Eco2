@@ -152,6 +152,7 @@ const DailyMissionMain = () => {
             idTest={id}
             missionIdTest={it.id}
             missionFlag={it.achieveFlag}
+            customMissionId={it.customMission.id}
           />
         ))}
       </div>
@@ -165,6 +166,7 @@ const DailyMissionMain = () => {
             missionIdTest={it.id}
             missionFlag={it.achieveFlag}
             category={it.mission.category}
+            missionId={it.mission.id}
           />
         ))}
       </div>

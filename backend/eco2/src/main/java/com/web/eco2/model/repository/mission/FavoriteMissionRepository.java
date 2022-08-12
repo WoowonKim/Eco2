@@ -18,11 +18,11 @@ public interface FavoriteMissionRepository extends JpaRepository<FavoriteMission
 //    CustomMission findByCumId(@Param("missionId") Long missionId);
 
     @Modifying
-    @Query(value = "delete from tb_Favorite_Mission f where f.usr_id=:usrId and f.mis_id=:missionId", nativeQuery = true)
+    @Query(value = "delete from tb_favorite_mission f where f.usr_id=:usrId and f.mis_id=:missionId", nativeQuery = true)
     void deleteByMisId(@Param("usrId") Long usrId, @Param("missionId") Long missionId);
 
     @Modifying
-    @Query(value = "delete from tb_Favorite_Mission f where f.usr_id=:usrId and f.cum_id=:missionId", nativeQuery = true)
+    @Query(value = "delete from tb_favorite_mission f where f.usr_id=:usrId and f.cum_id=:missionId", nativeQuery = true)
     void deleteByCumId(@Param("usrId") Long usrId, @Param("missionId") Long missionId);
 
     @Query(value = "select m.mis_id as id, mis_category as category, mis_content as content, mis_title as title, mis_quest_flag as questFlag from tb_favorite_mission f join tb_mission m on f.mis_id = m.mis_id where f.usr_id=:usrId", nativeQuery = true)

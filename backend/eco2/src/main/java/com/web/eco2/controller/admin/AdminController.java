@@ -5,7 +5,6 @@ import com.web.eco2.domain.dto.Report.ReportInformation;
 import com.web.eco2.domain.dto.admin.NoticeRequest;
 import com.web.eco2.domain.entity.admin.CommentReport;
 import com.web.eco2.domain.entity.admin.Notice;
-import com.web.eco2.domain.entity.admin.PostReport;
 import com.web.eco2.domain.entity.admin.Report;
 import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.post.Comment;
@@ -109,22 +108,40 @@ public class AdminController {
         try {
             //TODO : 페이징 구현 필요..
             log.info("신고글 조회 API 호출");
-            List<ReportInformation> reportPost = reportService.findAllPost();
-            List<ReportDto> reportPostDtos = new ArrayList<>();
-            for (ReportInformation report : reportPost) {
-                Post post = postService.getById(report.getPosId());
-                reportPostDtos.add(new ReportDto(report.getRepId(), report.getCount(), post.getId(), post.getUser(), post.getCategory()));
+//            List<ReportInformation> reportPost = reportService.findAllPost();
+//            List<ReportDto> reportPostDtos = new ArrayList<>();
+//            for (ReportInformation report : reportPost) {
+//                Post post = postService.getById(report.getPosId());
+//                reportPostDtos.add(new ReportDto(report.getRepId(), report.getCount(), post.getId(), post.getUser(), post.getCategory()));
+//            }
+//
+//            List<ReportInformation> reportComment = reportService.findAllComment();
+//            List<ReportDto> reportCommentDtos = new ArrayList<>();
+//            for (ReportInformation report : reportComment) {
+//                Comment comment = postCommentService.getById(report.getComId());
+//                reportCommentDtos.add(new ReportDto(report.getRepId(), report.getCount(),comment.getPost().getId(), comment.getId(), comment.getUser()));
+//            }
+            List<ReportInformation> reportListInformation = reportService.findAllReport();
+            System.out.println(reportListInformation);
+            List<ReportDto> reportList = new ArrayList<>();
+            for (ReportInformation report : reportListInformation) {
+                Post post = null;
+                Comment comment = null;
+                if (report.getComId() != null) {
+                    comment = postCommentService.getById(report.getComId());
+                    post = comment.getPost();
+                } else {
+                    post = postService.getById(report.getPosId());
+                }
+                User user = post.getUser();
+                if (report.getComId() != null) {
+                    user = comment.getUser();
+                }
+
+                reportList.add(new ReportDto(report.getRepId(), report.getCount(), post, comment, user, post.getCategory()));
             }
 
-            //TODO : 댓글 구현 후에 다시 확인
-            //TODO : 대댓글 어떡하나
-            List<ReportInformation> reportComment = reportService.findAllComment();
-            List<ReportDto> reportCommentDtos = new ArrayList<>();
-            for (ReportInformation report : reportComment) {
-                Comment comment = postCommentService.getById(report.getComId());
-                reportCommentDtos.add(new ReportDto(report.getRepId(), report.getCount(), comment.getId(), comment.getUser()));
-            }
-            return ResponseHandler.generateResponse("신고글 조회에 성공하였습니다.", HttpStatus.OK, "reportPost", reportPostDtos, "reportComment", reportCommentDtos);
+            return ResponseHandler.generateResponse("신고글 조회에 성공하였습니다.", HttpStatus.OK, "reportList", reportList);
         } catch (Exception e) {
             log.error("신고글 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -138,10 +155,9 @@ public class AdminController {
         try {
             log.info("신고 상세 내역 조회 API 호출");
             if (type == 0) {//게시물 신고 내역 조회
-                List<PostReport> reportPost = reportService.findByPosId(reportId);
+                List<Report> reportPost = reportService.findByPosId(reportId);
                 return ResponseHandler.generateResponse("신고 상세 내역 조회에 성공하였습니다.", HttpStatus.OK, "reportDetailList", reportPost);
             } else {//댓글 신고 내역 조회
-                //TODO : 댓글 구현 후에 다시 확인
                 List<CommentReport> reportComment = reportService.findByComId(reportId);
                 return ResponseHandler.generateResponse("신고 상세 내역 조회에 성공하였습니다.", HttpStatus.OK, "reportDetailList", reportComment);
             }

@@ -4,6 +4,7 @@ import com.web.eco2.domain.dto.Report.ReportRequest;
 import com.web.eco2.domain.dto.Report.ReportTypeInformation;
 import com.web.eco2.domain.entity.admin.Report;
 import com.web.eco2.domain.entity.admin.ReportType;
+import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.model.service.admin.ReportService;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
@@ -43,6 +44,7 @@ public class ReportController {
     public ResponseEntity<Object> registerReport(@PathVariable("usrId") Long usrId, @RequestBody ReportRequest reportRequest) {
         try {
             log.info("신고 등록 API 호출");
+            System.out.println(reportRequest);
             ReportTypeInformation reportTypeInformation = reportService.getTypeById(reportRequest.getRetId());
             ReportType reportType = new ReportType();
             reportType.setId(reportTypeInformation.getId());
@@ -60,11 +62,10 @@ public class ReportController {
                 if (report != null) {
                     return ResponseHandler.generateResponse("이미 신고한 댓글입니다.", HttpStatus.ACCEPTED);
                 }
+//                Comment comment = postCommentService.getById(reportRequest.getComId());
                 reportService.commentSave(reportRequest.toCommentEntity(userService.getById(usrId),
-                        reportType, postCommentService.getById(reportRequest.getComId())));
-                //TODO : 댓글이 아직 안됨
+                        reportType, postCommentService.getById(reportRequest.getComId()), null));
             }
-
             return ResponseHandler.generateResponse("신고 성공하였습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("신고 등록 API 에러", e);

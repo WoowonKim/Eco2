@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { noticeDelete } from "../../../store/admin/noticeSlice";
 import { commentDelete } from "../../../store/post/commentSlice";
 import { postDelete, report } from "../../../store/post/postSlice";
+import { friendRequest } from "../../../store/user/accountSlice";
 import {
   getUserEmail,
   getUserId,
@@ -27,10 +28,20 @@ const PostModal = ({
   commentId,
   selected,
   setTest,
+  message
+  fromId,
+  toId,
 }) => {
+
+  console.log(commentId);
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
-  const colorType = type === "수정" ? styles.editButton : styles.warningButton;
+  const colorType =
+    type === "수정"
+      ? styles.editButton
+      : type === "친구"
+      ? styles.friendButton
+      : styles.warningButton;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -50,32 +61,43 @@ const PostModal = ({
           });
         } else {
           dispatch(postDelete({ postId })).then((res) => {
+            closeModal();
             navigate("/mainFeed");
           });
         }
       } else if (noticeId) {
         dispatch(noticeDelete({ noticeId })).then((res) => {
+          closeModal();
           navigate("/user/settings/");
         });
       }
     } else if (type === "신고") {
       dispatch(
-        report({ userId: getUserId(), retId: selected, posId: postId })
+        report({ userId: getUserId(), retId: selected, posId: postId, comId: commentId, message: message })
       ).then((res) => {
         if (res.payload.status === 200) {
-          window.location.replace(`/post/${postId}`);
+         // setHidden(true);
+          closeModal();
         }
       });
     } else if (type === "로그아웃") {
       dispatch(logout()).then((res) => {
         removeUserSession();
+        closeModal();
         navigate("/");
       });
     } else if (type === "탈퇴") {
       dispatch(deleteUser({ email })).then((res) => {
         if (res.payload.status === 200) {
           removeUserSession();
+          closeModal();
           navigate("/");
+        }
+      });
+    } else if (type === "친구") {
+      dispatch(friendRequest({ fromId, toId })).then((res) => {
+        if (res.payload.status === 200 || res.payload.status === 202) {
+          closeModal();
         }
       });
     } else {
@@ -95,6 +117,8 @@ const PostModal = ({
             <i className={`fa-regular fa-circle-check ${styles.editIcon}`}></i>
           ) : type === "삭제" ? (
             <i className={`fa-regular fa-bell ${styles.deleteIcon}`}></i>
+          ) : type === "친구" ? (
+            <i className={`fa-regular fa-bell ${styles.friendIcon}`}></i>
           ) : (
             <i
               className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}

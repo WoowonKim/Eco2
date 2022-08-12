@@ -41,7 +41,7 @@ const ChattingItem = ({
 
   return (
     <div className={styles.list}>
-      <Link to={`/chatting/room`} state={{ roomId: id}} className={styles.link}>
+      <Link to={`/chatting/room`} state={{ roomId: id }} className={styles.link}>
         <div className={styles.leftContent}>
           <img
             src={`http://localhost:8002/img/profile/${id}`}

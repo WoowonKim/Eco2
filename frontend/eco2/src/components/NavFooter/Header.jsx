@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserId } from "../../store/user/common";
+import { getUserEmail, getUserId } from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
@@ -30,11 +30,11 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate("/profile");
+            navigate(`/profile/${getUserId()}`);
           }}
         >
           <img
-            // src={`http://localhost:8002/img/profile/${userId}`}
+            src={`http://localhost:8002/img/profile/${userId}`}
             alt="profileImg"
             className={styles.profileImg}
           />
@@ -46,7 +46,16 @@ const Header = () => {
             navigate("/chatting");
           }}
         >
-        <i className="fa-solid fa-comments"></i>
+          <i className="fa-solid fa-comments"></i>
+        </button>
+
+        <button
+          className={styles.profileButton}
+          onClick={() => {
+            navigate("/report");
+          }}
+        >
+        <i className="fa-solid">신고</i>
         </button>
       </nav>
     </header>
