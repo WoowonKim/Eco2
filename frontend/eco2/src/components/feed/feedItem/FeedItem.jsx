@@ -11,17 +11,18 @@ const FeedItem = ({
   postImgUrl,
   like,
 }) => {
-  // console.log(key)
   return (
     <Link to={`/post/${id}`} className={styles.link}>
       <div className={styles.list}>
         <div className={styles.title}>
-          <img
-            // src={`http://localhost:8002/img/profile/${userId}`}
-            alt="profileImg"
-            className={styles.profileImg}
-          />
-          <p className={styles.user}>{userName}님</p>
+          <div className={styles.profile}>
+            <img
+              src={`http://localhost:8002/img/profile/${userId}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
+            <p className={styles.user}>{userName}님</p>
+          </div>
           {/* <div className={styles.buttonGroup}>
             <button className={styles.button}>
               <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
@@ -31,9 +32,9 @@ const FeedItem = ({
             </button>
           </div> */}
         </div>
-        <hr className={styles.line} />
+        {/* <hr className={styles.line} /> */}
         <img
-          // src={`http://localhost:8002/img/post/${id}`}
+          src={`http://localhost:8002/img/post/${id}`}
           alt="postImg"
           className={styles.postImg}
         />

@@ -157,7 +157,8 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       <div>
         {list === true ? (
           <div className={styles.scrollMission}>
-            {ecomissionList.map(it => (
+
+            {ecomissionList.map((it) => (
               <DailyEcoMissionitem
                 key={it.id}
                 content={it.title}

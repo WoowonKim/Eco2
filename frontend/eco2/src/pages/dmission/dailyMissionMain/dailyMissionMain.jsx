@@ -145,19 +145,21 @@ const DailyMissionMain = () => {
       </div> */}
 
       <div>
-        {cusMain.map(it => (
+
+        {cusMain.map((it) => (
           <MissionCustomItem
             key={it.id}
             content={it.customMission.title}
             idTest={id}
             missionIdTest={it.id}
             missionFlag={it.achieveFlag}
+            customMissionId={it.customMission.id}
           />
         ))}
       </div>
 
       <div>
-        {main.map(it => (
+        {main.map((it) => (
           <MissionMain
             key={it.id}
             content={it.mission.title}
@@ -165,6 +167,8 @@ const DailyMissionMain = () => {
             missionIdTest={it.id}
             missionFlag={it.achieveFlag}
             category={it.mission.category}
+
+            missionId={it.mission.id}
           />
         ))}
       </div>

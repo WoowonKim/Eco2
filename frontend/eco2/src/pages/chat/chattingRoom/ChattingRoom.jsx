@@ -13,7 +13,6 @@ import { getStompClient } from "../../../store/socket";
 // let url = process.env.REACT_APP_BE_HOST + "socket";
 // let sockJS = new SockJS(url);
 // let stompClient = Stomp.over(sockJS);
-// stompClient.debug = () => { };
 
 const ChattingRoom = () => {
   const roomId = useLocation().state.roomId;
@@ -22,25 +21,49 @@ const ChattingRoom = () => {
   const [name, setName] = useState("");
   const [userId, setUserId] = useState("");
   const [users, setUserList] = useState([]);
-  let stompClient = getStompClient();
+  const [stompClient, setStompClient] = useState(null);
+  // let stompClient = getStompClient();
+  // stompClient.debug = () => { };
 
   const dispatch = useDispatch();
   const scrollRef = useRef();
   let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLjhYzjhYwiLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDE0MTE2MCwiZXhwIjoxNjYwMjYxMTYwfQ.Y0IZGYTOCu4y0-CKzWSzwvosdKp2LRlY26kFU9dDUnU";
+  // window.location.reload();
+
+  //어세스 토큰 가져오기
+  useEffect(() => {
+    
+    let client = getStompClient();
+    console.log(client);
+    console.log(client.connected);
+    // client.connect({ "Auth-accessToken": accessToken }, (frame) => {
+    //   console.log("dfdfd");
+    // });
+    setStompClient(client);
+  }, []);
+
 
   useEffect(() => {
+    if(stompClient === null){
+      console.log(stompClient);
+      console.log("stompClient");
+      return;
+    }
     stompClient.connect({ "Auth-accessToken": accessToken }, (frame) => {
+      console.log("소켓 연결");
       stompClient.subscribe('/sub/chat/room/' + roomId, (data) => {
         const newMessage = JSON.parse(data.body);
         addMessage(newMessage);
         console.log(newMessage.message);
       })
     }, (error) => {
+      //발급된 어세스 다시 받아와서 재요청-> 쿠키가 필요함,, (client 재접속)
+      //발급된 어세스가 없으면 (리프레시 만료시) 재로그인으로 요청
       console.log(error);
     });
+
     dispatch(chattingMessageList({ roomId: roomId })).then((res) => {
       if (res.payload.status === 200) {
-        console.log("dddd");
         setChattingMessages(res.payload.chatMessageList);
         setUserList(res.payload.userList);
       }
@@ -48,11 +71,11 @@ const ChattingRoom = () => {
     setUserId(getUserId());
     setName(getUserName());
 
-  }, []);
+  }, [stompClient]);
 
-  useEffect(() => {
-    scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  }, [chattingMessages]);
+  // useEffect(() => {
+  //   // scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  // }, [chattingMessages]);
 
   const addMessage = (message) => {
     setChattingMessages(prev => [...prev, message]);

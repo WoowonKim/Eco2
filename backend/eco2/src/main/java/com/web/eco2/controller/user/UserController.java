@@ -86,10 +86,11 @@ public class UserController {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             String refreshToken = jwtTokenUtil.createRefreshToken();
             user.setRefreshToken(refreshToken);
-            userService.save(user.toEntity());
+            User dbUser = user.toEntity();
+            userService.save(dbUser);
 
             // 계정 설정 insert
-            User dbUser = userService.findByEmail(user.getEmail());
+//            User dbUser = userService.findByEmail(user.getEmail());
             UserSetting userSetting = UserSetting.builder()
                     .id(null).user(dbUser)
                     .chatAlarmFlag(true).commentAlarmFlag(true)
@@ -111,7 +112,7 @@ public class UserController {
                     .build();
             statisticService.save(statistic);
 
-            String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
+            String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), dbUser.getRole());
             response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
             return ResponseHandler.generateResponse("회원가입에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", dbUser);
         } catch (Exception e) {
@@ -303,7 +304,7 @@ public class UserController {
                 User kakaoUser = kakaoOAuth.getUserInfo(token);
                 email = kakaoUser.getEmail();
                 if(email == null) {
-                    return ResponseHandler.generateResponse("이메일 허용이 필요", HttpStatus.ACCEPTED);
+                    return ResponseHandler.generateResponse("이메일 허용이 필요합니다.", HttpStatus.NON_AUTHORITATIVE_INFORMATION);
                 }
             } else {
                 return ResponseHandler.generateResponse("잘못된 socialType", HttpStatus.ACCEPTED);
@@ -313,7 +314,7 @@ public class UserController {
             String refreshToken = jwtTokenUtil.createRefreshToken();
             if (user == null) {
                 // 없는 회원: 회원 가입하기
-                userService.save(User.builder().email(email).socialType(socialType).refreshToken(refreshToken).build());
+                userService.save(User.builder().email(email).socialType(socialType).refreshToken(refreshToken).role(Collections.singletonList("ROLE_USER")).build());
                 user = userService.findByEmail(email);
 
                 // 계정 설정 insert
@@ -346,7 +347,7 @@ public class UserController {
                 userService.save(user);
             }
 
-            String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), Collections.singletonList("ROLE_ADMIN"));
+            String accessToken = jwtTokenUtil.createAccessToken(user.getEmail(), user.getRole());
             response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
 
             return ResponseHandler.generateResponse("로그인에 성공하였습니다.", HttpStatus.OK, "accessToken", accessToken, "user", user.toDto());

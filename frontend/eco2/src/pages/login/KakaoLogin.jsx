@@ -2,7 +2,12 @@ import { React, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axiosService from "../../store/axiosService";
-import { setUserEmail, setUserId, setUserName } from "../../store/user/common";
+import {
+  removeUserSession,
+  setUserEmail,
+  setUserId,
+  setUserName,
+} from "../../store/user/common";
 import { kakaoLogin } from "../../store/user/userSlice";
 
 function KakaoLogin() {
@@ -23,16 +28,25 @@ function KakaoLogin() {
         axiosService.defaults.headers.common[
           "Auth-accessToken"
         ] = `${res.payload.accessToken}`;
-        setUserEmail(false, res.payload.user.email);
-        setUserId(false, res.payload.user.id);
-        if (res.payload.user?.name === null || !res.payload.user.name) {
+        if (!res.payload.user.name) {
+          setUserEmail(false, res.payload.user.email);
+          setUserId(false, res.payload.user.id);
           navigate("/ecoName");
         } else {
-          setUserName(false, res.payload.user.name);
+          setUserEmail(false, res.payload.user.email);
+          setUserId(false, res.payload.user.id);
+          setUserName(false, res.payload.user?.name);
+          navigate("/mainTree");
         }
-        navigate("/mainFeed");
       } else if (res.payload.status === 202) {
+        alert(res.payload.msg);
+        navigate("/");
+      } else if (res.payload.status === 203) {
+        alert(res.payload.msg);
         window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
+      } else {
+        removeUserSession();
+        navigate("/");
       }
     });
   } else {
