@@ -100,7 +100,7 @@ public class CommentController {
                         alarmService.insertAlarm(FirebaseAlarm.builder()
                                 .userId(baseComment.getUser().getId()).dType("comment")
                                 .senderId(user.getId()).content(user.getName()+"님이 회원님의 댓글에 대댓글을 남겼습니다.")
-                                .url(postId+"/"+comment.getId()).build());
+                                .url("/post/"+postId+"?comment="+comment.getId()).build());
                     }
                 } else {
                     Comment comment = Comment.builder()
@@ -120,7 +120,7 @@ public class CommentController {
                         alarmService.insertAlarm(FirebaseAlarm.builder()
                                 .userId(post.getUser().getId()).dType("comment")
                                 .senderId(user.getId()).content(user.getName()+"님이 회원님의 인증글에 댓글을 남겼습니다.")
-                                .url(postId+"/"+comment.getId()).build());
+                                .url("/post/"+postId+"?comment="+comment.getId()).build());
                     }
                 }
                 return ResponseHandler.generateResponse("댓글이 등록되었습니다.", HttpStatus.OK);

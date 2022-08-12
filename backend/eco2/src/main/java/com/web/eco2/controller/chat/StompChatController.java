@@ -1,9 +1,11 @@
 package com.web.eco2.controller.chat;
 
 import com.web.eco2.domain.dto.chat.ChatMessageDto;
+import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.chat.ChatMessage;
 import com.web.eco2.domain.entity.chat.ChatRoom;
 import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.chat.ChatService;
 import com.web.eco2.model.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,9 @@ public class StompChatController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AlarmService alarmService;
 
 //    @MessageMapping(value = "/enter")
 //    public void enter(@Payload ChatMessageDto message) {
@@ -63,6 +68,16 @@ public class StompChatController {
         // DB에 채팅내용 저장
         ChatMessage chatMessage = message.toEntity();
         chatService.saveChatMessage(chatMessage);
+
+        // 메시지를 받는 사람에게 알림 보내기
+        User receiver = chatRoom.getToUser().equals(user.getName())
+                ? userService.findByName(chatRoom.getFromUser())
+                : userService.findByName(chatRoom.getToUser());
+
+        alarmService.insertAlarm(FirebaseAlarm.builder()
+                .senderId(user.getId()).dType("newChat")
+                .content(user.getName()+"님으로부터 새로운 메시지가 도착했습니다.")
+                .userId(receiver.getId()).url("/chatting/room?roomId="+chatRoom.getId()).build());
 
         chatRoom.setLastSendMessage(chatMessage.getMessage());
         chatRoom.setLastSendTime(chatMessage.getSendDate());
