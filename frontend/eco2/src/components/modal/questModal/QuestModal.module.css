@@ -44,7 +44,7 @@
   background-color: #6c757d;
   font-size: 13px;
   border-radius: 8px;
-  width: 330px;
+  width: 80%;
   height: 35px;
 
   text-align: center;
@@ -88,10 +88,10 @@
 
 .main {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 .selectBox {
-  width: 35%;
+  width: 80%;
   margin: 10px auto;
 }
 p {
@@ -118,7 +118,7 @@ p {
   background: #adc178;
   border: 1px solid #dadada;
   border-radius: 8px;
-  width: 330px;
+  width: 80%;
   height: 35px;
   text-align: center;
   color: white;
