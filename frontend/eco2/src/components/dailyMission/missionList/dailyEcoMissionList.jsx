@@ -15,10 +15,6 @@ import DailyCustomMissionList from "./dailyCustomMissionList";
 import { GreenBtn } from "../../styled";
 import styles from "./dailyMissionDetail.module.css";
 
-// // scroll
-// import InfiniteScroll from "react-infinite-scroller";
-// import { useInView } from "react-intersection-observer";
-
 const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [ecoId, setEcoId] = useState([]);
   const [list, getList] = useState(true); //미션 목록과 커스텀 미션을 구분하기 위한 State
@@ -39,7 +35,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
    * ==> 추가시 새로고침으로 임시적으로 해결 상태
    */
   useEffect(() => {
-    dispatch(getFavorite({ id })).then((res) => {
+    dispatch(getFavorite({ id })).then(res => {
       if (res.payload.status === 200) {
         setFavoriteArr(res.payload.missionList);
       }
@@ -59,7 +55,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       };
       setEcoId([...ecoId, newEco.id]);
     } else {
-      const reEcoId = ecoId.filter((it) => it !== id);
+      const reEcoId = ecoId.filter(it => it !== id);
       setEcoId(reEcoId);
     }
   };
@@ -69,7 +65,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
    */
   const onMissionSub = () => {
     if (ecoCount >= 1) {
-      dispatch(postMission({ id, dailyMissionList: ecoId })).then((res) => {
+      dispatch(postMission({ id, dailyMissionList: ecoId })).then(res => {
         if (res.payload?.status === 200) {
           alert(`${ecoId.length}개 저장 완료 메인페이지로 이동합니다.`);
           naviGate("/dailymissionMain");
@@ -161,6 +157,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       <div>
         {list === true ? (
           <div className={styles.scrollMission}>
+
             {ecomissionList.map((it) => (
               <DailyEcoMissionitem
                 key={it.id}
