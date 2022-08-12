@@ -11,7 +11,7 @@ const ReportList = ({ reports }) => {
             id={report.id}
             count={report.count}
             post={report.post}
-            comment={report.comment}
+            commentId={report.commentId}
             postCategory={report.postCategory}
           />
         ))}

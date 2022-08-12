@@ -7,7 +7,6 @@ import styles from "./Report.module.css";
 const Report = () => {
 
   const [reports, setReports] = useState([]);
-  const [commentReports, setCommentsReports] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {

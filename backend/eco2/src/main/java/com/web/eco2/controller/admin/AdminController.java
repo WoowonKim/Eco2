@@ -137,8 +137,7 @@ public class AdminController {
                 if (report.getComId() != null) {
                     user = comment.getUser();
                 }
-
-                reportList.add(new ReportDto(report.getRepId(), report.getCount(), post, comment, user, post.getCategory()));
+                reportList.add(new ReportDto(report.getRepId(), report.getCount(), post, report.getComId(), user, post.getCategory()));
             }
 
             return ResponseHandler.generateResponse("신고글 조회에 성공하였습니다.", HttpStatus.OK, "reportList", reportList);
