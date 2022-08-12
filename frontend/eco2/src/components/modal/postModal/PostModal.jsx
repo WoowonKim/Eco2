@@ -72,9 +72,7 @@ const PostModal = ({
         })
       ).then((res) => {
         if (res.payload?.status === 200) {
-          // window.location.replace(`/post/${postId}`);
           setHidden(true);
-          // closeModal();
         }
       });
     } else if (type === "로그아웃") {

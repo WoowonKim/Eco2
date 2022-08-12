@@ -3,16 +3,20 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./ReportItem.module.css";
+import { commentDetail } from "../../../store/post/commentSlice";
 
 const ReportItem = ({
   key,
   id,
   count,
   post,
-  comment,
+  commentId,
   postCategory,
 }) => {
   const [category, setCategory] = useState("");
+  const [comment, setComment] = useState(null);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (postCategory === 1) {
       setCategory("실천하기");
@@ -24,6 +28,23 @@ const ReportItem = ({
       setCategory("구매하기");
     } else if (postCategory === 5) {
       setCategory("재활용하기");
+    }
+    if (commentId !== null) {
+      dispatch(commentDetail({ commentId: commentId })).then((res) => {
+        if (res.payload.status === 200) {
+          setComment(res.payload.comment);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (commentId !== null) {
+      dispatch(commentDetail({ commentId: commentId })).then((res) => {
+        if (res.payload.status === 200) {
+          setComment(res.payload.comment);
+        }
+      });
     }
   }, []);
 

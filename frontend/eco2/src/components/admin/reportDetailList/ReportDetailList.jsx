@@ -10,17 +10,16 @@ const ReportDetailList = ({ reportDetails }) => {
 
           <div className={styles.list}>
             <div className={styles.type}>
-              <span className={styles.text}>{reportDetail.reportType.type}</span>
+              <div className={styles.text}>{reportDetail.reportType.type}</div>
             </div>
             <div className={styles.content}>
-            <span className={styles.text}>{reportDetail.content}</span>
+              <div className={styles.text}>{reportDetail.content}</div>
             </div>
             <div className={styles.name}>
-            <span className={styles.text}>{reportDetail.user.name}</span>
+              <div className={styles.text}>{reportDetail.user.name}</div>
             </div>
             <hr className={styles.line}></hr>
-          </div> 
- 
+          </div>
         ))}
     </div>
   );

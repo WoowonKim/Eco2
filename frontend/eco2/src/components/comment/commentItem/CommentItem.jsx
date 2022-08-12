@@ -34,7 +34,6 @@ const CommentItem = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(commentId);
     setName(getUserName());
     setUserId(getUserId());
   }, []);

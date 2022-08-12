@@ -10,7 +10,6 @@ const ReportModal = ({ title, content, closeModal, postId, commentId, type }) =>
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    console.log(commentId);
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
   }, []);
