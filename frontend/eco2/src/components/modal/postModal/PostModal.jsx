@@ -62,7 +62,15 @@ const PostModal = ({
         });
       }
     } else if (type === "신고") {
-      dispatch(report({ userId: getUserId(), retId: selected, posId: postId, comId: commentId, message: message })).then((res) => {
+      dispatch(
+        report({
+          userId: getUserId(),
+          retId: selected,
+          posId: postId,
+          comId: commentId,
+          message: message,
+        })
+      ).then((res) => {
         if (res.payload?.status === 200) {
           window.location.replace(`/post/${postId}`);
           // setHidden(true);
