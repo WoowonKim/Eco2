@@ -28,11 +28,10 @@ const PostModal = ({
   commentId,
   selected,
   setTest,
-  message
+  message,
   fromId,
   toId,
 }) => {
-
   console.log(commentId);
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
@@ -73,12 +72,17 @@ const PostModal = ({
       }
     } else if (type === "신고") {
       dispatch(
-        report({ userId: getUserId(), retId: selected, posId: postId, comId: commentId, message: message })
+        report({
+          userId: getUserId(),
+          retId: selected,
+          posId: postId,
+          comId: commentId,
+          message: message,
+        })
       ).then((res) => {
-
         if (res.payload?.status === 200) {
           window.location.replace(`/post/${postId}`);
-         // setHidden(true);
+          // setHidden(true);
           closeModal();
         }
       });
