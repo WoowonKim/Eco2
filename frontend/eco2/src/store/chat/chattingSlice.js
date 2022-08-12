@@ -3,7 +3,7 @@ import axiosService from "../axiosService";
 
 // 채팅방 조회
 export const chattingList = createAsyncThunk(
-  "chattingSlice/chattingSelect",
+  "chattingSlice/chattingList",
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.get(`/chat/room/${args.userId}`);
@@ -17,7 +17,7 @@ export const chattingList = createAsyncThunk(
 
 // 채팅 메시지 조회
 export const chattingMessageList = createAsyncThunk(
-  "chattingSlice/chattingMessageSelect",
+  "chattingSlice/chattingMessageList",
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.get(`/chat/message/${args.roomId}`);
@@ -30,7 +30,7 @@ export const chattingMessageList = createAsyncThunk(
 );
 // 채팅방 친구 조회
 export const chattingFriendList = createAsyncThunk(
-  "chattingSlice/chattingFriendSelect",
+  "chattingSlice/chattingFriendList",
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.get(
@@ -97,13 +97,13 @@ export const chattingSlice = createSlice({
     [chattingMessageList.rejected]: (state, action) => {
       console.log("chattingMessageList rejected", action.payload);
     },
-    [chattingMessageList.fulfilled]: (state, action) => {
-      console.log("chattingFriendSelect fulfilled", action.payload);
+    [chattingFriendList.fulfilled]: (state, action) => {
+      console.log("chattingFriendList fulfilled", action.payload);
       if (action.payload.status === 200) {
       }
     },
-    [chattingMessageList.rejected]: (state, action) => {
-      console.log("chattingFriendSelect rejected", action.payload);
+    [chattingFriendList.rejected]: (state, action) => {
+      console.log("chattingFriendList rejected", action.payload);
     },
 
     [deleteRoom.fulfilled]: (state, action) => {

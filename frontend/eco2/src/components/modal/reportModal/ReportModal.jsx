@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import PostModal from "../postModal/PostModal";
 import styles from "./ReportModal.module.css";
 
-const ReportModal = ({ title, content, closeModal, postId, type }) => {
+const ReportModal = ({ title, content, closeModal, postId, commentId, type }) => {
   const [hidden, setHidden] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(0);
   const displayType = hidden ? styles.hidden : null;
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
+    console.log(commentId);
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
   }, []);
@@ -54,7 +56,11 @@ const ReportModal = ({ title, content, closeModal, postId, type }) => {
                 </option>
               </select>
             </div>
-            <textarea className={styles.textarea}></textarea>
+            <textarea className={styles.textarea}
+             value={message}
+             placeholder="메시지를 입력하세요"
+             onChange={(e) => setMessage(e.target.value)}
+             ></textarea>
             <div className={styles.buttonGroup}>
               <button
                 onClick={() => {
@@ -84,7 +90,9 @@ const ReportModal = ({ title, content, closeModal, postId, type }) => {
           content={"신고를 접수하시겠습니까?"}
           type={"신고"}
           postId={postId}
+          commentId={commentId}
           selected={selected}
+          message = {message}
         />
       )}
     </>

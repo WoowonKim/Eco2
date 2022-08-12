@@ -22,14 +22,14 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     @Query(value = "select * from tb_report r where r.usr_id=:usrId and r.com_id=:comId", nativeQuery = true)
     Report findByUsrIdAndComId(Long usrId, Long comId);
 
-    @Query(value = "select r.rep_id as repId, r.pos_id as posId, count(*) as count from tb_report r where r.com_id is null group by r.pos_id order by r.rep_id DESC", nativeQuery = true)
-    List<ReportInformation> findAllPost();
+    @Query(value = "select r.rep_id as repId, r.pos_id as posId,r.com_id as comId, count(*) as count from tb_report r group by r.pos_id, r.com_id order by r.rep_id DESC", nativeQuery = true)
+    List<ReportInformation> findAllReport();
 
     @Query(value = "select r.rep_id as repId, r.com_id as comId, count(*) as count from tb_report r where r.pos_id is null group by r.com_id order by r.rep_id DESC", nativeQuery = true)
     List<ReportInformation> findAllComment();
 
     @Query(value = "select * from tb_report r where r.pos_id=:reportId", nativeQuery = true)
-    List<PostReport> findByPosId(Long reportId);
+    List<Report> findByPosId(Long reportId);
 
     @Query(value = "select * from tb_report r where r.com_id=:reportId", nativeQuery = true)
     List<CommentReport> findByComId(Long reportId);
