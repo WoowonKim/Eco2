@@ -90,14 +90,16 @@ const PostModal = ({
       dispatch(logout()).then((res) => {
         removeUserSession();
         closeModal();
-        navigate("/");
+        // navigate("/");
+        window.location.replace("/");
       });
     } else if (type === "탈퇴") {
       dispatch(deleteUser({ email })).then((res) => {
         if (res.payload.status === 200) {
           removeUserSession();
           closeModal();
-          navigate("/");
+          // navigate("/");
+          window.location.replace("/");
         }
       });
     } else if (type === "친구") {

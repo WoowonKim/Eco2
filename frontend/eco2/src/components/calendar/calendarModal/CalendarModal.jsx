@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CalendarModal.module.css";
+import { getUserId } from "../../../store/user/common";
 
 const CalendarModal = ({ calendarId, month, day, closeModal }) => {
   const [hidden, setHidden] = useState(false);
@@ -9,34 +10,34 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
 
   const download = (e) => {
     // e.preventClcik();
-    // fetch(e.target.href, {
-    //   method: "GET",
-    //   headers: {},
-    // })
-    //   .then((response) => {
-    //     response.arrayBuffer().then(function (buffer) {
-    //       const url = window.URL.createObjectURL(new Blob([buffer]));
-    //       const link = document.createElement("a");
-    //       link.href = url;
-    //       link.setAttribute("download", `${month}_${day}_reward.jpg`);
-    //       document.body.appendChild(link);
-    //       link.click();
-    //     });
-    //   })
-    //   .catch((err) => console.log(err));
-    const element = document.createElement("a");
-    const file = new Blob([`http://localhost:8002/img/reward/${calendarId}`], {
-      type: "image/*",
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = `${month}_${day}_reward.jpg`;
-    element.click();
-  };
-  const file = URL.createObjectURL(
-    new Blob([`http://localhost:8002/img/reward/${calendarId}`], {
-      type: "image/*",
+    fetch(e.target.href, {
+      method: "GET",
+      headers: {},
     })
-  );
+      .then((response) => {
+        response.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", `${month}_${day}_reward.png`);
+          document.body.appendChild(link);
+          link.click();
+        });
+      })
+      .catch((err) => console.log(err));
+    // const element = document.createElement("a");
+    // const file = new Blob([`http://localhost:8002/img/reward/${calendarId}`], {
+    //   type: "image/*",
+    // });
+    // element.href = URL.createObjectURL(file);
+    // element.download = `${month}_${day}_reward.png`;
+    // element.click();
+  };
+  // const file = URL.createObjectURL(
+  //   new Blob([`http://localhost:8002/img/reward/${calendarId}`], {
+  //     type: "image/*",
+  //   })
+  // );
 
   // useEffect(() => {
   //   shareKakao()
@@ -56,31 +57,10 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
           description: "오늘의 미션 완료를 축하드립니다 :D",
           imageUrl: `http://localhost:8002/img/reward/${calendarId}`,
           link: {
-            mobileWebUrl: "https://developers.kakao.com",
-            webUrl: "https://developers.kakao.com",
+            mobileWebUrl: `http://localhost:3000/profile/${getUserId()}`,
+            webUrl: `http://localhost:3000/profile/${getUserId()}`,
           },
         },
-        //     social: {
-        //       likeCount: 286,
-        //       commentCount: 45,
-        //       sharedCount: 845,
-        //     },
-        //     buttons: [
-        //       {
-        //         title: "웹으로 보기",
-        //         link: {
-        //           mobileWebUrl: "https://developers.kakao.com",
-        //           webUrl: "https://developers.kakao.com",
-        //         },
-        //       },
-        //       {
-        //         title: "앱으로 보기",
-        //         link: {
-        //           mobileWebUrl: "https://developers.kakao.com",
-        //           webUrl: "https://developers.kakao.com",
-        //         },
-        //       },
-        //     ],
       });
     }
   };
@@ -101,19 +81,19 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
           </div>
           <div className={styles.iconGroup}>
             <a
-              href={file}
+              // href={file}
               onClick={(e) => {
-                // download(e);
-                console.log(file);
+                download(e);
+                // console.log(file);
               }}
               // type="jpg"
               // target="_self"
-              download={`${month}_${day}_reward.jpg`}
+              // download={`${month}_${day}_reward.png`}
             >
-              <i className={`fa-solid fa-share-nodes ${styles.icon}`}></i>
+              <i className={`fa-solid fa-cloud-arrow-down ${styles.icon}`}></i>
             </a>
             <i
-              className={`fa-solid fa-cloud-arrow-down ${styles.icon}`}
+              className={`fa-solid fa-share-nodes ${styles.icon}`}
               onClick={shareKakao}
             ></i>
           </div>
@@ -123,7 +103,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
           alt="rewardImg"
           className={styles.img}
         />
-        <div className={styles.buttonGroup}>
+        {/* <div className={styles.buttonGroup}>
           <button
             onClick={() => {
               setHidden(true);
@@ -134,7 +114,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
           >
             닫기
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

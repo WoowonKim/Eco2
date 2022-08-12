@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axiosService from "../../store/axiosService";
 import {
   removeUserSession,
+  setAccessToken,
   setUserEmail,
   setUserId,
   setUserName,
@@ -31,12 +32,16 @@ function KakaoLogin() {
         if (!res.payload.user.name) {
           setUserEmail(false, res.payload.user.email);
           setUserId(false, res.payload.user.id);
+          setAccessToken(false, res.payload.accessToken);
+
           navigate("/ecoName");
         } else {
           setUserEmail(false, res.payload.user.email);
           setUserId(false, res.payload.user.id);
           setUserName(false, res.payload.user?.name);
-          navigate("/mainTree");
+          setAccessToken(false, res.payload.accessToken);
+
+          window.location.replace("/mainTree");
         }
       } else if (res.payload.status === 202) {
         alert(res.payload.msg);
