@@ -208,7 +208,7 @@ public class PostController {
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
         try {
             log.info("게시물 등록 API 호출"); //TODO fe: 나뭇잎 추가, 조회 //be: 통계 수 증가
-
+            System.out.println(postCreateDto);
             Long userId = postCreateDto.getUser().getId();
             User user = userService.getById(userId);
             if(user == null) {

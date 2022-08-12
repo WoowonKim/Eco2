@@ -47,6 +47,8 @@ import Error from "./pages/error/Error";
 import KakaoLogin from "./pages/login/KakaoLogin";
 import Chatting from "./pages/chat/chatting/Chatting";
 import ChattingRoom from "./pages/chat/chattingRoom/ChattingRoom";
+import Report from "./pages/admin/report/Report";
+import ReportDetail from "./pages/admin/reportDetail/ReportDetail";
 
 function App() {
   const [userdata, setUserdata] = useState(null);
@@ -208,6 +210,23 @@ function App() {
             element={
               <RequireAuth>
                 <NoticeDetail />
+              </RequireAuth>
+            }
+          ></Route>
+
+          <Route
+            path="/report"
+            element={
+              <RequireAuth>
+                <Report />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/report/detail"
+            element={
+              <RequireAuth>
+                <ReportDetail />
               </RequireAuth>
             }
           ></Route>

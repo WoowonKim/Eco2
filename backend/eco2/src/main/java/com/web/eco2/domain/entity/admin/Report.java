@@ -34,4 +34,12 @@ public class Report {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ret_id", nullable = false)
     private ReportType reportType;
+
+    @Column(name = "rep_content")
+    private String content;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "pos_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Post post;
 }
