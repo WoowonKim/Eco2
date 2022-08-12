@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 @NoArgsConstructor
 @ToString
@@ -11,7 +14,7 @@ import java.time.LocalDateTime;
 public class FirebaseAlarm {
     private String id;
     private Long userId; // 받는 사람
-    private LocalDateTime sendTime = LocalDateTime.now();
+    private Long sendTime;
     private String content;
     private String url;
     private String dType;
@@ -34,6 +37,6 @@ public class FirebaseAlarm {
         this.url = url;
         this.dType = dType;
         this.senderId = senderId;
-        this.sendTime = LocalDateTime.now();
+        this.sendTime = ZonedDateTime.now().toEpochSecond();
     }
 }

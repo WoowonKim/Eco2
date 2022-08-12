@@ -7,6 +7,7 @@ import { dailymissionSlice } from "./mission/dailymissionSlice";
 import { myEcoMissionSlice } from "./mission/missionMainSlice";
 import { cumtomSlice } from "./mission/customMissionSlice";
 import { favoriteSlice } from "./mission/favoriteSlice";
+import { alarmSlice } from "./alarm/alarmSlice";
 
 import { postSlice } from "./post/postSlice";
 import { commentSlice } from "./post/commentSlice";
@@ -27,5 +28,6 @@ export const store = configureStore({
     post: postSlice.reducer,
     notice: noticeSlice.reducer,
     img: imgSlice.reducer,
+    alarm: alarmSlice.reducer,
   },
 });
