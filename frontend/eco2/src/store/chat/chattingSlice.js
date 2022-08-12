@@ -33,7 +33,9 @@ export const chattingFriendList = createAsyncThunk(
   "chattingSlice/chattingFriendList",
   async (args, rejectWithValue) => {
     try {
-      const response = await axiosService.get(`/account/friend?id=${args.userId}`);
+      const response = await axiosService.get(
+        `/account/friend?id=${args.userId}`
+      );
       console.log(response.data);
       return response.data;
     } catch (err) {
@@ -49,7 +51,7 @@ export const createRoom = createAsyncThunk(
     try {
       const response = await axiosService.post(`/chat/room`, {
         toUserId: args.id,
-        fromUserId: args.userId
+        fromUserId: args.userId,
       });
       console.log(response.data);
       return response.data;
@@ -78,7 +80,6 @@ export const chattingSlice = createSlice({
   initialState: [],
   reducers: {},
   extraReducers: {
-
     [chattingList.fulfilled]: (state, action) => {
       console.log("chattingList fulfilled", action.payload);
       if (action.payload.status === 200) {
@@ -113,7 +114,6 @@ export const chattingSlice = createSlice({
     [deleteRoom.rejected]: (state, action) => {
       console.log("deleteRoom rejected", action.payload);
     },
-
   },
 });
 

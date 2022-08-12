@@ -11,7 +11,13 @@ import {
 // CSS
 import styles from "./dailyMission.module.css";
 
-const MissionCustomItem = ({ idTest, content, missionIdTest, missionFlag }) => {
+const MissionCustomItem = ({
+  idTest,
+  content,
+  missionIdTest,
+  missionFlag,
+  customMissionId,
+}) => {
   const flagType = missionFlag ? "fa-solid fa-circle" : "fa-regular fa-circle"; // 미션 인증 색 변화
   const realTrashType = missionFlag ? styles.greenTrash : styles.greenTrash; // 미션 여부에 따른 쓰레기통
 
@@ -44,7 +50,7 @@ const MissionCustomItem = ({ idTest, content, missionIdTest, missionFlag }) => {
     if (!missionFlag) {
       if (window.confirm("미션완료!! 인증게시글 업로드 하시겠어요?")) {
         dispatch(clearMission({ id: idTest, missionId: missionIdTest }));
-        naviGate("/post", { state: { customId: idTest } });
+        naviGate("/post", { state: { customId: customMissionId } });
       } else {
         alert("인증게시글 업로드시 완료 인증됩니다!!");
       }

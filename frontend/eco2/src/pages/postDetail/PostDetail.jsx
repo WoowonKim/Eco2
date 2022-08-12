@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CommentForm from "../../components/comment/commentForm/CommentForm";
 import CommentList from "../../components/comment/commentList/CommentList";
 import styles from "./PostDetail.module.css";
@@ -20,12 +20,13 @@ const PostDetail = () => {
 
   const params = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const displayType = visible ? styles.visible : styles.hidden;
   const name = getUserName();
 
   const handlePostLike = () => {
-    dispatch(postLike({ postId: feedItem.id, userId: feedItem.userId })).then(
+    dispatch(postLike({ postId: feedItem.id, userId: getUserId() })).then(
       (res) => {
         if (res.payload.status === 200) {
           setLike(!like);
@@ -50,12 +51,14 @@ const PostDetail = () => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
         setFeedItem(res.payload.post);
-        setComments(
-          res.payload.post?.comments.filter((comment) => !comment.commentId)
-        );
-        setReplys(
-          res.payload.post?.comments.filter((comment) => !!comment.commentId)
-        );
+        if (res.payload.post.comments !== null) {
+          setComments(
+            res.payload.post?.comments.filter((comment) => !comment.commentId)
+          );
+          setReplys(
+            res.payload.post?.comments.filter((comment) => !!comment.commentId)
+          );
+        }
       }
     });
     // dispatch(commentList({ postId: params.postId })).then((res) => {
@@ -122,7 +125,6 @@ const PostDetail = () => {
       </div>
       {visible && modalType === "수정" && (
         <PostModal
-          // className={`${displayType} ${scrollType}`}
           title={"게시물 수정"}
           content={"게시물을 수정하시겠습니까"}
           type={"수정"}
@@ -153,18 +155,22 @@ const PostDetail = () => {
           closeModal={() => setVisible(!visible)}
         />
       )}
-      {/* <img
+      <img
         src={`http://localhost:8002/img/post/${feedItem.id}`}
         alt="postImg"
         className={styles.postImg}
-      /> */}
+      />
       <div className={styles.info}>
-        <div className={styles.userProfile}>
-          {/* <img
+        <div
+          className={styles.userProfile}
+          // 추후 이메일 정보 추가하기
+          onClick={() => navigate(`/profile/${feedItem.userId}`)}
+        >
+          <img
             src={`http://localhost:8002/img/profile/${feedItem.userId}`}
             alt="profileImg"
             className={styles.profileImg}
-          /> */}
+          />
           <p className={styles.user}>{feedItem.userName}</p>
         </div>
         <button className={styles.button} onClick={handlePostLike}>

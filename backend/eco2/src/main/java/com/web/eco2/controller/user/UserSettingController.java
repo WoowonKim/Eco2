@@ -14,6 +14,7 @@ import com.web.eco2.model.service.user.UserSettingService;
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -139,10 +140,15 @@ public class UserSettingController {
      */
     @ApiOperation(value = "친구 수락", response = Object.class)
     @PutMapping("/friend")
-    public ResponseEntity<?> responseFriend(@RequestParam("id") Long id, @RequestParam("friendId") Long friendId, @RequestParam("response") boolean response) {
+    public ResponseEntity<?> responseFriend(@RequestBody FriendRequestDto friendRequestDto) {
         try {
             log.info("친구 수락 API 호출");
             String msg;
+            Long id = friendRequestDto.getId(); // 9
+            Long friendId = friendRequestDto.getFriendId(); // 11
+            System.out.println(id+" "+friendId);
+            boolean response = friendRequestDto.isResponse();
+
             DocumentSnapshot documentSnapshot = alarmService.findAlarmByUserIdAndAlarmId(id, friendId.toString());
 //            Long friendId = documentSnapshot.get("senderId", Long.class); // 친구 신청 보낸 사람
             Long toId = id; // 친구 신청 받은 사람
@@ -158,12 +164,12 @@ public class UserSettingController {
                 // 친구 신청 수락
                 friendService.save(Friend.builder()
                         .fromUser(User.builder().id(friendId).build())
-                        .toUser(User.builder().id(toId).build())
+                        .toUser(User.builder().id(id).build())
                         .build());
 
-                User user = userService.findUserInfoById(toId);
+                User user = userService.findUserInfoById(id);
                 alarmService.insertAlarm(FirebaseAlarm.builder()
-                        .userId(friendId).senderId(toId)
+                        .userId(friendId).senderId(id)
                         .content(user.getName() + "님이 친구신청을 수락하였습니다.")
                         .dType("friendAccept").build());
                 msg = "친구 신청 수락 성공하였습니다.";
@@ -176,6 +182,13 @@ public class UserSettingController {
             log.error("친구 수락 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Data
+    static class FriendRequestDto {
+        private Long id;
+        private Long friendId;
+        private boolean response;
     }
 
     @ApiOperation(value = "친구 삭제", response = Object.class)

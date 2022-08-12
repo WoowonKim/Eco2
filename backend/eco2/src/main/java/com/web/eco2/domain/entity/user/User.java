@@ -104,7 +104,7 @@ public class User {
     public UserDto toDto() {
         return UserDto.builder()
                 .id(id).name(name).email(email)
-                .socialType(socialType)
+                .socialType(socialType).role(role.toString())
                 .build();
     }
 }

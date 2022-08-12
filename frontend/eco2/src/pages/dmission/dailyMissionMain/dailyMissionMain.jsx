@@ -11,7 +11,12 @@ import MissionCustomItem from "../../../components/dailyMission/missionItem/miss
 import MissionTodayItem from "../../../components/dailyMission/missionItem/missionTodayItem";
 
 // Store
-import { getMission, missionPost, postTodayMission, missionItem } from "../../../store/mission/missionMainSlice";
+import {
+  getMission,
+  missionPost,
+  postTodayMission,
+  missionItem,
+} from "../../../store/mission/missionMainSlice";
 import { getUserId } from "../../../store/user/common";
 import { getLocation } from "../../../utils";
 
@@ -135,7 +140,9 @@ const DailyMissionMain = () => {
         <Link to="/dailymissionDetail" className={styles.mainHeaderRight}>
           <span>
             추가하기
-            <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
+            ></i>
           </span>
         </Link>
       </div>
@@ -149,13 +156,28 @@ const DailyMissionMain = () => {
 
       <div>
         {cusMain.map((it) => (
-          <MissionCustomItem key={it.id} content={it.customMission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} />
+          <MissionCustomItem
+            key={it.id}
+            content={it.customMission.title}
+            idTest={id}
+            missionIdTest={it.id}
+            missionFlag={it.achieveFlag}
+            customMissionId={it.customMission.id}
+          />
         ))}
       </div>
 
       <div>
         {main.map((it) => (
-          <MissionMain key={it.id} content={it.mission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} category={it.mission.category} />
+          <MissionMain
+            key={it.id}
+            content={it.mission.title}
+            idTest={id}
+            missionIdTest={it.id}
+            missionFlag={it.achieveFlag}
+            category={it.mission.category}
+            missionId={it.mission.id}
+          />
         ))}
       </div>
 

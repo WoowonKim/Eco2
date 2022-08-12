@@ -15,6 +15,10 @@ import DailyCustomMissionList from "./dailyCustomMissionList";
 import { GreenBtn } from "../../styled";
 import styles from "./dailyMissionDetail.module.css";
 
+// // scroll
+// import InfiniteScroll from "react-infinite-scroller";
+// import { useInView } from "react-intersection-observer";
+
 const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const [ecoId, setEcoId] = useState([]);
   const [list, getList] = useState(true); //미션 목록과 커스텀 미션을 구분하기 위한 State
@@ -79,7 +83,14 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
    */
   const onDeleButton = (id, favoriteBoolean, faId, favoriteTrue) => {
     if (window.confirm("미션을 삭제 하시겠습니까?")) {
-      dispatch(putFavorite({ id, likeFlag: favoriteBoolean, missionType: favoriteTrue, missionId: faId }));
+      dispatch(
+        putFavorite({
+          id,
+          likeFlag: favoriteBoolean,
+          missionType: favoriteTrue,
+          missionId: faId,
+        })
+      );
       alert("삭제 완료!");
       window.location.replace("/dailymissionDetail");
     } else {
@@ -151,7 +162,16 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
         {list === true ? (
           <div className={styles.scrollMission}>
             {ecomissionList.map((it) => (
-              <DailyEcoMissionitem key={it.id} content={it.title} ecoId={it.id} onCreate={onCreate} id={id} category={it.category} cnt={cnt} setCnt={setCnt} />
+              <DailyEcoMissionitem
+                key={it.id}
+                content={it.title}
+                ecoId={it.id}
+                onCreate={onCreate}
+                id={id}
+                category={it.category}
+                cnt={cnt}
+                setCnt={setCnt}
+              />
             ))}
           </div>
         ) : (
