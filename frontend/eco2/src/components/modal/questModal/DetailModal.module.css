@@ -67,25 +67,22 @@
   overflow: hidden;
   justify-content: center;
   align-items: center;
-  position: relative;
 }
 
-.imgBtn {
-  align-self: center;
-  position: absolute;
-  top: 45%;
-}
-
-.imgInput {
-  display: none;
-}
-.previewImg {
+.img {
   width: 100%;
   object-fit: cover;
   border-radius: 20px;
   z-index: 1;
 }
-
+.info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.info div {
+  margin: 5px;
+}
 .main {
   display: flex;
   flex-wrap: wrap;
