@@ -11,6 +11,7 @@ const MainFeed = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    document.getElementById("scroll-container").scrollTop = 0;
     dispatch(postList()).then((res) => {
       console.log(res);
       if (res.payload?.status === 200) {
@@ -19,7 +20,7 @@ const MainFeed = () => {
     });
   }, []);
   return (
-    <div>
+    <div id="scroll-container">
       <div className={styles.container}>
         <div className={styles.title}>
           <h2 className={styles.text}>실천하기</h2>

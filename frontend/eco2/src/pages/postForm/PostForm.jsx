@@ -6,6 +6,7 @@ import { ShortGreenBtn } from "../../components/styled";
 import { postCreate, postUpdate } from "../../store/post/postSlice";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { getUserEmail, getUserId } from "../../store/user/common";
+import { clearMission } from "../../store/mission/missionMainSlice";
 
 const PostForm = () => {
   const [fileImage, setFileImage] = useState("");
@@ -15,7 +16,8 @@ const PostForm = () => {
   const [id, setUserId] = useState(0);
   const [publicFlag, setPublicFlag] = useState(false);
   const [commentFlag, setCommentFlag] = useState(false);
-  const [postCreateDto, setPostCreateDto] = useState({});
+  const [imageCheck, setImageCheck] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,12 +30,13 @@ const PostForm = () => {
     setFile(e.target.files[0]);
     console.log(e.target.files);
     setFileImage(URL.createObjectURL(e.target.files[0]));
+    setImageCheck(true);
   };
 
-  const deleteFileImage = (e) => {
-    URL.revokeObjectURL(fileImage);
-    setFileImage("");
-  };
+  // const deleteFileImage = (e) => {
+  //   URL.revokeObjectURL(fileImage);
+  //   setFileImage("");
+  // };
 
   const dispatch = useDispatch();
 
@@ -142,31 +145,14 @@ const PostForm = () => {
               navigate("/mainTree");
             }
           })
-
           .catch((err) => console.log(err));
       }
-      // const json = JSON.stringify(postCreateDto);
-      // const blob = new Blob([json], {
-      //   type: "application/json",
-      // });
-      // console.log(postCreateDto);
-      // formDataCreate.append("postImage", file);
-      // formDataCreate.append("postCreateDto", blob);
-      // dispatch(postCreate({ formData: formDataCreate }))
-      //   .then((res) => {
-      //     if (res.payload?.status === 200) {
-      //       navigate("/mainTree");
-      //     }
-      //   })
-
-      //   .catch((err) => console.log(err));
     }
   };
 
   // 유저 아이디 가져오기
   useEffect(() => {
     setUserId(getUserId());
-    console.log(location);
   }, []);
   return (
     <div>
@@ -200,9 +186,6 @@ const PostForm = () => {
             onChange={saveFileImage}
             className={`${styles.fileInput} ${styles.baseFileInput}`}
           />
-          {/* <button onClick={() => deleteFileImage()} className={styles.button}>
-            삭제
-          </button> */}
         </div>
         <div>
           <label htmlFor="post">게시물 비공개</label>
@@ -232,7 +215,22 @@ const PostForm = () => {
             setEditText(e.target.value);
           }}
         ></textarea>
-        <ShortGreenBtn type="submit">작성</ShortGreenBtn>
+        <ShortGreenBtn
+          type="submit"
+          disabled={!imageCheck}
+          className={styles.button}
+          onClick={() => {
+            dispatch(
+              clearMission({ id, missionIdTest: location.state.missionIdTest })
+            ).then((res) => {
+              if (res.payload?.status === 200) {
+                navigate("/mainTree");
+              }
+            });
+          }}
+        >
+          작성
+        </ShortGreenBtn>
       </form>
     </div>
   );

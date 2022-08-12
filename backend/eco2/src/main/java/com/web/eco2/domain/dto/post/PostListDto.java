@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class PostListDto {
     private String userName;
     private String userEmail;
     private String content;
+    private LocalDateTime registTime;
     private String postImgUrl;
     private boolean publicFlag;
     private boolean commentFlag;

@@ -148,6 +148,7 @@ public class CommentController {
                 commentDto.setUserName(comment.getUser().getName());
                 commentDto.setPostId(comment.getPost().getId());
                 commentDto.setContent(comment.getContent());
+                commentDto.setRegistTime(comment.getRegistTime());
 
                 if (comment.getComment() != null) {
                     Long commentId = comment.getComment().getId();

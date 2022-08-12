@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mission")
@@ -58,6 +59,20 @@ public class MissionController {
             return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missionList", missionDtos);
         } catch (Exception e) {
             log.error("기본 미션 리스트 조회 API 에러", e);
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/quest")
+    @ApiOperation(value = "퀘스트 가능 미션 리스트 조회", response = Object.class)
+    public ResponseEntity<Object> selectQuestMissionList() {
+        try {
+            log.info("퀘스트 가능 미션 리스트 조회 API 호출");
+            List<MissionDto> missionList = missionService.findQuestMission()
+                .stream().map(m->m.toDto()).collect(Collectors.toList());
+            return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missions", missionList);
+        } catch (Exception e) {
+            log.error("퀘스트 가능 미션 리스트 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

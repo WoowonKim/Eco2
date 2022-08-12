@@ -25,7 +25,7 @@ const CustomPlus = () => {
       .then((res) => {
         if (res.payload.status === 200) {
           if (window.confirm("미션 목록에 추가하시겠어요>")) {
-            naviGate("/dailymissiondetail");
+            naviGate("/dailymissiondetail", { state: { list: 0 } });
           }
         }
       })

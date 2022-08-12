@@ -46,5 +46,7 @@ public class MissionService {
         return missionList;
     }
 
-
+    public List<Mission> findQuestMission() {
+        return missionRepository.findByQuestFlag(true);
+    }
 }

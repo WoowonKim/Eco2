@@ -51,13 +51,15 @@ import Report from "./pages/admin/report/Report";
 import ReportDetail from "./pages/admin/reportDetail/ReportDetail";
 
 function App() {
-  const [userdata, setUserdata] = useState(null);
+  const [userdata, setUserdata] = useState(false);
 
   // 친구 신청 알림 기능 구현 예정
   // const [alarm, setAlarm] = useState([]);
 
   useEffect(() => {
+    document.getElementById("scroll-container").scrollTop = 0;
     setUserdata(getUserEmail());
+    console.log(getUserEmail());
     // firestore.onSnapshot(
     //   firestore.collection(dbService, "test/2/alarm"),
     //   (snapshot) => {
@@ -71,7 +73,7 @@ function App() {
     // );
   }, []);
   return (
-    <div className={styles.App}>
+    <div className={styles.App} id="scroll-container">
       {userdata && <Header></Header>}
       <div className={styles.body}>
         <Routes>

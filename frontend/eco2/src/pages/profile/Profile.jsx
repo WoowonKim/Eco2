@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
-import { getUserName, getUserEmail, getUserId } from "../../store/user/common";
+import {
+  getUserName,
+  getUserEmail,
+  getUserId,
+  getAccessToken,
+} from "../../store/user/common";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
 import { profileImg } from "../../store/img/imgSlice";
-// import fetcher from "../../store/fetchService";
+import fetcher from "../../store/fetchService";
 import { friendRequest, friends } from "../../store/user/accountSlice";
 import { createRoom } from "../../store/chat/chattingSlice";
 import PostModal from "../../components/modal/postModal/PostModal";
@@ -28,8 +33,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = useParams();
-  // const email = location.state?.userEmail || getUserEmail();
-  const email = getUserEmail();
+  const email = location.state?.userEmail || getUserEmail();
+  // const email = getUserEmail();
 
   const displayType = userSetting === 1 ? styles.selectedMenu : null;
   const displayType2 = userSetting === 2 ? styles.selectedMenu : null;
@@ -53,16 +58,15 @@ const Profile = () => {
 
     // const options = {
     //   headers: {
-    //     "Auth-accessToken":
-    //       "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2EwNTE0MkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDExMjQ1NywiZXhwIjoxNjYwMjMyNDU3fQ.Z8ihJRXyWxk-H30hVqE8fX4AYuvdcWBp8UUV9FJm1ww",
+    //     "Auth-accessToken": getAccessToken(),
     //   },
     // };
     // fetch(`http://localhost:8002/img/profile/${userId}`, options)
     //   .then((res) => res.blob())
     //   .then((blob) => setImgSrc(URL.createObjectURL(blob)));
-    // fetcher(`http://localhost:8002/img/profile/${userId}`, false)
-    //   .then((res) => res.blob())
-    //   .then((blob) => setImgSrc(URL.createObjectURL(blob)));
+    //   fetcher(`http://localhost:8002/img/profile/${userId}`, false)
+    //     .then((res) => res.blob())
+    //     .then((blob) => setImgSrc(URL.createObjectURL(blob)));
   }, []);
   return (
     <div className={styles.container}>
