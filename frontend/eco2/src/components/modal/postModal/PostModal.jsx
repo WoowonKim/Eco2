@@ -5,11 +5,7 @@ import { noticeDelete } from "../../../store/admin/noticeSlice";
 import { commentDelete } from "../../../store/post/commentSlice";
 import { postDelete, report } from "../../../store/post/postSlice";
 import { friendRequest } from "../../../store/user/accountSlice";
-import {
-  getUserEmail,
-  getUserId,
-  removeUserSession,
-} from "../../../store/user/common";
+import { getUserEmail, getUserId, removeUserSession } from "../../../store/user/common";
 import { deleteUser, logout } from "../../../store/user/userSettingSlice";
 import styles from "./PostModal.module.css";
 
@@ -28,20 +24,14 @@ const PostModal = ({
   commentId,
   selected,
   setTest,
-  message
+  message,
   fromId,
   toId,
 }) => {
-
   console.log(commentId);
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
-  const colorType =
-    type === "수정"
-      ? styles.editButton
-      : type === "친구"
-      ? styles.friendButton
-      : styles.warningButton;
+  const colorType = type === "수정" ? styles.editButton : type === "친구" ? styles.friendButton : styles.warningButton;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -72,13 +62,10 @@ const PostModal = ({
         });
       }
     } else if (type === "신고") {
-      dispatch(
-        report({ userId: getUserId(), retId: selected, posId: postId, comId: commentId, message: message })
-      ).then((res) => {
-
+      dispatch(report({ userId: getUserId(), retId: selected, posId: postId, comId: commentId, message: message })).then((res) => {
         if (res.payload?.status === 200) {
           window.location.replace(`/post/${postId}`);
-         // setHidden(true);
+          // setHidden(true);
           closeModal();
         }
       });
@@ -122,9 +109,7 @@ const PostModal = ({
           ) : type === "친구" ? (
             <i className={`fa-regular fa-bell ${styles.friendIcon}`}></i>
           ) : (
-            <i
-              className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}
-            ></i>
+            <i className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}></i>
           )}
           <h2 className={styles.title}>{title}</h2>
         </div>
@@ -132,17 +117,11 @@ const PostModal = ({
         <div className={styles.buttonGroup}>
           {type === "수정" ? (
             postId ? (
-              <Link
-                to="/post"
-                state={{ postId, img, category, content: postContent }}
-              >
+              <Link to="/post" state={{ postId, img, category, content: postContent }}>
                 <button className={`${colorType}`}>{type}</button>
               </Link>
             ) : (
-              <Link
-                to="/notice"
-                state={{ noticeId, noticeContent, noticeTitle }}
-              >
+              <Link to="/notice" state={{ noticeId, noticeContent, noticeTitle }}>
                 <button className={`${colorType}`}>{type}</button>
               </Link>
             )
