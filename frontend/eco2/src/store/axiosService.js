@@ -1,6 +1,6 @@
 import axios from "axios";
 // import fetcher from "./fetchService";
-import { getUserEmail, removeUserSession } from "./user/common";
+import { getUserEmail, removeUserSession, setAccessToken } from "./user/common";
 
 const axiosService = axios.create({
   baseURL: process.env.REACT_APP_BE_HOST,
@@ -39,31 +39,32 @@ const axiosService = axios.create({
 //             email: getUserEmail(),
 //           })
 //           .then((res) => {
-//             console.log(res);
-//             const newAccessToken = res.data.accessToken;
+//             console.log(res.data.accessToken);
 //             isTokenRefreshing = false;
 
 //             axiosService.defaults.headers.common[
 //               "Auth-accessToken"
-//             ] = `${newAccessToken}`;
+//             ] = `${res.data.accessToken}`;
+//             setAccessToken(res.data.accessToken);
 
-//             onTokenRefreshed(newAccessToken);
+//             onTokenRefreshed(res.data.accessToken);
 
 //             // fetcher(process.env.REACT_APP_BE_HOST, {
 //             //   headers: { "Auth-accessToken": `${newAccessToken}` },
 //             // });
 //           })
 //           .catch((err) => {
-//             if (err) {
-//               removeUserSession();
-//               window.location.replace("/");
-//             }
+//             console.log(err);
+//             // if (err) {
+//             //   removeUserSession();
+//             //   window.location.replace("/");
+//             // }
 //           });
 //       }
 //       const retryOriginalRequest = new Promise((resolve) => {
 //         addRefreshSubscriber((accessToken) => {
 //           console.log(originalRequest.headers);
-//           originalRequest.headers.post["Auth-accessToken"] = `${accessToken}`;
+//           originalRequest.headers.common["Auth-accessToken"] = `${accessToken}`;
 //           resolve(axiosService(originalRequest));
 //         });
 //       });

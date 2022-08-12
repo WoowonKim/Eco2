@@ -15,9 +15,11 @@ import DailyCustomMissionList from "./dailyCustomMissionList";
 import { GreenBtn } from "../../styled";
 import styles from "./dailyMissionDetail.module.css";
 
-const DailyEcoMissionList = ({ id, ecomissionList }) => {
+const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   const [ecoId, setEcoId] = useState([]);
-  const [list, getList] = useState(true); //미션 목록과 커스텀 미션을 구분하기 위한 State
+  const missionValue = customMake !== 0 ? true : false;
+  const [list, getList] = useState(missionValue); //미션 목록과 커스텀 미션을 구분하기 위한 State
+  //console.log("LIST ====>", list);
   const [favoriteArr, setFavoriteArr] = useState([]); // 즐겨찾기 화면노출을 위한 State
   const [cnt, setCnt] = useState(0); //리렌더링을 방지하기 위한 State
 
@@ -28,6 +30,9 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
   const naviGate = useNavigate();
   const dispatch = useDispatch();
 
+  const [faDelete, setFaDelete] = useState(false);
+  const [faAdd, setFaAdd] = useState(false);
+  const [faIdArr, setFaIdArr] = useState([]);
   /**
    * 서버의 즐겨찾기 목록을 갖고 오기 위한 함수.
    * id : id가 접속 되었을 때 첫 번째 렌더링
@@ -35,12 +40,13 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
    * ==> 추가시 새로고침으로 임시적으로 해결 상태
    */
   useEffect(() => {
-    dispatch(getFavorite({ id })).then(res => {
+    dispatch(getFavorite({ id: id })).then((res) => {
       if (res.payload.status === 200) {
+        //console.log("즐겨찾기");
         setFavoriteArr(res.payload.missionList);
       }
     });
-  }, [id, cnt]);
+  }, [faDelete, faAdd]);
 
   /**
    * user 미션 목록에 보내기 위한 함수
@@ -55,7 +61,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       };
       setEcoId([...ecoId, newEco.id]);
     } else {
-      const reEcoId = ecoId.filter(it => it !== id);
+      const reEcoId = ecoId.filter((it) => it !== id);
       setEcoId(reEcoId);
     }
   };
@@ -65,13 +71,25 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
    */
   const onMissionSub = () => {
     if (ecoCount >= 1) {
-      dispatch(postMission({ id, dailyMissionList: ecoId })).then(res => {
+      dispatch(postMission({ id, dailyMissionList: ecoId })).then((res) => {
         if (res.payload?.status === 200) {
           alert(`${ecoId.length}개 저장 완료 메인페이지로 이동합니다.`);
           naviGate("/dailymissionMain");
         }
       });
     }
+  };
+
+  /**
+   * 즐겨찾기에서 미션 등록하는 함수.
+   */
+  const favoMissionSub = (id, faId) => {
+    faIdArr.push(faId);
+    dispatch(postMission({ id, dailyMissionList: faIdArr })).then((res) => {
+      if (res.payload?.status === 200) {
+        alert("성공~");
+      }
+    });
   };
 
   /**
@@ -86,14 +104,20 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
           missionType: favoriteTrue,
           missionId: faId,
         })
-      );
+      ).then((res) => {
+        if (res.payload.status === 200) {
+          setFaDelete(!faDelete);
+        }
+      });
       alert("삭제 완료!");
-      window.location.replace("/dailymissionDetail");
     } else {
       alert("포기하지 말고 화이팅!");
     }
   };
 
+  //console.log("TEST ====> ", test);
+  // favoriteArr.id는 미션 아이디랑 같다.
+  // console.log("즐겨찾기 미션 아이디 찾기 ===>", favoriteArr);
   return (
     <div className={styles.zero}>
       <div className={styles.Font}>
@@ -112,6 +136,14 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
           {favoriteArr.map((it, idx) => (
             <div key={idx}>
               {it.title}
+              <button
+                onClick={() => {
+                  const faId = it.id;
+                  favoMissionSub(id, faId);
+                }}
+              >
+                등록
+              </button>
               <button
                 onClick={() => {
                   const faId = it.id;
@@ -157,7 +189,7 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
       <div>
         {list === true ? (
           <div className={styles.scrollMission}>
-            {ecomissionList.map(it => (
+            {ecomissionList.map((it) => (
               <DailyEcoMissionitem
                 key={it.id}
                 content={it.title}
@@ -167,6 +199,8 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
                 category={it.category}
                 cnt={cnt}
                 setCnt={setCnt}
+                faAdd={faAdd}
+                setFaAdd={setFaAdd}
               />
             ))}
           </div>

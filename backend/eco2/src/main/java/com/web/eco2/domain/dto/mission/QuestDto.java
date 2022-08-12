@@ -20,6 +20,7 @@ public class QuestDto {
     private LocalDateTime finishTime;
     private boolean achieveFlag;
     private boolean finishFlag;
+    private String content;
     private UserDto user;
     private MissionDto mission;
 }

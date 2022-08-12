@@ -25,34 +25,13 @@ const QuestModal = (props) => {
         <section>
           <header>미션 생성하기</header>
           <main className={styles.main}>
-            <div className={styles.imgBox}>
-              <label htmlFor="chooseFile" className={styles.imgBtn}>
-                사진 업로드하기
-              </label>
-              <input
-                type="file"
-                id="chooseFile"
-                className={styles.imgInput}
-                name="chooseFile"
-                accept="image/*"
-                onChange={(e) => {
-                  encodeFileToBase64(e.target.files[0]);
-                }}
-              />
-              {imageSrc && (
-                <img src={imageSrc} className={styles.previewImg}></img>
-              )}
-            </div>
             <select name="category" className={styles.selectBox}>
-              <option value="카테고리 선택">카테고리 선택</option>
+              <option value="카테고리 선택">미션 선택</option>
               <option value="수질">수질</option>
               <option value="땅">땅</option>
             </select>
             <p>퀘스트는 24시간 동안 유지됩니다.</p>
-
             <fieldset className={styles.fieldset}>
-              <label>제목</label>
-              <input type="text" id="title" />
               <label>내용</label>
               <textarea id="content" />
             </fieldset>

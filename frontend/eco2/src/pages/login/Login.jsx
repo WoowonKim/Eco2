@@ -8,6 +8,7 @@ import { signInGoogle, auth } from "../../store/firebase";
 import {
   getUserId,
   getUserName,
+  setAccessToken,
   setUserEmail,
   setUserId,
   setUserName,
@@ -58,7 +59,9 @@ function Login() {
           setUserEmail(autoLogin, email);
           setUserName(autoLogin, res.payload.user.name);
           setUserId(autoLogin, res.payload.user.id);
-          navigate(redirectPath, { replace: true });
+          setAccessToken(autoLogin, res.payload.accessToken);
+          // navigate(redirectPath, { replace: true });
+          window.location.replace(redirectPath);
         }
         setLoginFailMsg(true);
         setMessage("등록된 이메일이 없거나 비밀번호가 일치하지 않습니다.");
@@ -88,12 +91,14 @@ function Login() {
             if (!res.payload.user.name) {
               setUserEmail(false, data.additionalUserInfo.profile.email);
               setUserId(false, res.payload.user.id);
+              setAccessToken(autoLogin, res.payload.accessToken);
               navigate("/ecoName");
             } else {
               setUserEmail(false, data.additionalUserInfo.profile.email);
               setUserId(false, res.payload.user.id);
               setUserName(false, res.payload.user?.name);
-              navigate(redirectPath, { replace: true });
+              setAccessToken(autoLogin, res.payload.accessToken);
+              window.location.reload(redirectPath);
             }
           } else if (res.payload?.status === 202) {
             setLoginFailMsg(true);
