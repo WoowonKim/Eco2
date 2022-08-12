@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getLocation } from "../../utils";
 import styles from "./Map.module.css";
 
-const Map = ({ makeFlag, openCreateModal, openDeatailModal }) => {
+const Map = ({ makeFlag, setMakeFlag, openCreateModal, openDeatailModal }) => {
   const [lat, setLat] = useState(33.450701);
   const [lon, setLon] = useState(126.570667);
   const [questMarkers, setQuestMarkers] = useState([
@@ -106,8 +106,6 @@ const Map = ({ makeFlag, openCreateModal, openDeatailModal }) => {
       marker.setMap(kakaoMap);
     }
     let clickHandler = function (event) {
-      console.log("잠좀 자자");
-      addMarker(event.latLng);
       console.log(event.latLng);
       openCreateModal(true);
     };
