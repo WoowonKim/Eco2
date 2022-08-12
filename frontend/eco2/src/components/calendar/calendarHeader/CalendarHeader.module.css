@@ -1,13 +1,15 @@
 .header {
+  display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline;
+  justify-content: center;
+  align-items: center;
 }
 
 .col .col_start {
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .text {

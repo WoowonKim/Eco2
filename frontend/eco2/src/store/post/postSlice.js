@@ -103,11 +103,12 @@ export const report = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       console.log(args.userId, args.retId);
+      console.log(args);
       const response = await axiosService.post(`/report/${args.userId}`, {
         retId: args.retId,
         posId: args.posId,
         comId: args.comId,
-        message: args.message
+        message: args.message,
       });
       return response.data;
     } catch (err) {

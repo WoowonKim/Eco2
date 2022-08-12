@@ -45,12 +45,11 @@ const FeedItem = ({
           alt="postImg"
           className={styles.postImg}
         />
-        {/* <div className={styles.iconGroup}>
+        <div className={styles.iconGroup}>
           <div className={styles.heart}>
             <i className={`fa-solid fa-heart ${styles.heartIcon}`}></i> {like}
           </div>
-        </div> */}
-        <p className={styles.content}>{content}</p>
+        </div>
       </div>
     </Link>
   );

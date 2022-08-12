@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
 import { postCreate, postUpdate } from "../../store/post/postSlice";
-import { userInformation } from "../../store/user/userSettingSlice";
 import { getUserEmail, getUserId } from "../../store/user/common";
 import { clearMission } from "../../store/mission/missionMainSlice";
 
@@ -39,7 +38,15 @@ const PostForm = () => {
   // };
 
   const dispatch = useDispatch();
-
+  const missionClear = () => {
+    dispatch(
+      clearMission({ id, missionId: location.state.missionIdTest })
+    ).then((res) => {
+      if (res.payload?.status === 200) {
+        navigate("/mainTree");
+      }
+    });
+  };
   // 글 작성 요청보내기
   const onSubmit = (e) => {
     console.log(location.state?.missionId);
@@ -90,7 +97,7 @@ const PostForm = () => {
         dispatch(postCreate({ formData: formDataCreate }))
           .then((res) => {
             if (res.payload?.status === 200) {
-              navigate("/mainTree");
+              missionClear();
             }
           })
 
@@ -116,7 +123,7 @@ const PostForm = () => {
         dispatch(postCreate({ formData: formDataCreate }))
           .then((res) => {
             if (res.payload?.status === 200) {
-              navigate("/mainTree");
+              missionClear();
             }
           })
 
@@ -142,7 +149,7 @@ const PostForm = () => {
         dispatch(postCreate({ formData: formDataCreate }))
           .then((res) => {
             if (res.payload?.status === 200) {
-              navigate("/mainTree");
+              missionClear();
             }
           })
           .catch((err) => console.log(err));
@@ -219,15 +226,6 @@ const PostForm = () => {
           type="submit"
           disabled={!imageCheck}
           className={styles.button}
-          onClick={() => {
-            dispatch(
-              clearMission({ id, missionIdTest: location.state.missionIdTest })
-            ).then((res) => {
-              if (res.payload?.status === 200) {
-                navigate("/mainTree");
-              }
-            });
-          }}
         >
           작성
         </ShortGreenBtn>

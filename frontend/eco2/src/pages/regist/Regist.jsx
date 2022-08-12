@@ -214,9 +214,6 @@ const Regist = () => {
                 })
               )
                 .then((res) => {
-                  axiosService.defaults.headers.common[
-                    "Auth-accessToken"
-                  ] = `${res.payload.user.accessToken}`;
                   setUserEmail(false, email);
                   setUserId(false, res.payload.user.id);
                   setAccessToken(false, res.payload.accessToken);

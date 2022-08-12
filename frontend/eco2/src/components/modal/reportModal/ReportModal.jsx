@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import PostModal from "../postModal/PostModal";
 import styles from "./ReportModal.module.css";
 
-const ReportModal = ({ title, content, closeModal, postId, commentId, type }) => {
+const ReportModal = ({
+  title,
+  content,
+  closeModal,
+  postId,
+  commentId,
+  type,
+}) => {
   const [hidden, setHidden] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(5);
   const displayType = hidden ? styles.hidden : null;
   const [message, setMessage] = useState("");
 
@@ -36,7 +43,7 @@ const ReportModal = ({ title, content, closeModal, postId, commentId, type }) =>
                 className={styles.select}
                 onChange={(e) => setSelected(e.target.value)}
               >
-                <option className={styles.option} value="">
+                <option className={styles.option} value="5">
                   신고 유형 선택
                 </option>
                 <option className={styles.option} value="1">
@@ -56,11 +63,12 @@ const ReportModal = ({ title, content, closeModal, postId, commentId, type }) =>
                 </option>
               </select>
             </div>
-            <textarea className={styles.textarea}
-             value={message}
-             placeholder="메시지를 입력하세요"
-             onChange={(e) => setMessage(e.target.value)}
-             ></textarea>
+            <textarea
+              className={styles.textarea}
+              value={message}
+              placeholder="메시지를 입력하세요"
+              onChange={(e) => setMessage(e.target.value)}
+            ></textarea>
             <div className={styles.buttonGroup}>
               <button
                 onClick={() => {
@@ -68,6 +76,7 @@ const ReportModal = ({ title, content, closeModal, postId, commentId, type }) =>
                   // setHidden(true);
                 }}
                 className={styles.reportButton}
+                disabled={message.trim().length == 0}
               >
                 신고
               </button>
@@ -92,7 +101,7 @@ const ReportModal = ({ title, content, closeModal, postId, commentId, type }) =>
           postId={postId}
           commentId={commentId}
           selected={selected}
-          message = {message}
+          message={message}
         />
       )}
     </>

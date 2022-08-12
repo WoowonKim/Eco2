@@ -52,9 +52,6 @@ function Login() {
     dispatch(login({ email: email, password: password, socialType: 0 }))
       .then((res) => {
         if (res.payload?.status === 200) {
-          axiosService.defaults.headers.common[
-            "Auth-accessToken"
-          ] = `${res.payload.user.name}`;
           setLoginFailMsg(false);
           setUserEmail(autoLogin, email);
           setUserName(autoLogin, res.payload.user.name);
@@ -84,10 +81,6 @@ function Login() {
         ).then((res) => {
           if (res.payload?.status === 200) {
             setLoginFailMsg(false);
-            axiosService.defaults.headers.common[
-              "Auth-accessToken"
-            ] = `${res.payload.user.accessToken}`;
-
             if (!res.payload.user.name) {
               setUserEmail(false, data.additionalUserInfo.profile.email);
               setUserId(false, res.payload.user.id);

@@ -47,7 +47,6 @@ const Econame = () => {
       .then((res) => {
         if (res.payload.status === 200) {
           setUserName(autoLogin, econame);
-          console.log(res.payload);
           navigate(redirectPath, { replace: true });
         }
       })
