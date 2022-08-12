@@ -8,10 +8,14 @@ import { useNavigate } from "react-router-dom";
 import { GreenBtn } from "../../../components/styled";
 import MissionMain from "../../../components/dailyMission/missionItem/missionMainItem";
 import MissionCustomItem from "../../../components/dailyMission/missionItem/missionCustomItem";
-import MissionTodayItem from "../../../components/dailyMission/missionItem/missionTodayItem";
 
 // Store
-import { getMission, missionPost, postTodayMission, missionItem } from "../../../store/mission/missionMainSlice";
+import {
+  getMission,
+  missionPost,
+  postTodayMission,
+  missionItem,
+} from "../../../store/mission/missionMainSlice";
 import { getUserId } from "../../../store/user/common";
 import { getLocation } from "../../../utils";
 
@@ -19,12 +23,10 @@ import { getLocation } from "../../../utils";
 import styles from "./dailyMission.module.css";
 
 const DailyMissionMain = () => {
-  const [tCnt, setTCnt] = useState(0); // 미션 완료 시 필요한 State
   const [id, setId] = useState(0); // 서버 접속에 필요한 userid State
 
   const [main, setMain] = useState([]); // user가 추가한 미션을 보여주기 위한 State
   const [cusMain, setcusMain] = useState([]); // user가 추가한 커스텀 미션을 보여주기 위한 State
-  const [todayMission, setTodayMission] = useState([]); // 추천 미션을 담기 위한 State
 
   const [lat, setLat] = useState("33.450701"); // 위도를 담기 위한 State
   const [lng, setLng] = useState("126.570667"); // 경도를 담기 위한 State
@@ -42,7 +44,7 @@ const DailyMissionMain = () => {
    * setLng : 경도?
    */
   useEffect(() => {
-    getLocation().then((res) => {
+    getLocation().then(res => {
       setNowTime(res.timeTwo);
       setLat(res.latitude);
       setLng(res.longitude);
@@ -55,10 +57,12 @@ const DailyMissionMain = () => {
   useEffect(() => {
     setId(getUserId);
     if (id !== 0) {
-      dispatch(postTodayMission({ id: getUserId(), lat, lng, date: nowTime })).then((res) => {
+      dispatch(
+        postTodayMission({ id: getUserId(), lat, lng, date: nowTime })
+      ).then(res => {
         if (res.payload.status === 200) {
           if (id !== 0) {
-            dispatch(getMission({ id: getUserId() })).then((res) => {
+            dispatch(getMission({ id: getUserId() })).then(res => {
               setMain(res.payload.dailyMissionList);
               setcusMain(res.payload.dailyCustomMissionList);
             });
@@ -69,39 +73,18 @@ const DailyMissionMain = () => {
   }, [id]);
 
   /**
-   * 나의 미션을 불러오기 위한 getMission
-   */
-  // useEffect(() => {
-  //   if (id === 0) {
-  //     setId(getUserId());
-  //     dispatch(getMission({ id: getUserId() })).then((res) => {
-  //       setMain(res.payload.dailyMissionList);
-  //       setcusMain(res.payload.dailyCustomMissionList);
-  //     });
-  //   }
-  // }, []);
-
-  function getToday() {
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = ("0" + (1 + date.getMonth())).slice(-2);
-    var day = ("0" + date.getDate()).slice(-2);
-
-    return year + "-" + month + "-" + day;
-  }
-  const toDayGet = getToday();
-
-  /**
    *  미션들의 길이와 미션 완료값이 동일할 경우 오늘 미션 완료로 간주.
    */
-  const mainResult = main.filter((it) => it.achieveFlag === true);
-  const cusMainResult = cusMain.filter((it) => it.achieveFlag === true);
+  const mainResult = main.filter(it => it.achieveFlag === true);
+  const cusMainResult = cusMain.filter(it => it.achieveFlag === true);
   const sumClearMission = mainResult.length + cusMainResult.length;
   const sumMission = main.length + cusMain.length;
 
   const onSucsses = () => {
     if (sumClearMission === sumMission) {
-      alert(`축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`);
+      alert(
+        `축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`
+      );
       dispatch(missionPost({ id }));
       setChange(true);
       window.location.replace("/dailymissionmain");
@@ -115,21 +98,31 @@ const DailyMissionMain = () => {
    * false이면 오늘 미션 보상받기 활성화
    * true 이면 오늘 미션 보상받기 비 활성화
    */
+  function getToday() {
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+
+    return year + "-" + month + "-" + day;
+  }
+  const toDayGet = getToday();
   useEffect(() => {
     if (id === 0) {
       return;
     }
-    dispatch(missionItem({ id, date: toDayGet })).then((res) => {
+    dispatch(missionItem({ id, date: toDayGet })).then(res => {
       if (res.payload.status === 200) {
         if (res.payload.rewardFlag) {
           setSuccessBtn(res.payload.rewardFlag);
+          console.log("===>", successBtn);
           console.log("트루다트루!!");
+          console.log("successBtn===>", successBtn);
         }
       }
     });
-  });
-  console.log("successBtn ===>", successBtn);
-  // console.log("메인이다===>", main[0].mission.category);
+  }, [change]);
+
   return (
     <div className={styles.headerMain}>
       <div className={styles.mainHeader}>
@@ -137,7 +130,9 @@ const DailyMissionMain = () => {
         <Link to="/dailymissionDetail" className={styles.mainHeaderRight}>
           <span>
             추가하기
-            <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
+            ></i>
           </span>
         </Link>
       </div>
@@ -150,18 +145,37 @@ const DailyMissionMain = () => {
       </div> */}
 
       <div>
-        {cusMain.map((it) => (
-          <MissionCustomItem key={it.id} content={it.customMission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} />
+        {cusMain.map(it => (
+          <MissionCustomItem
+            key={it.id}
+            content={it.customMission.title}
+            idTest={id}
+            missionIdTest={it.id}
+            missionFlag={it.achieveFlag}
+          />
         ))}
       </div>
 
       <div>
-        {main.map((it) => (
-          <MissionMain key={it.id} content={it.mission.title} idTest={id} missionIdTest={it.id} missionFlag={it.achieveFlag} category={it.mission.category} />
+        {main.map(it => (
+          <MissionMain
+            key={it.id}
+            content={it.mission.title}
+            idTest={id}
+            missionIdTest={it.id}
+            missionFlag={it.achieveFlag}
+            category={it.mission.category}
+          />
         ))}
       </div>
 
-      <div className={styles.btn}>{successBtn ? <GreenBtn>오늘 미션 보상 완료!</GreenBtn> : <GreenBtn onClick={onSucsses}>오늘 미션 보상 받기</GreenBtn>}</div>
+      <div className={styles.btn}>
+        {successBtn ? (
+          <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
+        ) : (
+          <GreenBtn onClick={onSucsses}>오늘 미션 보상 받기</GreenBtn>
+        )}
+      </div>
     </div>
   );
 };

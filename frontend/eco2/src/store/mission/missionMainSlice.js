@@ -1,89 +1,115 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { useEffect } from "react";
 import axiosService from "../axiosService";
 
-export const postMission = createAsyncThunk("missionMainSlice/postMission", async (args, rejectWithValue) => {
-  try {
-    const response = await axiosService.post(`/daily/${args.id}`, {
-      dailyMissionList: args.dailyMissionList,
-      customMissionList: args.customMissionList,
-    });
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const postMission = createAsyncThunk(
+  "missionMainSlice/postMission",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.post(`/daily/${args.id}`, {
+        dailyMissionList: args.dailyMissionList,
+        customMissionList: args.customMissionList,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
-export const postTodayMission = createAsyncThunk("missionMainSlice/postTodayMission", async (args, rejectWithValue) => {
-  try {
-    const now = new Date().toISOString().substring(0, 16);
-    console.log("TRY서버연결 날짜 ====>", args);
-    // console.log("TRY내부 now ===>", now);
-    const response = await axiosService.post(`daily/recommend/${args.id}`, {
-      lat: args.lat,
-      lng: args.lng,
-      date: now,
-    });
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const postTodayMission = createAsyncThunk(
+  "missionMainSlice/postTodayMission",
+  async (args, rejectWithValue) => {
+    try {
+      const now = new Date().toISOString().substring(0, 16);
+      //console.log("TRY서버연결 날짜 ====>", args);
+      // console.log("TRY내부 now ===>", now);
+      const response = await axiosService.post(`daily/recommend/${args.id}`, {
+        lat: args.lat,
+        lng: args.lng,
+        date: now,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
-export const getMission = createAsyncThunk("missionMainSlice/getMission", async (args, { rejectWithValue }) => {
-  try {
-    const response = await axiosService.get(`/daily/${args.id}`);
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const getMission = createAsyncThunk(
+  "missionMainSlice/getMission",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.get(`/daily/${args.id}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
-export const deleteMission = createAsyncThunk("missionMainSlice/deleteMission", async (args, { rejectWithValue }) => {
-  try {
-    const response = await axiosService.delete(`/daily/${args.id}`, {
-      data: {
+export const deleteMission = createAsyncThunk(
+  "missionMainSlice/deleteMission",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.delete(`/daily/${args.id}`, {
+        data: {
+          missionId: args.missionId,
+        },
+      });
+      console.log(" TRY 서버 받은 missionId ===> ", args.missionId);
+      return response.data;
+    } catch (err) {
+      console.log("CATCH 서버 받은 missionId ===> ", args.missionId);
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+export const clearMission = createAsyncThunk(
+  "missionMainSlice/clearMission",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.put(`/daily/${args.id}`, {
         missionId: args.missionId,
-      },
-    });
-    console.log(" TRY 서버 받은 missionId ===> ", args.missionId);
-    return response.data;
-  } catch (err) {
-    console.log("CATCH 서버 받은 missionId ===> ", args.missionId);
-    return rejectWithValue(err.response);
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
-export const clearMission = createAsyncThunk("missionMainSlice/clearMission", async (args, { rejectWithValue }) => {
-  try {
-    const response = await axiosService.put(`/daily/${args.id}`, {
-      missionId: args.missionId,
-    });
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const missionPost = createAsyncThunk(
+  "missionMainSlice/missionPost",
+  async (args, { rejectWithValue }) => {
+    try {
+      console.log("TEST 입니다.");
+      const response = await axiosService.post(`/daily/reward/${args.id}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
-export const missionPost = createAsyncThunk("missionMainSlice/missionPost", async (args, { rejectWithValue }) => {
-  try {
-    const response = await axiosService.post(`/daily/reward/${args.id}`);
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const missionItem = createAsyncThunk(
+  "missionMainSlice/missionItem",
+  async (args, { rejectWithValue }) => {
+    try {
+      // console.log("missionItem ARGS===>", args);
+      const response = await axiosService.post(
+        `/daily/reward/check/${args.id}`,
+        {
+          date: args.date,
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
-
-export const missionItem = createAsyncThunk("missionMainSlice/missionItem", async (args, { rejectWithValue }) => {
-  try {
-    // console.log("missionItem ARGS===>", args);
-    const response = await axiosService.post(`/daily/reward/check/${args.id}`, {
-      date: args.date,
-    });
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
-  }
-});
+);
 
 export const myEcoMissionSlice = createSlice({
   name: "missionMain",
