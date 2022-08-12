@@ -7,7 +7,8 @@ const Footer = () => {
   return (
     <footer className={styles.Footer}>
       <i
-        className="fa-solid fa-tree"
+        className={`${"fa-solid fa-tree"} ${styles.icon}`}
+        
         onClick={() => {
           navigate("/mainTree");
         }}
