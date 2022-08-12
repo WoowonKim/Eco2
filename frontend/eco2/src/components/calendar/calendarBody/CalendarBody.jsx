@@ -6,12 +6,12 @@ import {
   startOfWeek,
   isSameDay,
   addDays,
-  parse,
   format,
 } from "date-fns";
-import React from "react";
+import { parse } from "date-fns/fp";
+import React, { useRef, useState } from "react";
+import CalendarModal from "../calendarModal/CalendarModal";
 import styles from "./CalendarBody.module.css";
-
 const CalendarBody = ({
   currentMonth,
   selectedDate,
@@ -23,10 +23,33 @@ const CalendarBody = ({
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalDay, setModalDay] = useState(0);
+  const [clickedDay, setClickedDay] = useState(0);
+
   const rows = [];
   let days = [];
   let day = startDate;
   let formattedDate = "";
+
+  const rewardList = rewardDate.filter((it) => {
+    return (
+      it?.date.split("-")[0] === format(currentMonth, "yyyy") &&
+      it?.date.split("-")[1] === format(currentMonth, "MM")
+    );
+  });
+
+  let rewardDays = [];
+  for (
+    let d = 0;
+    d <= format(monthEnd, "dd") - format(monthStart, "dd") + 1;
+    d++
+  ) {
+    rewardDays.push(0);
+  }
+  for (let j = 0; j < rewardList.length; j++) {
+    rewardDays[Number(rewardList[j].date.split("-")[2])] = rewardList[j].id;
+  }
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
@@ -43,7 +66,11 @@ const CalendarBody = ({
               ? styles.not_valid
               : styles.valid
           }`}
-          onClick={() => onDateClick(parse(cloneDay))}
+          onClick={(e) => {
+            onDateClick(parse(cloneDay));
+            setModalVisible(!modalVisible);
+            setClickedDay(format(cloneDay, "d"));
+          }}
           key={day}
         >
           <span
@@ -55,6 +82,21 @@ const CalendarBody = ({
           >
             {formattedDate}
           </span>
+          {!!rewardDays[formattedDate] && (
+            // <img
+            //   src={`http://localhost:8002/img/reward/${rewardDays[formattedDate]}`}
+            //   alt=""
+            // />
+            <img
+              src={`${process.env.PUBLIC_URL}/logo.png`}
+              alt=""
+              className={styles.img}
+              // onClick={() => {
+              //   setModalVisible(!modalVisible);
+              //   setModalDay(formattedDate);
+              // }}
+            />
+          )}
         </div>
       );
       day = addDays(day, 1);
@@ -66,7 +108,20 @@ const CalendarBody = ({
     );
     days = [];
   }
-  return <div className={styles.body}>{rows}</div>;
+
+  return (
+    <>
+      <div className={styles.body}>{rows}</div>
+      {modalVisible && !!clickedDay && !!rewardDays[clickedDay] && (
+        <CalendarModal
+          calendarId={rewardDays[clickedDay]}
+          month={format(currentMonth, "M")}
+          day={clickedDay}
+          closeModal={() => setModalVisible(!modalVisible)}
+        />
+      )}
+    </>
+  );
 };
 
 export default CalendarBody;

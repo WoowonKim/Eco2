@@ -18,6 +18,7 @@ const ReplyList = ({ id, commentId, replys, commentUserId, setTest }) => {
                 postId={reply.postId}
                 commentUserId={commentUserId}
                 setTest={setTest}
+                userEmail={reply.userEmail}
               />
             )
         )}

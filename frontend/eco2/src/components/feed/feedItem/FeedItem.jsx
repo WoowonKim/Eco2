@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./FeedItem.module.css";
 
 const FeedItem = ({
@@ -10,12 +10,19 @@ const FeedItem = ({
   content,
   postImgUrl,
   like,
+  userEmail,
 }) => {
+  const navigate = useNavigate();
   return (
     <Link to={`/post/${id}`} className={styles.link}>
       <div className={styles.list}>
         <div className={styles.title}>
-          <div className={styles.profile}>
+          <div
+            className={styles.profile}
+            onClick={() =>
+              navigate(`/profile/${userId}`, { state: { userEmail } })
+            }
+          >
             <img
               src={`http://localhost:8002/img/profile/${userId}`}
               alt="profileImg"
@@ -38,11 +45,11 @@ const FeedItem = ({
           alt="postImg"
           className={styles.postImg}
         />
-        <div className={styles.iconGroup}>
+        {/* <div className={styles.iconGroup}>
           <div className={styles.heart}>
             <i className={`fa-solid fa-heart ${styles.heartIcon}`}></i> {like}
           </div>
-        </div>
+        </div> */}
         <p className={styles.content}>{content}</p>
       </div>
     </Link>

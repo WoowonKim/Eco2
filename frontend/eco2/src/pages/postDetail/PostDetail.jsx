@@ -17,6 +17,7 @@ const PostDetail = () => {
   const [replys, setReplys] = useState([]);
   const [like, setLike] = useState(false);
   const [test, setTest] = useState(0);
+  const [likeUsers, setLikeUsers] = useState(false);
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -29,17 +30,31 @@ const PostDetail = () => {
     dispatch(postLike({ postId: feedItem.id, userId: getUserId() })).then(
       (res) => {
         if (res.payload.status === 200) {
-          setLike(!like);
+          // setLike(!like);
           dispatch(post({ postId: params.postId })).then((res) => {
             if (res.payload?.status === 200) {
               setFeedItem(res.payload.post);
+              if (res.payload.post.postLikeUserIds !== null) {
+                setLikeUsers(
+                  res.payload.post.postLikeUserIds.some((id) => {
+                    return id == getUserId();
+                  })
+                );
+              }
             }
           });
         } else {
-          setLike(!like);
+          // setLike(!like);
           dispatch(post({ postId: params.postId })).then((res) => {
             if (res.payload?.status === 200) {
               setFeedItem(res.payload.post);
+              if (res.payload.post.postLikeUserIds !== null) {
+                setLikeUsers(
+                  res.payload.post.postLikeUserIds.some((id) => {
+                    return id == getUserId();
+                  })
+                );
+              }
             }
           });
         }
@@ -59,6 +74,13 @@ const PostDetail = () => {
             res.payload.post?.comments.filter((comment) => !!comment.commentId)
           );
         }
+        if (res.payload.post.postLikeUserIds !== null) {
+          setLikeUsers(
+            res.payload.post.postLikeUserIds.some((id) => {
+              return id == getUserId();
+            })
+          );
+        }
       }
     });
     // dispatch(commentList({ postId: params.postId })).then((res) => {
@@ -66,12 +88,12 @@ const PostDetail = () => {
     //     setComments(res.payload.commentDto);
     //   }
     // });
-  }, [test]);
+  }, [test, likeUsers]);
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <h1 className={styles.text}>{feedItem.category}</h1>
+        {/* <h1 className={styles.text}>{feedItem.category}</h1> */}
         <div className={styles.dropdown}>
           <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
           <div className={styles.dropdownContent}>
@@ -130,7 +152,7 @@ const PostDetail = () => {
           type={"수정"}
           postId={feedItem.id}
           img={feedItem.postImgUrl}
-          category={feedItem.mission.category}
+          // category={feedItem.mission.category}
           postContent={feedItem.content}
           closeModal={() => setVisible(!visible)}
         />
@@ -163,8 +185,11 @@ const PostDetail = () => {
       <div className={styles.info}>
         <div
           className={styles.userProfile}
-          // 추후 이메일 정보 추가하기
-          onClick={() => navigate(`/profile/${feedItem.userId}`)}
+          onClick={() =>
+            navigate(`/profile/${feedItem.userId}`, {
+              state: { userEmail: feedItem.userEmail },
+            })
+          }
         >
           <img
             src={`http://localhost:8002/img/profile/${feedItem.userId}`}
@@ -174,7 +199,7 @@ const PostDetail = () => {
           <p className={styles.user}>{feedItem.userName}</p>
         </div>
         <button className={styles.button} onClick={handlePostLike}>
-          {like ? (
+          {likeUsers ? (
             <i className={`fa-solid fa-heart ${styles.heart}`}></i>
           ) : (
             <i className={`fa-regular fa-heart ${styles.heart}`}></i>
