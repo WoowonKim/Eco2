@@ -28,8 +28,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = useParams();
-  // const email = location.state?.userEmail || getUserEmail();
-  const email = getUserEmail();
+  const email = location.state?.userEmail || getUserEmail();
+  // const email = getUserEmail();
 
   const displayType = userSetting === 1 ? styles.selectedMenu : null;
   const displayType2 = userSetting === 2 ? styles.selectedMenu : null;

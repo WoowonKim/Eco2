@@ -1,30 +1,29 @@
-.header{
+.header {
   padding: 7px;
   box-shadow: 0px 0px 1px 0px gray inset;
-    /* height: 75px; */
-    padding: 10px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    background-color: #FFF;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    top:0;
-    width: 330px;
-    z-index: 3;
-
+  /* height: 75px; */
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  background-color: #fff;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 330px;
+  z-index: 3;
 }
 
-.profileImg{
+.profileImg {
   width: 40px;
   float: left;
   margin-left: 7px;
   margin-right: 10px;
 }
-.toUserName{
+.toUserName {
   display: inline-block;
   text-align: left;
   margin-top: 10px;
@@ -37,27 +36,27 @@
   justify-content: center;
   margin-top: 40px;
 }
-.chatting{
+.chatting {
   /* height: 500px; */
   /* overflow: scroll; */
 }
 .chattingForm {
   padding: 7px;
   box-shadow: 0px 0px 1px 0px gray inset;
-    /* height: 75px; */
-    padding: 10px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    background-color: #FFF;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    bottom: 0px;
-    width: 330px;
-    z-index: 2;
+  /* height: 75px; */
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  background-color: #fff;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  width: 330px;
+  z-index: 2;
 }
 
 .sendMessage {
@@ -75,16 +74,15 @@
   padding-left: 10px;
 }
 
-
-.sendButton{
+.sendButton {
   background-color: #adc178;
-  color: #FFF;
+  color: #fff;
   font-size: medium;
   font-weight: bold;
-  border:none;
+  border: none;
   border-radius: 20px;
   width: 50px;
-height: 35px;
+  height: 35px;
 }
 
 .input:focus {
@@ -101,12 +99,11 @@ height: 35px;
   background-color: #adc178;
   color: white;
 } */
-.noChattingList{
+.noChattingList {
   padding-top: 30px;
 }
-.noChattingMessage{
+.noChattingMessage {
   font-size: small;
   font-weight: bold;
   color: grey;
 }
-
