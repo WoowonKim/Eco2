@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
 import { getUserName, getUserEmail, getUserId } from "../../store/user/common";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
 import { profileImg } from "../../store/img/imgSlice";
 // import fetcher from "../../store/fetchService";
-import { friends } from "../../store/user/accountSlice";
+import { friendRequest, friends } from "../../store/user/accountSlice";
+import { createRoom } from "../../store/chat/chattingSlice";
+import PostModal from "../../components/modal/postModal/PostModal";
 // import { test } from "../../store/user/accountSlice";
 
 const Profile = () => {
@@ -18,9 +20,12 @@ const Profile = () => {
   const [missionList, setMissionList] = useState([]);
   const [questList, setQuestList] = useState([]);
   const [friendList, setFriendList] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [modalType, setModalType] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const params = useParams();
   const email = getUserEmail();
 
   const displayType = userSetting === 1 ? styles.selectedMenu : null;
@@ -68,36 +73,84 @@ const Profile = () => {
         </button> */}
         <div className={styles.user}>
           <img
-            // src={`http://localhost:8002/img/profile/${userId}`}
-            src={`${imgSrc}`}
+            src={`http://localhost:8002/img/profile/${params.userId}`}
+            // src={`${imgSrc}`}
             // alt="profileImg"
             className={styles.profileImg}
           />
-          <p>{getUserName()}</p>
-          <button
-            onClick={() =>
-              navigate("/user/settings", {
-                state: { socialType: socialType, name: getUserName(), userId },
-              })
-            }
-            className={styles.button}
-          >
-            <i className={`fa-solid fa-gear ${styles.settingIcon}`}></i>
-          </button>
+          <p>{params.userId}</p>
+          {getUserId() === params.userId ? (
+            <button
+              onClick={() =>
+                navigate("/user/settings", {
+                  state: {
+                    socialType: socialType,
+                    name: getUserName(),
+                    userId,
+                  },
+                })
+              }
+              className={styles.button}
+            >
+              <i className={`fa-solid fa-gear ${styles.settingIcon}`}></i>
+            </button>
+          ) : (
+            <div className={styles.buttonGroup}>
+              <button
+                className={styles.button}
+                onClick={() => {
+                  setVisible(!visible);
+                  setModalType("친구");
+                }}
+              >
+                <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
+              </button>
+              <button
+                className={styles.button}
+                onClick={() => {
+                  dispatch(
+                    createRoom({ userId: getUserId(), id: params.userId })
+                  )
+                    .then((res) => {
+                      if (res.payload?.status === 200) {
+                        navigate("/chatting/room", {
+                          state: { roomId: res.payload.roomId },
+                        });
+                      }
+                    })
+                    .catch((err) => console.log(err));
+                }}
+              >
+                <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
+              </button>
+            </div>
+          )}
         </div>
-        <div className={styles.friend}>
-          <button
-            onClick={() =>
-              navigate("/user/friends", {
-                state: { userId: userId, friendList: friendList },
-              })
-            }
-            className={styles.button}
-          >
-            <i className={`fa-solid fa-users ${styles.friendIcon}`}></i>
-          </button>
-          {friendList.length}
-        </div>
+        {visible && modalType === "친구" && (
+          <PostModal
+            title={"친구 신청"}
+            content={"친구 신청을 하시겠습니까?"}
+            type={"친구"}
+            fromId={getUserId()}
+            toId={params.userId}
+            closeModal={() => setVisible(!visible)}
+          />
+        )}
+        {getUserId() === params.userId && (
+          <div className={styles.friend}>
+            <button
+              onClick={() =>
+                navigate("/user/friends", {
+                  state: { userId: userId, friendList: friendList },
+                })
+              }
+              className={styles.button}
+            >
+              <i className={`fa-solid fa-users ${styles.friendIcon}`}></i>
+            </button>
+            {friendList.length}
+          </div>
+        )}
       </div>
       <div className={styles.missionList}>
         <div onClick={() => setUserSetting(1)} className={styles.missionTitle}>
@@ -117,6 +170,7 @@ const Profile = () => {
               src={`http://localhost:8002/img/post/${mission.id}`}
               alt="profileImg"
               className={styles.missionImg}
+              onClick={() => navigate(`/post/${mission.id}`)}
             />
           ))}
         </div>
@@ -129,6 +183,7 @@ const Profile = () => {
               src={`http://localhost:8002/img/post/${mission.id}`}
               alt="profileImg"
               className={styles.missionImg}
+              onClick={() => navigate(`/post/${mission.id}`)}
             />
           ))}
         </div>

@@ -6,6 +6,7 @@ import com.web.eco2.domain.dto.post.CommentDto;
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.Item.Item;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
@@ -17,6 +18,7 @@ import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.service.FriendService;
 import com.web.eco2.model.service.alarm.AlarmService;
+import com.web.eco2.model.service.item.ItemService;
 import com.web.eco2.model.service.item.StatisticService;
 import com.web.eco2.model.service.mission.CustomMissionService;
 import com.web.eco2.model.service.mission.MissionService;
@@ -84,6 +86,10 @@ public class PostController {
     private AlarmService alarmService;
 
 
+    @Autowired
+    private ItemService itemService;
+
+
     //게시물 전체 조회
     @ApiOperation(value = "게시물 전체 조회", response = Object.class)
     @GetMapping()
@@ -98,12 +104,6 @@ public class PostController {
                 PostListDto postListDto = new PostListDto();
                 PostImg postImg = postImgRepository.getById(post.getId());
                 String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
-                Long id = post.getId();
-                Long userId = post.getUser().getId();
-                String userName = post.getUser().getName();
-                String content = post.getContent();
-                String postImgUrl = postImgPath;
-
                 Mission mission = null;
                 CustomMission customMission = null;
                 QuestDto quest = null;
@@ -115,11 +115,12 @@ public class PostController {
                     quest = ((QuestPost) post).getQuest().toDto();
                 }
 
-                postListDto.setId(id);
-                postListDto.setUserId(userId);
-                postListDto.setUserName(userName);
-                postListDto.setContent(content);
-                postListDto.setPostImgUrl(postImgUrl);
+                postListDto.setId(post.getId());
+                postListDto.setUserId(post.getUser().getId());
+                postListDto.setUserName(post.getUser().getName());
+                postListDto.setUserEmail(post.getUser().getEmail());
+                postListDto.setContent(post.getContent());
+                postListDto.setPostImgUrl(postImgPath);
                 postListDto.setPublicFlag(post.isPublicFlag());
                 postListDto.setCommentFlag(post.isCommentFlag());
                 postListDto.setMission(mission);
@@ -157,10 +158,12 @@ public class PostController {
             } else if (post.getCustomMission() != null) {
                 customMission = post.getCustomMission();
             }
-            
+
+
             postListDto.setId(postId);
             postListDto.setUserId(post.getUser().getId());
             postListDto.setUserName(post.getUser().getName());
+            postListDto.setUserEmail(post.getUser().getEmail());
             postListDto.setContent(post.getContent());
             postListDto.setPostImgUrl(postImgPath);
             postListDto.setPublicFlag(post.isPublicFlag());
@@ -169,6 +172,7 @@ public class PostController {
             postListDto.setCustomMission(customMission);
             postListDto.setQuest(quest);
             postListDto.setLikeCount(postLikeService.likeCount(postId));
+            postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(postId));
 
             if (post.isCommentFlag()) {
                 ArrayList<CommentDto> commentDtos = new ArrayList<>();
@@ -180,6 +184,7 @@ public class PostController {
                         commentDto.setContent(comment.getContent());
                         commentDto.setUserId(comment.getUser().getId());
                         commentDto.setUserName(comment.getUser().getName());
+                        commentDto.setUserEmail(comment.getUser().getEmail());
                         commentDto.setPostId(comment.getPost().getId());
                         if (comment.getComment() != null) {
                             commentDto.setCommentId(comment.getComment().getId());
@@ -236,8 +241,11 @@ public class PostController {
                 return ResponseHandler.generateResponse("요청값이 부족합니다.", HttpStatus.ACCEPTED);
             }
 
+            postCreateDto.setUser(user);
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
+            itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
+
 
             // 친구 인증글 알림
 //            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {

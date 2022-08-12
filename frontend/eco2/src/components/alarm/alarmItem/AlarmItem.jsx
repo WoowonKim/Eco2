@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./alarmItem.module.css";
 import { useDispatch } from "react-redux";
-import { deleteAlarm } from "../../../store/alarm/alarmSlice";
+import {
+  deleteAlarm,
+  responseFriendRequest,
+} from "../../../store/alarm/alarmSlice";
+import { getUserId } from "../../../store/user/common";
 
-const AlarmItem = ({ alarm }) => {
+const AlarmItem = ({ alarm, isFriendRequest }) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
 
@@ -14,7 +18,7 @@ const AlarmItem = ({ alarm }) => {
       time.monthValue == now.getMonth() + 1 &&
       time.dayOfMonth == now.getDate()
     ) {
-      return time.hour + ":" + time.minute;
+      return time.hour + ":" + (time.minute < 10 ? "0" : "") + time.minute;
     } else {
       return time.year + "." + time.monthValue + "." + time.dayOfMonth;
     }
@@ -30,12 +34,28 @@ const AlarmItem = ({ alarm }) => {
         return "친구 인증글";
       case "report":
         return "신고";
+      case "friendRequest":
+        return "친구 신청";
+      default:
+        return "알림";
     }
   };
 
   const onClickDelete = (id, userId) => {
     console.log("delete");
     dispatch(deleteAlarm({ id: id, userId: userId }));
+  };
+
+  const onClickFriendResponse = (friendId, response) => {
+    console.log("onClickFriendResponse");
+    console.log(getUserId(), friendId);
+    dispatch(
+      responseFriendRequest({
+        id: parseInt(getUserId()),
+        friendId: friendId,
+        response: response,
+      })
+    );
   };
 
   return (
@@ -63,6 +83,30 @@ const AlarmItem = ({ alarm }) => {
         />
         <p>{alarm.content}</p>
       </div>
+      <>
+        {isFriendRequest ? (
+          <div className={styles.buttons}>
+            <button
+              onClick={() => {
+                onClickFriendResponse(alarm.senderId, true);
+              }}
+              type="button"
+            >
+              수락
+            </button>
+            <button
+              onClick={() => {
+                onClickFriendResponse(alarm.senderId, false);
+              }}
+              type="button"
+            >
+              거절
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
+      </>
     </div>
   );
 };

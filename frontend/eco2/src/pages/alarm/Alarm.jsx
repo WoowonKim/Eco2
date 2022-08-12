@@ -28,31 +28,33 @@ const Alarm = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(alarmArray);
         setAlarms(alarmArray);
       }
     );
-    // firestore.onSnapshot(
-    //   firestore.collection(dbService, `alarm/1/friendRequest`),
-    //   // firestore.collection(dbService, `alarm/${getUserId()}/common`),
-    //   (snapshot) => {
-    //     const alarmArray = snapshot.docs.map((doc) => ({
-    //       id: doc.id,
-    //       ...doc.data(),
-    //     }));
-    //     console.log(alarmArray);
-    //     setFriendRequests(alarmArray);
-    //   }
-    // );
+  }, []);
+
+  useEffect(() => {
+    firestore.onSnapshot(
+      // firestore.collection(dbService, `alarm/1/friendRequest`),
+      firestore.collection(dbService, `alarm/${getUserId()}/friendRequest`),
+      (snapshot) => {
+        const alarmArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log(alarmArray);
+        setFriendRequests(alarmArray);
+      }
+    );
   }, []);
 
   return (
     <div className={styles.container}>
-      {/* <div className={styles.list}>
-        <AlarmList alarms={friendRequests} />
-      </div> */}
       <div className={styles.list}>
-        <AlarmList alarms={alarms} />
+        <AlarmList alarms={friendRequests} isFriendRequest={true} />
+      </div>
+      <div className={styles.list}>
+        <AlarmList alarms={alarms} isFriendRequest={false} />
       </div>
     </div>
   );
