@@ -8,6 +8,7 @@ import styles from "./CommentItem.module.css";
 import { getUserId, getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
 import ReplyItem from "../replyItem/ReplyItem";
+import { useNavigate } from "react-router-dom";
 
 const CommentItem = ({
   id,
@@ -18,6 +19,7 @@ const CommentItem = ({
   commentId,
   replys,
   setTest,
+  userEmail,
 }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
@@ -29,6 +31,7 @@ const CommentItem = ({
   const [userId, setUserId] = useState(0);
 
   const displayType = modalType ? styles.visible : styles.hidden;
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(commentId);
@@ -41,7 +44,14 @@ const CommentItem = ({
         <li className={styles.list}>
           <div className={styles.commentContainer}>
             <div className={styles.comment}>
-              <div className={styles.userInfo}>
+              <div
+                className={styles.userInfo}
+                onClick={() =>
+                  navigate(`/profile/${commentUserId}`, {
+                    state: { userEmail },
+                  })
+                }
+              >
                 <img
                   src={`http://localhost:8002/img/profile/${commentUserId}`}
                   // src={`${imgSrc}`}

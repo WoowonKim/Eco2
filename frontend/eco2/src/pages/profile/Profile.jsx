@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
 import { getUserName, getUserEmail, getUserId } from "../../store/user/common";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
@@ -16,6 +16,7 @@ const Profile = () => {
   const [userSetting, setUserSetting] = useState(1);
   const [socialType, setSocialType] = useState(0);
   const [userId, setUserId] = useState(0);
+  const [userName, setUserName] = useState(0);
   const [imgSrc, setImgSrc] = useState("");
   const [missionList, setMissionList] = useState([]);
   const [questList, setQuestList] = useState([]);
@@ -25,7 +26,9 @@ const Profile = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const params = useParams();
+  // const email = location.state?.userEmail || getUserEmail();
   const email = getUserEmail();
 
   const displayType = userSetting === 1 ? styles.selectedMenu : null;
@@ -34,7 +37,8 @@ const Profile = () => {
   useEffect(() => {
     // 유저 객체 받아오기
     dispatch(userInformation({ email })).then((res) => {
-      setUserId(getUserId());
+      setUserId(res.payload.user.id);
+      setUserName(res.payload.user.name);
       setMissionList(res.payload.postList);
       setQuestList(res.payload.questPostList);
       setSocialType(res.payload.user.socialType);
@@ -78,7 +82,7 @@ const Profile = () => {
             // alt="profileImg"
             className={styles.profileImg}
           />
-          <p>{params.userId}</p>
+          <p>{userName}</p>
           {getUserId() === params.userId ? (
             <button
               onClick={() =>

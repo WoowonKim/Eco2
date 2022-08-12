@@ -11,16 +11,20 @@ const FeedList = ({ category, display, feeds }) => {
         {!!feeds ? (
           feeds.map(
             (feed) =>
-              category === feed.mission.category &&
+              (category === feed.mission?.category ||
+                category === feed.customMission?.category) &&
               feed.publicFlag && (
                 <FeedItem
                   key={feed.id}
                   id={feed.id}
                   userId={feed.userId}
                   userName={feed.userName}
-                  category={feed.mission.category}
+                  category={
+                    feed.mission?.category || feed.customMission?.category
+                  }
                   content={feed.content}
                   like={feed.like}
+                  userEmail={feed.userEmail}
                 />
               )
           )

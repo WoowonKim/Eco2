@@ -202,6 +202,13 @@ const UserSettings = () => {
                   className={styles.socialLogo}
                 />
               )}
+              {socialType === 2 && (
+                <img
+                  src={`${process.env.PUBLIC_URL}/kakao_logo.png`}
+                  alt="social_logo"
+                  className={styles.socialLogo}
+                />
+              )}
             </div>
             <p className={styles.email}>{email}</p>
           </div>
