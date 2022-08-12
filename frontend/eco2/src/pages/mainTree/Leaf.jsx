@@ -1,4 +1,5 @@
 import { useDrag } from "react-dnd";
+import styles from "./Leaf.module.css";
 
 const style = {
   position: "absolute",
@@ -21,7 +22,7 @@ export const Leaf = ({ id, left, top, category }) => {
   }
   return (
     <img
-      className="leaf"
+      className={styles.leaf}
       src={
         process.env.PUBLIC_URL + "/tree_leaves/" + "Leaf" + category + ".png"
       }

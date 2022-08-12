@@ -65,6 +65,7 @@
 .button {
   border: none;
   background-color: white;
+
 }
 
 .button:hover {
@@ -88,6 +89,7 @@
 
 .heart {
   color: red;
+  margin-right: 5px;
 }
 
 .content {
