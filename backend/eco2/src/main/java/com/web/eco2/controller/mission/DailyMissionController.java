@@ -155,9 +155,9 @@ public class DailyMissionController {
             BufferedImage img = dailyMissionService.getRewardImage(user, calendarDto);
 
             //디비, 로컬에 파일 저장
-            File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".jpg");
-            ImageIO.write(img, "jpg", saveFile);
-            calendarDto.setSaveName(calendarDto.getSaveName()+".jpg");
+            File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".png");
+            ImageIO.write(img, "png", saveFile);
+            calendarDto.setSaveName(calendarDto.getSaveName()+".png");
             calendarService.save(calendarDto.toEntity());
             return ImageController.getFileResponse(calendarDto.getSaveFolder(),  calendarDto.getSaveName());
 
@@ -190,6 +190,7 @@ public class DailyMissionController {
             if (calendar == null) {
                 rewardFlag = false;
             }
+            System.out.println("calendar=>>>>>>>>>" +calendar);
             return ResponseHandler.generateResponse("특정일자 미션 보상 여부가 조회되었습니다.", HttpStatus.OK, "rewardFlag", rewardFlag);
 
         } catch (Exception e) {

@@ -21,6 +21,7 @@ import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.model.service.user.UserSettingService;
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,7 @@ public class CommentController {
 
 
     //댓글 등록
+    @ApiOperation(value = "댓글 등록", response = Object.class)
     @PostMapping("/{postId}/comment")
     public ResponseEntity<Object> createComment(@PathVariable("postId") Long postId,
                                                     @RequestBody CommentCreateDto commentCreateDto) {
@@ -133,6 +135,7 @@ public class CommentController {
 
 
     //댓글 조회
+    @ApiOperation(value = "댓글 조회", response = Object.class)
     @GetMapping("/{post_id}/comment")
     public ResponseEntity<Object> getComments (@RequestParam("postId") Long postId) {
         try {
@@ -145,6 +148,7 @@ public class CommentController {
                 commentDto.setUserName(comment.getUser().getName());
                 commentDto.setPostId(comment.getPost().getId());
                 commentDto.setContent(comment.getContent());
+                commentDto.setRegistTime(comment.getRegistTime());
 
                 if (comment.getComment() != null) {
                     Long commentId = comment.getComment().getId();
@@ -164,6 +168,7 @@ public class CommentController {
 
 
     //댓글 수정
+    @ApiOperation(value = "댓글 수정", response = Object.class)
     @PutMapping("/{post_id}/comment/{comment_id}")
     public ResponseEntity<Object> updateComment(@RequestParam("postId") Long postId,
                                                 @RequestParam("commentId") Long commentId,
@@ -191,6 +196,7 @@ public class CommentController {
     }
 
     //댓글 삭제
+    @ApiOperation(value = "댓글 삭제", response = Object.class)
     @DeleteMapping("/{post_id}/comment/{comment_id}")
     public ResponseEntity<Object> deleteComment(@RequestParam("postId") Long postId,
                                                 @RequestParam("commentId") Long commentId) {
@@ -203,6 +209,19 @@ public class CommentController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @ApiOperation(value = "댓글 상세 조회", response = Object.class)
+    @GetMapping("/comment/{commentId}")
+    public ResponseEntity<Object> detailComment(@PathVariable("commentId") Long commentId) {
+        try {
+            Comment comment = commentService.getById(commentId);
+            return ResponseHandler.generateResponse("댓글이 조회되었습니다.", HttpStatus.OK, "comment", comment);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 
 

@@ -17,6 +17,7 @@ import {
 import {
   getUserId,
   getUserName,
+  setAccessToken,
   setUserEmail,
   setUserId,
 } from "../../store/user/common";
@@ -31,8 +32,6 @@ const Regist = () => {
   const [code, setCode] = useState(null);
 
   const [visibility, setVisibility] = useState(false);
-  const [min, setMin] = useState(5);
-  const [sec, setSec] = useState(0);
 
   const [message, setMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
@@ -165,9 +164,6 @@ const Regist = () => {
             >
               인증
             </button>
-            <div className={styles.timer}>
-              {min} : {sec}
-            </div>
           </div>
           <p className={isPassword ? styles.success : styles.fail}>{message}</p>
         </div>
@@ -223,6 +219,7 @@ const Regist = () => {
                   ] = `${res.payload.user.accessToken}`;
                   setUserEmail(false, email);
                   setUserId(false, res.payload.user.id);
+                  setAccessToken(false, res.payload.accessToken);
                   navigate("/ecoName");
                 })
                 .catch((err) => console.log(err));

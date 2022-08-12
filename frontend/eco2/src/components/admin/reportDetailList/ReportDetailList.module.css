@@ -19,6 +19,7 @@
 }
 .content{
   width: 100px;
+  float: left;
 }
 .name{
   float: left;
