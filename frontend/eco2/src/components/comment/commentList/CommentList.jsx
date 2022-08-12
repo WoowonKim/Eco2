@@ -15,7 +15,7 @@ const CommentList = ({ comments, replys, setTest }) => {
             user={comment.userName}
             commentUserId={comment.userId}
             postId={comment.postId}
-            commentId={comment.commentId}
+            commentId={comment.id}
             replys={replys}
             setTest={setTest}
             userEmail={comment.userEmail}

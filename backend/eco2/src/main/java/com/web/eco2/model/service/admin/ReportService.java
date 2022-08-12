@@ -3,7 +3,6 @@ package com.web.eco2.model.service.admin;
 import com.web.eco2.domain.dto.Report.ReportInformation;
 import com.web.eco2.domain.dto.Report.ReportTypeInformation;
 import com.web.eco2.domain.entity.admin.CommentReport;
-import com.web.eco2.domain.entity.admin.PostReport;
 import com.web.eco2.domain.entity.admin.Report;
 import com.web.eco2.model.repository.admin.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class ReportService {
         return reportRepository.findByUsrIdAndComId(usrId, comId);
     }
 
-    public void postSave(PostReport postReport) {
+    public void postSave(Report postReport) {
         reportRepository.save(postReport);
     }
 
@@ -42,15 +41,15 @@ public class ReportService {
         reportRepository.delete(report);
     }
 
-    public List<ReportInformation> findAllPost() {
-        return reportRepository.findAllPost();
+    public List<ReportInformation> findAllReport() {
+        return reportRepository.findAllReport();
     }
 
     public List<ReportInformation> findAllComment() {
         return reportRepository.findAllComment();
     }
 
-    public List<PostReport> findByPosId(Long reportId) {
+    public List<Report> findByPosId(Long reportId) {
         return reportRepository.findByPosId(reportId);
     }
 

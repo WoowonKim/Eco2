@@ -106,6 +106,8 @@ export const report = createAsyncThunk(
       const response = await axiosService.post(`/report/${args.userId}`, {
         retId: args.retId,
         posId: args.posId,
+        comId: args.comId,
+        message: args.message
       });
       return response.data;
     } catch (err) {

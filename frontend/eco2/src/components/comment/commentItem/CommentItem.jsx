@@ -24,6 +24,7 @@ const CommentItem = ({
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
   const [replyVisible, setReplyVisible] = useState(false);
   const [modalType, setModalType] = useState("");
   const [name, setName] = useState("");
@@ -33,6 +34,7 @@ const CommentItem = ({
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(commentId);
     setName(getUserName());
     setUserId(getUserId());
   }, []);
@@ -74,7 +76,7 @@ const CommentItem = ({
                   className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}
                 ></i>
                 <div className={styles.dropdownContent}>
-                  {name === user && (
+                  {name === user ? (
                     <div>
                       <button
                         onClick={() => {
@@ -100,11 +102,33 @@ const CommentItem = ({
                         ></i>
                       </button>
                     </div>
+                  ) : (
+                    <div>
+                      <button
+                        onClick={() => {
+                          setReportModalVisible(!reportModalVisible);
+                          setModalType("신고");
+                        }}
+                        className={styles.dropdownItem}
+                      >
+                        신고으으
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
             </div>
           </div>
+          {reportModalVisible && modalType === "신고" && (
+            <ReportModal
+              className={`${displayType}`}
+              title={"댓글 신고"}
+              content={"해당 댓글 신고하시겠습니까?"}
+              type="댓글"
+              commentId={commentId}
+              closeModal={() => setReportModalVisible(!reportModalVisible)}
+            />
+          )}
           {modalVisible && modalType === "삭제" && (
             <PostModal
               className={`${displayType}`}
@@ -112,7 +136,7 @@ const CommentItem = ({
               content={"댓글을 삭제하시겠습니까"}
               type={"삭제"}
               postId={postId}
-              commentId={id}
+              commentId={commentId}
               setTest={setTest}
               closeModal={() => setModalVisible(!modalVisible)}
             />
