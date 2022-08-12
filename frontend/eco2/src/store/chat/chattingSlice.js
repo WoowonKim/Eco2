@@ -36,6 +36,7 @@ export const chattingFriendList = createAsyncThunk(
       const response = await axiosService.get(
         `/account/friend?id=${args.userId}`
       );
+      console.log("dddddddddddddddd");
       console.log(response.data);
       return response.data;
     } catch (err) {
@@ -81,8 +82,8 @@ export const chattingSlice = createSlice({
   reducers: {},
   extraReducers: {
     [chattingList.fulfilled]: (state, action) => {
-      console.log("chattingList fulfilled", action.payload);
       if (action.payload.status === 200) {
+        console.log("chattingList fulfilled", action.payload);
       }
     },
     [chattingList.rejected]: (state, action) => {

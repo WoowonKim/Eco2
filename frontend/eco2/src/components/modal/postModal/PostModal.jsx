@@ -28,20 +28,18 @@ const PostModal = ({
   commentId,
   selected,
   setTest,
-  message
+  message,
   fromId,
   toId,
 }) => {
-
-  console.log(commentId);
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
   const colorType =
     type === "수정"
       ? styles.editButton
       : type === "친구"
-      ? styles.friendButton
-      : styles.warningButton;
+        ? styles.friendButton
+        : styles.warningButton;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -77,9 +75,7 @@ const PostModal = ({
       ).then((res) => {
 
         if (res.payload?.status === 200) {
-          window.location.replace(`/post/${postId}`);
-         // setHidden(true);
-          closeModal();
+          setHidden(true);
         }
       });
     } else if (type === "로그아웃") {

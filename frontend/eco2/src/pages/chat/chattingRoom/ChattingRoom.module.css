@@ -20,6 +20,8 @@
 
 .profileImg{
   width: 40px;
+  height: 40px;
+  border-radius: 30px;
   float: left;
   margin-left: 7px;
   margin-right: 10px;
@@ -36,6 +38,7 @@
   width: 300px;
   justify-content: center;
   margin-top: 40px;
+  padding-bottom: 50px;
 }
 .chatting{
   /* height: 500px; */
@@ -79,14 +82,22 @@
 .sendButton{
   background-color: #adc178;
   color: #FFF;
-  font-size: medium;
+  font-size: 13px;
   font-weight: bold;
   border:none;
   border-radius: 20px;
   width: 50px;
 height: 35px;
 }
-
+.sendButton:hover{
+  background-color: #b8ce7c;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  border:none;
+  border-radius: 20px;
+  width: 50px;
+height: 35px;
+}
 .input:focus {
   outline: none;
 }

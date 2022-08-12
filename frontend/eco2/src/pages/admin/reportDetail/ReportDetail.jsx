@@ -74,7 +74,9 @@ const ReportDetail = () => {
   return (
     <div className={styles.reportDetail}>
       <div className={styles.reportDetailTitle}>신고 내역 상세</div>
+      <Link to={`/post/${post.id}`} className={styles.link}>
       <div className={styles.post}>
+
         <div className={styles.postTitle}>
           <img
             src={`http://localhost:8002/img/profile/${post.user.id}`}
@@ -102,7 +104,8 @@ const ReportDetail = () => {
           <div className={styles.postContent}>{post.content}</div>
           <div className={styles.postRegistTime}>작성일: {post.registTime}</div>
         </div>
-      </div>
+        </div>
+      </Link>
       {comment && (
         <div className={styles.comment}>
           <div className={styles.commentBody}>
@@ -111,7 +114,7 @@ const ReportDetail = () => {
               alt="profileImg"
               className={styles.profileImg}
             />
-            <div className={styles.commentUser}>{comment.user.name}</div>
+            <div className={styles.commentUser}>{comment.user.name}님이 작성한 댓글입니다.</div>
             <div className={styles.commentContent}>{comment.content}</div>
           </div>
         </div>

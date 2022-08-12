@@ -71,6 +71,21 @@ export const commentDelete = createAsyncThunk(
   }
 );
 
+// 댓글 상세 조회
+export const commentDetail = createAsyncThunk(
+  "commentSlice/commentDetail",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.get(
+        `/post/comment/${args.commentId}`
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 export const commentSlice = createSlice({
   name: "comment",
   initialState: [],
@@ -107,6 +122,14 @@ export const commentSlice = createSlice({
     },
     [commentDelete.rejected]: (state, action) => {
       console.log("commentDelete rejected", action.payload);
+    },
+    [commentDetail.fulfilled]: (state, action) => {
+      console.log("commentDetail fulfilled", action.payload);
+      if (action.payload.status === 200) {
+      }
+    },
+    [commentDetail.rejected]: (state, action) => {
+      console.log("commentDetail rejected", action.payload);
     },
   },
 });
