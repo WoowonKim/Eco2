@@ -72,7 +72,7 @@ const PostModal = ({
       dispatch(
         report({ userId: getUserId(), retId: selected, posId: postId })
       ).then((res) => {
-        if (res.payload.status === 200) {
+        if (res.payload?.status === 200) {
           window.location.replace(`/post/${postId}`);
           closeModal();
         }

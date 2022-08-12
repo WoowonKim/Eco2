@@ -43,45 +43,6 @@ const PostForm = () => {
     e.preventDefault();
     const formDataCreate = new FormData();
     const formDataUpdate = new FormData();
-
-    if (location.state?.missionId) {
-      setPostCreateDto({
-        content: editText,
-        user: {
-          id: id,
-        },
-        mission: {
-          id: location.state.missionId,
-        },
-        publicFlag: !publicFlag,
-        commentFlag: !commentFlag,
-      });
-    } else if (location.state?.customId) {
-      setPostCreateDto({
-        content: editText,
-        user: {
-          id: id,
-        },
-        customMission: {
-          id: location.state.customId,
-        },
-        publicFlag: !publicFlag,
-        commentFlag: !commentFlag,
-      });
-    } else {
-      setPostCreateDto({
-        content: editText,
-        user: {
-          id: id,
-        },
-        quest: {
-          id: location.state?.questId,
-        },
-        publicFlag: !publicFlag,
-        commentFlag: !commentFlag,
-      });
-    }
-
     const postUpdateDto = {
       content: editText,
       publicFlag: !publicFlag,
@@ -90,7 +51,6 @@ const PostForm = () => {
 
     if (location.state?.postId) {
       // 글 수정 시 해당 글 상세 페이지로 다시 이동
-
       const json = JSON.stringify(postUpdateDto);
       const blob = new Blob([json], {
         type: "application/json",
@@ -106,22 +66,100 @@ const PostForm = () => {
         }
       });
     } else {
-      const json = JSON.stringify(postCreateDto);
-      const blob = new Blob([json], {
-        type: "application/json",
-      });
-      console.log(postCreateDto);
-      formDataCreate.append("postImage", file);
-      formDataCreate.append("postCreateDto", blob);
-      console.log(file);
-      dispatch(postCreate({ formData: formDataCreate }))
-        .then((res) => {
-          if (res.payload?.status === 200) {
-            navigate("/mainTree");
-          }
-        })
+      if (location.state?.missionId) {
+        const postCreateDto = {
+          content: editText,
+          user: {
+            id: id,
+          },
+          mission: {
+            id: location.state.missionId,
+          },
+          publicFlag: !publicFlag,
+          commentFlag: !commentFlag,
+        };
+        const json = JSON.stringify(postCreateDto);
+        const blob = new Blob([json], {
+          type: "application/json",
+        });
+        formDataCreate.append("postImage", file);
+        formDataCreate.append("postCreateDto", blob);
+        dispatch(postCreate({ formData: formDataCreate }))
+          .then((res) => {
+            if (res.payload?.status === 200) {
+              navigate("/mainTree");
+            }
+          })
 
-        .catch((err) => console.log(err));
+          .catch((err) => console.log(err));
+      } else if (location.state?.customId) {
+        const postCreateDto = {
+          content: editText,
+          user: {
+            id: id,
+          },
+          customMission: {
+            id: location.state.customId,
+          },
+          publicFlag: !publicFlag,
+          commentFlag: !commentFlag,
+        };
+        const json = JSON.stringify(postCreateDto);
+        const blob = new Blob([json], {
+          type: "application/json",
+        });
+        formDataCreate.append("postImage", file);
+        formDataCreate.append("postCreateDto", blob);
+        dispatch(postCreate({ formData: formDataCreate }))
+          .then((res) => {
+            if (res.payload?.status === 200) {
+              navigate("/mainTree");
+            }
+          })
+
+          .catch((err) => console.log(err));
+      } else {
+        const postCreateDto = {
+          content: editText,
+          user: {
+            id: id,
+          },
+          quest: {
+            id: location.state?.questId,
+          },
+          publicFlag: !publicFlag,
+          commentFlag: !commentFlag,
+        };
+        const json = JSON.stringify(postCreateDto);
+        const blob = new Blob([json], {
+          type: "application/json",
+        });
+        formDataCreate.append("postImage", file);
+        formDataCreate.append("postCreateDto", blob);
+        dispatch(postCreate({ formData: formDataCreate }))
+          .then((res) => {
+            if (res.payload?.status === 200) {
+              navigate("/mainTree");
+            }
+          })
+
+          .catch((err) => console.log(err));
+      }
+      // const json = JSON.stringify(postCreateDto);
+      // const blob = new Blob([json], {
+      //   type: "application/json",
+      // });
+      // console.log(postCreateDto);
+      // formDataCreate.append("postImage", file);
+      // formDataCreate.append("postCreateDto", blob);
+      // dispatch(postCreate({ formData: formDataCreate }))
+      //   .then((res) => {
+      //     if (res.payload?.status === 200) {
+      //       navigate("/mainTree");
+      //     }
+      //   })
+
+      //   .catch((err) => console.log(err));
     }
   };
 
@@ -141,8 +179,12 @@ const PostForm = () => {
         <div>
           {fileImage ? (
             <img className={styles.img} alt="sample" src={fileImage} />
-          ) : location.state?.img ? (
-            <img className={styles.img} alt="sample" src={location.state.img} />
+          ) : location.state?.postId ? (
+            <img
+              className={styles.img}
+              alt="originalImg"
+              src={`http://localhost:8002/img/post/${location.state.postId}`}
+            />
           ) : null}
         </div>
         <div className={styles.fileInputGroup}>

@@ -66,6 +66,9 @@ export const postCreate = createAsyncThunk(
   "postSlice/postCreate",
   async (args, rejectWithValue) => {
     try {
+      for (let value of args.formData.values()) {
+        console.log(value);
+      }
       const response = await axiosService.post("/post", args.formData, {
         headers: {
           "Content-Type": "multipart/form-data",

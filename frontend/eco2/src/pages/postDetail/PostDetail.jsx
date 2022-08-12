@@ -93,7 +93,7 @@ const PostDetail = () => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <h1 className={styles.text}>{feedItem.category}</h1>
+        {/* <h1 className={styles.text}>{feedItem.category}</h1> */}
         <div className={styles.dropdown}>
           <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
           <div className={styles.dropdownContent}>
@@ -152,7 +152,7 @@ const PostDetail = () => {
           type={"수정"}
           postId={feedItem.id}
           img={feedItem.postImgUrl}
-          category={feedItem.mission.category}
+          // category={feedItem.mission.category}
           postContent={feedItem.content}
           closeModal={() => setVisible(!visible)}
         />

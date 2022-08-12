@@ -55,7 +55,6 @@ const CalendarBody = ({
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, "d");
       const cloneDay = day;
-
       days.push(
         <div
           className={`${styles.col} ${
@@ -113,7 +112,7 @@ const CalendarBody = ({
   return (
     <>
       <div className={styles.body}>{rows}</div>
-      {modalVisible && !!clickedDay && (
+      {modalVisible && !!clickedDay && !!rewardDays[clickedDay] && (
         <CalendarModal
           calendarId={rewardDays[clickedDay]}
           month={format(currentMonth, "M")}
