@@ -246,7 +246,10 @@ public class PostController {
             }
 
             postCreateDto.setUser(user);
+            
             postCreateDto.setRegistTime(LocalDateTime.now());
+            // 친구 인증글 알림 시 사용
+//            Post post = postService.savePost(postImage, postCreateDto);
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
             itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
@@ -256,7 +259,8 @@ public class PostController {
 //            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {
 //                alarmService.insertAlarm(FirebaseAlarm.builder()
 //                        .userId(friend.getId()).senderId(userId)
-//                        .dType("friendPost").content("친구 "+user.getName()+"님이 인증글을 올렸습니다.").build());
+//                        .dType("friendPost").content("친구 "+user.getName()+"님이 인증글을 올렸습니다.")
+//                        .url("/post/"+post.getId()).build());
 //            });
             return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK, "postCreateDto", postCreateDto);
         } catch (Exception e) {
