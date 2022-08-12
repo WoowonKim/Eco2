@@ -63,7 +63,11 @@ public class QuestController {
     @PostMapping
     public ResponseEntity<?> createQuest(@RequestBody QuestRequest quest) {
         try {
-            log.info("퀘스트 등록 API 호출");  // 해당 지역 주변(20m 이내)에 퀘스트 있는지 확인
+            log.info("퀘스트 등록 API 호출");
+            if(quest.getContent() == null) {
+
+            }
+            // 해당 지역 주변(20m 이내)에 퀘스트 있는지 확인
             if (questService.hasQuestInRange(quest.getLat(), quest.getLng(), RANGE)) {
                 return ResponseHandler.generateResponse(RANGE + "m 근처에 이미 퀘스트 존재", HttpStatus.ACCEPTED);
             }
