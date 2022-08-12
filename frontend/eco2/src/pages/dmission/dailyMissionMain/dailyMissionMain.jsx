@@ -175,7 +175,9 @@ const DailyMissionMain = () => {
         {successBtn ? (
           <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
         ) : (
-          <GreenBtn onClick={onSucsses}>오늘 미션 보상 받기</GreenBtn>
+          <GreenBtn
+          className={styles.innerBtn} 
+          onClick={onSucsses}>오늘 미션 보상 받기</GreenBtn>
         )}
       </div>
     </div>

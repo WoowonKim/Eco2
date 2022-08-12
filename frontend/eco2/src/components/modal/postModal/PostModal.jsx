@@ -28,7 +28,7 @@ const PostModal = ({
   commentId,
   selected,
   setTest,
-  message
+  message,
   fromId,
   toId,
 }) => {

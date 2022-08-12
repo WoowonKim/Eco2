@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +121,7 @@ public class PostController {
                 postListDto.setUserName(post.getUser().getName());
                 postListDto.setUserEmail(post.getUser().getEmail());
                 postListDto.setContent(post.getContent());
+                postListDto.setRegistTime(post.getRegistTime());
                 postListDto.setPostImgUrl(postImgPath);
                 postListDto.setPublicFlag(post.isPublicFlag());
                 postListDto.setCommentFlag(post.isCommentFlag());
@@ -165,6 +167,7 @@ public class PostController {
             postListDto.setUserName(post.getUser().getName());
             postListDto.setUserEmail(post.getUser().getEmail());
             postListDto.setContent(post.getContent());
+            postListDto.setRegistTime(post.getRegistTime());
             postListDto.setPostImgUrl(postImgPath);
             postListDto.setPublicFlag(post.isPublicFlag());
             postListDto.setCommentFlag(post.isCommentFlag());
@@ -182,6 +185,7 @@ public class PostController {
                         CommentDto commentDto = new CommentDto();
                         commentDto.setId(comment.getId());
                         commentDto.setContent(comment.getContent());
+                        commentDto.setRegistTime(comment.getRegistTime());
                         commentDto.setUserId(comment.getUser().getId());
                         commentDto.setUserName(comment.getUser().getName());
                         commentDto.setUserEmail(comment.getUser().getEmail());
@@ -242,6 +246,7 @@ public class PostController {
             }
 
             postCreateDto.setUser(user);
+            postCreateDto.setRegistTime(LocalDateTime.now());
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
             itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
