@@ -90,7 +90,14 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
     if (type !== "friendRequest") {
       dispatch(deleteAlarm({ id: id, userId: getUserId() }));
     }
-    navigate(alarm.url);
+    if (type !== "newChat") {
+      navigate(alarm.url);
+    } else {
+      const url = alarm.url.split("?");
+      const uri = url[0];
+      const roomId = Number(url[1].split("=")[1]);
+      navigate(uri, { state: { roomId: roomId } });
+    }
   };
 
   return (
