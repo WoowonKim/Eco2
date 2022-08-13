@@ -6,12 +6,13 @@ import { useLocation } from 'react-router-dom';
 import { reportDetailList } from "../../../store/admin/reportSlice";
 import { reportAccept } from "../../../store/admin/reportSlice";
 import { reportCancle } from "../../../store/admin/reportSlice";
-import ReportDetailList from "../../../components/admin/reportDetailList/ReportDetailList";
+import ReportDetailItem from "../../../components/admin/reportDetailItem/ReportDetailItem";
 
 const ReportDetail = () => {
   const post = useLocation().state.post;
   const comment = useLocation().state.comment;
-  const [reportDetails, setReportDetails] = useState([]);
+  const reportDetails = useSelector((state) => state.report.detail);
+  // const [reportDetails, setReportDetails] = useState([]);
   const dispatch = useDispatch();
   const [id, setId] = useState("");
   const [type, setType] = useState("");
@@ -21,23 +22,12 @@ const ReportDetail = () => {
     if (comment === null) {
       setId(post.id);
       setType(0);
-      dispatch(reportDetailList({ id: post.id, type: 0 })).then((res) => {
-        if (res.payload.status === 200) {
-          console.log(res.payload.reportDetailList);
-          setReportDetails(res.payload.reportDetailList);
-        }
-      });
+      dispatch(reportDetailList({ id: post.id, type: 0 }));
     } else {
       setId(comment.id);
       setType(1);
-      dispatch(reportDetailList({ id: comment.id, type: 1 })).then((res) => {
-        if (res.payload.status === 200) {
-          console.log(res.payload.reportDetailList);
-          setReportDetails(res.payload.reportDetailList);
-        }
-      });
+      dispatch(reportDetailList({ id: comment.id, type: 1 }));
     }
-
     if (post.category === 1) {
       setCategory("실천하기");
     } else if (post.category === 2) {
@@ -53,20 +43,18 @@ const ReportDetail = () => {
 
   const sendReportAccept = () => {
     dispatch(reportAccept({ id: id, type: type })).then((res) => {
-      console.log("승인 id:   " + id, "   type: " + type);
       if (res.payload.status === 200) {
         alert("신고 승인되었습니다.");
-        window.location.replace("/report");
+        window.location.reload("/report");
       }
     });
 
   }
   const sendReportCancle = () => {
     dispatch(reportCancle({ id: id, type: type })).then((res) => {
-      console.log("반려 id:   " + id, "   type: " + type);
       if (res.payload.status === 200) {
         alert("신고 반려되었습니다.");
-        window.location.replace("/report");
+        window.location.reload("/report");
       }
     });
   }
@@ -75,35 +63,35 @@ const ReportDetail = () => {
     <div className={styles.reportDetail}>
       <div className={styles.reportDetailTitle}>신고 내역 상세</div>
       <Link to={`/post/${post.id}`} className={styles.link}>
-      <div className={styles.post}>
+        <div className={styles.post}>
 
-        <div className={styles.postTitle}>
-          <img
-            src={`http://localhost:8002/img/profile/${post.user.id}`}
-            alt="profileImg"
-            className={styles.profileImg}
-          />
-          <div className={styles.postUser}>{post.user.name}</div>
-        </div>
-        <hr className={styles.line}></hr>
-        <div className={styles.postBody}>
-          <div className={styles.postCategory}>
-            {post.mission === null ? (
-              //커스텀 미션
-              <span className={styles.category}>[{category}] {post.customMission.content}</span>
-            ) : (
-              //기본 미션
-              <span className={styles.category}>[{category}] {post.mission.title}</span>
-            )}
+          <div className={styles.postTitle}>
+            <img
+              src={`http://localhost:8002/img/profile/${post.user.id}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
+            <div className={styles.postUser}>{post.user.name}</div>
           </div>
-          <img
-            src={`http://localhost:8002/img/post/${post.id}`}
-            alt="postImg"
-            className={styles.postImg}
-          />
-          <div className={styles.postContent}>{post.content}</div>
-          <div className={styles.postRegistTime}>작성일: {post.registTime}</div>
-        </div>
+          <hr className={styles.line}></hr>
+          <div className={styles.postBody}>
+            <div className={styles.postCategory}>
+              {post.mission === null ? (
+                //커스텀 미션
+                <span className={styles.category}>[{category}] {post.customMission.content}</span>
+              ) : (
+                //기본 미션
+                <span className={styles.category}>[{category}] {post.mission.title}</span>
+              )}
+            </div>
+            <img
+              src={`http://localhost:8002/img/post/${post.id}`}
+              alt="postImg"
+              className={styles.postImg}
+            />
+            <div className={styles.postContent}>{post.content}</div>
+            <div className={styles.postRegistTime}>작성일: {post.registTime}</div>
+          </div>
         </div>
       </Link>
       {comment && (
@@ -123,14 +111,29 @@ const ReportDetail = () => {
       <div className={styles.reportDetailList}>
         <div className={styles.table}>
           <table>
-            <tr>
-              <th width="8%">유형</th>
-              <th width="17%">신고내용</th>
-              <th width="9%">신고자</th>
-            </tr>
+            <tbody>
+              <tr>
+                <th width="8%">유형</th>
+                <th width="17%">신고내용</th>
+                <th width="9%">신고자</th>
+              </tr>
+            </tbody>
           </table>
         </div>
-        <ReportDetailList reportDetails={reportDetails} />
+        {reportDetails.length === 0 ? (
+          <div>없음</div>
+        ) : (
+          reportDetails.map((reportDetail, i) => {
+            return (
+              <ReportDetailItem
+                key={i}
+                reportType={reportDetail.reportType}
+                content={reportDetail.content}
+                name={reportDetail.user.name}
+              />
+            );
+          })
+        )}
       </div>
 
       <button

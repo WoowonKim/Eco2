@@ -60,6 +60,17 @@ const Profile = () => {
         setFriendList(res.payload?.friendList);
       }
     });
+    // const options = {
+    //   headers: {
+    //     "Auth-accessToken": getAccessToken(),
+    //   },
+    // };
+    // fetch(`http://localhost:8002/img/profile/${userId}`, options)
+    //   .then((res) => res.blob())
+    //   .then((blob) => setImgSrc(URL.createObjectURL(blob)));
+    //   fetcher(`http://localhost:8002/img/profile/${userId}`, false)
+    //     .then((res) => res.blob())
+    //     .then((blob) => setImgSrc(URL.createObjectURL(blob)));
   }, []);
 
   return (
@@ -111,6 +122,7 @@ const Profile = () => {
                         navigate("/chatting/room", {
                           state: { roomId: res.payload.roomId },
                         });
+                        window.location.reload(`/chatting/room`);
                       }
                     })
                     .catch((err) => console.log(err));

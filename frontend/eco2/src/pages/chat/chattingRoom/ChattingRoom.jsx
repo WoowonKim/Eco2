@@ -3,17 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./ChattingRoom.module.css";
 import ChattingMessage from "../../../components/chat/chattingMessage/ChattingMessage";
 import { chattingMessageList } from "../../../store/chat/chattingSlice";
-// import SockJS from 'sockjs-client';
-// import Stomp from 'stompjs';
 import {
   getUserName,
   getUserId,
-  getAccessToken,
 } from "../../../store/user/common";
 import React, { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { getStompClient } from "../../../store/socket";
-import { connect } from "net";
 import { Link } from "react-router-dom";
 
 const ChattingRoom = () => {
@@ -26,31 +22,13 @@ const ChattingRoom = () => {
   const stompClient = getStompClient();
   const dispatch = useDispatch();
   const scrollRef = useRef();
-  let accessToken = getAccessToken();
-  // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLjhYzjhYwiLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY2MDE0MTE2MCwiZXhwIjoxNjYwMjYxMTYwfQ.Y0IZGYTOCu4y0-CKzWSzwvosdKp2LRlY26kFU9dDUnU";
-  // window.location.reload();
 
-  //어세스 토큰 가져오기
-  //발급된 어세스 다시 받아와서 재요청-> 쿠키가 필요함,, (client 재접속)
-  //발급된 어세스가 없으면 (리프레시 만료시) 재로그인으로 요청
   useEffect(() => {
     if (stompClient === null) {
-      console.log("널입니다");
       return;
     }
-    console.log(stompClient);
-
     connect();
-    // connect();
-    // socket.onclose = function(){
-    //   console.log("재접속ㄴ");
-    //   setTimeout(function(){connect();}, 1000);
-    //  };
-    //  socket.onopen = function(event) {
-    //   console.log("WebSocket is open now.");
-    // };
-
-  }, [stompClient.connected]);
+  }, []);
 
   useEffect(() => {
     dispatch(chattingMessageList({ roomId: roomId })).then((res) => {
@@ -63,19 +41,14 @@ const ChattingRoom = () => {
     setName(getUserName());
   }, []);
   const connect = () => {
-    console.log("연결");
     stompClient.connect({}, () => {
-      console.log("소켓 연결");
       stompClient.subscribe('/sub/chat/room/' + roomId, (data) => {
         const newMessage = JSON.parse(data.body);
         addMessage(newMessage);
-        console.log(newMessage.message);
       })
-      console.log(stompClient);
     }, (error) => {
       console.log(error);
     });
-    console.log(stompClient.connected);
   }
 
   useEffect(() => {
@@ -144,6 +117,7 @@ const ChattingRoom = () => {
             placeholder="메시지를 입력하세요"
             onChange={(e) => setMessage(e.target.value)}
             className={styles.messageInput}
+            onKeyPress={sendMessage}
           />
         </div>
         <button onClick={sendMessage} className={styles.sendButton}>
