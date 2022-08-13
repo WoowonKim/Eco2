@@ -234,12 +234,15 @@ public class PostController {
                 postCreateDto.setCustomMission(mission);
                 category = mission.getCategory();
             } else if(postCreateDto.getQuest() != null) {
-                Optional<Quest> quest = questService.findById(postCreateDto.getQuest().getId());
-                if(quest.isEmpty()) {
+                Optional<Quest> questOpt = questService.findById(postCreateDto.getQuest().getId());
+                if(questOpt.isEmpty()) {
                     return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
-                postCreateDto.setQuest(quest.get());
-                category = quest.get().getMission().getCategory();
+                Quest quest = questOpt.get();
+                quest.setParticipantCount(quest.getParticipantCount()+1);
+                questService.save(quest);
+                postCreateDto.setQuest(quest);
+                category = quest.getMission().getCategory();
                 isQuest = true;
             } else {
                 return ResponseHandler.generateResponse("요청값이 부족합니다.", HttpStatus.ACCEPTED);
