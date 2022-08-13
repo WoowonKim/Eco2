@@ -83,12 +83,11 @@
   width: 100%;
   object-fit: cover;
   border-radius: 20px;
-  z-index: 1;
 }
 
 .main {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 .selectBox {
   width: 35%;
@@ -124,6 +123,15 @@ p {
   color: white;
   cursor: pointer;
   margin-top: 10px;
+}
+.info {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.info div {
+  margin: 5px;
 }
 @keyframes modal-show {
   from {
