@@ -1,6 +1,7 @@
 .header {
   padding: 7px;
-  box-shadow: 0px 0px 1px 0px gray inset;
+  border-bottom: 1px solid #EAEAEA;
+  /* box-shadow: 0px 0px 1px 0px gray inset; */
   /* height: 75px; */
   padding: 10px;
   font-weight: bold;
@@ -13,7 +14,7 @@
   left: 0;
   right: 0;
   top: 0;
-  width: 330px;
+  width: 400px;
   z-index: 3;
 }
 
@@ -45,7 +46,7 @@
 }
 .chattingForm {
   padding: 7px;
-  box-shadow: 0px 0px 1px 0px gray inset;
+  border-top: 1px solid #EAEAEA;
   /* height: 75px; */
   padding: 10px;
   font-weight: bold;
@@ -58,7 +59,7 @@
   left: 0;
   right: 0;
   bottom: 0px;
-  width: 330px;
+  width: 400px;
   z-index: 2;
 }
 

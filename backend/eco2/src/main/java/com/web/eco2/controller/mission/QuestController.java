@@ -97,7 +97,7 @@ public class QuestController {
             if (quest.isEmpty()) {
                 return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
             }
-            if (quest.get().getAchieveCount() > 0) {
+            if (quest.get().getParticipantCount() > 0) {
                 // 퀘스트에 참여한 사람 있으면 삭제 불가
                 return ResponseHandler.generateResponse("퀘스트를 삭제할 수 없습니다. (참여자 존재)", HttpStatus.ACCEPTED);
             }

@@ -65,7 +65,7 @@ public class DailyMissionService {
     public BufferedImage getRewardImage(User user, CalendarDto calendarDto) throws IOException {
         List<DailyMission> dailyMissionList = findRewardList(user.getId());
 
-        BufferedImage img = ImageIO.read(new File(uploadFolder + "/rewardImage.jpg"));
+        BufferedImage img = ImageIO.read(new File(uploadFolder + "/rewardImage.png"));
         Graphics2D graphics = img.createGraphics();
         String rewardFontName = "한컴 울주 반구대 암각화체";
         String rewardDate = calendarDto.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
@@ -85,32 +85,35 @@ public class DailyMissionService {
         FontMetrics metrics = graphics.getFontMetrics(font);
 
         int width = metrics.stringWidth(rewardDate);
-        graphics.drawString(rewardDate, 500 / 2 - width / 2, 65);
+        graphics.drawString(rewardDate, 500 / 2 - width / 2, 90);
+//
+//        width = metrics.stringWidth(rewardFooter);
+//        graphics.drawString(rewardFooter, 500 / 2 - width / 2, 870);
 
-        width = metrics.stringWidth(rewardFooter);
-        graphics.drawString(rewardFooter, 500 / 2 - width / 2, 870);
-
+        font = new Font(rewardFontName, Font.BOLD, 20);
+        graphics.setFont(font);
+        metrics = graphics.getFontMetrics(font);
         width = metrics.stringWidth(rewardMission1);
-        graphics.drawString(rewardMission1, 125, 645);
+        graphics.drawString(rewardMission1, 140, 605);
         width = metrics.stringWidth(rewardMission2);
-        graphics.drawString(rewardMission2, 125, 720);
+        graphics.drawString(rewardMission2, 140, 677);
         width = metrics.stringWidth(rewardMission3);
-        graphics.drawString(rewardMission3, 125, 798);
+        graphics.drawString(rewardMission3, 140, 747);
 
         font = new Font(rewardFontName, Font.BOLD, 32);
         graphics.setFont(font);
         metrics = graphics.getFontMetrics(font);
         width = metrics.stringWidth(rewardContent1);
-        graphics.drawString(rewardContent1, 500 / 2 - width / 2, 110);
+        graphics.drawString(rewardContent1, 500 / 2 - width / 2, 140);
 
-        font = new Font(rewardFontName, Font.BOLD, 60);
-        graphics.setFont(font);
-        metrics = graphics.getFontMetrics(font);
-        width = metrics.stringWidth(rewardName);
-        graphics.drawString(rewardName, 500 / 2 - width / 2, 235);
-
-        width = metrics.stringWidth(rewardContent2);
-        graphics.drawString(rewardContent2, 500 / 2 - width / 2, 320);
+//        font = new Font(rewardFontName, Font.BOLD, 60);
+//        graphics.setFont(font);
+//        metrics = graphics.getFontMetrics(font);
+//        width = metrics.stringWidth(rewardName);
+//        graphics.drawString(rewardName, 500 / 2 - width / 2, 235);
+//
+//        width = metrics.stringWidth(rewardContent2);
+//        graphics.drawString(rewardContent2, 500 / 2 - width / 2, 320);
 
         return img;
     }
