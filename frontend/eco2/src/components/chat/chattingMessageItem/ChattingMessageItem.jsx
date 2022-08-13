@@ -3,9 +3,7 @@ import styles from "./ChattingMessageItem.module.css";
 import { Link } from "react-router-dom";
 import { getUserName } from "../../../store/user/common";
 
-const ChattingMessageItem = ({
-  key,
-  id,
+const ChattingMessageItem = ({  
   user,
   message,
   sendDate
