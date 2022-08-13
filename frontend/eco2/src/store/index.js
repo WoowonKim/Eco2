@@ -14,6 +14,8 @@ import { commentSlice } from "./post/commentSlice";
 import { noticeSlice } from "./admin/noticeSlice";
 import { imgSlice } from "./img/imgSlice";
 import { questSlice } from "./quest/questSlice";
+import { reportSlice } from "./admin/reportSlice";
+import { chattingSlice } from "./chat/chattingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -31,5 +33,7 @@ export const store = configureStore({
     img: imgSlice.reducer,
     alarm: alarmSlice.reducer,
     quest: questSlice.reducer,
+    report: reportSlice.reducer,
+    chatting: chattingSlice.reducer,
   },
 });

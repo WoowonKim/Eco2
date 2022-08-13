@@ -5,14 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./ReportItem.module.css";
 import { commentDetail } from "../../../store/post/commentSlice";
 
-const ReportItem = ({
-  key,
-  id,
-  count,
-  post,
-  commentId,
-  postCategory,
-}) => {
+const ReportItem = ({ id, count, post, commentId, postCategory }) => {
   const [category, setCategory] = useState("");
   const [comment, setComment] = useState(null);
   const dispatch = useDispatch();
@@ -46,18 +39,25 @@ const ReportItem = ({
         }
       });
     }
+    console.log(post);
   }, []);
 
   return (
     <div className={styles.list}>
-      <Link to={`/report/detail`} state={{ reportId: id, post: post, comment: comment }} className={styles.link}>
+      <Link
+        to={`/report/detail`}
+        state={{ reportId: id, post: post, comment: comment }}
+        className={styles.link}
+      >
         <div className={styles.leftContent}>
           {comment === null ? (
             <div>
               <div className={styles.typeBox}>
                 <span className={styles.type}>게시물</span>
               </div>
-              <span className={styles.text}>[{category}] {post.user.name}님의 게시물</span>
+              <span className={styles.text}>
+                [{category}] {post.user.name}님의 게시물
+              </span>
             </div>
           ) : (
             <div>
