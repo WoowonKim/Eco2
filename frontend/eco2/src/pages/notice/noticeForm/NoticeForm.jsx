@@ -29,7 +29,7 @@ const NoticeForm = () => {
         })
       ).then((res) => {
         if (res.payload?.status === 200) {
-          navigate("/user/settings");
+          navigate("/user/settings", { state: { notice: 3 } });
         }
       });
     } else {
@@ -37,7 +37,7 @@ const NoticeForm = () => {
       dispatch(noticeCreate({ userId, title, content: text, urgentFlag })).then(
         (res) => {
           if (res.payload?.status === 200) {
-            navigate("/user/settings");
+            navigate("/user/settings", { state: { notice: 3 } });
           }
         }
       );
@@ -59,9 +59,9 @@ const NoticeForm = () => {
       </div>
       <hr className={styles.line} />
       <form onSubmit={(e) => onSubmit(e)}>
-        <div className={styles.selectBox}>
-          <label htmlFor="urgent">긴급</label>
+        <div className={styles.wrapper}>
           <input
+            className={styles.radioInput1}
             name="urgent"
             type="radio"
             id="urgent"
@@ -71,8 +71,8 @@ const NoticeForm = () => {
               }
             }}
           />
-          <label htmlFor="normal">일반</label>
           <input
+            className={styles.radioInput2}
             name="urgent"
             type="radio"
             id="normal"
@@ -82,6 +82,20 @@ const NoticeForm = () => {
               }
             }}
           />
+          <label
+            htmlFor="urgent"
+            className={`${styles.label1} ${styles.label}`}
+          >
+            <div className={styles.dot}></div>
+            <span className={styles.labelText}>긴급</span>
+          </label>
+          <label
+            htmlFor="normal"
+            className={`${styles.label2} ${styles.label}`}
+          >
+            <div className={styles.dot}></div>
+            <span className={styles.labelText}>일반</span>
+          </label>
         </div>
         <input
           type="text"
@@ -92,6 +106,7 @@ const NoticeForm = () => {
             setTitle(e.target.value);
             setEditTitle(e.target.value);
           }}
+          required
         />
         <textarea
           required
@@ -102,7 +117,9 @@ const NoticeForm = () => {
             setEditText(e.target.value);
           }}
         ></textarea>
-        <button type="submit">작성</button>
+        <button type="submit" className={styles.button}>
+          작성
+        </button>
       </form>
     </div>
   );
