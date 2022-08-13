@@ -52,7 +52,7 @@ const CommentItem = ({
                 }
               >
                 <img
-                  src={`http://localhost:8002/img/profile/${commentUserId}`}
+                  src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
                   // src={`${imgSrc}`}
                   alt="profileImg"
                   className={styles.profileImg}

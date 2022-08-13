@@ -178,7 +178,7 @@ const PostDetail = () => {
         />
       )}
       <img
-        src={`http://localhost:8002/img/post/${feedItem.id}`}
+        src={`${process.env.REACT_APP_BE_HOST}img/post/${feedItem.id}`}
         alt="postImg"
         className={styles.postImg}
       />
@@ -192,7 +192,7 @@ const PostDetail = () => {
           }
         >
           <img
-            src={`http://localhost:8002/img/profile/${feedItem.userId}`}
+            src={`${process.env.REACT_APP_BE_HOST}img/profile/${feedItem.userId}`}
             alt="profileImg"
             className={styles.profileImg}
           />

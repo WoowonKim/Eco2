@@ -18,7 +18,7 @@
 
 .info {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 .text {
@@ -28,10 +28,11 @@
 }
 
 .content {
-  margin: 20px 0;
+  margin: 40px 0 10px 0;
   text-align: left;
-  font-size: 16px;
+  font-size: small;
   word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .dropdown {

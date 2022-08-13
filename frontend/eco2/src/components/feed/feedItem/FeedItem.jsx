@@ -24,7 +24,7 @@ const FeedItem = ({
             }
           >
             <img
-              src={`http://localhost:8002/img/profile/${userId}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`}
               alt="profileImg"
               className={styles.profileImg}
             />
@@ -41,7 +41,7 @@ const FeedItem = ({
         </div>
         {/* <hr className={styles.line} /> */}
         <img
-          src={`http://localhost:8002/img/post/${id}`}
+          src={`${process.env.REACT_APP_BE_HOST}img/post/${id}`}
           alt="postImg"
           className={styles.postImg}
         />

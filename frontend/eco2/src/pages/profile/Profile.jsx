@@ -60,7 +60,7 @@ const Profile = () => {
         setFriendList(res.payload?.friendList);
       }
     });
-  }, []);
+  }, [params.userId]);
 
   return (
     <div className={styles.container}>
@@ -68,7 +68,7 @@ const Profile = () => {
       <div className={styles.userInfo}>
         <div className={styles.user}>
           <img
-            src={`http://localhost:8002/img/profile/${userId}`}
+            src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`}
             // alt="profileImg"
             className={styles.profileImg}
           />
@@ -162,7 +162,7 @@ const Profile = () => {
           {missionList.map((mission) => (
             <img
               key={mission.id}
-              src={`http://localhost:8002/img/post/${mission.id}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
               alt="missionImg"
               className={styles.missionImg}
               onClick={() => navigate(`/post/${mission.id}`)}
@@ -175,7 +175,7 @@ const Profile = () => {
           {questList.map((mission) => (
             <img
               key={mission.id}
-              src={`http://localhost:8002/img/post/${mission.id}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
               alt="profileImg"
               className={styles.missionImg}
               onClick={() => navigate(`/post/${mission.id}`)}
