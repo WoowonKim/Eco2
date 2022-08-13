@@ -1,0 +1,49 @@
+.report {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.title{
+  text-align: left;
+  font-size: 16px;
+  color: black;
+  margin: 10px;
+  font-weight: 700;
+}
+.table{
+  margin-top: 15px;
+  padding: 5px;
+  font-size: 12px;
+  width: 300px;
+  color: #FFF;
+  text-align: left;
+  background-color:#97a773;
+  border-radius: 5px;
+}
+.th{
+  padding-left: 5px;
+}
+
+.img {
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.createRoomButton {
+  font-size: 50px;
+  position: fixed;
+  bottom: 70px;
+}
+
+.noPostList{
+  padding-top: 30px;
+}
+.noPostMessage{
+  font-size: small;
+  font-weight: bold;
+  color: grey;
+}
+

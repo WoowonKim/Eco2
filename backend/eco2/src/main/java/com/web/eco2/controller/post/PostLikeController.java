@@ -47,40 +47,19 @@ public class PostLikeController {
 
     @PostMapping()
     public ResponseEntity<Object> postLike(@RequestBody PostLikeDto postLikeDto) {
-        Long userId = postLikeDto.getUserId();
-        Long postId = postLikeDto.getPostId();
-        Integer like = postLikeService.saveLike(userId, postId);
+        try {
+            Long userId = postLikeDto.getUserId();
+            Long postId = postLikeDto.getPostId();
+            if ( postLikeService.findLike(userId, postId) == 0 ) {
+                Integer like = postLikeService.saveOrDeleteLike(userId, postId);
+                return ResponseHandler.generateResponse("좋아요에 성공하였습니다.", HttpStatus.OK, "like", like);
+            } else {
+                Integer like = postLikeService.saveOrDeleteLike(userId, postId);
+                return ResponseHandler.generateResponse("좋아요를 취소하였습니다.", HttpStatus.OK, "like", like);
+            }
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseHandler.generateResponse("좋아요에 성공하였습니다.", HttpStatus.OK, "like", like);
     }
-
-
-
-
-
-//    @PostMapping()
-//    public ResponseEntity<Object> postLike(@RequestBody Long postId,
-//                                           @RequestBody Long userId,
-//                                           @RequestBody boolean like) {
-//
-//        FavoritePost favoritePost = FavoritePost.builder()
-//                .user(userRepository.getById(userId))
-//                .post(postRepository.getById(postId))
-//                .build();
-//
-//
-//        PostLikeDto postLikeDto = null;
-//        postLikeDto.setPostId(postId);
-//        postLikeDto.setUserId(userId);
-//        if (like == true) {
-//            like = false;
-//            postLikeDto.setLike(like);
-//            postLikeRepository.delete(favoritePost);
-//        } else {
-//            like = true;
-//            postLikeDto.setLike(like);
-//            postLikeRepository.save(favoritePost);
-//        }
-//        return ResponseHandler.generateResponse("좋아요에 성공하였습니다.", HttpStatus.OK, "postLikeDto", postLikeDto);
-//    }
 }

@@ -1,22 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { getToken } from "./common";
+import axiosService from "../axiosService";
+import { getUserId } from "./common";
 
-// 친구 조회 => 현재 안됨
+// 친구 조회
 export const friends = createAsyncThunk(
   "accountSlice/friends",
   async (args, { rejectWithValue }) => {
-    const response = await axios({
-      url: "/account/friend",
-      method: "get",
-      data: {
-        id: args.id,
-      },
-      headers: {
-        Authorization: "Authorization ",
-      },
-    });
-    return response.data;
+    try {
+      const response = await axiosService.get(`/account/friend?id=${args.id}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
@@ -24,18 +19,14 @@ export const friends = createAsyncThunk(
 export const friendRequest = createAsyncThunk(
   "accountSlice/friendRequest",
   async (args, { rejectWithValue }) => {
-    const response = await axios({
-      url: "/account/friend",
-      method: "post",
-      params: {
-        fromId: args.fromId,
-        toId: args.toId,
-      },
-      headers: {
-        Authorization: "Authorization ",
-      },
-    });
-    return response.data;
+    try {
+      const response = await axiosService.post(
+        `/account/friend?fromId=${args.fromId}&toId=${args.toId}`
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
@@ -43,65 +34,56 @@ export const friendRequest = createAsyncThunk(
 export const friendResponse = createAsyncThunk(
   "accountSlice/friendResponse",
   async (args, { rejectWithValue }) => {
-    const response = await axios({
-      url: "/account/friend",
-      method: "put",
-      data: {
+    try {
+      const response = await axiosService.put("/account/friend", {
         id: args.id,
         response: true,
         alarmId: args.alarmId,
-      },
-      headers: {
-        Authorization: "Authorization ",
-      },
-    });
-    return response.data;
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
+// 조회는 되는 것 같은데 설정 저장이 안되고 있음 -> 확인 필요
 // 계정 설정 조회
 export const accountSetting = createAsyncThunk(
   "accountSlice/accountSetting",
   async (args, { rejectWithValue }) => {
-    const accessToken = getToken();
-    const response = await axios({
-      url: `/account/${args.email}`,
-      method: "get",
-      data: {
+    try {
+      const response = await axiosService.get(`/account/${args.email}`, {
         email: args.email,
         publicFlag: args.publicFlag,
         commentAlarmFlag: args.commentAlarmFlag,
         chatAlarmFlag: args.chatAlarmFlag,
         darkmodeFlag: args.darkmodeFlag,
-      },
-      headers: {
-        "Auth-accessToken": accessToken,
-      },
-    });
-    return response.data;
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
+// 수정 안됨 rejected
 // 계정 설정 수정
 export const accountSettingChange = createAsyncThunk(
   "accountSlice/accountSettingChange",
   async (args, { rejectWithValue }) => {
-    const accessToken = getToken();
-    const response = await axios({
-      url: "/account",
-      method: "put",
-      data: {
+    try {
+      const response = await axiosService.put("/account", {
         email: args.email,
         publicFlag: args.publicFlag,
         commentAlarmFlag: args.commentAlarmFlag,
         chatAlarmFlag: args.chatAlarmFlag,
         darkmodeFlag: args.darkmodeFlag,
-      },
-      headers: {
-        "Auth-accessToken": accessToken,
-      },
-    });
-    return response.data;
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
@@ -109,16 +91,12 @@ export const accountSettingChange = createAsyncThunk(
 export const calendar = createAsyncThunk(
   "accountSlice/calendar",
   async (args, { rejectWithValue }) => {
-    const accessToken = getToken();
-    const response = await axios({
-      url: `/daily/calendar/${args.id}`,
-      method: "get",
-      data: {},
-      headers: {
-        "Auth-accessToken": accessToken,
-      },
-    });
-    return response.data;
+    try {
+      const response = await axiosService.get(`/daily/calendar/${getUserId()}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
@@ -171,8 +149,6 @@ export const accountSlice = createSlice({
     },
     [accountSetting.fulfilled]: (state, action) => {
       console.log("accountSetting fulfilled", action.payload);
-      // state.loading = false;
-      // state.data = action.payload.userSetting;
     },
     [accountSetting.rejected]: (state, action) => {
       console.log("accountSetting rejected", action.payload);

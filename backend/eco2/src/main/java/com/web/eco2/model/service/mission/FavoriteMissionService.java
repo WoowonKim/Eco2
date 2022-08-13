@@ -60,4 +60,20 @@ public class FavoriteMissionService {
         }
         return customMissionList;
     }
+
+    public FavoriteMission findByUser_IdAndMission_Id(Long usrId, Long missionId) {
+        return favoriteMissionRepository.findByUser_IdAndMission_Id(usrId,missionId);
+    }
+
+    public void delete(FavoriteMission favoriteMission) {
+        favoriteMissionRepository.delete(favoriteMission);
+    }
+
+    public FavoriteMission findByUser_IdAndCustomMission_Id(Long usrId, Long missionId) {
+        return favoriteMissionRepository.findByUser_IdAndCustomMission_Id(usrId,missionId);
+    }
+
+    public List<FavoriteMission> findByUser_Id(Long usrId) {
+        return favoriteMissionRepository.findByUser_Id(usrId);
+    }
 }

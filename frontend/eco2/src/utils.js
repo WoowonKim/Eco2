@@ -21,7 +21,7 @@ export const emailValidationCheck = (value) => {
 };
 
 // 사용자의 현재 위치 받아오기
-export function getLocation() {
+export async function getLocation() {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
       const now = new Date();
@@ -30,6 +30,7 @@ export function getLocation() {
           resolve({
             err: 0,
             time: now.toLocaleDateString(),
+            timeTwo: now.toISOString().substring(0, 16),
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });

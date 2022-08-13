@@ -2,8 +2,11 @@ package com.web.eco2.model.service.post;
 
 import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.QuestPost;
+import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.repository.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +14,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.*;
-import java.net.URLDecoder;
-import java.time.LocalDateTime;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,39 +38,61 @@ public class PostService {
         return postRepository.getById(id);
     }
 
+
     //post image 저장 경로
     @Value("${postImg.path}")
-    private String uploadPostImgPath;
+    private String uploadPath;
 
 
     //post 저장하기 (post + postImage)
     @Transactional
-    public void savePost(MultipartFile postImage, PostCreateDto postCreateDto) throws IOException {
-//        Long postUserId = postUser.getId();
+    public Post savePost(MultipartFile postImage, PostCreateDto postCreateDto) throws IOException {
         UUID uuid = UUID.randomUUID();
         String originalName = postImage.getOriginalFilename();
-        String saveName = uuid + "_" + postImage.getOriginalFilename();
-        File savePostImage = new File(uploadPostImgPath, saveName);
+        String saveName = uuid + originalName.substring(originalName.lastIndexOf("."), originalName.length());
+        Path postImgPath = Paths.get(uploadPath);
+        File savePostImage = new File(postImgPath.toAbsolutePath().toString(), saveName);
+        if(!savePostImage.getParentFile().exists() && !savePostImage.getParentFile().mkdirs()) {
+            throw new IOException("폴더 생성 실패");
+        }
         postImage.transferTo(savePostImage);
 
-        Post post = postCreateDto.toEntity();
-        postImgRepository.save(PostImg.builder().saveFolder(uploadPostImgPath).saveName(saveName).originalName(originalName).post(post).build());
+        Post post;
+        if(postCreateDto.getQuest() != null) {
+            post = postCreateDto.toQuestPostEntity();
+        } else {
+            post = postCreateDto.toEntity();
+        }
+        postRepository.save(post);
 
-//        if(postCreateDto.getMission() != null) {
-//            post.setMission(postCreateDto.getMission());
-//        } else if (postCreateDto.getCustomMission() != null) {
-//            post.setCustomMission(postCreateDto.getCustomMission());
-//        } else if (postCreateDto.getQuest() != null) {
-//            post.setQuest(postCreateDto.getQuest());
+//        Post post;
+//        if(postCreateDto.getQuest() != null) {
+//            postRepository.save()
+//        } else {
+//            post = postCreateDto.toEntity();
 //        }
 
-        postRepository.save(post);
+
+        postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
+
+        return post;
     }
+
 
     //post 목록 가져오기
     public List<Post> getPostList() {
         Sort sort = Sort.by(Sort.Order.desc("id"));
         return postRepository.findAll(sort);
+    }
+
+    // quest 인증글 아닌 post 목록 가져오기
+    public List<Post> getPostOnly(Long userId) {
+        return postRepository.findOnlyPostById(userId);
+    }
+
+    // QuestPost 목록 가져오기
+    public List<QuestPost> getQuestPostOnly(Long userId) {
+        return postRepository.findOnlyQuestPostById(userId);
     }
 
 
@@ -78,6 +102,12 @@ public class PostService {
         return post;
     }
 
+
+    //게시물 이미지 찾기
+    public PostImg getPostImg(Long postId) {
+        PostImg postImg = postImgRepository.getById(postId);
+        return postImg;
+    }
 
 
     //postImg byte로 변환
@@ -95,24 +125,24 @@ public class PostService {
 
 
     //post 수정하기
-    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) {
-            Post post = postRepository.getById(postId);
-            post.setContent(postUpdateDto.getContent());
-            post.setPublicFlag(postUpdateDto.isPublicFlag());
-            post.setCommentFlag(postUpdateDto.isCommentFlag());
-            postRepository.save(post);
+    public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) throws IOException {
+        Post post = postRepository.getById(postId);
+        post.setContent(postUpdateDto.getContent());
+        post.setPublicFlag(postUpdateDto.isPublicFlag());
+        post.setCommentFlag(postUpdateDto.isCommentFlag());
+        postRepository.save(post);
 
-            PostImg postImg = postImgRepository.getById(postId);
-            String originalName = postImage.getOriginalFilename();
+        PostImg oldImage = postImgRepository.getById(postId);
+        String originalName = postImage.getOriginalFilename();
 
-            PostImg newPostImg = PostImg.builder()
-                    .saveFolder(uploadPostImgPath)
-                    .originalName(originalName)
-                    .saveName(postImg.getSaveName())
-                    .id(postId)
-                    .build();
-
-            postImgRepository.save(newPostImg);
+        PostImg newPostImg = PostImg.builder()
+                .saveFolder(uploadPath)
+                .originalName(originalName)
+                .saveName(oldImage.getSaveName())
+                .id(postId)
+                .build();
+        postImage.transferTo(Paths.get(uploadPath + File.separator + oldImage.getSaveName()));
+        postImgRepository.save(newPostImg);
     }
 
 
@@ -132,6 +162,28 @@ public class PostService {
 
         postRepository.delete(post); //게시글 삭제
 
+    }
+
+
+
+    public List<QuestPost> findByQuest(Quest quest) {
+        return postRepository.findByQuest(quest);
+    }
+
+    public List<QuestPost> findByUserAndQuestNotNull(User user) {
+        return postRepository.findByUserAndQuestNotNull(user);
+    }
+
+    public void deletePostImage(Long userId) {
+        postRepository.findByUserId(userId).forEach(post -> {
+            PostImg postImg = postImgRepository.getById(post.getId());
+            Path path = Paths.get(postImg.getSaveFolder());
+            File file = new File(path.toAbsolutePath().toString(), postImg.getSaveName());
+//            System.out.println(path.toAbsolutePath());
+//            System.out.println(calendar);
+            file.delete();
+            postImgRepository.delete(postImg);
+        });
     }
 
 

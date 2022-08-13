@@ -30,7 +30,7 @@ public class GoogleOAuth implements OAuth {
     @Value("${spring.security.oauth2.client.registration.google.scope}")
     private String CLIENT_SCOPE;
 
-    @Value("${spring.security.oauth2.client.registration.google.redirect-url}")
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
     private String CLIENT_REDIRECT_URL;
 
     private String CLIENT_TOKEN_URL = "https://oauth2.googleapis.com/token";

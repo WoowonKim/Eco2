@@ -10,9 +10,9 @@ function Login() {
   const [password, setPassword] = useState("");
   const [socialType, setSocialType] = useState(0);
   const [loginFailMsg, setLoginFailMsg] = useState(false);
-  let currUser = useSelector(state => state.user);
+  let currUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(
       login({ email: email, password: password, socialType: socialType })
@@ -37,14 +37,14 @@ function Login() {
           required
           value={email}
           placeholder="이메일"
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <LoginInput
           type="password"
           required
           value={password}
           placeholder="비밀번호"
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <div className={styles.radio}>
           <input type="checkbox" />

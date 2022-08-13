@@ -1,0 +1,28 @@
+.chatting {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.img {
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.createRoomButton {
+  font-size: 50px;
+  position: fixed;
+  bottom: 70px;
+}
+
+.noChattingList{
+  padding-top: 30px;
+}
+.noChattingMessage{
+  font-size: small;
+  font-weight: bold;
+  color: grey;
+}
+

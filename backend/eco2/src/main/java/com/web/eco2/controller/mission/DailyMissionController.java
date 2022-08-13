@@ -1,8 +1,11 @@
 package com.web.eco2.controller.mission;
 
-import com.web.eco2.domain.dto.MissionInformation;
+import com.web.eco2.controller.ImageController;
 import com.web.eco2.domain.dto.item.CalendarDto;
-import com.web.eco2.domain.dto.mission.*;
+import com.web.eco2.domain.dto.mission.CustomMissionDto;
+import com.web.eco2.domain.dto.mission.DailyMissionRecommendRequest;
+import com.web.eco2.domain.dto.mission.DailyMissionRequest;
+import com.web.eco2.domain.dto.mission.MissionDto;
 import com.web.eco2.domain.entity.calender.Calendar;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.DailyMission;
@@ -10,35 +13,29 @@ import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Trending;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.item.CalendarService;
-import com.web.eco2.model.service.item.StatisticService;
 import com.web.eco2.model.service.mission.*;
+import com.web.eco2.model.service.user.RedisService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/daily")
@@ -57,9 +54,12 @@ public class DailyMissionController {
     private DailyMissionService dailyMissionService;
     @Autowired
     private TrendingService trendingService;
-
     @Autowired
     private CalendarService calendarService;
+    @Autowired
+    private RedisService redisService;
+    @Autowired
+    private WeatherService weatherService;
 
     @ApiOperation(value = "데일리미션 등록", response = Object.class)
     @PostMapping("/{usrId}")
@@ -146,7 +146,7 @@ public class DailyMissionController {
 
     @ApiOperation(value = "데일리미션 보상 받기", response = Object.class)
     @PostMapping("/reward/{usrId}")
-    public ResponseEntity<Object> rewardDailyMission(@PathVariable("usrId") Long usrId) {
+    public ResponseEntity<?> rewardDailyMission(@PathVariable("usrId") Long usrId) {
         try {
             log.info("데일리미션 보상 받기 API 호출");
             User user = userService.getById(usrId);
@@ -155,34 +155,33 @@ public class DailyMissionController {
             BufferedImage img = dailyMissionService.getRewardImage(user, calendarDto);
 
             //디비, 로컬에 파일 저장
-            File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".jpg");
-            ImageIO.write(img, "jpg", saveFile);               // write메소드를 이용해 파일을 만든다
+            File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".png");
+            ImageIO.write(img, "png", saveFile);
+            calendarDto.setSaveName(calendarDto.getSaveName()+".png");
             calendarService.save(calendarDto.toEntity());
-            //TODO : 프론트에서 이미지 출력시 뭐 필요한지 모름,, response에 담아주기
+            return ImageController.getFileResponse(calendarDto.getSaveFolder(),  calendarDto.getSaveName());
 
-            return ResponseHandler.generateResponse("보상 이미지 제공이 완료되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("데일리미션 보상 받기 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @ApiOperation(value = "보상 이미지 조회", response = Object.class)
-    @GetMapping("/reward/{calId}")
-    public ResponseEntity<Object> selectRewardImage(@PathVariable("calId") Long calId) {
-        try {
-            //TODO: 프론트에서 이미지 출력할때 뭐 필요한지 모르겠다 구현하기!!
-            log.info("보상 이미지 조회 API 호출");
-            Optional<Calendar> calendar = calendarService.getById(calId);
-            return ResponseHandler.generateResponse("미션 보상이미지가 조회되었습니다.", HttpStatus.OK, "calendar", calendar);
-        } catch (Exception e) {
-            log.error("보상 이미지 조회 API 에러", e);
-            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @ApiOperation(value = "보상 이미지 조회", response = Object.class)
+//    @GetMapping("/reward/{calId}")
+//    public ResponseEntity<Object> selectRewardImage(@PathVariable("calId") Long calId) {
+//        try {
+//            log.info("보상 이미지 조회 API 호출");
+//            Optional<Calendar> calendar = calendarService.getById(calId);
+//            return ResponseHandler.generateResponse("미션 보상이미지가 조회되었습니다.", HttpStatus.OK, "calendar", calendar);
+//        } catch (Exception e) {
+//            log.error("보상 이미지 조회 API 에러", e);
+//            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @ApiOperation(value = "특정일자 미션 보상 여부 조회", response = Object.class)
-    @GetMapping("/reward/check/{usrId}")
+    @PostMapping("/reward/check/{usrId}")
     public ResponseEntity<Object> selectRewardImage(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
         try {
             log.info("특정일자 미션 보상 여부 조회 API 호출");
@@ -191,6 +190,7 @@ public class DailyMissionController {
             if (calendar == null) {
                 rewardFlag = false;
             }
+            System.out.println("calendar=>>>>>>>>>" +calendar);
             return ResponseHandler.generateResponse("특정일자 미션 보상 여부가 조회되었습니다.", HttpStatus.OK, "rewardFlag", rewardFlag);
 
         } catch (Exception e) {
@@ -203,18 +203,56 @@ public class DailyMissionController {
     @ApiOperation(value = "데일리미션 추천", response = Object.class)
     @PostMapping("/recommend/{usrId}")
     public ResponseEntity<Object> recommendDailyMission(@PathVariable("usrId") Long usrId, @RequestBody DailyMissionRecommendRequest dailyMissionRecommendRequest) {
+        List<Long> oldRecommendMission = null;
         try {
-            log.info("데일리미션 추천 API 호출"); // 리셋
-            dailyMissionService.deleteByUsrId(usrId);
+            log.info("데일리미션 추천 API 호출");
+            oldRecommendMission = redisService.getListData(usrId.toString());
+            if (oldRecommendMission != null && oldRecommendMission.size() > 0) {
+                return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK,
+                        "recommendedMission",
+                        oldRecommendMission.stream()
+                                .map(missionId -> missionService.findByMisId(missionId))
+                                .collect(Collectors.toList())
+                );
+            } else if (oldRecommendMission == null) {
+                // 하루가 지났을 경우에만 리셋
+                dailyMissionService.deleteByUsrId(usrId);
+            }
+
+            Map<String, List<?>> missionData = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
+            if (missionData == null) {
+                redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
+                return ResponseHandler.generateResponse("미션 추천에 실패했습니다.", HttpStatus.ACCEPTED);
+            }
 
             //위치 받아와서 추천 목록 생성
-            List<Mission> missions = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
+            List<Mission> missions = (List<Mission>) missionData.get("missions");
+
             //디비에 넣기
+            for (Mission m : missions) {
+                dailyMissionService.save(DailyMission.builder()
+                        .user(User.builder().id(usrId).build()).mission(m).build());
+            }
+
+            redisService.setListDataExpire(usrId.toString(), (List<Long>) missionData.get("missionsNum"), getDuration());
+
             return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions);
         } catch (Exception e) {
             log.error("데일리미션 추천 API 에러", e);
+            if (oldRecommendMission == null) redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private static Long getDuration() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expireTime = LocalDateTime.parse(now.plusHours(18L).toString().substring(0, 11)+"06:00");
+
+        // 6시에 새로고침
+        Long duration = expireTime.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
+        if(duration <= 0) duration = 1L;
+
+        return duration;
     }
 
     @ApiOperation(value = "트렌딩 조회", response = Object.class)
@@ -244,5 +282,9 @@ public class DailyMissionController {
         }
     }
 
-
+    // 테스트용 레디스 리셋 url
+    @GetMapping("/reset/{id}")
+    public void resetRedis(@PathVariable Long id) {
+        redisService.setListDataExpire(id.toString(), new ArrayList<>(), 1L);
+    }
 }

@@ -6,6 +6,8 @@ import com.web.eco2.model.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -38,12 +40,17 @@ public class UserService {
 
     public User findUserInfoByEmail(String email) {
         UserInformation userInformation = userRepository.findUserInfoByEmail(email);
-        User user = User.builder()
-                .id(userInformation.getId())
-                .email(userInformation.getEmail())
-                .name(userInformation.getName())
-                .socialType(userInformation.getSocialType())
-                .build();
+        User user = null;
+
+        if(userInformation != null) {
+            user = User.builder()
+                    .id(userInformation.getId())
+                    .email(userInformation.getEmail())
+                    .name(userInformation.getName())
+                    .socialType(userInformation.getSocialType())
+                    .build();
+        }
+
         return user;
     }
 
@@ -55,5 +62,9 @@ public class UserService {
                 .socialType(userInformation.getSocialType())
                 .build();
         return user;
+    }
+
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
     }
 }

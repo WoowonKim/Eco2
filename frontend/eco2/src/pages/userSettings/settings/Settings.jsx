@@ -24,7 +24,7 @@ const Settings = ({ email }) => {
         publicFlag: checked.publicFlag,
         commentAlarmFlag: checked.commentAlarmFlag,
         chatAlarmFlag: checked.chatAlarmFlag,
-        darkmodeFlag: checked.darkmodeFlag,
+        darkmodeFlag: false,
       })
     );
   };
@@ -55,12 +55,12 @@ const Settings = ({ email }) => {
             id="publicFlag"
             hidden
             className={styles.toggle}
-            onClick={() => {
+            onChange={(e) => {
               let data = { ...checked };
               data.publicFlag = !checked.publicFlag;
               setChecked(data);
             }}
-            defaultChecked={checked.publicFlag}
+            checked={checked.publicFlag}
           />
           <label htmlFor="publicFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>
@@ -81,12 +81,12 @@ const Settings = ({ email }) => {
             id="commentAlarmFlag"
             hidden
             className={styles.toggle}
-            onClick={() => {
+            onChange={(e) => {
               let data = { ...checked };
               data.commentAlarmFlag = !checked.commentAlarmFlag;
               setChecked(data);
             }}
-            defaultChecked={checked.commentAlarmFlag}
+            checked={checked.commentAlarmFlag}
           />
           <label htmlFor="commentAlarmFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>
@@ -107,20 +107,20 @@ const Settings = ({ email }) => {
             id="chatAlarmFlag"
             hidden
             className={styles.toggle}
-            onClick={() => {
+            onChange={(e) => {
               let data = { ...checked };
               data.chatAlarmFlag = !checked.chatAlarmFlag;
               setChecked(data);
             }}
-            defaultChecked={checked.chatAlarmFlag}
+            checked={checked.chatAlarmFlag}
           />
           <label htmlFor="chatAlarmFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>
           </label>
         </div>
       </div>
-      <hr className={styles.line} />
-      <div className={styles.setting}>
+      {/* <hr className={styles.line} /> */}
+      {/* <div className={styles.setting}>
         <div className={styles.settingGroup}>
           <p className={styles.settingTitle}>다크모드</p>
         </div>
@@ -136,12 +136,13 @@ const Settings = ({ email }) => {
               setChecked(data);
             }}
             defaultChecked={checked.darkmodeFlag}
+            checked={checked.darkmodeFlag}
           />
           <label htmlFor="darkmodeFlag" className={styles.toggleSwitch}>
             <span className={styles.toggleButton}></span>
           </label>
         </div>
-      </div>
+      </div> */}
       <button className={styles.settingButton} onClick={onClick}>
         설정 저장하기
       </button>

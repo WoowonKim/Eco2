@@ -43,6 +43,9 @@ public class Quest {
     @ColumnDefault("false")
     private boolean achieveFlag = false;
 
+    @Column(name = "que_content", nullable = false)
+    private String content;
+
     @Column(name = "que_finish_flag", nullable = false)
     @ColumnDefault("false")
     private boolean finishFlag = false;
@@ -58,7 +61,7 @@ public class Quest {
     private Mission mission;
 
     @Builder
-    public Quest(String lat, String lng,Integer achieveCount , User user, Mission mission){
+    public Quest(Long id, String lat, String lng,Integer achieveCount , User user, Mission mission, String content){
         this.lat = lat;
         this.lng = lng;
         this.achieveCount = achieveCount;
@@ -66,6 +69,7 @@ public class Quest {
         this.mission = mission;
         this.finishTime= LocalDateTime.now().plusHours(24L);
         this.participantCount = 0;
+        this.content = content;
     }
 
     public QuestDto toDto() {
@@ -74,6 +78,7 @@ public class Quest {
                 .participantCount(participantCount)
                 .achieveCount(achieveCount)
                 .finishTime(finishTime).finishFlag(finishFlag)
+                .content(content)
                 .user(user.toDto()).mission(mission.toDto()).build();
     }
 }

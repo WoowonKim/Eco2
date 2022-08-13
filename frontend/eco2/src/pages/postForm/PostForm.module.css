@@ -2,6 +2,7 @@
   display: flex;
   justify-content: start;
   align-items: center;
+  margin-top: 50px;
 }
 
 .titleIcon {
@@ -110,20 +111,6 @@
   padding: 0.5rem;
 }
 
-.button {
-  position: relative;
-  padding: 3px 5px;
-  border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid red;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
-}
-
-.button:hover {
-  background-color: red;
-  color: #e1eef6;
+.button:disabled {
+  background-color: #dadada;
 }

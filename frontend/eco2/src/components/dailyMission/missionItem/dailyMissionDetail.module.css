@@ -143,3 +143,10 @@ fieldset {
 .customHeader {
   margin-top: 30px;
 }
+
+.leafSize {
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 15px;
+  height: 20px;
+}

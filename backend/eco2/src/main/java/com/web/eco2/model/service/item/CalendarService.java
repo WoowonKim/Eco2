@@ -5,6 +5,9 @@ import com.web.eco2.model.repository.item.CalendarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +31,16 @@ public class CalendarService {
 
     public Calendar findByUsrIdAndDate(Long usrId, String date) {
         return calendarRepository.findByUsrIdAndDate(usrId, date);
+    }
+
+    public void deleteByUserId(Long userId) {
+        findByUsrId(userId).forEach(calendar -> {
+            Path path = Paths.get(calendar.getSaveFolder());
+            File file = new File(path.toAbsolutePath().toString(), calendar.getSaveName());
+//            System.out.println(path.toAbsolutePath());
+//            System.out.println(calendar);
+            file.delete();
+            calendarRepository.delete(calendar);
+        });
     }
 }

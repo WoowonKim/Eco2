@@ -1,33 +1,62 @@
-// return the token from the session storage
-export const getToken = () => {
-  return localStorage.getItem("accessToken") || null;
-};
-
 export const getUserEmail = () => {
-  return localStorage.getItem("email") || null;
+  return (
+    localStorage.getItem("email") || sessionStorage.getItem("email") || null
+  );
 };
 
 export const getUserName = () => {
-  return localStorage.getItem("name") || null;
+  return localStorage.getItem("name") || sessionStorage.getItem("name") || null;
 };
 
-// remove the token and user from the session storage
+export const getUserId = () => {
+  return (
+    localStorage.getItem("userId") || sessionStorage.getItem("userId") || null
+  );
+};
+
+export const getAccessToken = () => {
+  return (
+    localStorage.getItem("accessToken") ||
+    sessionStorage.getItem("accessToken") ||
+    null
+  );
+};
+
 export const removeUserSession = () => {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("email");
+  localStorage.clear();
+  sessionStorage.clear();
 };
 
-// set the token and user from the session storage
-export const setAccessToken = (accessToken) => {
-  localStorage.setItem("accessToken", accessToken);
+export const setUserEmail = (autoLogin, email) => {
+  if (autoLogin) {
+    localStorage.setItem("email", email);
+  } else {
+    sessionStorage.setItem("email", email);
+  }
 };
 
-export const setUserEmail = (email) => {
-  localStorage.setItem("email", email);
+export const setUserName = (autoLogin, name) => {
+  if (autoLogin) {
+    localStorage.setItem("name", name);
+  } else {
+    sessionStorage.setItem("name", name);
+  }
 };
 
-export const setUserName = (name) => {
-  localStorage.setItem("name", name);
+export const setUserId = (autoLogin, userId) => {
+  if (autoLogin) {
+    localStorage.setItem("userId", userId);
+  } else {
+    sessionStorage.setItem("userId", userId);
+  }
+};
+
+export const setAccessToken = (autoLogin, accessToken) => {
+  if (autoLogin) {
+    localStorage.setItem("accessToken", accessToken);
+  } else {
+    sessionStorage.setItem("accessToken", accessToken);
+  }
 };
 
 export const getCookie = (cookieName) => {

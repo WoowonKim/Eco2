@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import PostModal from "../postModal/PostModal";
 import styles from "./ReportModal.module.css";
 
-const ReportModal = ({ title, content, closeModal, id, type }) => {
+const ReportModal = ({ title, content, closeModal, postId, commentId, type }) => {
   const [hidden, setHidden] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [selected, setSelected] = useState(0);
   const displayType = hidden ? styles.hidden : null;
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     document.body.style = `overflow: hidden`;
@@ -28,28 +30,36 @@ const ReportModal = ({ title, content, closeModal, id, type }) => {
             <p className={styles.content}>{content}</p>
             <p className={styles.content}>신고 유형과 내용을 입력해주세요</p>
             <div className={styles.selectBox}>
-              <select name="category" className={styles.select}>
+              <select
+                name="category"
+                className={styles.select}
+                onChange={(e) => setSelected(e.target.value)}
+              >
                 <option className={styles.option} value="">
                   신고 유형 선택
                 </option>
-                <option className={styles.option} value="do">
+                <option className={styles.option} value="1">
                   욕설
                 </option>
-                <option className={styles.option} value="use">
-                  미션 내용과 무관한 인증글
-                </option>
-                <option className={styles.option} value="save">
-                  미션 내용과 무관한 사진
-                </option>
-                <option className={styles.option} value="buy">
+                <option className={styles.option} value="2">
                   음란물
                 </option>
-                <option className={styles.option} value="recycle">
+                <option className={styles.option} value="3">
+                  허위인증
+                </option>
+                <option className={styles.option} value="4">
+                  광고
+                </option>
+                <option className={styles.option} value="5">
                   기타
                 </option>
               </select>
             </div>
-            <textarea className={styles.textarea}></textarea>
+            <textarea className={styles.textarea}
+             value={message}
+             placeholder="메시지를 입력하세요"
+             onChange={(e) => setMessage(e.target.value)}
+             ></textarea>
             <div className={styles.buttonGroup}>
               <button
                 onClick={() => {
@@ -78,7 +88,10 @@ const ReportModal = ({ title, content, closeModal, id, type }) => {
           title={`${type} 신고`}
           content={"신고를 접수하시겠습니까?"}
           type={"신고"}
-          id={id}
+          postId={postId}
+          commentId={commentId}
+          selected={selected}
+          message = {message}
         />
       )}
     </>

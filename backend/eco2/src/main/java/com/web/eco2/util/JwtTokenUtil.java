@@ -14,6 +14,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
 import java.security.Key;
 import java.util.*;
 
@@ -93,9 +96,8 @@ public class JwtTokenUtil {
     public String newAccessToken(SignUpRequest user, String refreshToken) {
         if (validateToken(refreshToken)) { //refreshtoken 유효
             User selectUser = userService.findByEmail(user.getEmail());
-            if (user.getRefreshToken().equals(selectUser.getRefreshToken())) {
+            if (refreshToken.equals(selectUser.getRefreshToken())) {
                 String accessToken = createAccessToken(user.getEmail(), selectUser.getRole());
-                System.out.println("재발급완료");
                 return accessToken;
             }
             return null;
@@ -147,4 +149,15 @@ public class JwtTokenUtil {
         return cookie;
     }
 
+    public boolean socketValidateToken( String token) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(token);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+//            ResponseBodyWriteUtil.sendSocketError(response, "토큰이 유효하지 않습니다.");
+//            return false;
+        }
+    }
 }

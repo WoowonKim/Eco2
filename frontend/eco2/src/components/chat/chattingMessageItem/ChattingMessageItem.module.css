@@ -1,0 +1,100 @@
+.list {
+  /* display: inline-block; */
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.profileImg {
+  margin-right: 7px;
+  float: left;
+}
+
+.img {
+  height: 40px;
+  width: 40px;
+}
+
+.friendContent {
+  margin-bottom: 10px;
+  clear: both;
+}
+
+.content {
+  /* display: inline-block; */
+  text-align: left;
+  /* float: left; */
+  /* width: 70%; */
+}
+
+.userName {
+  display: flex;
+  justify-content: start;
+  color: #6a707c;
+  font-size: x-small;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.message {
+  display: inline-block;
+  justify-content: start;
+  color: #6a707c;
+  font-size: 12px;
+  font-weight: bold;
+  width: 150px;
+  border: none;
+  background-color: #adc178;
+  color: #FFF;
+  padding: 7px;
+  border-radius: 10px;
+}
+
+
+.sendDate {
+  /* display: flex; */
+  /* float: left; */
+  color: #6a707c;
+  /* float: right; */
+  font-size: 5px;
+  font-weight: 400;
+  padding-top: 40px;
+ margin-left: 5px;
+}
+
+.userContent {
+  float: right;
+  /* display: inline-block; */
+  display: flex;
+  margin-bottom: 12px;
+  /* justify-content: space; */
+  /* text-align: right; */
+  clear: both;
+}
+
+.userSendDate {
+  justify-content: start;
+  color: #6a707c;
+  font-size: 5px;
+  font-weight: 400;
+  float: right;
+  margin-top: 15px;
+  margin-right: 7px;
+
+
+}
+
+.userMessage {
+  display: flex;
+  justify-content: start;
+  color: #6a707c;
+  font-size: 11px;
+  font-weight: bold;
+  width: 150px;
+  border: none;
+  background-color: beige;
+  color: #6a707c;
+  padding: 7px;
+  border-radius: 10px;
+  float: right;
+}

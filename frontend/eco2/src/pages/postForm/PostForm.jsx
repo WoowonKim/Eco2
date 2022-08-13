@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PostForm.module.css";
 import { useDispatch } from "react-redux";
-import { addPost, updatePost } from "../../store/mainFeed/feedSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ShortGreenBtn } from "../../components/styled";
+import { postCreate, postUpdate } from "../../store/post/postSlice";
+import { userInformation } from "../../store/user/userSettingSlice";
+import { getUserEmail, getUserId } from "../../store/user/common";
+import { clearMission } from "../../store/mission/missionMainSlice";
 
-const PostForm = ({ content }) => {
+const PostForm = () => {
   const [fileImage, setFileImage] = useState("");
-  const [selected, setSelected] = useState("");
+  const [file, setFile] = useState("");
   const [editText, setEditText] = useState("");
   const [text, setText] = useState("");
+  const [id, setUserId] = useState(0);
+  const [publicFlag, setPublicFlag] = useState(false);
+  const [commentFlag, setCommentFlag] = useState(false);
+  const [imageCheck, setImageCheck] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,26 +27,133 @@ const PostForm = ({ content }) => {
     }
   }, []);
   const saveFileImage = (e) => {
+    setFile(e.target.files[0]);
+    console.log(e.target.files);
     setFileImage(URL.createObjectURL(e.target.files[0]));
+    setImageCheck(true);
   };
 
-  const deleteFileImage = (e) => {
-    URL.revokeObjectURL(fileImage);
-    setFileImage("");
-  };
+  // const deleteFileImage = (e) => {
+  //   URL.revokeObjectURL(fileImage);
+  //   setFileImage("");
+  // };
 
   const dispatch = useDispatch();
+
+  // 글 작성 요청보내기
   const onSubmit = (e) => {
+    console.log(location.state?.missionId);
     e.preventDefault();
-    if (location.state?.id) {
-      dispatch(updatePost({ id: location.state?.id, content: editText }));
-      navigate(`/post/${location.state?.id}`);
-      console.log(location.state.id, editText);
+    const formDataCreate = new FormData();
+    const formDataUpdate = new FormData();
+    const postUpdateDto = {
+      content: editText,
+      publicFlag: !publicFlag,
+      commentFlag: !commentFlag,
+    };
+
+    if (location.state?.postId) {
+      // 글 수정 시 해당 글 상세 페이지로 다시 이동
+      const json = JSON.stringify(postUpdateDto);
+      const blob = new Blob([json], {
+        type: "application/json",
+      });
+      formDataUpdate.append("postImage", file);
+      formDataUpdate.append("postUpdateDto", blob);
+
+      dispatch(
+        postUpdate({ postId: location.state?.postId, formData: formDataUpdate })
+      ).then((res) => {
+        if (res.payload?.status === 200) {
+          navigate(`/post/${location.state?.postId}`);
+        }
+      });
     } else {
-      dispatch(addPost({ category: selected, content, src: fileImage }));
-      navigate(`/post/${location.state?.id}`);
+      if (location.state?.missionId) {
+        const postCreateDto = {
+          content: editText,
+          user: {
+            id: id,
+          },
+          mission: {
+            id: location.state.missionId,
+          },
+          publicFlag: !publicFlag,
+          commentFlag: !commentFlag,
+        };
+        const json = JSON.stringify(postCreateDto);
+        const blob = new Blob([json], {
+          type: "application/json",
+        });
+        formDataCreate.append("postImage", file);
+        formDataCreate.append("postCreateDto", blob);
+        dispatch(postCreate({ formData: formDataCreate }))
+          .then((res) => {
+            if (res.payload?.status === 200) {
+              navigate("/mainTree");
+            }
+          })
+
+          .catch((err) => console.log(err));
+      } else if (location.state?.customId) {
+        const postCreateDto = {
+          content: editText,
+          user: {
+            id: id,
+          },
+          customMission: {
+            id: location.state.customId,
+          },
+          publicFlag: !publicFlag,
+          commentFlag: !commentFlag,
+        };
+        const json = JSON.stringify(postCreateDto);
+        const blob = new Blob([json], {
+          type: "application/json",
+        });
+        formDataCreate.append("postImage", file);
+        formDataCreate.append("postCreateDto", blob);
+        dispatch(postCreate({ formData: formDataCreate }))
+          .then((res) => {
+            if (res.payload?.status === 200) {
+              navigate("/mainTree");
+            }
+          })
+
+          .catch((err) => console.log(err));
+      } else {
+        const postCreateDto = {
+          content: editText,
+          user: {
+            id: id,
+          },
+          quest: {
+            id: location.state?.questId,
+          },
+          publicFlag: !publicFlag,
+          commentFlag: !commentFlag,
+        };
+        const json = JSON.stringify(postCreateDto);
+        const blob = new Blob([json], {
+          type: "application/json",
+        });
+        formDataCreate.append("postImage", file);
+        formDataCreate.append("postCreateDto", blob);
+        dispatch(postCreate({ formData: formDataCreate }))
+          .then((res) => {
+            if (res.payload?.status === 200) {
+              navigate("/mainTree");
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     }
   };
+
+  // 유저 아이디 가져오기
+  useEffect(() => {
+    setUserId(getUserId());
+  }, []);
   return (
     <div>
       <div className={styles.titleGroup}>
@@ -46,12 +161,16 @@ const PostForm = ({ content }) => {
         <h2 className={styles.title}>인증하기</h2>
       </div>
       <hr className={styles.line} />
-      <form onSubmit={onSubmit}>
+      <form onSubmit={(e) => onSubmit(e)}>
         <div>
           {fileImage ? (
             <img className={styles.img} alt="sample" src={fileImage} />
-          ) : location.state?.img ? (
-            <img className={styles.img} alt="sample" src={location.state.img} />
+          ) : location.state?.postId ? (
+            <img
+              className={styles.img}
+              alt="originalImg"
+              src={`http://localhost:8002/img/post/${location.state.postId}`}
+            />
           ) : null}
         </div>
         <div className={styles.fileInputGroup}>
@@ -60,44 +179,31 @@ const PostForm = ({ content }) => {
             파일찾기
           </label>
           <input
+            encType="multipart/form-data"
             type="file"
             id="file"
-            accept="image/*"
+            name="post_file"
             onChange={saveFileImage}
             className={`${styles.fileInput} ${styles.baseFileInput}`}
           />
-          {/* <button onClick={() => deleteFileImage()} className={styles.button}>
-            삭제
-          </button> */}
         </div>
-        <div className={styles.selectBox}>
-          <select
-            name="category"
+        <div>
+          <label htmlFor="post">게시물 비공개</label>
+          <input
+            type="checkbox"
+            id="post"
             onChange={(e) => {
-              setSelected(e.target.value);
+              setPublicFlag(e.target.checked);
             }}
-            value={location.state?.category ? location.state?.category : ""}
-            className={styles.select}
-          >
-            <option className={styles.option} value="">
-              카테고리 선택
-            </option>
-            <option className={styles.option} value="do">
-              실천하기
-            </option>
-            <option className={styles.option} value="use">
-              사용하기
-            </option>
-            <option className={styles.option} value="save">
-              절약하기
-            </option>
-            <option className={styles.option} value="buy">
-              구매하기
-            </option>
-            <option className={styles.option} value="recycle">
-              재활용하기
-            </option>
-          </select>
+          />
+          <label htmlFor="comment">댓글 비공개</label>
+          <input
+            type="checkbox"
+            id="comment"
+            onChange={(e) => {
+              setCommentFlag(e.target.checked);
+            }}
+          />
         </div>
         <p className={styles.missionTitle}>미션 제목</p>
         <textarea
@@ -109,7 +215,22 @@ const PostForm = ({ content }) => {
             setEditText(e.target.value);
           }}
         ></textarea>
-        <ShortGreenBtn type="submit">작성</ShortGreenBtn>
+        <ShortGreenBtn
+          type="submit"
+          disabled={!imageCheck}
+          className={styles.button}
+          onClick={() => {
+            dispatch(
+              clearMission({ id, missionIdTest: location.state.missionIdTest })
+            ).then((res) => {
+              if (res.payload?.status === 200) {
+                navigate("/mainTree");
+              }
+            });
+          }}
+        >
+          작성
+        </ShortGreenBtn>
       </form>
     </div>
   );

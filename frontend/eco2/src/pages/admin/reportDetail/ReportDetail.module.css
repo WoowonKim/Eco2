@@ -1,0 +1,160 @@
+.reportDetail {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.post {
+  border-radius: 20px;
+  padding: 7px;
+  /* border: 1px solid; */
+  width: 260px;
+  /* box-shadow: 0px 0px 1px 0px gray inset; */
+  box-shadow: 2px 3px 8px 2px rgb(218 218 218);
+}
+
+.postTitle {
+  margin-left: 20px;
+  text-align: left;
+}
+
+.profileImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  float: left;
+  margin-right: 8px;
+  margin-bottom: 8px;
+
+}
+
+.postUser {
+  margin-left: 10px;
+  padding-top: 10px;
+  padding-left: 5px;
+  font-size: x-small;
+  font-weight: bold;
+}
+
+.line {
+  border-width: 0.5px 0px 0px 0px;
+  color: #DADADA;
+  clear: both;
+  margin-left: 7px;
+  margin-right: 7px;
+}
+
+.postCategory {
+  font-size: 8px;
+  text-align: left;
+  margin: 15px;
+}
+
+.postImg {
+  width: 150px;
+}
+
+.postContent {
+  font-size: 10px;
+  text-align: left;
+  margin: 15px;
+  margin-left: 20px;
+}
+
+.postRegistTime {
+  font-size: 6px;
+  text-align: right;
+  margin-right: 10px;
+  color: grey;
+}
+
+.comment {
+  border-radius: 15px;
+  margin-top: 10px;
+  padding: 10px;
+  /* border: 1px solid; */
+  width: 260px;
+  box-shadow: 2px 3px 8px 2px rgb(218 218 218);
+
+}
+
+.commentUser {
+  display: flex;
+  /* float: left; */
+  font-size: 10px;
+  margin-bottom: 3px;
+}
+
+.commentContent {
+  display: flex;
+  font-size: 5px;
+  color: gray;
+  text-align: left;
+}
+
+.reportDetailTitle {
+  margin: 12px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.table {
+  margin-top: 20px;
+  padding: 5px;
+  font-size: 11px;
+  color: #FFF;
+  text-align: left;
+  background-color: #97a773;
+  border-radius: 5px;
+}
+
+.th {
+  padding-left: 5px;
+}
+
+.reportDetailList {
+  margin-bottom: 20px;
+}
+
+.acceptButton {
+  background-color: #acbe81;
+  border: none;
+  border-radius: 20px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #FFF;
+  font-size: small;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.acceptButton:hover {
+  background-color: #d3dfb8;
+  color: rgb(75, 97, 66);
+}
+
+
+.cancleButton {
+  background-color: #e07668;
+  border: none;
+  border-radius: 20px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #FFF;
+  font-size: small;
+  font-weight: bold;
+}
+
+.cancleButton:hover {
+  background-color: #f0ab9a;
+  color: rgb(126, 39, 17);
+}

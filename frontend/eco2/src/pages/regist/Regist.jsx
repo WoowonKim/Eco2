@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -14,8 +14,15 @@ import {
   WarningText,
   ShortGreenBtn,
 } from "../../components/styled";
-import { setUserEmail } from "../../store/user/common";
+import {
+  getUserId,
+  getUserName,
+  setAccessToken,
+  setUserEmail,
+  setUserId,
+} from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
+import axiosService from "../../store/axiosService";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -25,8 +32,6 @@ const Regist = () => {
   const [code, setCode] = useState(null);
 
   const [visibility, setVisibility] = useState(false);
-  const [min, setMin] = useState(5);
-  const [sec, setSec] = useState(0);
 
   const [message, setMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
@@ -99,6 +104,11 @@ const Regist = () => {
     }
   };
 
+  useEffect(() => {
+    if (!!getUserId() && getUserId() != null) {
+      navigate("/mainTree");
+    }
+  });
   return (
     <div className={styles.signup}>
       <img
@@ -154,9 +164,6 @@ const Regist = () => {
             >
               인증
             </button>
-            <div className={styles.timer}>
-              {min} : {sec}
-            </div>
           </div>
           <p className={isPassword ? styles.success : styles.fail}>{message}</p>
         </div>
@@ -207,7 +214,12 @@ const Regist = () => {
                 })
               )
                 .then((res) => {
-                  setUserEmail(email);
+                  axiosService.defaults.headers.common[
+                    "Auth-accessToken"
+                  ] = `${res.payload.user.accessToken}`;
+                  setUserEmail(false, email);
+                  setUserId(false, res.payload.user.id);
+                  setAccessToken(false, res.payload.accessToken);
                   navigate("/ecoName");
                 })
                 .catch((err) => console.log(err));

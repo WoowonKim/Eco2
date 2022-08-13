@@ -2,7 +2,12 @@ package com.web.eco2.controller.user;
 
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.dto.user.UserDto;
+import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.service.chat.ChatService;
+import com.web.eco2.model.service.item.CalendarService;
+import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
 
@@ -18,6 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/userinformation")
 @Transactional
@@ -32,18 +42,31 @@ public class UserInformationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ChatService chatService;
+
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private CalendarService calendarService;
+
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 조회", response = Object.class)
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
         try {
             log.info("회원 조회 API 호출");
-            if (email == null) {
+            if (email == null || email.equals("")) {
                 return ResponseHandler.generateResponse("이메일을 입력해주세요.", HttpStatus.ACCEPTED);
             }
-            UserDto user = userService.findUserInfoByEmail(email).toDto();
+            User user = userService.findByEmail(email);
 
             if (user != null) {
-                return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK, "user", user);
+                List<Post> posts = postService.getPostOnly(user.getId());
+                List<QuestPost> questPosts = postService.getQuestPostOnly(user.getId());
+                return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
+                        Map.of("user", user.toDto(), "postList", posts, "questPostList", questPosts));
             } else {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.ACCEPTED);
             }
@@ -87,13 +110,16 @@ public class UserInformationController {
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST);
             }
+            chatService.deleteByToUserOrFromUser(dbUser.getName());
+            profileImgService.deleteImage(dbUser.getId());
+            calendarService.deleteByUserId(dbUser.getId());
+            postService.deletePostImage(dbUser.getId());
             userService.delete(dbUser);
             return ResponseHandler.generateResponse("회원탈퇴 되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("회원 탈퇴 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @PostMapping("/password")
@@ -134,8 +160,29 @@ public class UserInformationController {
             dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.save(dbUser);
             return ResponseHandler.generateResponse("비밀번호가 변경되었습니다.", HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("비밀번호 변경 API 에러", e);
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/logout")
+    @ApiOperation(value = "로그아웃", response = Object.class)
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        try {
+            log.info("로그아웃 API 호출");
+            Cookie cookie = new Cookie("Auth-refreshToken", null);
+            if (cookie != null) {
+                System.out.println(cookie);
+                cookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
+                cookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
+                response.addCookie(cookie);
+            }else {
+                return ResponseHandler.generateResponse("잘못된 요청입니다.", HttpStatus.ACCEPTED);
+            }
+            return ResponseHandler.generateResponse("로그아웃 되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("로그아웃 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

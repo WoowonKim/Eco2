@@ -16,7 +16,9 @@
   width: 120px;
   height: 150px;
   font-size: small;
-  background-color: #d9d9d9;
+  /* background-color: #d9d9d991; */
+  /* background-color: beige; */
+  background: linear-gradient(45deg, #fef6de, #fef6de);
   border-radius: 10px 20px;
   display: flex;
   flex-direction: column;
@@ -26,3 +28,10 @@
 .Statis p {
   margin: auto 10px;
 }
+
+.Statis i {
+  margin-right: 5px;
+  color: black;
+}
+
+
