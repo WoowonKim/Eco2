@@ -3,10 +3,6 @@ import styles from "./alarmList.module.css";
 import AlarmItem from "../alarmItem/AlarmItem";
 
 const AlarmList = ({ alarms, isFriendRequest }) => {
-  console.log("alarmlist", !!alarms);
-  useEffect(() => {
-    console.log(alarms);
-  }, [alarms]);
   return (
     <div className={styles.container}>
       <div>
