@@ -38,9 +38,11 @@ const ChattingItem = ({
       });
     }
   }
-
+  const room = () => {
+    window.location.reload(`/chatting/room`);
+  }
   return (
-    <div className={styles.list}>
+    <button className={styles.list} onClick={room}> 
       <Link to={`/chatting/room`} state={{ roomId: id }} className={styles.link}>
         <div className={styles.leftContent}>
           <img
@@ -80,7 +82,7 @@ const ChattingItem = ({
           </div>
         </div>
       </div>
-    </div>
+    </button>
 
   );
 };

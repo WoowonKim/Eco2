@@ -13,6 +13,8 @@ import {
 import React, { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { getStompClient } from "../../../store/socket";
+import { connect } from "net";
+import { Link } from "react-router-dom";
 
 const ChattingRoom = () => {
   const roomId = useLocation().state.roomId;
@@ -22,9 +24,6 @@ const ChattingRoom = () => {
   const [userId, setUserId] = useState("");
   const [users, setUserList] = useState([]);
   const stompClient = getStompClient();
-  // let stompClient = getStompClient();
-  // stompClient.debug = () => { };
-
   const dispatch = useDispatch();
   const scrollRef = useRef();
   let accessToken = getAccessToken();
@@ -32,8 +31,8 @@ const ChattingRoom = () => {
   // window.location.reload();
 
   //어세스 토큰 가져오기
-        //발급된 어세스 다시 받아와서 재요청-> 쿠키가 필요함,, (client 재접속)
-      //발급된 어세스가 없으면 (리프레시 만료시) 재로그인으로 요청
+  //발급된 어세스 다시 받아와서 재요청-> 쿠키가 필요함,, (client 재접속)
+  //발급된 어세스가 없으면 (리프레시 만료시) 재로그인으로 요청
   useEffect(() => {
     if (stompClient === null) {
       console.log("널입니다");
@@ -41,18 +40,16 @@ const ChattingRoom = () => {
     }
     console.log(stompClient);
 
-    stompClient.connect({}, () => {
-      console.log("소켓 연결");
-      stompClient.subscribe('/sub/chat/room/' + roomId, (data) => {
-        const newMessage = JSON.parse(data.body);
-        addMessage(newMessage);
-        console.log(newMessage.message);
-      })
-      console.log(stompClient);
-    }, (error) => {
-      console.log(error);
-    });
-    console.log(stompClient.connected);
+    connect();
+    // connect();
+    // socket.onclose = function(){
+    //   console.log("재접속ㄴ");
+    //   setTimeout(function(){connect();}, 1000);
+    //  };
+    //  socket.onopen = function(event) {
+    //   console.log("WebSocket is open now.");
+    // };
+
   }, [stompClient.connected]);
 
   useEffect(() => {
@@ -65,7 +62,21 @@ const ChattingRoom = () => {
     setUserId(getUserId());
     setName(getUserName());
   }, []);
-
+  const connect = () => {
+    console.log("연결");
+    stompClient.connect({}, () => {
+      console.log("소켓 연결");
+      stompClient.subscribe('/sub/chat/room/' + roomId, (data) => {
+        const newMessage = JSON.parse(data.body);
+        addMessage(newMessage);
+        console.log(newMessage.message);
+      })
+      console.log(stompClient);
+    }, (error) => {
+      console.log(error);
+    });
+    console.log(stompClient.connected);
+  }
 
   useEffect(() => {
     scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -92,9 +103,10 @@ const ChattingRoom = () => {
   return (
     <div className={styles.chattingRoom} ref={scrollRef}>
       <div className={styles.header}>
-        {users.map(
-          (user) =>
-            user.id != userId && (
+        {
+          users.map((user) => (
+            user.id != userId &&
+            <Link to={`/profile/${user.id}`} className={styles.link}>
               <div>
                 <img
                   src={`http://localhost:8002/img/profile/${user.id}`}
@@ -103,8 +115,10 @@ const ChattingRoom = () => {
                 />
                 <div className={styles.toUserName}>{user.name}</div>
               </div>
-            )
-        )}
+            </Link>
+          ))
+        }
+
       </div>
 
       {chattingMessages.length > 0 ? (
