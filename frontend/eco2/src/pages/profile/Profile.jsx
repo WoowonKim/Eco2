@@ -55,7 +55,6 @@ const Profile = () => {
         setFriendList(res.payload?.friendList);
       }
     });
-
     // const options = {
     //   headers: {
     //     "Auth-accessToken": getAccessToken(),
@@ -124,6 +123,7 @@ const Profile = () => {
                         navigate("/chatting/room", {
                           state: { roomId: res.payload.roomId },
                         });
+                        window.location.reload(`/chatting/room`);
                       }
                     })
                     .catch((err) => console.log(err));

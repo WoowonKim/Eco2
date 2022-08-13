@@ -7,7 +7,6 @@ export const reportList = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.get(`/admin/report`);
-      console.log(response);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -23,7 +22,6 @@ export const reportDetailList = createAsyncThunk(
       const response = await axiosService.get(
         `/admin/report/${args.id}?type=${args.type}`
       );
-      console.log(response);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -65,6 +63,7 @@ export const reportSlice = createSlice({
   name: "report",
   initialState: {
     data: [],
+    detail: [],
   },
   reducers: {},
   extraReducers: {
@@ -78,6 +77,7 @@ export const reportSlice = createSlice({
     [reportDetailList.fulfilled]: (state, action) => {
       console.log("reportDetailList fulfilled", action.payload);
       if (action.payload.status === 200) {
+        state.detail = action.payload.reportDetailList;
       }
     },
     [reportDetailList.rejected]: (state, action) => {
