@@ -1,10 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { selectIsNew } from "../../store/alarm/alarmSlice";
 import AlarmPopUpContainer from "../alarm/alarmPopUpContainer/AlarmPopUpContainer";
 import styles from "./Footer.module.css";
 
 const Footer = () => {
   let navigate = useNavigate();
+  const isNew = useSelector(selectIsNew);
   return (
     <>
       <AlarmPopUpContainer />
@@ -33,12 +36,14 @@ const Footer = () => {
             navigate("/quest");
           }}
         ></i>
-        <i
-          className="fa-solid fa-bullhorn"
+        <div
           onClick={() => {
             navigate("/alarm");
           }}
-        ></i>
+        >
+          {isNew && <div className={styles.btn}></div>}
+          <i className="fa-solid fa-bullhorn"></i>
+        </div>
       </footer>
     </>
   );

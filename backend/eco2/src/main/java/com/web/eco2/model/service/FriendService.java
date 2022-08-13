@@ -38,4 +38,9 @@ public class FriendService {
         friendRepository.delete(Friend.builder().fromUser(fromUser).toUser(toUser).build());
         friendRepository.delete(Friend.builder().fromUser(toUser).toUser(fromUser).build());
     }
+
+    public boolean isFriend(Long fromId, Long toId) {
+        return friendRepository.existsByFromUserAndToUser(User.builder().id(fromId).build(), User.builder().id(toId).build())
+                || friendRepository.existsByFromUserAndToUser(User.builder().id(toId).build(), User.builder().id(fromId).build());
+    }
 }

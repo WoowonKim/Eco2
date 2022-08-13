@@ -23,14 +23,16 @@ const MainFeed = () => {
     <div id="scroll-container">
       <div className={styles.container}>
         <div className={styles.title}>
+          <i className={`fa-solid fa-person-walking fa-2x ${styles.iconDo}`}></i>
           <h2 className={styles.text}>실천하기</h2>
+          
           <Link
             to={`/mainFeed/${"do"}`}
             className={styles.link}
             state={{ category: 1, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>
-            더보기
+            
           </Link>
         </div>
         <div className={styles.list}>
@@ -39,6 +41,7 @@ const MainFeed = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
+          <i className={`fa-solid fa-cookie-bite fa-2x ${styles.iconUse}`}></i>
           <h2 className={styles.text}>사용하기</h2>
           <Link
             to={`/mainFeed/${"use"}`}
@@ -46,7 +49,7 @@ const MainFeed = () => {
             state={{ category: 2, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
-            더보기
+
           </Link>
         </div>
         <div className={styles.list}>
@@ -55,6 +58,7 @@ const MainFeed = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
+          <i className={`fa-solid fa-arrows-down-to-line fa-2x ${styles.iconSave}`}></i>
           <h2 className={styles.text}>절약하기</h2>
           <Link
             to={`/mainFeed/${"save"}`}
@@ -62,7 +66,7 @@ const MainFeed = () => {
             state={{ category: 3, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
-            더보기
+            
           </Link>
         </div>
         <div className={styles.list}>
@@ -71,6 +75,7 @@ const MainFeed = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
+          <i className={`fa-solid fa-basket-shopping fa-2x ${styles.iconBuy}`}></i>
           <h2 className={styles.text}>구매하기</h2>
           <Link
             to={`/mainFeed/${"buy"}`}
@@ -78,7 +83,7 @@ const MainFeed = () => {
             state={{ category: 4, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
-            더보기
+            
           </Link>
         </div>
         <div className={styles.list}>
@@ -87,6 +92,7 @@ const MainFeed = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
+          <i className={`fa-solid fa-recycle fa-2x ${styles.iconRecycle}`}></i>
           <h2 className={styles.text}>재활용하기</h2>
           <Link
             to={`/mainFeed/${"recycle"}`}
@@ -94,7 +100,7 @@ const MainFeed = () => {
             state={{ category: 5, feeds }}
           >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
-            더보기
+            
           </Link>
         </div>
         <div className={styles.list}>

@@ -49,9 +49,12 @@ import Chatting from "./pages/chat/chatting/Chatting";
 import ChattingRoom from "./pages/chat/chattingRoom/ChattingRoom";
 import Report from "./pages/admin/report/Report";
 import ReportDetail from "./pages/admin/reportDetail/ReportDetail";
+import Spinner from "./components/spinner/Spinner";
 
 function App() {
   const [userdata, setUserdata] = useState(false);
+  const pending = useSelector((state) => state.user.isPending);
+  // console.log(pending);
 
   // 친구 신청 알림 기능 구현 예정
   // const [alarm, setAlarm] = useState([]);
@@ -59,7 +62,6 @@ function App() {
   useEffect(() => {
     document.getElementById("scroll-container").scrollTop = 0;
     setUserdata(getUserEmail());
-    console.log(getUserEmail());
     // firestore.onSnapshot(
     //   firestore.collection(dbService, "test/2/alarm"),
     //   (snapshot) => {
@@ -260,6 +262,13 @@ function App() {
           ></Route>
           <Route path="/*" element={<Error />}></Route>
         </Routes>
+        <div
+          className={`${styles.spinner} ${
+            pending ? styles.visible : styles.hidden
+          }`}
+        >
+          <Spinner visible={pending} />
+        </div>
       </div>
       {userdata && <Footer></Footer>}
     </div>

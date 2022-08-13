@@ -193,6 +193,7 @@ const userState = {
   isPasswordValid: false,
   email: "",
   user: {},
+  isPending: false,
 };
 
 export const userSlice = createSlice({
@@ -219,13 +220,19 @@ export const userSlice = createSlice({
       console.log("signup rejected", action.payload);
       removeUserSession();
     },
+    [emailVerify.pending]: (state, action) => {
+      console.log("emailVerify pending", action.payload);
+      state.isPending = true;
+    },
     [emailVerify.fulfilled]: (state, action) => {
       console.log("emailVerify fulfilled", action.payload);
+      state.isPending = false;
       if (action.payload.status === 200) {
       }
     },
     [emailVerify.rejected]: (state, action) => {
       console.log("emailVerify rejected", action.payload);
+      state.isPending = false;
     },
     [emailVerifyCode.fulfilled]: (state, action) => {
       console.log("emailVerifyCode fulfilled", action.payload);

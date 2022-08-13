@@ -1,11 +1,35 @@
+.table {
+  width: 300px;
+  /* border-collapse: collapse; */
+}
+
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  text-align: left;
   margin-top: 10px;
   background-color: #eeeeee;
-  padding: 7px 10px;
+  /* padding: 7px 10px;s */
   border-radius: 5px;
+}
+
+.button {
+  display: flex;
+  justify-content: end;
+}
+
+.noticePost {
+  border: 2px solid #dadada;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+  padding: 3px 3px;
+  font-size: small;
+}
+
+.noticePost:hover {
+  background-color: #dadada;
+  color: black;
 }
 
 .title {

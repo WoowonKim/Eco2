@@ -38,84 +38,60 @@
   margin: 5px 0 15px 0;
 }
 
-.imgLabel {
-  display: inline-block;
-  color: #999;
-  padding: 3px 5px;
-  border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-  background-color: #fdfdfd;
-  cursor: pointer;
-  border-radius: 10px;
-  border: 2px solid #dadada;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
-  margin-right: 30px;
-  font-size: smaller;
-}
-
-.imgLabel:hover {
-  background-color: #dadada;
-  color: black;
-}
-
-.fileInputGroup {
+.wrapper {
   display: flex;
-  margin: 20px 0;
-}
-
-.fileInput {
-  height: 30px;
-  padding: 0 10px;
-  vertical-align: middle;
-  border: 1px solid #dddddd;
-  width: 50%;
-  color: #999999;
-}
-
-.imgLabel {
-  /* padding: 10px 20px; */
-  color: #fff;
-  vertical-align: middle;
-  background-color: #999999;
-  cursor: pointer;
-  height: 30px;
-  width: 80px;
-  margin-left: 10px;
-  margin-right: 10px;
-  font-size: small;
-}
-
-.baseFileInput {
-  position: absolute;
-  width: 0;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-}
-
-.img {
-  width: 180px;
-  margin: 10px;
-}
-
-.selectBox {
-  display: flex;
-  justify-content: start;
-  margin: 20px 0;
-}
-
-.select {
-  width: 200px;
-  padding: 5px 10px;
-  border: 1px solid black;
+  background: #fff;
+  /* height: 50px;
+  width: 200px; */
+  /* align-items: center;
+  justify-content: start; */
   border-radius: 5px;
+  padding: 10px 0;
+  /* box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2); */
 }
 
-.missionTitle {
-  text-align: start;
+.wrapper .label {
+  background: #fff;
+  height: 30px;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-evenly; */
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 10px;
+  border: 1px solid lightgrey;
+  transition: all 0.3s ease;
+}
+
+.wrapper .label .dot {
+  height: 15px;
+  width: 15px;
+  background: #d9d9d9;
+  border-radius: 50%;
+  position: relative;
+}
+
+.wrapper .label .dot::before {
+  position: absolute;
+  content: "";
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background: #adc178;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+
+.radioInput1 {
+  display: none;
+}
+.radioInput2 {
+  display: none;
 }
 
 .content {
@@ -128,20 +104,44 @@
   padding: 0.5rem;
 }
 
-.button {
-  position: relative;
-  padding: 3px 5px;
-  border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid red;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
+.content:focus {
+  outline: none;
 }
 
-.button:hover {
-  background-color: red;
-  color: #e1eef6;
+.button {
+  background: #adc178;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.radioInput1:checked:checked ~ .label1 .radioInput2:checked:checked ~ .label2 {
+  border-color: #adc178;
+  background: #adc178;
+}
+
+.radioInput1:checked:checked ~ .label1 .dot,
+.radioInput2:checked:checked ~ .label2 .dot {
+  background: #fff;
+}
+
+.radioInput1:checked:checked ~ .label1 .dot::before,
+.radioInput2:checked:checked ~ .label2 .dot::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.wrapper .label .labelText {
+  font-size: small;
+  color: #808080;
+}
+
+.radioInput1:checked:checked ~ .label1 labelText,
+.radioInput2:checked:checked ~ .label2 labelText {
+  color: #fff;
 }

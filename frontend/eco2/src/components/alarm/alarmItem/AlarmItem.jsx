@@ -18,16 +18,12 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
     const dateTime = new Date(0);
     dateTime.setUTCSeconds(time);
 
-    const localTime = new Date(
-      dateTime.getTime() + dateTime.getTimezoneOffset() * 60 * 1000
-    );
-
     if (now.valueOf() - dateTime.valueOf() < 86400000) {
       return (
-        addZero(localTime.getHours()) + ":" + addZero(localTime.getMinutes())
+        addZero(dateTime.getHours()) + ":" + addZero(dateTime.getMinutes())
       );
     } else {
-      return localTime.toLocaleDateString();
+      return dateTime.toLocaleDateString();
     }
   };
 
