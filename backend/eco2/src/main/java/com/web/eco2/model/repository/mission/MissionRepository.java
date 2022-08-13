@@ -21,4 +21,6 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 
     @Query(value = "select * from tb_mission c where c.mis_category!=:category1 and c.mis_category!=:category2", nativeQuery = true)
     List<Mission> findWithoutCategory(@Param("category1") Integer category1, @Param("category2") Integer category2);
+
+    List<Mission> findByQuestFlag(boolean b);
 }

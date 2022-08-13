@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Map from "../../../components/map/Map";
 import { getUserName } from "../../../store/user/common";
 import styles from "./QuestMain.module.css";
 import QuestModal from "../../../components/modal/questModal/QuestModal";
 import DetailModal from "../../../components/modal/questModal/DetailModal";
 import PostModal from "../../../components/modal/questModal/PostModal";
+import axiosService from "../../../store/axiosService";
 const QuestMain = () => {
   const [count, setCount] = useState(0);
   const [makeFlag, setMakeFlag] = useState(false);
@@ -12,6 +13,13 @@ const QuestMain = () => {
   const [createModal, setCreateModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [postModal, setPostModal] = useState(false);
+  const [questList, setQuestList] = useState(null);
+  const [payload, setPayload] = useState(null);
+  useEffect(() => {
+    axiosService.get("/mission/quest").then((res) => {
+      setQuestList(res.data.missions);
+    });
+  }, []);
   const [testDetail] = useState({
     userId: 1,
     missionId: 1,
@@ -26,7 +34,7 @@ const QuestMain = () => {
   const closeCreateModal = () => {
     setCreateModal(false);
   };
-  const openDeatailModal = () => {
+  const openDetailModal = (id) => {
     setDetailModal(true);
   };
   const closeDetailModal = () => {
@@ -45,7 +53,7 @@ const QuestMain = () => {
         <button
           className={styles.button}
           onClick={() => {
-            setMakeFlag(!makeFlag);
+            openCreateModal();
           }}
         >
           {makeFlag ? "취소하기" : "생성하기"}
@@ -54,8 +62,9 @@ const QuestMain = () => {
       <Map
         makeFlag={makeFlag}
         openCreateModal={openCreateModal}
-        openDeatailModal={openDeatailModal}
+        openDeatailModal={openDetailModal}
         setMakeFlag={setMakeFlag}
+        payload={payload}
       />
       <div>
         <p className={styles.text}>
@@ -66,6 +75,9 @@ const QuestMain = () => {
         open={createModal}
         close={closeCreateModal}
         header="Modal heading"
+        questList={questList}
+        setPayload={setPayload}
+        setMakeFlag={setMakeFlag}
       ></QuestModal>
       <DetailModal
         open={detailModal}

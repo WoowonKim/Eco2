@@ -17,6 +17,7 @@ public class QuestRequest {
     private String lat;
     private String lng;
     private Integer achieveCount;
+    private String content;
 
     public Quest toEntity() {
         return Quest.builder()
@@ -25,6 +26,7 @@ public class QuestRequest {
                 .lat(lat)
                 .lng(lng)
                 .achieveCount(achieveCount)
+                .content(content)
                 .build();
     }
 }

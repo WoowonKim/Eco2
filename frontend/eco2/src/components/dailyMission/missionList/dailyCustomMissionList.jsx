@@ -12,18 +12,21 @@ const DailyCustomMissionList = ({ id }) => {
   const dispatch = useDispatch();
   const naviGate = useNavigate();
   const [list, setList] = useState([]);
+  const [cusDelete, setCusDelete] = useState(false);
+  const [cusSubmit, setCusSubmit] = useState(false);
 
   useEffect(() => {
     dispatch(customMission({ id })).then((res) => {
       setCos(res.payload.customMissionList);
     });
-  }, []);
+  }, [cusSubmit, cusDelete]);
 
   const onDelete = (deleteId) => {
     if (window.confirm("커스텀 미션을 삭제하시겠습니까?")) {
-      dispatch(customDeleteMission({ id: deleteId }));
+      dispatch(customDeleteMission({ id: deleteId })).then((res) => {
+        setCusDelete(!cusDelete);
+      });
       alert("삭제 완료!");
-      window.location.replace("/dailymissionDetail");
     } else {
       alert("더 좋은 미션들을 만들어 보아요 :)");
     }
@@ -31,9 +34,10 @@ const DailyCustomMissionList = ({ id }) => {
 
   const onCusMission = (postId) => {
     if (window.confirm("데일리 미션으로 옮기시겠어요?")) {
-      dispatch(postMission({ id, customMissionList: postId }));
+      dispatch(postMission({ id, customMissionList: postId })).then((res) => {
+        setCusSubmit(!cusSubmit);
+      });
       alert(`이동완료!\n삭제버튼을 누를 경우 다시 목록에 추가됩니다!`);
-      window.location.replace("/dailymissionDetail");
     }
   };
 

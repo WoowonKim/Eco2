@@ -180,7 +180,8 @@ public class AdminController {
                 alarmService.insertAlarm(FirebaseAlarm.builder().userId(post.getUser().getId())
                         .dType("report").content("작성한 글("
                                 + post.getContent().substring(0, Math.min(post.getContent().length(), 10))
-                                + (post.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.").build());
+                                + (post.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.")
+                        .url("/alarm").build());
                 return ResponseHandler.generateResponse("신고 게시물 삭제에 성공하였습니다.", HttpStatus.OK);
             } else {//댓글 삭제
                 Comment comment = postCommentService.getById(reportId);
@@ -190,7 +191,8 @@ public class AdminController {
                 alarmService.insertAlarm(FirebaseAlarm.builder().userId(comment.getUser().getId())
                         .dType("report").content("작성한 댓글("
                                 + comment.getContent().substring(0, Math.min(comment.getContent().length(), 10))
-                                + (comment.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.").build());
+                                + (comment.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.")
+                        .url("/alarm").build());
                 return ResponseHandler.generateResponse("신고 댓글 삭제에 성공하였습니다.", HttpStatus.OK);
             }
         } catch (Exception e) {

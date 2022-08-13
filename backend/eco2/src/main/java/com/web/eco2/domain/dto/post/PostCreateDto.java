@@ -24,6 +24,7 @@ public class PostCreateDto {
     private User user;
     private Mission mission;
     private CustomMission customMission;
+    private LocalDateTime registTime;
     private Quest quest;
     private boolean publicFlag;
     private boolean commentFlag;

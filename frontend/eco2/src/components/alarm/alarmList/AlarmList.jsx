@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./alarmList.module.css";
 import AlarmItem from "../alarmItem/AlarmItem";
 
 const AlarmList = ({ alarms, isFriendRequest }) => {
-  console.log("alarmlist", alarms);
+  console.log("alarmlist", !!alarms);
+  useEffect(() => {
+    console.log(alarms);
+  }, [alarms]);
   return (
     <div className={styles.container}>
       <div>
-        {!!alarms ? (
+        {alarms.length !== 0 ? (
           alarms.map((alarm) => (
             <AlarmItem
               key={alarm.id}

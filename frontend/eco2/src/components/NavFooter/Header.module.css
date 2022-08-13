@@ -1,5 +1,5 @@
 .Header {
-  height: 50px;
+  height: 55px;
   padding: 1rem;
   color: white;
   background-color: white;
@@ -11,13 +11,19 @@
   top: 0;
   left: 0;
   right: 0;
-  width: 330px;
+  width: 400px;
   z-index: 1;
+  border-bottom-color: beige;
+  border-bottom-width: 0.005em;
+  border-bottom-style: solid;
 }
 
 .Img {
   height: 30px;
 }
+
+
+
 
 .profileImg {
   width: 30px;
