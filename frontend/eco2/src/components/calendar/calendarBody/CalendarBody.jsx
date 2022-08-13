@@ -24,7 +24,6 @@ const CalendarBody = ({
   const endDate = endOfWeek(monthEnd);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalDay, setModalDay] = useState(0);
   const [clickedDay, setClickedDay] = useState(0);
 
   const rows = [];
@@ -83,18 +82,16 @@ const CalendarBody = ({
             {formattedDate}
           </span>
           {!!rewardDays[formattedDate] && (
-            // <img
-            //   src={`http://localhost:8002/img/reward/${rewardDays[formattedDate]}`}
-            //   alt=""
-            // />
             <img
-              src={`${process.env.PUBLIC_URL}/logo.png`}
+              src={
+                process.env.PUBLIC_URL +
+                "/tree_leaves/" +
+                "Leaf" +
+                ((rewardDays[formattedDate] % 6) + 1) +
+                ".png"
+              }
               alt=""
               className={styles.img}
-              // onClick={() => {
-              //   setModalVisible(!modalVisible);
-              //   setModalDay(formattedDate);
-              // }}
             />
           )}
         </div>

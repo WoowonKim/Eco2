@@ -23,7 +23,7 @@ const FeedList = ({ category, display, feeds }) => {
                     feed.mission?.category || feed.customMission?.category
                   }
                   content={feed.content}
-                  like={feed.like}
+                  like={feed.likeCount}
                   userEmail={feed.userEmail}
                 />
               )

@@ -4,7 +4,7 @@ import styles from "./NoticeList.module.css";
 
 const NoticeList = ({ notices }) => {
   return (
-    <div>
+    <>
       {!!notices.content &&
         notices.content.map((notice) => (
           <NoticeItem
@@ -19,7 +19,7 @@ const NoticeList = ({ notices }) => {
             userName={notice.user.name}
           />
         ))}
-    </div>
+    </>
   );
 };
 

@@ -123,10 +123,10 @@ const PostDetail = () => {
                     className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
                   ></i>
                 </button>
-                <button className={styles.dropdownItem}>
+                {/* <button className={styles.dropdownItem}>
                   비공개
                   <i className={`fa-solid fa-lock ${styles.dropdownIcon}`}></i>
-                </button>
+                </button> */}
               </div>
             ) : (
               <button
@@ -216,6 +216,7 @@ const PostDetail = () => {
               postId={feedItem.id}
               userId={getUserId()}
               setTest={setTest}
+              type={true}
             />
           </div>
           <CommentList

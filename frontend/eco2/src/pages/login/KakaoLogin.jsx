@@ -26,14 +26,10 @@ function KakaoLogin() {
     ).then((res) => {
       console.log(res);
       if (res.payload.status === 200) {
-        axiosService.defaults.headers.common[
-          "Auth-accessToken"
-        ] = `${res.payload.accessToken}`;
         if (!res.payload.user.name) {
           setUserEmail(false, res.payload.user.email);
           setUserId(false, res.payload.user.id);
           setAccessToken(false, res.payload.accessToken);
-
           navigate("/ecoName");
         } else {
           setUserEmail(false, res.payload.user.email);
