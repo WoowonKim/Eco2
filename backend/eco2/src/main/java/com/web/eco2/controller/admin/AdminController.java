@@ -5,12 +5,14 @@ import com.web.eco2.domain.dto.Report.ReportInformation;
 import com.web.eco2.domain.dto.admin.NoticeRequest;
 import com.web.eco2.domain.entity.admin.CommentReport;
 import com.web.eco2.domain.entity.admin.Notice;
-import com.web.eco2.domain.entity.admin.PostReport;
+import com.web.eco2.domain.entity.admin.Report;
+import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.admin.NoticeService;
 import com.web.eco2.model.service.admin.ReportService;
+import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
@@ -48,6 +50,9 @@ public class AdminController {
 
     @Autowired
     private CommentService postCommentService;
+
+    @Autowired
+    private AlarmService alarmService;
 
     @PostMapping("/notice/{usrId}")
     @ApiOperation(value = "공지사항 작성", response = Object.class)
@@ -103,22 +108,39 @@ public class AdminController {
         try {
             //TODO : 페이징 구현 필요..
             log.info("신고글 조회 API 호출");
-            List<ReportInformation> reportPost = reportService.findAllPost();
-            List<ReportDto> reportPostDtos = new ArrayList<>();
-            for (ReportInformation report : reportPost) {
-                Post post = postService.getById(report.getPosId());
-                reportPostDtos.add(new ReportDto(report.getRepId(), report.getCount(), post.getId(), post.getUser(), post.getCategory()));
+//            List<ReportInformation> reportPost = reportService.findAllPost();
+//            List<ReportDto> reportPostDtos = new ArrayList<>();
+//            for (ReportInformation report : reportPost) {
+//                Post post = postService.getById(report.getPosId());
+//                reportPostDtos.add(new ReportDto(report.getRepId(), report.getCount(), post.getId(), post.getUser(), post.getCategory()));
+//            }
+//
+//            List<ReportInformation> reportComment = reportService.findAllComment();
+//            List<ReportDto> reportCommentDtos = new ArrayList<>();
+//            for (ReportInformation report : reportComment) {
+//                Comment comment = postCommentService.getById(report.getComId());
+//                reportCommentDtos.add(new ReportDto(report.getRepId(), report.getCount(),comment.getPost().getId(), comment.getId(), comment.getUser()));
+//            }
+            List<ReportInformation> reportListInformation = reportService.findAllReport();
+            System.out.println(reportListInformation);
+            List<ReportDto> reportList = new ArrayList<>();
+            for (ReportInformation report : reportListInformation) {
+                Post post = null;
+                Comment comment = null;
+                if (report.getComId() != null) {
+                    comment = postCommentService.getById(report.getComId());
+                    post = comment.getPost();
+                } else {
+                    post = postService.getById(report.getPosId());
+                }
+                User user = post.getUser();
+                if (report.getComId() != null) {
+                    user = comment.getUser();
+                }
+                reportList.add(new ReportDto(report.getRepId(), report.getCount(), post, report.getComId(), user, post.getCategory()));
             }
 
-            //TODO : 댓글 구현 후에 다시 확인
-            //TODO : 대댓글 어떡하나
-            List<ReportInformation> reportComment = reportService.findAllComment();
-            List<ReportDto> reportCommentDtos = new ArrayList<>();
-            for (ReportInformation report : reportComment) {
-                Comment comment = postCommentService.getById(report.getComId());
-                reportCommentDtos.add(new ReportDto(report.getRepId(), report.getCount(), comment.getId(), comment.getUser()));
-            }
-            return ResponseHandler.generateResponse("신고글 조회에 성공하였습니다.", HttpStatus.OK, "reportPost", reportPostDtos, "reportComment", reportCommentDtos);
+            return ResponseHandler.generateResponse("신고글 조회에 성공하였습니다.", HttpStatus.OK, "reportList", reportList);
         } catch (Exception e) {
             log.error("신고글 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -132,10 +154,9 @@ public class AdminController {
         try {
             log.info("신고 상세 내역 조회 API 호출");
             if (type == 0) {//게시물 신고 내역 조회
-                List<PostReport> reportPost = reportService.findByPosId(reportId);
+                List<Report> reportPost = reportService.findByPosId(reportId);
                 return ResponseHandler.generateResponse("신고 상세 내역 조회에 성공하였습니다.", HttpStatus.OK, "reportDetailList", reportPost);
             } else {//댓글 신고 내역 조회
-                //TODO : 댓글 구현 후에 다시 확인
                 List<CommentReport> reportComment = reportService.findByComId(reportId);
                 return ResponseHandler.generateResponse("신고 상세 내역 조회에 성공하였습니다.", HttpStatus.OK, "reportDetailList", reportComment);
             }
@@ -152,12 +173,26 @@ public class AdminController {
         try {
             log.info("신고글 승인 API 호출");
             if (type == 0) {//게시물 삭제
+                Post post = postService.getById(reportId);
                 postService.deletePost(reportId);
+
+                // 신고당한 사용자에게 알림 전송
+                alarmService.insertAlarm(FirebaseAlarm.builder().userId(post.getUser().getId())
+                        .dType("report").content("작성한 글("
+                                + post.getContent().substring(0, Math.min(post.getContent().length(), 10))
+                                + (post.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.")
+                        .url("/alarm").build());
                 return ResponseHandler.generateResponse("신고 게시물 삭제에 성공하였습니다.", HttpStatus.OK);
             } else {//댓글 삭제
-                //TODO : 댓글 구현 후에 다시 확인
                 Comment comment = postCommentService.getById(reportId);
                 postCommentService.delete(comment);
+
+                // 신고당한 사용자에게 알림 전송
+                alarmService.insertAlarm(FirebaseAlarm.builder().userId(comment.getUser().getId())
+                        .dType("report").content("작성한 댓글("
+                                + comment.getContent().substring(0, Math.min(comment.getContent().length(), 10))
+                                + (comment.getContent().length() > 10 ? "..." : "") + ")이 신고되어 삭제되었습니다.")
+                        .url("/alarm").build());
                 return ResponseHandler.generateResponse("신고 댓글 삭제에 성공하였습니다.", HttpStatus.OK);
             }
         } catch (Exception e) {

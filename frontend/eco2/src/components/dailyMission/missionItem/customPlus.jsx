@@ -24,7 +24,9 @@ const CustomPlus = () => {
     dispatch(customPostMission({ id, category: cate, title: tit, content: cont }))
       .then((res) => {
         if (res.payload.status === 200) {
-          naviGate("/dailymissiondetail");
+          if (window.confirm("미션 목록에 추가하시겠어요>")) {
+            naviGate("/dailymissiondetail", { state: { list: 0 } });
+          }
         }
       })
       .catch((err) => {
@@ -53,7 +55,14 @@ const CustomPlus = () => {
           setCont(e.target.value);
         }}
       ></textarea>
-      <button onClick={subMit}>뒤로!</button>
+      <button onClick={subMit}>완료!</button>
+      <button
+        onClick={() => {
+          naviGate("/dailymissiondetail");
+        }}
+      >
+        뒤로가기
+      </button>
     </div>
   );
 };

@@ -60,3 +60,14 @@
 .whiteTrash {
   color: white;
 }
+
+.mainList {
+  display: flex;
+  justify-content: space-between;
+}
+.leafSize {
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 15px;
+  height: 20px;
+}

@@ -1,29 +1,64 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteComment } from "../../../store/mainFeed/commentSlice";
 import CommentForm from "../commentForm/CommentForm";
 import ReplyList from "../replyList/ReplyList";
 import ReportModal from "../../modal/reportModal/ReportModal";
 import styles from "./CommentItem.module.css";
+import { getUserId, getUserName } from "../../../store/user/common";
+import PostModal from "../../modal/postModal/PostModal";
+import ReplyItem from "../replyItem/ReplyItem";
+import { useNavigate } from "react-router-dom";
 
-const CommentItem = ({ id, content, user, postId }) => {
+const CommentItem = ({
+  id,
+  commentUserId,
+  content,
+  user,
+  postId,
+  commentId,
+  replys,
+  setTest,
+  userEmail,
+}) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
   const [replyVisible, setReplyVisible] = useState(false);
-  const [modalType, setModalType] = useState(false);
-  const displayType = modalType ? styles.visible : styles.hidden;
+  const [modalType, setModalType] = useState("");
+  const [name, setName] = useState("");
+  const [userId, setUserId] = useState(0);
 
-  const handleDelete = () => {
-    dispatch(deleteComment({ id }));
-  };
+  const displayType = modalType ? styles.visible : styles.hidden;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setName(getUserName());
+    setUserId(getUserId());
+  }, []);
   return (
     <div>
       {!visible && (
         <li className={styles.list}>
           <div className={styles.commentContainer}>
             <div className={styles.comment}>
-              <p className={styles.user}>{user}</p>
+              <div
+                className={styles.userInfo}
+                onClick={() =>
+                  navigate(`/profile/${commentUserId}`, {
+                    state: { userEmail },
+                  })
+                }
+              >
+                <img
+                  src={`http://localhost:8002/img/profile/${commentUserId}`}
+                  // src={`${imgSrc}`}
+                  alt="profileImg"
+                  className={styles.profileImg}
+                />
+                <p className={styles.user}>{user}</p>
+              </div>
               <p className={styles.content}>{content}</p>
             </div>
             <div>
@@ -40,50 +75,69 @@ const CommentItem = ({ id, content, user, postId }) => {
                   className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}
                 ></i>
                 <div className={styles.dropdownContent}>
-                  <button
-                    onClick={() => {
-                      setVisible(!visible);
-                    }}
-                    className={styles.dropdownItem}
-                  >
-                    수정
-                    <i
-                      className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
-                    ></i>
-                  </button>
-                  <button
-                    onClick={() => handleDelete()}
-                    className={styles.dropdownItem}
-                  >
-                    삭제
-                    <i
-                      className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-                    ></i>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setModalType(!modalType);
-                      setModalType("신고");
-                    }}
-                    className={styles.dropdownItem}
-                  >
-                    신고
-                    <i
-                      className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
-                    ></i>
-                  </button>
+                  {name === user ? (
+                    <div>
+                      <button
+                        onClick={() => {
+                          setVisible(!visible);
+                        }}
+                        className={styles.dropdownItem}
+                      >
+                        수정
+                        <i
+                          className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
+                        ></i>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setModalVisible(!modalVisible);
+                          setModalType("삭제");
+                        }}
+                        className={styles.dropdownItem}
+                      >
+                        삭제
+                        <i
+                          className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
+                        ></i>
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        onClick={() => {
+                          setReportModalVisible(!reportModalVisible);
+                          setModalType("신고");
+                        }}
+                        className={styles.dropdownItem}
+                      >
+                        신고으으
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          {modalType && (
+          {reportModalVisible && modalType === "신고" && (
             <ReportModal
               className={`${displayType}`}
               title={"댓글 신고"}
-              content={"해당 댓글을 신고하시겠습니까?"}
-              id={postId}
+              content={"해당 댓글 신고하시겠습니까?"}
               type="댓글"
-              closeModal={() => setVisible(!visible)}
+              commentId={commentId}
+              closeModal={() => setReportModalVisible(!reportModalVisible)}
+            />
+          )}
+          {modalVisible && modalType === "삭제" && (
+            <PostModal
+              className={`${displayType}`}
+              title={"댓글 삭제"}
+              content={"댓글을 삭제하시겠습니까"}
+              type={"삭제"}
+              postId={postId}
+              commentId={commentId}
+              setTest={setTest}
+              closeModal={() => setModalVisible(!modalVisible)}
             />
           )}
           {/* <div>
@@ -102,8 +156,11 @@ const CommentItem = ({ id, content, user, postId }) => {
           <span className={styles.editFormUser}>{user}</span>
           <div className={styles.editForm}>
             <CommentForm
+              userId={userId}
+              postId={postId}
               id={id}
               content={content}
+              setTest={setTest}
               closeModal={() => setVisible(!visible)}
             />
           </div>
@@ -111,12 +168,22 @@ const CommentItem = ({ id, content, user, postId }) => {
       )}
       {replyVisible && (
         <CommentForm
+          userId={userId}
+          postId={postId}
           id={id}
           replyVisible={replyVisible}
+          setTest={setTest}
           closeModal={() => setReplyVisible(!replyVisible)}
         />
       )}
-      <ReplyList id={id} />
+
+      <ReplyList
+        commentId={commentId}
+        id={id}
+        replys={replys}
+        commentUserId={commentUserId}
+        setTest={setTest}
+      />
     </div>
   );
 };

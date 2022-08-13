@@ -44,4 +44,12 @@ public class ResponseBodyWriteUtil {
     public static void sendError2(HttpServletResponse response, String msg, HttpStatus httpStatus) throws IOException {
         sendError( response, msg, httpStatus);
     }
+
+    public static void sendSocketError(HttpServletResponse response, String msg) {
+        try {
+            sendError( response, msg, HttpStatus.UNAUTHORIZED);
+        }catch (Exception e){
+            return;
+        }
+    }
 }

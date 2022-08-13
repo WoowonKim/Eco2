@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { accountSetting } from "../../store/user/accountSlice";
-import { getUserEmail } from "../../store/user/common";
 import {
-  deleteUser,
+  getUserEmail,
+  getUserId,
+  getUserName,
+  setUserName,
+} from "../../store/user/common";
+import {
   passwordChange,
   passwordCheck,
+  profileImgChange,
 } from "../../store/user/userSettingSlice";
 import {
-  authActions,
   ecoName,
   ecoNameVerify,
   newPassword,
@@ -17,9 +20,13 @@ import styles from "./UserSettings.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { nameLengthValidation, passwordValidationCheck } from "../../utils";
 import Settings from "./settings/Settings";
+import Notice from "./notice/Notice";
+import PostModal from "../../components/modal/postModal/PostModal";
 
 const UserSettings = () => {
-  const [userSetting, setUserSetting] = useState(true);
+  const [userSetting, setUserSetting] = useState(1);
+  const [visible, setVisible] = useState(false);
+  const [modalType, setModalType] = useState("");
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -30,6 +37,10 @@ const UserSettings = () => {
   const [nameMessage, setNameMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  const [profileEdit, setProfileEdit] = useState(false);
+  const [fileImage, setFileImage] = useState("");
+  const [file, setFile] = useState("");
+  const [autoLogin, setAutoLogin] = useState(false);
 
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
@@ -40,8 +51,10 @@ const UserSettings = () => {
   const location = useLocation();
 
   const socialType = location.state?.socialType;
-  const displayType = userSetting ? styles.selectedMenu : null;
-  const displayType2 = userSetting ? null : styles.selectedMenu;
+  const modalDisplayType = visible ? styles.visible : styles.hidden;
+  const displayType = userSetting === 1 ? styles.selectedMenu : null;
+  const displayType2 = userSetting === 2 ? styles.selectedMenu : null;
+  const displayType3 = userSetting === 3 ? styles.selectedMenu : null;
 
   const handlePassword = () => {
     dispatch(passwordCheck({ email, password }))
@@ -97,41 +110,101 @@ const UserSettings = () => {
     }
   };
 
+  const saveFileImage = (e) => {
+    setFile(e.target.files[0]);
+    setFileImage(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const profileImg = () => {
+    dispatch(profileImgChange({ email, img: file })).then((res) => {
+      if (res.payload.status === 200) {
+        // window.location.reload("/user/settings");
+        setProfileEdit(false);
+      }
+    });
+  };
+
   useEffect(() => {
-    setName(location.state?.name);
+    setName(getUserName());
+    setAutoLogin(localStorage.getItem("email") ? true : false);
   }, []);
 
   return (
     <div className={styles.userSettingPage}>
       <div className={styles.header}>
-        <div onClick={() => setUserSetting(true)} className={styles.userInfo}>
+        <div onClick={() => setUserSetting(1)} className={styles.userInfo}>
           <p className={`styles.userInfoText ${displayType}`}>회원정보</p>
-          {userSetting && <hr className={styles.titleLine} />}
+          {userSetting === 1 && <hr className={styles.titleLine} />}
         </div>
-        <div onClick={() => setUserSetting(false)} className={styles.userInfo}>
+        <div onClick={() => setUserSetting(2)} className={styles.userInfo}>
           <p className={`styles.userInfoText ${displayType2}`}>계정 및 알림</p>
-          {!userSetting && <hr className={styles.titleLine} />}
+          {userSetting === 2 && <hr className={styles.titleLine} />}
+        </div>
+        <div onClick={() => setUserSetting(3)} className={styles.userInfo}>
+          <p className={`styles.userInfoText ${displayType3}`}>공지사항</p>
+          {userSetting === 3 && <hr className={styles.titleLine} />}
         </div>
       </div>
-      {userSetting ? (
+      {userSetting === 1 ? (
         <div>
           <div className={styles.profileImg}>
-            <img
-              src={`${process.env.PUBLIC_URL}/logo.png`}
-              alt="earth"
-              className={styles.img}
-            />
-            <div className={styles.profileImgGroup}>
-              <p className={styles.profileImgText}>프로필 사진</p>
-              <i className={`fa-solid fa-pencil ${styles.editIcon}`}></i>
+            <div>
+              {fileImage ? (
+                <img className={styles.img} alt="profileImg" src={fileImage} />
+              ) : (
+                <img
+                  className={styles.img}
+                  alt="profileImg"
+                  src={`http://localhost:8002/img/profile/${getUserId()}`}
+                />
+              )}
             </div>
+            {!profileEdit ? (
+              <div className={styles.profileImgGroup}>
+                <p className={styles.profileImgText}>프로필 사진</p>
+                <i
+                  className={`fa-solid fa-pencil ${styles.editIcon}`}
+                  onClick={() => setProfileEdit(true)}
+                ></i>
+              </div>
+            ) : (
+              <div>
+                <div className={styles.fileInputGroup}>
+                  <input className={styles.fileInput} placeholder="첨부파일" />
+                  <label htmlFor="file" className={styles.imgLabel}>
+                    파일찾기
+                  </label>
+                  <input
+                    encType="multipart/form-data"
+                    type="file"
+                    id="file"
+                    name="post_file"
+                    onChange={saveFileImage}
+                    className={`${styles.fileInput} ${styles.baseFileInput}`}
+                  />
+                  <button onClick={profileImg} className={styles.button}>
+                    수정완료
+                  </button>
+                  {/* <button onClick={() => deleteFileImage()} className={styles.button}>
+            삭제
+          </button> */}
+                </div>
+              </div>
+            )}
           </div>
           <div className={styles.emailGroup}>
             <div className={styles.emailTitleGroup}>
-              <p className={styles.label}>이메일</p>
+              <p className={styles.emailTitle}>이메일</p>
               {socialType === 1 && (
                 <img
                   src={`${process.env.PUBLIC_URL}/google_logo.png`}
+                  alt="social_logo"
+                  className={styles.socialLogo}
+                />
+              )}
+              {socialType === 2 && (
+                <img
+                  src={`${process.env.PUBLIC_URL}/kakao_logo.png`}
                   alt="social_logo"
                   className={styles.socialLogo}
                 />
@@ -155,7 +228,11 @@ const UserSettings = () => {
               />
               <button
                 onClick={() => {
-                  dispatch(ecoName({ email, econame: name }));
+                  dispatch(ecoName({ email, econame: name })).then((res) => {
+                    if (res.payload?.status === 200) {
+                      setUserName(autoLogin, name);
+                    }
+                  });
                 }}
                 disabled={!isName}
                 className={styles.passwordFormButton}
@@ -167,26 +244,43 @@ const UserSettings = () => {
               {nameMessage}
             </p>
           </div>
+          {visible && modalType === "로그아웃" && (
+            <PostModal
+              // className={`${displayType} ${scrollType}`}
+              title={"로그아웃"}
+              content={"로그아웃 하시겠습니까"}
+              type={"로그아웃"}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
+          {visible && modalType === "탈퇴" && (
+            <PostModal
+              className={`${modalDisplayType}`}
+              title={"회원탈퇴"}
+              content={"회원탈퇴 하시겠습니까"}
+              type={"탈퇴"}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
           {!!socialType && (
             <div>
               <hr className={styles.line} />
               <button
                 onClick={() => {
-                  dispatch(authActions.logout());
-                  navigate("/");
+                  // dispatch(userActions.logout());
+                  // navigate("/");
+                  setVisible(!visible);
+                  setModalType("로그아웃");
                 }}
                 className={styles.userButton}
               >
                 로그아웃
               </button>
               <button
-                onClick={() =>
-                  dispatch(deleteUser({ email, password })).then((res) => {
-                    if (res.payload.status === 200) {
-                      dispatch(authActions.logout());
-                    }
-                  })
-                }
+                onClick={() => {
+                  setVisible(!visible);
+                  setModalType("탈퇴");
+                }}
                 className={styles.userButton}
               >
                 회원탈퇴
@@ -223,8 +317,11 @@ const UserSettings = () => {
                   <hr className={styles.line} />
                   <button
                     onClick={() => {
-                      dispatch(authActions.logout());
-                      navigate("/");
+                      // dispatch(userActions.logout());
+                      // navigate("/");
+
+                      setVisible(!visible);
+                      setModalType("로그아웃");
                     }}
                     className={styles.userButton}
                   >
@@ -284,23 +381,18 @@ const UserSettings = () => {
                   <div className={styles.userButtonGroup}>
                     <button
                       onClick={() => {
-                        dispatch(authActions.logout());
-                        navigate("/");
+                        setVisible(!visible);
+                        setModalType("로그아웃");
                       }}
                       className={styles.userButton}
                     >
                       로그아웃
                     </button>
                     <button
-                      onClick={() =>
-                        dispatch(deleteUser({ email, password })).then(
-                          (res) => {
-                            if (res.payload.status === 200) {
-                              dispatch(authActions.logout());
-                            }
-                          }
-                        )
-                      }
+                      onClick={() => {
+                        setVisible(!visible);
+                        setModalType("탈퇴");
+                      }}
                       className={styles.userButton}
                     >
                       회원탈퇴
@@ -311,8 +403,10 @@ const UserSettings = () => {
             </div>
           )}
         </div>
-      ) : (
+      ) : userSetting === 2 ? (
         <Settings email={email} />
+      ) : (
+        <Notice />
       )}
     </div>
   );

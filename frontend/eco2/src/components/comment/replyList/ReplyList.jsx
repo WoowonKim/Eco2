@@ -3,23 +3,25 @@ import { useSelector } from "react-redux";
 import ReplyItem from "../replyItem/ReplyItem";
 import styles from "./ReplyList.module.css";
 
-const ReplyList = ({ id }) => {
-  const replys = useSelector((state) => state.comment);
-
+const ReplyList = ({ id, commentId, replys, commentUserId, setTest }) => {
   return (
     <ul className={styles.ul}>
-      {replys.map(
-        (reply) =>
-          id === reply.commentId && (
-            <ReplyItem
-              key={reply.id}
-              id={reply.id}
-              content={reply.content}
-              user={reply.user}
-              postId={reply.postId}
-            />
-          )
-      )}
+      {replys?.length > 0 &&
+        replys.map(
+          (reply) =>
+            id === reply.commentId && (
+              <ReplyItem
+                key={reply.id}
+                id={reply.id}
+                content={reply.content}
+                user={reply.userName}
+                postId={reply.postId}
+                commentUserId={commentUserId}
+                setTest={setTest}
+                userEmail={reply.userEmail}
+              />
+            )
+        )}
     </ul>
   );
 };

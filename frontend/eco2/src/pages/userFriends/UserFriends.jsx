@@ -6,11 +6,13 @@ import styles from "./UserFriends.module.css";
 
 const UserFriends = () => {
   const location = useLocation();
-  const userId = location?.state;
+  const userId = location?.state.userId;
+  const friendList = location?.state.friendList;
+
   return (
     <div>
       <SearchForm />
-      <FriendList />
+      <FriendList friendList={friendList} />
     </div>
   );
 };

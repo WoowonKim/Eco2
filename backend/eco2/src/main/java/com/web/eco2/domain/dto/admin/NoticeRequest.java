@@ -21,7 +21,7 @@ public class NoticeRequest {
         return Notice.builder()
                 .title(title)
                 .content(content)
-                .registTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
+                .registTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .modifyFlag(false)
                 .hit(0)
                 .urgentFlag(urgentFlag)

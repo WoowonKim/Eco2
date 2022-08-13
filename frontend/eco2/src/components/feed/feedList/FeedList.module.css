@@ -1,7 +1,7 @@
 .list {
   display: flex;
   flex-direction: row;
-  overflow-x: scroll; 
+  overflow-x: scroll;
 }
 
 .grid {
@@ -15,7 +15,7 @@
 
 .list::-webkit-scrollbar-thumb {
   background-color: #adc178;
-  background-clip : padding-box;
+  background-clip: padding-box;
   border: 3px solid transparent;
   border-radius: 100px;
 }
@@ -26,3 +26,6 @@
   border-radius: 100px;
 }
 
+.box {
+  height: 100px;
+}

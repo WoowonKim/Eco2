@@ -1,5 +1,6 @@
 package com.web.eco2.domain.dto.Report;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.eco2.domain.entity.admin.ReportType;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
@@ -20,25 +21,23 @@ public class ReportDto {
 
     private Long commentId;
 
+    private Post post;
+
+//    @JsonIgnore
+//    private Comment comment;
+
     private User user;
 
     private Integer postCategory;
 
 
 
-    public ReportDto(Long id, Integer count, Long postId, User user, Integer postCategory) {
+    public ReportDto(Long id, Integer count, Post post, Long commentId, User user, Integer postCategory) {
         this.id = id;
         this.count = count;
-        this.postId = postId;
+        this.post = post;
+        this.commentId = commentId;
         this.user = user;
         this.postCategory = postCategory;
     }
-
-    public ReportDto(Long id, Integer count, Long commentId, User user) {
-        this.id = id;
-        this.count = count;
-        this.commentId = commentId;
-        this.user = user;
-    }
-
 }

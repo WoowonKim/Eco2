@@ -11,9 +11,37 @@
   align-items: center;
 }
 
-.button {
+.profileImg {
+  width: 25px;
   background-color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.icon {
+  font-size: 10px;
+  color: black;
+  margin: 3px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: end;
+}
+
+.button {
   border: none;
+  background-color: white;
+  transition: all 2s ease-in;
+  padding: 0px;
+  margin: 0;
+}
+
+.button :hover {
+  cursor: pointer;
+  /* color: #adc178; */
+  transform: scale(1.1);
 }
 
 .settingIcon {
@@ -27,9 +55,9 @@
 }
 
 .missionList {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  margin-top: 50px;
+  grid-template-columns: 1fr 1fr;
 }
 
 /* .missionTitle {
@@ -39,3 +67,20 @@
 .line {
   width: 100%;
 } */
+
+.selectedMenu {
+  font-weight: bold;
+}
+
+.mission {
+  display: flex;
+  justify-content: start;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  flex-wrap: wrap;
+}
+
+.missionImg {
+  width: 30%;
+  margin: 5px;
+  border: 1px solid #dadada;
+}

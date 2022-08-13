@@ -31,7 +31,7 @@ public class KakaoOAuth implements OAuth {
     @Value("${spring.security.oauth2.client.registration.kakao.scope}")
     private String CLIENT_SCOPE;
 
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-url}")
+    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String CLIENT_REDIRECT_URL;
 
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")

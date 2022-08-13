@@ -6,77 +6,99 @@ import { postList } from "../../store/post/postSlice";
 import { useDispatch } from "react-redux";
 
 const MainFeed = () => {
-  const [feed, setFeed] = useState([]);
+  const [feeds, setFeeds] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    document.getElementById("scroll-container").scrollTop = 0;
     dispatch(postList()).then((res) => {
-      if (res.payload.status === 200) {
-        setFeed(res.payload.postListDtos);
+      console.log(res);
+      if (res.payload?.status === 200) {
+        setFeeds(res.payload.postListDtos);
       }
     });
   }, []);
   return (
-    <div>
+    <div id="scroll-container">
       <div className={styles.container}>
         <div className={styles.title}>
           <h2 className={styles.text}>실천하기</h2>
-          <Link to={`/mainFeed/${"do"}`} className={styles.link}>
-            <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
+          <Link
+            to={`/mainFeed/${"do"}`}
+            className={styles.link}
+            state={{ category: 1, feeds }}
+          >
+            <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={"do"} display={"list"} />
+          <FeedList category={1} display={"list"} feeds={feeds} />
         </div>
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
           <h2 className={styles.text}>사용하기</h2>
-          <Link to={`/mainFeed/${"do"}`} className={styles.link}>
+          <Link
+            to={`/mainFeed/${"use"}`}
+            className={styles.link}
+            state={{ category: 2, feeds }}
+          >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={"use"} display={"list"} />
+          <FeedList category={2} display={"list"} feeds={feeds} />
         </div>
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
           <h2 className={styles.text}>절약하기</h2>
-          <Link to={`/mainFeed/${"do"}`} className={styles.link}>
+          <Link
+            to={`/mainFeed/${"save"}`}
+            className={styles.link}
+            state={{ category: 3, feeds }}
+          >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={"save"} display={"list"} />
+          <FeedList category={3} display={"list"} feeds={feeds} />
         </div>
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
           <h2 className={styles.text}>구매하기</h2>
-          <Link to={`/mainFeed/${"buy"}`} className={styles.link}>
+          <Link
+            to={`/mainFeed/${"buy"}`}
+            className={styles.link}
+            state={{ category: 4, feeds }}
+          >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={"buy"} display={"list"} />
+          <FeedList category={4} display={"list"} feeds={feeds} />
         </div>
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
           <h2 className={styles.text}>재활용하기</h2>
-          <Link to={`/mainFeed/${"recycle"}`} className={styles.link}>
+          <Link
+            to={`/mainFeed/${"recycle"}`}
+            className={styles.link}
+            state={{ category: 5, feeds }}
+          >
             <i className={`fa-solid fa-circle-plus ${styles.plusIcon}`}></i>{" "}
             더보기
           </Link>
         </div>
         <div className={styles.list}>
-          <FeedList category={"recycle"} display={"list"} />
+          <FeedList category={5} display={"list"} feeds={feeds} />
         </div>
       </div>
     </div>

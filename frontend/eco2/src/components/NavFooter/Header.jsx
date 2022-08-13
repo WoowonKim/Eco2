@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserEmail, getUserId } from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
+  const [userId, setUserId] = useState(null);
   let navigate = useNavigate();
+
+  useEffect(() => {
+    setUserId(getUserId());
+  }, [userId]);
   return (
     <header className={styles.Header}>
       <div
@@ -21,13 +27,36 @@ const Header = () => {
         ></img>
       </div>
       <nav>
-        <i
+        <button
+          className={styles.profileButton}
           onClick={() => {
-            navigate("/profile");
+            navigate(`/profile/${getUserId()}`);
           }}
-          className="fa-solid fa-users"
-        ></i>
-        <i className="fa-solid fa-comments"></i>
+        >
+          <img
+            src={`http://localhost:8002/img/profile/${getUserId()}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
+        </button>
+
+        <button
+          className={styles.profileButton}
+          onClick={() => {
+            navigate("/chatting");
+          }}
+        >
+          <i className="fa-solid fa-comments"></i>
+        </button>
+
+        <button
+          className={styles.profileButton}
+          onClick={() => {
+            navigate("/report");
+          }}
+        >
+        <i className="fa-solid">신고</i>
+        </button>
       </nav>
     </header>
   );

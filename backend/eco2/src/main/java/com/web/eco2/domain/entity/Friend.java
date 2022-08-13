@@ -2,6 +2,8 @@ package com.web.eco2.domain.entity;
 
 import com.web.eco2.domain.entity.user.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -20,9 +22,11 @@ public class Friend {
 
     @ManyToOne
     @JoinColumn(name = "usr_from_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User fromUser;
 
     @ManyToOne
     @JoinColumn(name = "usr_to_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User toUser;
 }

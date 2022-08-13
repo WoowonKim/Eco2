@@ -1,0 +1,135 @@
+.list {
+  width: 300px;
+  height: 68px;
+  /* margin: 20px; */
+}
+
+.list:hover {
+  width: 300px;
+  background-color: #EAEAEA;
+}
+
+.link {
+  width: 280px;
+  /* display: inline-block; */
+  /* padding: 5px; */
+  /* margin: 30px; */
+}
+
+.leftContent {
+  display: inline-block;
+  float: left;
+  width: 70%;
+}
+
+.rightContent {
+  display: inline-block;
+  /*float: right; */
+  width: 20%;
+
+}
+
+.line {
+  border: solid #D5D5D5;
+  border-width: 1px 0px 0px 0px;
+}
+
+.toUserName {
+  font-size: 14px;
+  font-weight: bold;
+  color: #6a707c;
+  /* float: left; */
+  margin-top: 13px;
+  margin-bottom: 3px;
+  text-align: left;
+}
+
+.profileImg {
+
+  width: 50px;
+  height: 50px;
+  /* border: grey solid 1px; */
+  box-shadow: 5px 5px 2px 30px gray inset;
+
+  border-radius: 30px;
+  display: inline-block;
+  float: left;
+  margin: 10px;
+}
+
+.lastSendMessage {
+  text-align: left;
+
+  font-size: 11px;
+  color: #6a707c;
+  /* line-height: 70px; */
+
+}
+
+.lastSendTime {
+  display: flex;
+  position: absolute;
+  font-size: x-small;
+  color: #BDBDBD;
+  float: right;
+  line-height: 55px;
+
+}
+
+.deleteButton {
+  position: absolute;
+  border: none;
+  color: #6a707c;
+  background-color: transparent;
+  font-size: medium;
+  padding: 3px;
+  float: right;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  /* padding: 10px 20px; */
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #000;
+  right: 0;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+  padding: 10px 10px;
+  border: none;
+}
+
+.dropdownItem:hover {
+  background-color: #dadada;
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+}
+
+.icon {
+  color: #6a707c;
+  font-size: 15px;
+}
+
+.dropdownIcon {
+  font-size: 15px;
+  color: black;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}

@@ -1,0 +1,27 @@
+.list {
+  font-size: 10px;
+}
+.text{
+  padding: 8px;
+  float: left;
+  font-size: 10px;
+  color: grey;
+}
+
+.line{
+  border-width: 0.5px 0px 0px 0px;
+  border-color: #EAEAEA;
+  clear: both;
+}
+
+.type{
+  width: 60px;
+}
+.content{
+  width: 100px;
+  float: left;
+}
+.name{
+  float: left;
+  width: 70px;
+}

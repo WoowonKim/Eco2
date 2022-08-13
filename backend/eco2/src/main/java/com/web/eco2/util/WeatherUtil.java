@@ -126,7 +126,7 @@ public class WeatherUtil {
         String[] ret = new String[2];
 
         ret[0] = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        ret[1] = now.format(DateTimeFormatter.ofPattern("hhmm"));
+        ret[1] = now.format(DateTimeFormatter.ofPattern("HHmm"));
 //        String timeString = now.format(DateTimeFormatter.ISO_DATE_TIME);
 //        String[] splitedDateTime = timeString.split("T");
 

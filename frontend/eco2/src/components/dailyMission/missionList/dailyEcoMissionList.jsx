@@ -1,31 +1,57 @@
+//React
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import DailyEcoMissionitem from "../missionItem/dailyEcoMissionitem";
-import styles from "./dailyMissionDetail.module.css";
-import DailyMissionFavoritesList from "./dailyMissionFavoritesList";
-import DailyCustomMissionList from "./dailyCustomMissionList";
-import { postMission } from "../../../store/mission/missionMainSlice";
-import { GreenBtn } from "../../styled";
-import { onEcoArr } from "../../../store/mission/missionMainSlice";
+import { useNavigate } from "react-router-dom";
 
-const DailyEcoMissionList = ({ id, ecomissionList }) => {
-  // const ecomissionList = useSelector((state) => state.dailyMission.dailyMissionList);
-  const ecoArr = useSelector((state) => state.missionMain);
-  const [eco, setEco] = useState([]);
+//Store
+import { postMission } from "../../../store/mission/missionMainSlice";
+import { getFavorite, putFavorite } from "../../../store/mission/favoriteSlice";
+
+//Component
+import DailyEcoMissionitem from "../missionItem/dailyEcoMissionitem";
+import DailyCustomMissionList from "./dailyCustomMissionList";
+
+// CSS
+import { GreenBtn } from "../../styled";
+import styles from "./dailyMissionDetail.module.css";
+
+const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   const [ecoId, setEcoId] = useState([]);
-  const [arrFavorites, setArrFavorites] = useState([]);
-  const [list, getList] = useState(true); // 기본 & 내 목록 창
-  const ecoCount = eco.length;
+  const missionValue = customMake !== 0 ? true : false;
+  const [list, getList] = useState(missionValue); //미션 목록과 커스텀 미션을 구분하기 위한 State
+  //console.log("LIST ====>", list);
+  const [favoriteArr, setFavoriteArr] = useState([]); // 즐겨찾기 화면노출을 위한 State
+  const [cnt, setCnt] = useState(0); //리렌더링을 방지하기 위한 State
+
+  const ecoCount = ecoId.length; // user 미션 목록에 추가하기 위한 count
+  const favoriteTrue = true; // 서버 연동에 필요한 값 : 미션목록 이 true여서
+  const favoriteBoolean = false; // 서버에 삭제 요청에 필요한 값 : 삭제할 때 false값을 전달 하기 위함.
+
   const naviGate = useNavigate();
   const dispatch = useDispatch();
 
-  const onEco = (color, id, content) => {
-    if (color === false) {
-    }
-  };
+  const [faDelete, setFaDelete] = useState(false);
+  const [faAdd, setFaAdd] = useState(false);
+  const [faIdArr, setFaIdArr] = useState([]);
+  /**
+   * 서버의 즐겨찾기 목록을 갖고 오기 위한 함수.
+   * id : id가 접속 되었을 때 첫 번째 렌더링
+   * cnt : cnt 값이 변경 될 때 마다 렌더링 => 현재 완성X 한박자 느리게 화면에 노출됨.
+   * ==> 추가시 새로고침으로 임시적으로 해결 상태
+   */
+  useEffect(() => {
+    dispatch(getFavorite({ id: id })).then((res) => {
+      if (res.payload.status === 200) {
+        //console.log("즐겨찾기");
+        setFavoriteArr(res.payload.missionList);
+      }
+    });
+  }, [faDelete, faAdd]);
 
+  /**
+   * user 미션 목록에 보내기 위한 함수
+   * item에 prop으로 전달하여 ecoState 증가.
+   */
   const onCreate = (color, id, content) => {
     if (color === false) {
       const newEco = {
@@ -33,77 +59,114 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
         id: id,
         content: content,
       };
-      setEco([...eco, newEco]);
       setEcoId([...ecoId, newEco.id]);
     } else {
-      const reEco = eco.filter((it) => it.id !== id);
       const reEcoId = ecoId.filter((it) => it !== id);
-      setEco(reEco);
       setEcoId(reEcoId);
     }
   };
 
-  // 즐겨찾기
-  const onFavorites = (favorites, id, content) => {
-    if (favorites === false) {
-      const newArrFavorites = {
-        favorites: favorites,
-        id: id,
-        content,
-      };
-      setArrFavorites([...arrFavorites, newArrFavorites]);
-    } else {
-      const reArrFavorits = arrFavorites.filter((it) => it.id !== id);
-      setArrFavorites(reArrFavorits);
-    }
-  };
-
-  const onStore = () => {
-    if (ecoCount >= 1) {
-      alert(`${ecoCount}개 저장 완료 메인페이지로 이동합니다.`);
-      naviGate("/DailyMissionmain");
-    }
-  };
-
+  /**
+   * 선택한 미션들을 서버에 전송하기 위한 함수.
+   */
   const onMissionSub = () => {
     if (ecoCount >= 1) {
-      dispatch(postMission({ id, ecoId })).then((res) => {
+      dispatch(postMission({ id, dailyMissionList: ecoId })).then((res) => {
         if (res.payload?.status === 200) {
-          alert(`${ecoCount}개 저장 완료 메인페이지로 이동합니다.`);
+          alert(`${ecoId.length}개 저장 완료 메인페이지로 이동합니다.`);
+          naviGate("/dailymissionMain");
         }
       });
     }
   };
 
+  /**
+   * 즐겨찾기에서 미션 등록하는 함수.
+   */
+  const favoMissionSub = (id, faId) => {
+    faIdArr.push(faId);
+    dispatch(postMission({ id, dailyMissionList: faIdArr })).then((res) => {
+      if (res.payload?.status === 200) {
+        alert("성공~");
+      }
+    });
+  };
+
+  /**
+   * 즐겨찾기 목록에서 삭제 하기 위한 함수.
+   */
+  const onDeleButton = (id, favoriteBoolean, faId, favoriteTrue) => {
+    if (window.confirm("미션을 삭제 하시겠습니까?")) {
+      dispatch(
+        putFavorite({
+          id,
+          likeFlag: favoriteBoolean,
+          missionType: favoriteTrue,
+          missionId: faId,
+        })
+      ).then((res) => {
+        if (res.payload.status === 200) {
+          setFaDelete(!faDelete);
+        }
+      });
+      alert("삭제 완료!");
+    } else {
+      alert("포기하지 말고 화이팅!");
+    }
+  };
+
+  //console.log("TEST ====> ", test);
+  // favoriteArr.id는 미션 아이디랑 같다.
+  // console.log("즐겨찾기 미션 아이디 찾기 ===>", favoriteArr);
   return (
     <div className={styles.zero}>
-      {/* 최 상단 글 */}
       <div className={styles.Font}>
         <p>오늘은 어떤 도전을 해볼까?</p>
       </div>
-      {/* 최 상단 글 end*/}
-
-      {/* 트렌딩 - 인기 검색어 확인 */}
       <fieldset>
         <legend className={styles.word}>Trending</legend>
         <span className={styles.trending}>텀블러 사용해서 지구 지키기</span>
       </fieldset>
-      {/* 트렌딩 - 인기 검색어 확인 end*/}
 
-      {/* 기본 미션 + 커스텀 미션 즐겨찾기 */}
       <div>
         <div className={styles.faHeading}>
           <span className={styles.basicMission}>즐겨찾기</span>
         </div>
         <div>
-          {arrFavorites.map((it) => (
-            <DailyMissionFavoritesList key={it.id} content={it.content} id={it.id}></DailyMissionFavoritesList>
+          {favoriteArr.map((it, idx) => (
+            <div key={idx}>
+              {it.title}
+              <button
+                onClick={() => {
+                  const faId = it.id;
+                  favoMissionSub(id, faId);
+                }}
+              >
+                등록
+              </button>
+              <button
+                onClick={() => {
+                  const faId = it.id;
+                  onDeleButton(id, favoriteBoolean, faId, favoriteTrue);
+                }}
+              >
+                삭제
+              </button>
+            </div>
           ))}
         </div>
       </div>
-      {/* 기본 미션 + 커스텀 미션 즐겨찾기 end*/}
 
-      {/* 기본 버튼 + 커스텀 버튼 */}
+      {/* <div style={{ height: "700px", overflow: "auto" }}>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadFunc}
+          hasMore={true||false}
+          loader={<div className="loader" key={0}>Loading...</div>}
+          useWindow={false}
+        ></InfiniteScroll>
+      </div> */}
+
       <div className={styles.heading}>
         <span
           className={styles.basicMission}
@@ -111,7 +174,6 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
             getList(true);
           }}
         >
-          {" "}
           기본
         </span>
         <span
@@ -120,19 +182,26 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
             getList(false);
           }}
         >
-          {" "}
-          내목록{" "}
+          내목록
         </span>
       </div>
-      {/* 기본 버튼 + 커스텀 버튼 end */}
 
-      {/* 미션 리스트 불러오기 */}
       <div>
         {list === true ? (
-          <div>
+          <div className={styles.scrollMission}>
             {ecomissionList.map((it) => (
-              <DailyEcoMissionitem key={it.id} content={it.title} id={it.id} onCreate={onCreate} onEco={onEco} onFavorites={onFavorites} />
-              // <DailyEcoMissionitem key={it.id} content={it.content} id={it.id} onCreate={onCreate} onEco={onEco} onFavorites={onFavorites} />
+              <DailyEcoMissionitem
+                key={it.id}
+                content={it.title}
+                ecoId={it.id}
+                onCreate={onCreate}
+                id={id}
+                category={it.category}
+                cnt={cnt}
+                setCnt={setCnt}
+                faAdd={faAdd}
+                setFaAdd={setFaAdd}
+              />
             ))}
           </div>
         ) : (
@@ -141,19 +210,17 @@ const DailyEcoMissionList = ({ id, ecomissionList }) => {
           </div>
         )}
       </div>
-      {/* 미션 리스트 불러오기 end */}
 
-      <div>
-        {/* 미션 카운트 */}
-        <div className={styles.onmove}>
-          <p className={styles.btn}>{ecoCount}</p>
+      {list === true ? (
+        <div>
+          <div className={styles.onmove}>
+            <p className={styles.btn}>{ecoCount}</p>
+          </div>
+          <GreenBtn onClick={onMissionSub}> 선택한 미션 추가하기</GreenBtn>
         </div>
-        {/* 미션 카운트 end*/}
-
-        {/* 버튼 클릭 시 데일리 미션 메인으로 항목 이동 */}
-        <GreenBtn onClick={onMissionSub}> 선택한 미션 추가하기</GreenBtn>
-        {/* 버튼 클릭 시 데일리 미션 메인으로 항목 이동 end*/}
-      </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

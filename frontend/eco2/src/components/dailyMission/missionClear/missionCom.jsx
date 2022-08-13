@@ -1,7 +1,19 @@
 import React from "react";
 import styles from "./missionCom.module.css";
+import { Link, useNavigate } from "react-router-dom";
 
 const MissionCom = () => {
+  const naviGate = useNavigate();
+
+  const goTree = () => {
+    if (window.confirm("인증하기 완료! 나뭇잎 꾸미러 가기")) {
+      naviGate("/mainTree");
+    }
+  };
+
+  const goMission = () => {
+    naviGate("/dailymissionmain");
+  };
   return (
     <div className={styles.header}>
       <div className={styles.headerTag}>
@@ -29,10 +41,10 @@ const MissionCom = () => {
         <input type="textarea" id="conte" />
       </div>
       <div>
-        <button> 인증 하기</button>
+        <button onClick={goTree}> 인증 하기</button>
       </div>
       <div>
-        <button> 나중에 하기</button>
+        <button onClick={goMission}> 돌아가기</button>
       </div>
     </div>
   );

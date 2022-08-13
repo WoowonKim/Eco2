@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Econame.module.css";
 import { WarningText } from "../../components/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ecoName, ecoNameVerify } from "../../store/user/userSlice";
-import { getUserEmail } from "../../store/user/common";
+import {
+  getUserEmail,
+  getUserName,
+  setUserName,
+} from "../../store/user/common";
 import { nameLengthValidation } from "../../utils";
 
 const Econame = () => {
@@ -14,8 +18,11 @@ const Econame = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const email = getUserEmail();
+  const autoLogin = sessionStorage.getItem("userId") ? false : true;
+  const redirectPath = location.state?.path || "/mainTree";
 
   const ecoNameValidation = (e) => {
     setEconame(e.target.value);
@@ -39,13 +46,24 @@ const Econame = () => {
     dispatch(ecoName({ econame, email }))
       .then((res) => {
         if (res.payload.status === 200) {
-          navigate("/mainTree");
+          setUserName(autoLogin, econame);
+          console.log(res.payload);
+          navigate(redirectPath, { replace: true });
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    if (!!getUserName()) {
+      navigate("/mainTree");
+    }
+    if (!getUserEmail()) {
+      navigate("/regist");
+    }
+  }, []);
   return (
     <div className={styles.login}>
       <img

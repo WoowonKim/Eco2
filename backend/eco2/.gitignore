@@ -37,6 +37,11 @@ out/
 .vscode/
 
 application-api-key.properties
-fb_key.json
-serviceAccountKey.json
+path/to/serviceAccountKey.json
 *.p12
+
+img/profile_img/**
+img/reward_img/**
+img/post_img/**
+!img/profile_img/default.jpg
+!img/reward_img/rewardImage.jpg

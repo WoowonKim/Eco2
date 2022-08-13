@@ -1,0 +1,28 @@
+.list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.text {
+  font-size: 10px;
+  margin: 5px;
+}
+
+.urgent {
+  color: red;
+}
+
+.modify {
+  color: #ada9a9;
+}
+
+.line {
+  border: 0.5px solid #dadada;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
