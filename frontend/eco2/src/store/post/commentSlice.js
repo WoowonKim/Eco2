@@ -88,7 +88,9 @@ export const commentDetail = createAsyncThunk(
 
 export const commentSlice = createSlice({
   name: "comment",
-  initialState: [],
+  initialState: {
+    comment:{},
+  },
   reducers: {},
   extraReducers: {
     [commentList.fulfilled]: (state, action) => {
@@ -126,6 +128,7 @@ export const commentSlice = createSlice({
     [commentDetail.fulfilled]: (state, action) => {
       console.log("commentDetail fulfilled", action.payload);
       if (action.payload.status === 200) {
+        state.comment = action.payload.comment;
       }
     },
     [commentDetail.rejected]: (state, action) => {

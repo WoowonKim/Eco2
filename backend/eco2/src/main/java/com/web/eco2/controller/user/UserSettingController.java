@@ -195,13 +195,27 @@ public class UserSettingController {
 
     @ApiOperation(value = "친구 삭제", response = Object.class)
     @DeleteMapping("/friend")
-    public ResponseEntity<?> deleteFriend(@RequestParam("id") Long id, @RequestParam("friendId") Long friendId) {
+    public ResponseEntity<?> deleteFriend(@RequestBody FriendRequestDto friendRequestDto) {
+//    public ResponseEntity<?> deleteFriend(@RequestParam("id") Long id, @RequestParam("friendId") Long friendId) {
         try {
             log.info("친구 삭제 API 호출");
-            friendService.deleteFriend(id, friendId);
+            friendService.deleteFriend(friendRequestDto.getId(), friendRequestDto.getFriendId());
             return ResponseHandler.generateResponse("친구 삭제에 성공하였습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("친구 삭제 API 에러", e);
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ApiOperation(value = "친구 여부 조회", response = Object.class)
+    @GetMapping("/friend/{id}/{friendId}")
+    public ResponseEntity<?> isFriend(@PathVariable("id") Long id, @PathVariable("friendId") Long friendId) {
+        try {
+            log.info("친구 여부 조회 API 호출");
+            boolean isFriend = friendService.isFriend(id, friendId);
+            return ResponseHandler.generateResponse("친구 여부 조회에 성공하였습니다.", HttpStatus.OK, "isFriend", isFriend);
+        } catch (Exception e) {
+            log.error("친구 여부 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }

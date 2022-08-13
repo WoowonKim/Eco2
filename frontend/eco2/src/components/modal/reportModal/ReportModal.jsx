@@ -12,7 +12,7 @@ const ReportModal = ({
 }) => {
   const [hidden, setHidden] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(5);
   const displayType = hidden ? styles.hidden : null;
   const [message, setMessage] = useState("");
 
@@ -42,7 +42,7 @@ const ReportModal = ({
                 className={styles.select}
                 onChange={(e) => setSelected(e.target.value)}
               >
-                <option className={styles.option} value="">
+                <option className={styles.option} value="5">
                   신고 유형 선택
                 </option>
                 <option className={styles.option} value="1">
@@ -75,6 +75,7 @@ const ReportModal = ({
                   // setHidden(true);
                 }}
                 className={styles.reportButton}
+                disabled={message.trim().length == 0}
               >
                 신고
               </button>

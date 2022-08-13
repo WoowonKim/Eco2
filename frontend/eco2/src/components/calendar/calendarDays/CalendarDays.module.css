@@ -1,7 +1,7 @@
 .days {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   font-weight: 600;
   font-size: 0.65em;
@@ -11,9 +11,10 @@
 }
 
 .col {
+  display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   background-color: #d2eabaa8;
   padding: 1px 3px;
   width: 50px;

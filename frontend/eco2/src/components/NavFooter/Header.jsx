@@ -1,14 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserEmail, getUserId } from "../../store/user/common";
+import {
+  getAccessToken,
+  getUserEmail,
+  getUserId,
+} from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(getUserId());
+  const [imgSrc, setImgSrc] = useState("");
+
   let navigate = useNavigate();
 
   useEffect(() => {
     setUserId(getUserId());
+    if (!userId) {
+      return;
+    }
+    const headers = new Headers();
+    headers.append("Auth-accessToken", getAccessToken());
+    const options = {
+      method: "GET",
+      headers: headers,
+    };
+    fetch(`http://localhost:8002/img/profile/${userId}`, options)
+      .then((res) => {
+        res.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          setImgSrc(url);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [userId]);
   return (
     <header className={styles.Header}>

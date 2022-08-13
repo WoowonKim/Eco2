@@ -14,30 +14,35 @@ const NoticeItem = ({
 }) => {
   return (
     <Link to={`/notice/${id}`} className={styles.link}>
-      <div className={styles.list}>
-        <div className={styles.leftContent}>
+      <tr className={styles.list} align="start">
+        <td
+          width="10%"
+          className={`${styles.number} ${styles.text} ${
+            urgentFlag ? styles.urgent : null
+          }`}
+        >
+          {urgentFlag ? "긴급" : id}
+        </td>
+        <td width="45%" className={`${styles.text}`}>
+          {urgentFlag && (
+            <i className={`fa-solid fa-exclamation ${styles.urgent}`}></i>
+          )}{" "}
+          {""}
+          {title}
           <span
-            className={`${styles.number} ${styles.text} ${
-              urgentFlag ? styles.urgent : null
-            }`}
+            className={`${styles.text} ${modifyFlag ? styles.modify : null}`}
           >
-            {urgentFlag ? "긴급" : id}
+            {modifyFlag ? "수정" : null}
           </span>
-          <span className={`${styles.text}`}>
-            {title}
-            <span
-              className={`${styles.text} ${modifyFlag ? styles.modify : null}`}
-            >
-              {modifyFlag ? "수정" : null}
-            </span>
-          </span>
-        </div>
-        <div className={styles.rightContent}>
-          <span className={`${styles.text}`}>{registTime}</span>
-          <span className={`${styles.text}`}>{hit}</span>
-        </div>
-      </div>
-      <hr className={styles.line} />
+        </td>
+        <td width="28%" className={`${styles.text}`}>
+          {registTime.split(" ")[0]}
+        </td>
+        <td width="10%" className={`${styles.text}`}>
+          {hit}
+        </td>
+      </tr>
+      {/* <hr className={styles.line} /> */}
     </Link>
   );
 };

@@ -13,9 +13,12 @@ const CommentForm = ({
   closeModal,
   userId,
   setTest,
+  type,
 }) => {
   const [value, setValue] = useState("");
   const [editValue, setEditValue] = useState(content);
+
+  const buttonType = type ? styles.largeButton : styles.smallButton;
   const dispatch = useDispatch();
 
   const onSubmit = (e) => {
@@ -63,12 +66,21 @@ const CommentForm = ({
         value={content ? editValue : value}
         type="text"
         onChange={onChange}
-        className={styles.input}
+        className={`${buttonType} ${styles.input}`}
         placeholder="댓글을 작성해주세요"
       />
-      <button className={styles.button} type="submit">
+      <button
+        className={styles.button}
+        type="submit"
+        disabled={value.trim().length == 0 || editValue.trim().length == 0}
+      >
         작성
       </button>
+      {!type && (
+        <button onClick={closeModal} className={styles.closeButton}>
+          닫기
+        </button>
+      )}
     </form>
   );
 };

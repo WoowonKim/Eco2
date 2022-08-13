@@ -33,8 +33,8 @@ const ChattModalItem = ({
           onClick={() => {
             dispatch(createRoom({ userId, id })).then((res) => {
               if (res.payload?.status === 200) {
+                navigate(`/chatting/room`, { state: { roomId: res.payload.roomId } });
                 window.location.reload(`/chatting/room`);
-                // navigate(`/chatting/room`, { state: { roomId: res.payload.roomId } });
               }
             });
           }} className={`${styles.cancleButton}`}> 채팅</button>

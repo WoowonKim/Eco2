@@ -10,8 +10,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
-import { profileImg } from "../../store/img/imgSlice";
-import fetcher from "../../store/fetchService";
+// import { postImage, profilImage } from "../../store/fetchService";
 import { friendRequest, friends } from "../../store/user/accountSlice";
 import { createRoom } from "../../store/chat/chattingSlice";
 import PostModal from "../../components/modal/postModal/PostModal";
@@ -20,14 +19,16 @@ import PostModal from "../../components/modal/postModal/PostModal";
 const Profile = () => {
   const [userSetting, setUserSetting] = useState(1);
   const [socialType, setSocialType] = useState(0);
-  const [userId, setUserId] = useState(0);
+  const [userId, setUserId] = useState(getUserId());
   const [userName, setUserName] = useState(0);
   const [imgSrc, setImgSrc] = useState("");
+  const [missionImgSrc, setMissionImgSrc] = useState("");
   const [missionList, setMissionList] = useState([]);
   const [questList, setQuestList] = useState([]);
   const [friendList, setFriendList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
+  // const [admin, setAdmin] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,6 +48,10 @@ const Profile = () => {
       setMissionList(res.payload.postList);
       setQuestList(res.payload.questPostList);
       setSocialType(res.payload.user.socialType);
+
+      // if (res.payload.user.role === "[ROLE_ADMIN]") {
+      //   setAdmin(true);
+      // }
     });
 
     // 친구조회
@@ -55,7 +60,6 @@ const Profile = () => {
         setFriendList(res.payload?.friendList);
       }
     });
-
     // const options = {
     //   headers: {
     //     "Auth-accessToken": getAccessToken(),
@@ -68,21 +72,14 @@ const Profile = () => {
     //     .then((res) => res.blob())
     //     .then((blob) => setImgSrc(URL.createObjectURL(blob)));
   }, []);
+
   return (
     <div className={styles.container}>
       <Calendar id={userId} />
       <div className={styles.userInfo}>
-        {/* <button
-          onClick={() => {
-            dispatch(test({ id: userId }));
-          }}
-        >
-          test
-        </button> */}
         <div className={styles.user}>
           <img
-            src={`http://localhost:8002/img/profile/${params.userId}`}
-            // src={`${imgSrc}`}
+            src={`http://localhost:8002/img/profile/${userId}`}
             // alt="profileImg"
             className={styles.profileImg}
           />
@@ -95,6 +92,7 @@ const Profile = () => {
                     socialType: socialType,
                     name: getUserName(),
                     userId,
+                    // admin,
                   },
                 })
               }
@@ -124,6 +122,7 @@ const Profile = () => {
                         navigate("/chatting/room", {
                           state: { roomId: res.payload.roomId },
                         });
+                        window.location.reload(`/chatting/room`);
                       }
                     })
                     .catch((err) => console.log(err));
@@ -134,7 +133,7 @@ const Profile = () => {
             </div>
           )}
         </div>
-        {visible && modalType === "친구" && (
+        {visible && (
           <PostModal
             title={"친구 신청"}
             content={"친구 신청을 하시겠습니까?"}
@@ -176,7 +175,7 @@ const Profile = () => {
             <img
               key={mission.id}
               src={`http://localhost:8002/img/post/${mission.id}`}
-              alt="profileImg"
+              alt="missionImg"
               className={styles.missionImg}
               onClick={() => navigate(`/post/${mission.id}`)}
             />

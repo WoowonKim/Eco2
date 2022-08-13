@@ -22,6 +22,7 @@ import { nameLengthValidation, passwordValidationCheck } from "../../utils";
 import Settings from "./settings/Settings";
 import Notice from "./notice/Notice";
 import PostModal from "../../components/modal/postModal/PostModal";
+import axiosService from "../../store/axiosService";
 
 const UserSettings = () => {
   const [userSetting, setUserSetting] = useState(1);
@@ -41,6 +42,7 @@ const UserSettings = () => {
   const [fileImage, setFileImage] = useState("");
   const [file, setFile] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
+  const [originalImg, setOriginalImg] = useState("");
 
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
@@ -57,7 +59,7 @@ const UserSettings = () => {
   const displayType3 = userSetting === 3 ? styles.selectedMenu : null;
 
   const handlePassword = () => {
-    dispatch(passwordCheck({ email, password }))
+    dispatch(passwordCheck({ email, password: password.trim() }))
       .then((res) => {
         if (res.payload?.status === 200) {
           setPasswordForm(true);
@@ -68,19 +70,22 @@ const UserSettings = () => {
 
   const ecoNameValidation = (e) => {
     setName(e.target.value);
-    if (nameLengthValidation(e.target.value)) {
+    if (nameLengthValidation(e.target.value.trim())) {
       setNameMessage("3글자 이상 8글자 이하로 입력해주세요.");
       setIsName(false);
     } else {
-      dispatch(ecoNameVerify({ econame: e.target.value })).then((res) => {
-        if (res.payload.status === 200) {
-          setNameMessage("올바른 이름 형식입니다 :)");
-          setIsName(true);
-        } else {
-          setIsName(false);
-          setNameMessage(`${res.payload.msg}`);
+      dispatch(ecoNameVerify({ econame: e.target.value.trimStart() })).then(
+        (res) => {
+          if (res.payload.status === 200) {
+            console.log(e.target.value.trim());
+            setNameMessage("올바른 이름 형식입니다 :)");
+            setIsName(true);
+          } else {
+            setIsName(false);
+            setNameMessage(`${res.payload.msg}`);
+          }
         }
-      });
+      );
     }
   };
 
@@ -98,7 +103,7 @@ const UserSettings = () => {
   };
 
   const passwordConfirmValidation = (e) => {
-    const passwordConfirmCurrent = e.target.value;
+    const passwordConfirmCurrent = e.target.value.trim();
     setPassword2(passwordConfirmCurrent);
 
     if (newpassword === passwordConfirmCurrent) {
@@ -116,17 +121,30 @@ const UserSettings = () => {
   };
 
   const profileImg = () => {
-    dispatch(profileImgChange({ email, img: file })).then((res) => {
-      if (res.payload.status === 200) {
-        // window.location.reload("/user/settings");
-        setProfileEdit(false);
+    dispatch(profileImgChange({ email, img: file ? file : originalImg })).then(
+      (res) => {
+        if (res.payload.status === 200) {
+          setProfileEdit(false);
+        }
       }
-    });
+    );
   };
 
   useEffect(() => {
     setName(getUserName());
+    setUserSetting(location.state?.notice === 3 ? 3 : 1);
     setAutoLogin(localStorage.getItem("email") ? true : false);
+
+    axiosService({
+      url: `http://localhost:8002/img/profile/${getUserId()}`,
+      method: "GET",
+      responseType: "blob",
+    }).then((res) => {
+      const file = new File([res.data], "profileImg.png", {
+        type: "image/png",
+      });
+      setOriginalImg(file);
+    });
   }, []);
 
   return (
@@ -228,11 +246,13 @@ const UserSettings = () => {
               />
               <button
                 onClick={() => {
-                  dispatch(ecoName({ email, econame: name })).then((res) => {
-                    if (res.payload?.status === 200) {
-                      setUserName(autoLogin, name);
+                  dispatch(ecoName({ email, econame: name.trim() })).then(
+                    (res) => {
+                      if (res.payload?.status === 200) {
+                        setUserName(autoLogin, name.trim());
+                      }
                     }
-                  });
+                  );
                 }}
                 disabled={!isName}
                 className={styles.passwordFormButton}
@@ -267,8 +287,6 @@ const UserSettings = () => {
               <hr className={styles.line} />
               <button
                 onClick={() => {
-                  // dispatch(userActions.logout());
-                  // navigate("/");
                   setVisible(!visible);
                   setModalType("로그아웃");
                 }}
@@ -303,7 +321,7 @@ const UserSettings = () => {
                     id="passwordCheck"
                     type="password"
                     placeholder="비밀번호"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value.trimStart())}
                     className={styles.passwordFormInput}
                   />
                   <button
@@ -317,9 +335,6 @@ const UserSettings = () => {
                   <hr className={styles.line} />
                   <button
                     onClick={() => {
-                      // dispatch(userActions.logout());
-                      // navigate("/");
-
                       setVisible(!visible);
                       setModalType("로그아웃");
                     }}
@@ -335,6 +350,7 @@ const UserSettings = () => {
                     id="newPassword"
                     type="password"
                     onChange={passwordValidation}
+                    value={"" || newPassword}
                     placeholder="새 비밀번호"
                     className={styles.passwordFormInput}
                   />
@@ -357,7 +373,9 @@ const UserSettings = () => {
                   <button
                     className={styles.passwordFormButton}
                     onClick={() =>
-                      dispatch(passwordChange({ email, password }))
+                      dispatch(
+                        passwordChange({ email, password: password.trim() })
+                      )
                     }
                     type="button"
                     disabled={!(isPassword && isPasswordConfirm)}
@@ -406,7 +424,9 @@ const UserSettings = () => {
       ) : userSetting === 2 ? (
         <Settings email={email} />
       ) : (
-        <Notice />
+        <Notice
+        // admin={location.state?.admin}
+        />
       )}
     </div>
   );

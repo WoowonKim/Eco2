@@ -6,9 +6,9 @@ const ChattingMessage = ({ chattingMessages }) => {
   return (
     <div>
       {chattingMessages &&
-        chattingMessages.map((chattingMessage) => (
+        chattingMessages.map((chattingMessage, i) => (
           <ChattingMessageItem
-            key={chattingMessage.id}
+            key={i}
             id={chattingMessage.id}
             message={chattingMessage.message}
             user={chattingMessage.user.name}

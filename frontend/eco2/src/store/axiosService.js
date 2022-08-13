@@ -1,6 +1,11 @@
 import axios from "axios";
 // import fetcher from "./fetchService";
-import { getUserEmail, removeUserSession, setAccessToken } from "./user/common";
+import {
+  getAccessToken,
+  getUserEmail,
+  removeUserSession,
+  setAccessToken,
+} from "./user/common";
 
 const axiosService = axios.create({
   baseURL: process.env.REACT_APP_BE_HOST,
@@ -8,70 +13,70 @@ const axiosService = axios.create({
 });
 
 // axios intercepter를 활용하여 accessToken 검증 및 재발급
-// let isTokenRefreshing = false;
-// let refreshSubscribers = [];
 
-// const onTokenRefreshed = (accessToken) => {
-//   refreshSubscribers.map((callback) => callback(accessToken));
-// };
+let isTokenRefreshing = false;
+let refreshSubscribers = [];
 
-// const addRefreshSubscriber = (callback) => {
-//   refreshSubscribers.push(callback);
-// };
+const onTokenRefreshed = (accessToken) => {
+  refreshSubscribers.map((callback) => callback(accessToken));
+};
 
-// axiosService.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async (error) => {
-//     const {
-//       config,
-//       response: { status },
-//     } = error;
-//     const originalRequest = config;
+const addRefreshSubscriber = (callback) => {
+  refreshSubscribers.push(callback);
+};
 
-//     if (status === 401) {
-//       if (!isTokenRefreshing) {
-//         isTokenRefreshing = true;
+axiosService.interceptors.request.use(
+  (req) => {
+    req.headers["Auth-accessToken"] = getAccessToken();
+    // console.log(getAccessToken());
+    return req;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
 
-//         const { data } = await axiosService
-//           .post("/user/newaccesstoken", {
-//             email: getUserEmail(),
-//           })
-//           .then((res) => {
-//             console.log(res.data.accessToken);
-//             isTokenRefreshing = false;
+axiosService.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  (err) => {
+    const originalReq = err.config;
+    const status = err.response ? err.response.status : null;
+    // const originalRequest = config;
 
-//             axiosService.defaults.headers.common[
-//               "Auth-accessToken"
-//             ] = `${res.data.accessToken}`;
-//             setAccessToken(res.data.accessToken);
-
-//             onTokenRefreshed(res.data.accessToken);
-
-//             // fetcher(process.env.REACT_APP_BE_HOST, {
-//             //   headers: { "Auth-accessToken": `${newAccessToken}` },
-//             // });
-//           })
-//           .catch((err) => {
-//             console.log(err);
-//             // if (err) {
-//             //   removeUserSession();
-//             //   window.location.replace("/");
-//             // }
-//           });
-//       }
-//       const retryOriginalRequest = new Promise((resolve) => {
-//         addRefreshSubscriber((accessToken) => {
-//           console.log(originalRequest.headers);
-//           originalRequest.headers.common["Auth-accessToken"] = `${accessToken}`;
-//           resolve(axiosService(originalRequest));
-//         });
-//       });
-//       return retryOriginalRequest;
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+    if (status === 401) {
+      if (!isTokenRefreshing) {
+        isTokenRefreshing = true;
+        axiosService
+          .post(`/user/newaccesstoken`, {
+            email: getUserEmail(),
+          })
+          .then((response) => {
+            isTokenRefreshing = false;
+            if (!!sessionStorage.getItem("email")) {
+              setAccessToken(false, response.data.accessToken);
+            } else {
+              setAccessToken(true, response.data.accessToken);
+            }
+            console.log("new accesstoken", response.data.accessToken);
+            onTokenRefreshed(response.data.accessToken);
+          })
+          .catch((err) => {
+            removeUserSession();
+            window.location.replace("/");
+          });
+      }
+      const retryOriginalRequest = new Promise((resolve) => {
+        addRefreshSubscriber((accessToken) => {
+          originalReq.headers["Auth-accessToken"] = accessToken;
+          resolve(axiosService(originalReq));
+        });
+      });
+      return retryOriginalRequest;
+    }
+    return Promise.reject(err);
+  }
+);
 
 export default axiosService;
