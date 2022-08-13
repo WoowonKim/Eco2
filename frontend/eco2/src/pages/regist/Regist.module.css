@@ -89,10 +89,11 @@
 }
 
 .buttonEmail {
-  width: 15%;
+  width: 55px;
   height: 35px;
   border: 1px solid #dadada;
   border-radius: 8px;
+  margin-left: 5px;
   cursor: pointer;
   background-color: #adc178;
   color: white;

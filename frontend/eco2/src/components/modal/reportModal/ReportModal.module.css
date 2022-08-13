@@ -92,9 +92,15 @@
   margin-right: 30px;
 }
 
-.reportButton:hover {
+.reportButton:hover:enabled {
   background-color: red;
   color: #e1eef6;
+}
+
+.reportButton:disabled {
+  background-color: #dadada;
+  border: 2px solid #dadada;
+  /* color: black; */
 }
 
 .cancleButton {

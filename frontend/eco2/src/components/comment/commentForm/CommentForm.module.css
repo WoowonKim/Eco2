@@ -26,3 +26,28 @@
   margin-top: 10px;
   padding: 0;
 }
+
+.button:disabled {
+  background-color: #dadada;
+}
+
+.closeButton {
+  background: #adc178;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  width: 15%;
+  height: 30px;
+  font-size: x-small;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  padding: 0;
+}
+
+.smallButton {
+  width: 70%;
+}
+.largeButton {
+  width: 80%;
+}
