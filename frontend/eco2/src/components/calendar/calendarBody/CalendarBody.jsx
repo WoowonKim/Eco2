@@ -24,14 +24,7 @@ const CalendarBody = ({
   const endDate = endOfWeek(monthEnd);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalDay, setModalDay] = useState(0);
   const [clickedDay, setClickedDay] = useState(0);
-
-  const getRandomNumber = () => {
-    const min = Math.ceil(1);
-    const max = Math.floor(6);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
 
   const rows = [];
   let days = [];
@@ -79,7 +72,7 @@ const CalendarBody = ({
           }}
           key={day}
         >
-          <p
+          <span
             className={`${styles.text} ${
               format(currentMonth, "M") !== format(day, "M")
                 ? styles.not_valid
@@ -87,14 +80,14 @@ const CalendarBody = ({
             }`}
           >
             {formattedDate}
-          </p>
+          </span>
           {!!rewardDays[formattedDate] && (
             <img
               src={
                 process.env.PUBLIC_URL +
                 "/tree_leaves/" +
                 "Leaf" +
-                getRandomNumber() +
+                ((rewardDays[formattedDate] % 6) + 1) +
                 ".png"
               }
               alt=""

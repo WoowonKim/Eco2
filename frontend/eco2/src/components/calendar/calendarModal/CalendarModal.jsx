@@ -6,6 +6,7 @@ import axiosService from "../../../store/axiosService";
 
 const CalendarModal = ({ calendarId, month, day, closeModal }) => {
   const [hidden, setHidden] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
   const displayType = hidden ? styles.hidden : null;
   const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
+      setImgUrl(url);
       link.setAttribute("download", "image.jpg");
       document.body.appendChild(link);
       link.click();
@@ -40,7 +42,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
         content: {
           title: "미션 보상 완료",
           description: "오늘의 미션 완료를 축하드립니다 :D",
-          imageUrl: `http://localhost:8002/img/reward/${calendarId}`,
+          imageUrl: imgUrl,
           link: {
             mobileWebUrl: `http://localhost:3000/profile/${getUserId()}`,
             webUrl: `http://localhost:3000/profile/${getUserId()}`,

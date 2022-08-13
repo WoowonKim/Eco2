@@ -28,6 +28,7 @@ const Profile = () => {
   const [friendList, setFriendList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
+  // const [admin, setAdmin] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,6 +48,10 @@ const Profile = () => {
       setMissionList(res.payload.postList);
       setQuestList(res.payload.questPostList);
       setSocialType(res.payload.user.socialType);
+
+      // if (res.payload.user.role === "[ROLE_ADMIN]") {
+      //   setAdmin(true);
+      // }
     });
 
     // 친구조회
@@ -57,21 +62,6 @@ const Profile = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   if (!userId) {
-  //     return;
-  //   }
-  //   profilImage(userId)
-  //     .then((res) => {
-  //       res.arrayBuffer().then(function (buffer) {
-  //         const url = window.URL.createObjectURL(new Blob([buffer]));
-  //         setImgSrc(url);
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [userId]);
   return (
     <div className={styles.container}>
       <Calendar id={userId} />
@@ -91,6 +81,7 @@ const Profile = () => {
                     socialType: socialType,
                     name: getUserName(),
                     userId,
+                    // admin,
                   },
                 })
               }
@@ -130,7 +121,7 @@ const Profile = () => {
             </div>
           )}
         </div>
-        {visible && modalType === "친구" && (
+        {visible && (
           <PostModal
             title={"친구 신청"}
             content={"친구 신청을 하시겠습니까?"}
