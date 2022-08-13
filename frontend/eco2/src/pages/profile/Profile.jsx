@@ -11,7 +11,11 @@ import { userInformation } from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
 // import { postImage, profilImage } from "../../store/fetchService";
-import { friendRequest, friends } from "../../store/user/accountSlice";
+import {
+  friendRequest,
+  friends,
+  isFriend,
+} from "../../store/user/accountSlice";
 import { createRoom } from "../../store/chat/chattingSlice";
 import PostModal from "../../components/modal/postModal/PostModal";
 // import { test } from "../../store/user/accountSlice";
@@ -28,6 +32,7 @@ const Profile = () => {
   const [friendList, setFriendList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [friend, setFriend] = useState(null);
   // const [admin, setAdmin] = useState(false);
 
   const navigate = useNavigate();
@@ -62,6 +67,18 @@ const Profile = () => {
     });
   }, [params.userId]);
 
+  useEffect(() => {
+    // 다른 유저 프로필 -> 나와 친구인지 판별
+    if (getUserId() !== userId) {
+      dispatch(isFriend({ id: getUserId(), friendId: userId })).then((res) => {
+        if (res.payload?.status === 200) {
+          setFriend(res.payload.isFriend);
+        } else {
+          setFriend(res.payload.isFriend);
+        }
+      });
+    }
+  }, [friend, userId]);
   return (
     <div className={styles.container}>
       <Calendar id={userId} />
@@ -91,15 +108,17 @@ const Profile = () => {
             </button>
           ) : (
             <div className={styles.buttonGroup}>
-              <button
-                className={styles.button}
-                onClick={() => {
-                  setVisible(!visible);
-                  setModalType("친구");
-                }}
-              >
-                <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
-              </button>
+              {!friend && (
+                <button
+                  className={styles.button}
+                  onClick={() => {
+                    setVisible(!visible);
+                    setModalType("친구");
+                  }}
+                >
+                  <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
+                </button>
+              )}
               <button
                 className={styles.button}
                 onClick={() => {

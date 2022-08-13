@@ -19,7 +19,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      setImgUrl(url);
+      setImgUrl(new Blob([res.data]));
       link.setAttribute("download", "image.jpg");
       document.body.appendChild(link);
       link.click();

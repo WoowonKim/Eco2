@@ -35,10 +35,27 @@ export const friendDelete = createAsyncThunk(
   "accountSlice/friendDelete",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await axiosService.put("/account/friend", {
-        id: args.id,
-        friendId: args.friendId,
+      const response = await axiosService.delete("/account/friend", {
+        data: {
+          id: args.id,
+          friendId: args.friendId,
+        },
       });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 친구 여부 조회
+export const isFriend = createAsyncThunk(
+  "accountSlice/isFriend",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.get(
+        `/account/friend/${args.id}/${args.friendId}`
+      );
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -126,6 +143,12 @@ export const accountSlice = createSlice({
     },
     [friendDelete.rejected]: (state, action) => {
       console.log("friendDelete rejected", action.payload);
+    },
+    [isFriend.fulfilled]: (state, action) => {
+      console.log("isFriend fulfilled", action.payload);
+    },
+    [isFriend.rejected]: (state, action) => {
+      console.log("isFriend rejected", action.payload);
     },
     [accountSetting.fulfilled]: (state, action) => {
       console.log("accountSetting fulfilled", action.payload);

@@ -10,11 +10,12 @@ const FriendItem = ({ friendEmail, friendId, friendName }) => {
   const dispatch = useDispatch();
 
   const handleFriendDelete = () => {
-    dispatch(friendDelete({ id: getUserId(), friendId })).then((res) => {
-      if (res.payload.status === 200) {
-        console.log(res.payload);
+    dispatch(friendDelete({ id: getUserId(), friendId: friendId })).then(
+      (res) => {
+        if (res.payload.status === 200) {
+        }
       }
-    });
+    );
   };
   return (
     <div className={styles.container}>

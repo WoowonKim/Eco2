@@ -140,15 +140,6 @@ const CommentItem = ({
               closeModal={() => setModalVisible(!modalVisible)}
             />
           )}
-          {/* <div>
-          <button 
-            onClick={() => {setVisible(!visible)}}
-            className={styles.editButton}
-          >
-            { visible ? '숨기기' : '수정' }
-          </button>
-          <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
-        </div> */}
         </li>
       )}
       {visible && (

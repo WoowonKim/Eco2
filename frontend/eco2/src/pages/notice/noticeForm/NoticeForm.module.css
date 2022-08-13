@@ -41,13 +41,8 @@
 .wrapper {
   display: flex;
   background: #fff;
-  /* height: 50px;
-  width: 200px; */
-  /* align-items: center;
-  justify-content: start; */
   border-radius: 5px;
   padding: 10px 0;
-  /* box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2); */
 }
 
 .wrapper .label {
@@ -56,7 +51,6 @@
   width: 70px;
   display: flex;
   align-items: center;
-  /* justify-content: space-evenly; */
   margin: 0 10px;
   border-radius: 5px;
   cursor: pointer;
