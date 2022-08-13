@@ -107,7 +107,7 @@ export const report = createAsyncThunk(
         retId: args.retId,
         posId: args.posId,
         comId: args.comId,
-        message: args.message
+        message: args.message,
       });
       return response.data;
     } catch (err) {
