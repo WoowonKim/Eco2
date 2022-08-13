@@ -34,7 +34,7 @@ const Header = () => {
           }}
         >
           <img
-            src={`http://localhost:8002/img/profile/${getUserId()}`}
+            src={process.env.REACT_APP_BE_HOST + `img/profile/${getUserId()}`}
             alt="profileImg"
             className={styles.profileImg}
           />
@@ -55,7 +55,7 @@ const Header = () => {
             navigate("/report");
           }}
         >
-        <i className="fa-solid">신고</i>
+          <i className="fa-solid">신고</i>
         </button>
       </nav>
     </header>
