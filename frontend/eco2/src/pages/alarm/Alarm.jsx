@@ -11,8 +11,6 @@ const Alarm = () => {
   const alarms = useSelector(selectCommonAlarms);
   const friendRequests = useSelector(selectFriendRequestAlarms);
 
-  console.log("Alarm");
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

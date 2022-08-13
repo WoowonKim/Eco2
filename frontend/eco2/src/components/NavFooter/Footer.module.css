@@ -29,6 +29,26 @@
   transition-property: box-shadow;
 }
 
-.icon:hover, .hvr-glow:focus, .hvr-glow:active {
+.icon:hover,
+.hvr-glow:focus,
+.hvr-glow:active {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+.btn {
+  margin-bottom: 0px;
+  background-color: #7dd6fc;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  margin: 0 auto;
+  font-size: 12px;
+  vertical-align: middle;
+
+  position: absolute;
+  right: 12px;
+  bottom: 30px;
+  /* line-height: 150px; */
 }
