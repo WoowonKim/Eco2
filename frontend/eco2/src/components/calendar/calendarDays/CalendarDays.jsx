@@ -12,6 +12,7 @@ const CalendarDays = () => {
       </div>
     );
   }
+
   return <div className={`${styles.days}`}>{days}</div>;
 };
 

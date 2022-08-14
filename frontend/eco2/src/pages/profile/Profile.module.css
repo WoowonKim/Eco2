@@ -52,6 +52,7 @@
 .friendIcon {
   color: black;
   font-size: smaller;
+  margin: 5px;
 }
 
 .missionList {
@@ -77,10 +78,13 @@
   justify-content: start;
   /* grid-template-columns: 1fr 1fr 1fr; */
   flex-wrap: wrap;
+  
 }
 
 .missionImg {
   width: 30%;
   margin: 5px;
   border: 1px solid #dadada;
+  border-radius: 5px;
+  height: 90px;
 }

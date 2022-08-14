@@ -43,6 +43,7 @@ const QuestModal = (props) => {
               <label>내용</label>
               <textarea
                 id="content"
+                className={styles.contentBox}
                 onChange={(e) => {
                   payload.content = e.target.value;
                 }}

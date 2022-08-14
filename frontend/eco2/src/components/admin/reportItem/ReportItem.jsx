@@ -22,13 +22,6 @@ const ReportItem = ({ id, count, post, commentId, postCategory }) => {
     } else if (postCategory === 5) {
       setCategory("재활용하기");
     }
-    if (commentId !== null) {
-      dispatch(commentDetail({ commentId: commentId })).then((res) => {
-        if (res.payload.status === 200) {
-          setComment(res.payload.comment);
-        }
-      });
-    }
   }, []);
 
   useEffect(() => {
@@ -39,7 +32,6 @@ const ReportItem = ({ id, count, post, commentId, postCategory }) => {
         }
       });
     }
-    console.log(post);
   }, []);
 
   return (

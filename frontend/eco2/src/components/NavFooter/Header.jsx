@@ -58,7 +58,11 @@ const Header = () => {
             navigate(`/profile/${getUserId()}`, { replace: true });
           }}
         >
-          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
+          <img
+            src={process.env.REACT_APP_BE_HOST + `img/profile/${getUserId()}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
         </button>
 
         <button
