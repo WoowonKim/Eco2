@@ -15,6 +15,7 @@ const NoticeDetail = () => {
   const [registTime, setRegistTime] = useState("");
   const [next, setNext] = useState(0);
   const [prev, setPrev] = useState(0);
+  const [index, setIndex] = useState(-1);
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -22,13 +23,6 @@ const NoticeDetail = () => {
   const navigate = useNavigate();
 
   const displayType = visible ? styles.visible : styles.hidden;
-
-  // useEffect(() => {
-  //   if (!notice) {
-  //     return;
-  //   }
-
-  // }, [params.noticeId, notice]);
 
   useEffect(() => {
     if (!name || !notice.registTime) {
@@ -38,22 +32,32 @@ const NoticeDetail = () => {
   }, [name, notice.registTime, registTime]);
 
   useEffect(() => {
+    console.log(
+      "now",
+      location.state?.prev,
+      location.state?.next,
+      location.state?.index
+    );
     setName(getUserName());
     dispatch(noticeDetail({ noticeId: params.noticeId })).then((res) => {
       if (res.payload.status === 200) {
         setNotice(res.payload.notice);
-        if (location.state?.notices) {
-          const index = location.state.notices.indexOf(res.payload.notice);
-          console.log(location.state.notices, res.payload.notice, index);
-          console.log(index);
-          if (location.state?.notices.length > index + 1) {
-            setNext(location.state?.notices[index + 1]);
-            console.log("next", location.state?.notices[index + 1]);
-          }
-          if (0 <= index - 1) {
-            setPrev(location.state?.notices[index - 1]);
-            console.log("prev", location.state?.notices[index - 1]);
-          }
+        if (location.state?.index) {
+          setIndex(params.noticeId);
+          dispatch(noticeDetail({ noticeId: params.noticeId-- })).then(
+            (res) => {
+              if (res.payload?.status === 200) {
+                setNext(res.payload?.notice);
+              }
+            }
+          );
+          dispatch(noticeDetail({ noticeId: params.noticeId++ })).then(
+            (res) => {
+              if (res.payload?.status === 200) {
+                setPrev(res.payload?.notice);
+              }
+            }
+          );
         }
       }
     });
@@ -131,14 +135,18 @@ const NoticeDetail = () => {
         <span className={styles.text}>조회수 : {notice.hit}</span>
       </div>
       <pre className={styles.content}>{notice.content}</pre>
-      {/* <hr /> */}
       <div className={styles.otherPage}>
         {prev ? (
           <div
             className={styles.pageContainer}
             onClick={() => {
               navigate(`/notice/${location.state.prev.id}`, {
-                state: { admin: location.state?.admin, next, prev },
+                state: {
+                  admin: location.state?.admin,
+                  next,
+                  prev,
+                  index,
+                },
               });
             }}
           >
@@ -158,7 +166,12 @@ const NoticeDetail = () => {
             className={styles.pageContainer}
             onClick={() => {
               navigate(`/notice/${location.state.next.id}`, {
-                state: { admin: location.state?.admin, next, prev },
+                state: {
+                  admin: location.state?.admin,
+                  next,
+                  prev,
+                  index,
+                },
               });
             }}
           >

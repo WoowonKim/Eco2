@@ -141,9 +141,31 @@ const Profile = () => {
                 >
                   <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
                 </button>
-              </div>
-            )}
-          </div>
+              )}
+              <button
+                className={styles.button}
+                onClick={() => {
+                  dispatch(
+                    createRoom({ userId: getUserId(), id: params.userId })
+                  )
+                    .then((res) => {
+                      if (res.payload?.status === 200) {
+                        navigate("/chatting/room", {
+                          state: {
+                            roomId: res.payload.roomId,
+                            userId: Number(params.userId),
+                          },
+                        });
+                        window.location.reload(`/chatting/room`);
+                      }
+                    })
+                    .catch((err) => console.log(err));
+                }}
+              >
+                <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
+              </button>
+            </div>
+          )}
         </div>
         {visible && (
           <PostModal

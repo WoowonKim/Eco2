@@ -3,12 +3,15 @@ import styles from "./DetailModal.module.css";
 import FeedList from "../../feed/feedList/FeedList";
 import { getUserId } from "../../../store/user/common";
 import axiosService from "../../../store/axiosService";
+import { useDispatch } from "react-redux";
+import { deleteQuest, getQuestList } from "../../../store/quest/questSlice";
 const DetailModal = (props) => {
   // 열기, 닫기
   const { open, close, questDetail, openPost, questDetailFeeds } = props;
   let finishDate = questDetail ? questDetail.finishTime.slice(0, 10) : null;
   let finishTime = questDetail ? questDetail.finishTime.slice(11, 19) : null;
   let currUser = getUserId();
+  let dispatch = useDispatch();
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div
@@ -20,15 +23,8 @@ const DetailModal = (props) => {
           {currUser == questDetail.user.id ? (
             <button
               onClick={() => {
-                axiosService
-                  .delete(`/quest/${questDetail.id}`)
-                  .then((res) => {
-                    console.log(res);
-                    close();
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
+                dispatch(deleteQuest(questDetail.id));
+                close();
               }}
             >
               삭제하기
@@ -40,7 +36,10 @@ const DetailModal = (props) => {
               <div>
                 {finishDate}/{finishTime}에 종료됩니다.
               </div>
-              <div>{questDetail.participantCount}명이 참가했어요</div>
+              <div>
+                {questDetail.participantCount}/{questDetail.achieveCount}명이
+                참가했어요
+              </div>
             </div>
           </main>
           <footer>

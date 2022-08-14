@@ -1,24 +1,50 @@
+@charset "utf-8";
+
+
+@font-face {
+  font-family: 'NanumBarunGothicLight';
+  /* font-style: normal;
+  font-weight: 100; */
+  src: url("../public/font/NanumBarunGothicLight.otf") format('truetype')
+}
+
+@font-face {
+  font-family: 'NanumBarunGothic';
+  /* font-style: normal;
+  font-weight: 100; */
+  src: url("../public/font/NanumBarunGothic.otf") format('truetype')
+}
+
+@font-face {
+  font-family: 'NanumBarunGothicBold';
+  /* font-style: normal;
+  font-weight: 100; */
+  src: url("../public/font/NanumBarunGothicBold.otf") format('truetype')
+}
+
+@font-face {
+  font-family: 'NanumBarunGothicUltraLight';
+  /* font-style: normal;
+  font-weight: 100; */
+  src: url("../public/font/NanumBarunGothicUltraLight.otf") format('truetype')
+}
+
 body {
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "NanumBarunGothicLight";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 330px;
-  height: 844px;
-  padding: 0;
+  width: 390px;
+  /* height: 844px; */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: "NanumBarunGothicLight";
 }
 
 * {
   box-sizing: border-box;
 }
-
 #root {
   display: flex;
   justify-content: center;
