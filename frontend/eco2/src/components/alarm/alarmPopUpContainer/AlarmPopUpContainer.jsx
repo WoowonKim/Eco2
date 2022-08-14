@@ -7,11 +7,12 @@ import { useDispatch } from "react-redux";
 import { limit, orderBy } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AlarmPopUpContainer = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // 파이어베이스 onSnapShot 생성
   const getFirestoreAlarm = (type) => {
@@ -84,7 +85,10 @@ const AlarmPopUpContainer = () => {
             // await firestore.deleteDoc(firestore.doc(dbService, `alarm/${doc.data().}`))
             deleteArray.push(alarm.id);
             return false;
-          } else if (alarm.sendTime > recentLookup) {
+          } else if (
+            loc.pathname !== "/alarm" &&
+            alarm.sendTime > recentLookup
+          ) {
             isNew = true;
             toast(alarm.content, {
               position: "bottom-right",
@@ -112,19 +116,19 @@ const AlarmPopUpContainer = () => {
         );
       });
 
-      if (isNew) {
-        // 최근 조회 시간 업데이트
-        const docRef = firestore.doc(dbService, "alarm", getUserId());
-        const data = {};
-        data[type + "RecentLookup"] =
-          (now.valueOf() + now.getTimezoneOffset()) / 1000;
+      // if (isNew) {
+      // 최근 조회 시간 업데이트
+      const docRef = firestore.doc(dbService, "alarm", getUserId());
+      const data = {};
+      data[type + "RecentLookup"] =
+        (now.valueOf() + now.getTimezoneOffset()) / 1000;
 
-        try {
-          await firestore.setDoc(docRef, data, { merge: true });
-        } catch (err) {
-          console.log("err", err);
-        }
+      try {
+        await firestore.setDoc(docRef, data, { merge: true });
+      } catch (err) {
+        console.log("err", err);
       }
+      // }
     });
   };
 
@@ -152,6 +156,9 @@ const AlarmPopUpContainer = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        onClick={() => {
+          navigate("/alarm");
+        }}
       />
     </div>
   );

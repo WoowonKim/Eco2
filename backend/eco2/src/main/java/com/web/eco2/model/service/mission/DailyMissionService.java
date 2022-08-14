@@ -136,29 +136,38 @@ public class DailyMissionService {
         List<Long> recommendMissionsNum = new ArrayList<>();
         List<Mission> recommendMission = new ArrayList<>();
 
+        Integer sunnyFlag = 3;
+        Integer outsideFlag = 3;
+        Integer temperatureFlag = 4;
         UltraShortNowcast ultraShortNowcast = weatherService.getUltraSrtNcst(lat, lng, time);
-        if(ultraShortNowcast == null) {
+        if(ultraShortNowcast != null) {
+            if(ultraShortNowcast.getRainAmount() <= 0) {
+                sunnyFlag = 1;
+            } else if (ultraShortNowcast.getRainAmount() >= 3) {
+                sunnyFlag = 2;
+            }
+
+            // TODO: 외부활동: 미세먼지 추가, 습도
+            if(ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
+                outsideFlag = 1;
+            } else if(ultraShortNowcast.getRainAmount() >= 3 || ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28) {
+                outsideFlag = 2;
+            }
+
+            if(ultraShortNowcast.getTemperature() <= 10) {
+                temperatureFlag = 1;
+            } else if(ultraShortNowcast.getTemperature() < 26) {
+                temperatureFlag = 2;
+            }
+        } else {
             return null;
         }
 
-        Boolean isClear = null;
-        if(ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
-            isClear = true;
-        } else if (ultraShortNowcast.getRainAmount() >= 3 || ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28) {
-            isClear = false;
-        }
-
-        List<Mission> missions = new ArrayList<>();
+        List<Mission> missions = missionRepository.findForRecommendation(sunnyFlag, outsideFlag, temperatureFlag);
         Random random = new Random();
-        int num = random.nextInt(3) + 1;
-        num = (4 + num) % 5; // 카테고리 4(구매하기) 제외하고 제외할 카테고리 하나 더 선택
-        if(num == 0) num = 5;
-
-        if(isClear != null) missions.addAll(missionRepository.findWithoutCategoryAndClearFlag(4, num, isClear));
-        else missions.addAll(missionRepository.findWithoutCategory(4, num));
 
         while (recommendMissionsNum.size() < 3) {
-            num = random.nextInt(missions.size() - 1) + 1;
+            int num = random.nextInt(missions.size() - 1) + 1;
             if (!recommendMissionsNum.contains(missions.get(num).getId())) {
                 recommendMissionsNum.add(missions.get(num).getId());
                 recommendMission.add(missions.get(num));
