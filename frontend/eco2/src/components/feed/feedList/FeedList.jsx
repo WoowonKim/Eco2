@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import FeedItem from "../feedItem/FeedItem";
 import styles from "./FeedList.module.css";
 
-const FeedList = ({ category, display, feeds }) => {
+const FeedList = ({ category, display, feeds, setLikeCount }) => {
   const displayType = display === "list" ? styles.list : styles.grid;
   return (
     <div className={styles.container}>
@@ -25,6 +25,8 @@ const FeedList = ({ category, display, feeds }) => {
                   content={feed.content}
                   like={feed.likeCount}
                   userEmail={feed.userEmail}
+                  likeUsers={feed?.postLikeUserIds}
+                  setLikeCount={setLikeCount}
                 />
               )
           )
