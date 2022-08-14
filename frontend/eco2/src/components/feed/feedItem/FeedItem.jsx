@@ -15,7 +15,7 @@ const FeedItem = ({
   like,
   userEmail,
   likeUsers,
-  setLikeCount,
+  setLikeCount, 
 }) => {
   const [likeUserId, setLikeUserId] = useState(false);
 
@@ -65,7 +65,7 @@ const FeedItem = ({
             alt="profileImg"
             className={styles.profileImg}
           />
-          <p className={styles.user}>{userName}</p>
+          <div className={styles.user}>{userName}</div>
           <div className={styles.heart}>
             {like}<i className={`fa-solid fa-heart ${styles.heartIcon}`}></i>
           </div>
