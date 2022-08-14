@@ -18,6 +18,7 @@ const PostDetail = () => {
   const [like, setLike] = useState(false);
   const [test, setTest] = useState(0);
   const [likeUsers, setLikeUsers] = useState(false);
+  const [registTime, setRegistTime] = useState("");
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -90,6 +91,12 @@ const PostDetail = () => {
     // });
   }, [test, likeUsers]);
 
+  useEffect(() => {
+    if (!feedItem.registTime) {
+      return;
+    }
+    setRegistTime(feedItem.registTime.split("T")[0]);
+  }, [feedItem.registTime]);
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -178,7 +185,7 @@ const PostDetail = () => {
         />
       )}
       <img
-        src={`http://localhost:8002/img/post/${feedItem.id}`}
+        src={`${process.env.REACT_APP_BE_HOST}img/post/${feedItem.id}`}
         alt="postImg"
         className={styles.postImg}
       />
@@ -192,7 +199,7 @@ const PostDetail = () => {
           }
         >
           <img
-            src={`http://localhost:8002/img/profile/${feedItem.userId}`}
+            src={`${process.env.REACT_APP_BE_HOST}img/profile/${feedItem.userId}`}
             alt="profileImg"
             className={styles.profileImg}
           />
@@ -207,6 +214,7 @@ const PostDetail = () => {
           {feedItem.likeCount}
         </button>
       </div>
+      <span className={styles.registTime}>작성일 : {registTime}</span>
       <p className={styles.content}>{feedItem.content}</p>
       <hr className={styles.line} />
       {feedItem.commentFlag && (

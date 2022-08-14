@@ -52,7 +52,7 @@ const CommentItem = ({
                 }
               >
                 <img
-                  src={`http://localhost:8002/img/profile/${commentUserId}`}
+                  src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
                   // src={`${imgSrc}`}
                   alt="profileImg"
                   className={styles.profileImg}
@@ -140,15 +140,6 @@ const CommentItem = ({
               closeModal={() => setModalVisible(!modalVisible)}
             />
           )}
-          {/* <div>
-          <button 
-            onClick={() => {setVisible(!visible)}}
-            className={styles.editButton}
-          >
-            { visible ? '숨기기' : '수정' }
-          </button>
-          <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
-        </div> */}
         </li>
       )}
       {visible && (

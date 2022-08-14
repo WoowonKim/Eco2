@@ -12,7 +12,7 @@ const ChattingItem = ({
   fromUser,
   lastSendTime,
   lastSendMessage,
-  setDeleteFlag
+  setDeleteFlag,
 }) => {
   const [toUserName, setToUserName] = useState("");
   const dispatch = useDispatch();
@@ -33,14 +33,14 @@ const ChattingItem = ({
         }
       });
     }
-  }
+  };
   const room = () => {
     window.location.reload(`/chatting/room`);
-  }
+  };
   return (
     <div>
       <button className={styles.list} onClick={room}>
-        <Link to={`/chatting/room`} state={{ roomId: id }} className={styles.link}>
+        <Link to={`/chatting/room`} state={{ roomId: id, userName: toUserName }} className={styles.link}>
           <div className={styles.leftContent}>
             <img
               src={`http://localhost:8002/img/profile/${id}`}

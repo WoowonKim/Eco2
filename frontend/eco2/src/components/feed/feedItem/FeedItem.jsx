@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { postLike } from "../../../store/post/postSlice";
+import { getUserId } from "../../../store/user/common";
 import styles from "./FeedItem.module.css";
 
 const FeedItem = ({
@@ -11,8 +14,39 @@ const FeedItem = ({
   postImgUrl,
   like,
   userEmail,
+  likeUsers,
+  setLikeCount,
 }) => {
+  const [likeUserId, setLikeUserId] = useState(false);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handlePostLike = () => {
+    dispatch(postLike({ postId: id, userId: getUserId() })).then((res) => {
+      if (res.payload.status === 200) {
+        if (likeUsers !== null) {
+          setLikeUserId(
+            likeUsers.some((id) => {
+              return id == getUserId();
+            })
+          );
+          setLikeCount((curr) => curr + 1);
+        }
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (likeUsers !== null) {
+      setLikeUserId(
+        likeUsers.some((id) => {
+          return id == getUserId();
+        })
+      );
+    }
+  }, [likeUsers]);
+
   return (
     <Link to={`/post/${id}`} className={styles.link}>
       <div className={styles.list}>
@@ -38,7 +72,9 @@ const FeedItem = ({
           </div>
         </div>
       </div>
-    </Link>
+
+      {/* <p className={styles.content}>{content}</p> */}
+    </div>
   );
 };
 

@@ -54,7 +54,8 @@ import Spinner from "./components/spinner/Spinner";
 function App() {
   const [userdata, setUserdata] = useState(false);
   const pending = useSelector((state) => state.user.isPending);
-  // console.log(pending);
+  const recommendPending = useSelector((state) => state.missionMain.isPending);
+  // console.log(recommendPending);
 
   // 친구 신청 알림 기능 구현 예정
   // const [alarm, setAlarm] = useState([]);
@@ -264,10 +265,10 @@ function App() {
         </Routes>
         <div
           className={`${styles.spinner} ${
-            pending ? styles.visible : styles.hidden
+            pending || recommendPending ? styles.visible : styles.hidden
           }`}
         >
-          <Spinner visible={pending} />
+          <Spinner visible={pending || recommendPending} />
         </div>
       </div>
       {userdata && <Footer></Footer>}

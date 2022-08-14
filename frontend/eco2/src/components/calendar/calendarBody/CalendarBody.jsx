@@ -73,12 +73,13 @@ const CalendarBody = ({
           key={day}
         >
           <span
-            className={`${styles.text} ${
+            className={
+              `${styles.text} ${
               format(currentMonth, "M") !== format(day, "M")
                 ? styles.not_valid
-                : ""
-            }`}
-          >
+                : ""} ${i === 0 ? styles.red:null}
+                `}
+          > 
             {formattedDate}
           </span>
           {!!rewardDays[formattedDate] && (

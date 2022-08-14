@@ -2,6 +2,7 @@
   width: 370px;
   margin-top: 40px;
 }
+
 .title {
   display: flex;
   align-items: center;
@@ -17,9 +18,8 @@
 }
 
 .list {
-  margin-bottom: 5px;
+  margin-bottom: 50px;
 }
-
 
 .link {
   border: none;
@@ -29,7 +29,6 @@
   font-size: small;
   margin: 5px 0 0 5px;
 }
-
 
 .plusIcon {
   transition: all 300ms ease-in;

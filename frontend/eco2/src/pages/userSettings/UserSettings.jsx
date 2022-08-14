@@ -136,7 +136,7 @@ const UserSettings = () => {
     setAutoLogin(localStorage.getItem("email") ? true : false);
 
     axiosService({
-      url: `http://localhost:8002/img/profile/${getUserId()}`,
+      url: `${process.env.REACT_APP_BE_HOST}img/profile/${getUserId()}`,
       method: "GET",
       responseType: "blob",
     }).then((res) => {
@@ -173,7 +173,9 @@ const UserSettings = () => {
                 <img
                   className={styles.img}
                   alt="profileImg"
-                  src={`http://localhost:8002/img/profile/${getUserId()}`}
+                  src={`${
+                    process.env.REACT_APP_BE_HOST
+                  }img/profile/${getUserId()}`}
                 />
               )}
             </div>
@@ -344,13 +346,13 @@ const UserSettings = () => {
                   </button>
                 </div>
               ) : (
-                <div>
+                <form>
                   <label htmlFor="newPassword"></label>
                   <input
                     id="newPassword"
                     type="password"
                     onChange={passwordValidation}
-                    value={"" || newPassword}
+                    // value={"" || newPassword}
                     placeholder="새 비밀번호"
                     className={styles.passwordFormInput}
                   />
@@ -374,7 +376,7 @@ const UserSettings = () => {
                     className={styles.passwordFormButton}
                     onClick={() =>
                       dispatch(
-                        passwordChange({ email, password: password.trim() })
+                        passwordChange({ email, password: newpassword.trim() })
                       )
                     }
                     type="button"
@@ -416,7 +418,7 @@ const UserSettings = () => {
                       회원탈퇴
                     </button>
                   </div>
-                </div>
+                </form>
               )}
             </div>
           )}

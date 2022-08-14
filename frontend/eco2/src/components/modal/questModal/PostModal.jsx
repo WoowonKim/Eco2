@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PostModal.module.css";
-import FeedList from "../../feed/feedList/FeedList";
+import { getUserId } from "../../../store/user/common";
+import { useDispatch } from "react-redux";
+import { createPost } from "../../../store/quest/questSlice";
 const PostModal = (props) => {
-  const { open, close } = props;
+  const { open, close, questDetail, closeDetail } = props;
   const [imageSrc, setImageSrc] = useState("");
+  const [payload, setPayload] = useState({
+    postImg: null,
+    content: null,
+  });
   const encodeFileToBase64 = (fileBlob) => {
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
@@ -14,6 +20,13 @@ const PostModal = (props) => {
       };
     });
   };
+  let dispatch = useDispatch();
+  let setPayloadImg = (e) => {
+    let copy = { ...payload };
+    copy.postImg = e.target.files[0];
+    setPayload(copy);
+  };
+
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div
@@ -28,6 +41,7 @@ const PostModal = (props) => {
                 사진 업로드하기
               </label>
               <input
+                encType="multipart/form-data"
                 type="file"
                 id="chooseFile"
                 className={styles.imgInput}
@@ -35,6 +49,7 @@ const PostModal = (props) => {
                 accept="image/*"
                 onChange={(e) => {
                   encodeFileToBase64(e.target.files[0]);
+                  setPayloadImg(e);
                 }}
               />
               {imageSrc && (
@@ -42,20 +57,53 @@ const PostModal = (props) => {
               )}
             </div>
             <div className={styles.info}>
-              <div>공원 미화</div>
-              <div>대전광역시 유성구 유림공원</div>
-              <div>22:17 이후 퀘스트가 종료됩니다.</div>
-              <div>97명이 참여 했어요!</div>
+              <div>{questDetail.mission.title}</div>
+              <div>{questDetail.content}</div>
             </div>
+            <fieldset className={styles.fieldset}>
+              <label>내용</label>
+              <textarea
+                id="content"
+                onChange={(e) => {
+                  let copy = { ...payload };
+                  copy.content = e.target.value;
+                  setPayload(copy);
+                }}
+              />
+            </fieldset>
           </main>
           <footer>
-            <button className={styles.create}>인증하기</button>
+            <button
+              className={styles.create}
+              onClick={() => {
+                const formDataCreate = new FormData();
+                console.log(payload);
+                const postCreateDto = {
+                  constent: payload.content,
+                  user: {
+                    id: getUserId(),
+                  },
+                  quest: {
+                    id: questDetail.id,
+                  },
+                };
+                const json = JSON.stringify(postCreateDto);
+                const blob = new Blob([json], {
+                  type: "application/json",
+                });
+                formDataCreate.append("postImage", payload.postImg);
+                formDataCreate.append("postCreateDto", blob);
+                dispatch(createPost({ formData: formDataCreate }));
+                close();
+                closeDetail();
+              }}
+            >
+              인증하기
+            </button>
             <button className={styles.close} onClick={close}>
               참여안하기
             </button>
           </footer>
-          <div>참여자 인증글</div>
-          <FeedList display={"list"}></FeedList>
         </section>
       ) : null}
     </div>

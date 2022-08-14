@@ -12,14 +12,14 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
 
   const download = () => {
     axiosService({
-      url: `http://localhost:8002/img/reward/${calendarId}`,
+      url: `${process.env.REACT_APP_BE_HOST}img/reward/${calendarId}`,
       method: "GET",
       responseType: "blob",
     }).then((res) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      setImgUrl(url);
+      setImgUrl(new Blob([res.data]));
       link.setAttribute("download", "image.jpg");
       document.body.appendChild(link);
       link.click();
@@ -76,7 +76,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
           </div>
         </div>
         <img
-          src={`http://localhost:8002/img/reward/${calendarId}`}
+          src={`${process.env.REACT_APP_BE_HOST}img/reward/${calendarId}`}
           alt="rewardImg"
           className={styles.img}
         />

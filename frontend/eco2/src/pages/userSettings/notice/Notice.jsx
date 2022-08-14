@@ -101,7 +101,7 @@ const Notice = () => {
         {/* <div className={styles.leftHeader}> */}
         {/* </div> */}
         <tbody>
-          <NoticeList notices={notices} />
+          <NoticeList notices={notices} admin={admin} />
         </tbody>
       </table>
       {!!pages && (

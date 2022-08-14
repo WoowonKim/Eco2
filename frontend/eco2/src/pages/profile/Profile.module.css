@@ -12,7 +12,8 @@
 }
 
 .profileImg {
-  width: 25px;
+  width: 30px;
+  height: 30px;
   background-color: white;
   border: 1px solid black;
   border-radius: 50%;
@@ -34,13 +35,12 @@
   border: none;
   background-color: white;
   transition: all 2s ease-in;
-  padding: 0px;
+  padding: 0 0 5px 3px;
   margin: 0;
 }
 
 .button :hover {
   cursor: pointer;
-  /* color: #adc178; */
   transform: scale(1.1);
 }
 
@@ -52,6 +52,7 @@
 .friendIcon {
   color: black;
   font-size: smaller;
+  margin: 5px;
 }
 
 .missionList {
@@ -77,10 +78,13 @@
   justify-content: start;
   /* grid-template-columns: 1fr 1fr 1fr; */
   flex-wrap: wrap;
+  
 }
 
 .missionImg {
   width: 30%;
   margin: 5px;
   border: 1px solid #dadada;
+  border-radius: 5px;
+  height: 90px;
 }

@@ -7,10 +7,12 @@ import { useDispatch } from "react-redux";
 
 const MainFeed = () => {
   const [feeds, setFeeds] = useState([]);
+  const [likeCount, setLikeCount] = useState(0);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("likeCount", likeCount);
     document.getElementById("scroll-container").scrollTop = 0;
     dispatch(postList()).then((res) => {
       console.log(res);
@@ -18,7 +20,7 @@ const MainFeed = () => {
         setFeeds(res.payload.postListDtos);
       }
     });
-  }, []);
+  }, [likeCount]);
   return (
     <div className={styles.mainFeed}>
       <div className={styles.session1}>
