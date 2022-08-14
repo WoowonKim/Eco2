@@ -15,7 +15,7 @@ const FeedItem = ({
   like,
   userEmail,
   likeUsers,
-  setLikeCount,
+  setLikeCount, 
 }) => {
   const [likeUserId, setLikeUserId] = useState(false);
 
