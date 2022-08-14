@@ -81,7 +81,6 @@ const Profile = () => {
   }, [friend, userId]);
   return (
     <div className={styles.container}>
-      <Calendar id={userId} />
       <div className={styles.userInfo}>
         <div className={styles.user}>
           <img
@@ -89,60 +88,62 @@ const Profile = () => {
             // alt="profileImg"
             className={styles.profileImg}
           />
-          <p>{userName}</p>
-          {getUserId() === params.userId ? (
-            <button
-              onClick={() =>
-                navigate("/user/settings", {
-                  state: {
-                    socialType: socialType,
-                    name: getUserName(),
-                    userId,
-                    // admin,
-                  },
-                })
-              }
-              className={styles.button}
-            >
-              <i className={`fa-solid fa-gear ${styles.settingIcon}`}></i>
-            </button>
-          ) : (
-            <div className={styles.buttonGroup}>
-              {!friend && (
+          <div className={styles.userSettingAndFriends}>
+            <p>{userName}</p>
+            {getUserId() === params.userId ? (
+              <button
+                onClick={() =>
+                  navigate("/user/settings", {
+                    state: {
+                      socialType: socialType,
+                      name: getUserName(),
+                      userId,
+                      // admin,
+                    },
+                  })
+                }
+                className={styles.button}
+              >
+                <i className={`fa-solid fa-gear ${styles.settingIcon}`}></i>
+              </button>
+            ) : (
+              <div className={styles.buttonGroup}>
+                {!friend && (
+                  <button
+                    className={styles.button}
+                    onClick={() => {
+                      setVisible(!visible);
+                      setModalType("친구");
+                    }}
+                  >
+                    <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
+                  </button>
+                )}
                 <button
                   className={styles.button}
                   onClick={() => {
-                    setVisible(!visible);
-                    setModalType("친구");
+                    dispatch(
+                      createRoom({ userId: getUserId(), id: params.userId })
+                    )
+                      .then((res) => {
+                        if (res.payload?.status === 200) {
+                          navigate("/chatting/room", {
+                            state: {
+                              roomId: res.payload.roomId,
+                              userId: params.userId,
+                            },
+                          });
+                          window.location.reload(`/chatting/room`);
+                        }
+                      })
+                      .catch((err) => console.log(err));
                   }}
                 >
-                  <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
+                  <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
                 </button>
-              )}
-              <button
-                className={styles.button}
-                onClick={() => {
-                  dispatch(
-                    createRoom({ userId: getUserId(), id: params.userId })
-                  )
-                    .then((res) => {
-                      if (res.payload?.status === 200) {
-                        navigate("/chatting/room", {
-                          state: {
-                            roomId: res.payload.roomId,
-                            userId: params.userId,
-                          },
-                        });
-                        window.location.reload(`/chatting/room`);
-                      }
-                    })
-                    .catch((err) => console.log(err));
-                }}
-              >
-                <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
-              </button>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
         {visible && (
           <PostModal
@@ -170,6 +171,8 @@ const Profile = () => {
           </div>
         )}
       </div>
+      <Calendar id={userId} />
+      
       <div className={styles.missionList}>
         <div onClick={() => setUserSetting(1)} className={styles.missionTitle}>
           <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
