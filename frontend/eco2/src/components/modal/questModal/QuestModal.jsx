@@ -10,7 +10,7 @@ const QuestModal = (props) => {
     missionId: 2,
     lat: null,
     lng: null,
-    achieveCount: 100,
+    achieveCount: 3,
     content: "",
   };
   return (
@@ -39,6 +39,18 @@ const QuestModal = (props) => {
               })}
             </select>
             <p>퀘스트는 24시간 동안 유지됩니다.</p>
+            <label htmlFor="achieveCount">참여 인원</label>
+            <input
+              type="number"
+              name="achieveCount"
+              min="3"
+              max="100"
+              defaultValue={3}
+              className={styles.numInput}
+              onChange={(e) => {
+                payload.achieveCount = e.target.value;
+              }}
+            ></input>
             <fieldset className={styles.fieldset}>
               <label>내용</label>
               <textarea
@@ -54,6 +66,7 @@ const QuestModal = (props) => {
             <button
               className={styles.create}
               onClick={() => {
+                console.log(payload);
                 setPayload(payload);
                 close();
                 setMakeFlag(true);

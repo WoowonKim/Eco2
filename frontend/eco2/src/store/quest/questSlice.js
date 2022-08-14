@@ -24,6 +24,18 @@ export const getQuestList = createAsyncThunk(
     }
   }
 );
+export const deleteQuest = createAsyncThunk(
+  "questSlice/deleteQuest",
+  async (args, { rejectWithValue }) => {
+    try {
+      await axiosService.delete(`/quest/${args}`);
+      const response = await axiosService.get("/quest");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 export const createPost = createAsyncThunk(
   "questSlice/createPost",
   async (args, { rejectWithValue }) => {
@@ -77,6 +89,9 @@ export const questSlice = createSlice({
     },
     [createPost.rejected]: (state, payload) => {
       console.log("createPost rejected", payload);
+    },
+    [deleteQuest.fulfilled]: (state, action) => {
+      state.data = action.payload.questList;
     },
   },
 });
