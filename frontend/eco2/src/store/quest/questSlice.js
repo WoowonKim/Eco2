@@ -24,6 +24,21 @@ export const getQuestList = createAsyncThunk(
     }
   }
 );
+export const createPost = createAsyncThunk(
+  "questSlice/createPost",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.post("/post", args.formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 export const questSlice = createSlice({
   name: "quest",
   initialState: {
@@ -56,6 +71,12 @@ export const questSlice = createSlice({
     [getQuestList.rejected]: (state, action) => {
       console.log("createQuest rejected");
       state.loading = false;
+    },
+    [createPost.fulfilled]: (state, payload) => {
+      console.log("createPost fullfilled", payload);
+    },
+    [createPost.rejected]: (state, payload) => {
+      console.log("createPost rejected", payload);
     },
   },
 });

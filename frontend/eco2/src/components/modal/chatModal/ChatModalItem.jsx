@@ -28,9 +28,7 @@ const ChattModalItem = ({ key, id, email, name }) => {
           onClick={() => {
             dispatch(createRoom({ userId, id })).then((res) => {
               if (res.payload?.status === 200) {
-                navigate(`/chatting/room`, {
-                  state: { roomId: res.payload.roomId, userId: id },
-                });
+                navigate(`/chatting/room`, { state: { roomId: res.payload.roomId, userId: id } });
                 window.location.reload(`/chatting/room`);
               }
             });

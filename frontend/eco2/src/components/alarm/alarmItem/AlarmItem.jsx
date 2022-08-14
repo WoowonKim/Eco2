@@ -94,6 +94,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
       const uri = url[0];
       const roomId = Number(url[1].split("=")[1]);
       navigate(uri, { state: { roomId: roomId, userId: senderId } });
+      window.location.reload(`/chatting/room`);
     }
   };
 

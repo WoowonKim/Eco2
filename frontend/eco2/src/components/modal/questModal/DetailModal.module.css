@@ -73,7 +73,6 @@
   width: 100%;
   object-fit: cover;
   border-radius: 20px;
-  z-index: 1;
 }
 .info {
   display: flex;
