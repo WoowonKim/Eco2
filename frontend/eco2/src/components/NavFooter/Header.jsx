@@ -34,7 +34,7 @@ const Header = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userId]);
+  }, [userId, imgSrc]);
   return (
     <header className={styles.Header}>
       <div
@@ -58,11 +58,7 @@ const Header = () => {
             navigate(`/profile/${getUserId()}`, { replace: true });
           }}
         >
-          <img
-            src={process.env.REACT_APP_BE_HOST + `img/profile/${getUserId()}`}
-            alt="profileImg"
-            className={styles.profileImg}
-          />
+          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
         </button>
 
         <button

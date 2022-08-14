@@ -346,13 +346,13 @@ const UserSettings = () => {
                   </button>
                 </div>
               ) : (
-                <div>
+                <form>
                   <label htmlFor="newPassword"></label>
                   <input
                     id="newPassword"
                     type="password"
                     onChange={passwordValidation}
-                    value={"" || newPassword}
+                    // value={"" || newPassword}
                     placeholder="새 비밀번호"
                     className={styles.passwordFormInput}
                   />
@@ -376,7 +376,7 @@ const UserSettings = () => {
                     className={styles.passwordFormButton}
                     onClick={() =>
                       dispatch(
-                        passwordChange({ email, password: password.trim() })
+                        passwordChange({ email, password: newpassword.trim() })
                       )
                     }
                     type="button"
@@ -418,7 +418,7 @@ const UserSettings = () => {
                       회원탈퇴
                     </button>
                   </div>
-                </div>
+                </form>
               )}
             </div>
           )}

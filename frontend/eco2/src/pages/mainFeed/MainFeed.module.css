@@ -3,15 +3,11 @@
   margin-top: 50px;
 }
 
-
 .title {
-  
   display: flex;
   align-items: center;
   justify-content: start;
 }
-
-
 
 .text {
   font-weight: bold;
@@ -23,9 +19,7 @@
 
 .list {
   margin-bottom: 50px;
-
 }
-
 
 .link {
   border: none;
@@ -35,7 +29,6 @@
   font-size: small;
   margin: 5px 0 0 5px;
 }
-
 
 .plusIcon {
   transition: all 300ms ease-in;
@@ -79,4 +72,3 @@
   margin-right: 5px;
   width: 40px;
 }
-
