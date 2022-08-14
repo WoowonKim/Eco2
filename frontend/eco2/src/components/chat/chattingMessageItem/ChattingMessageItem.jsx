@@ -3,9 +3,7 @@ import styles from "./ChattingMessageItem.module.css";
 import { Link } from "react-router-dom";
 import { getUserName } from "../../../store/user/common";
 
-const ChattingMessageItem = ({
-  key,
-  id,
+const ChattingMessageItem = ({  
   user,
   message,
   sendDate
@@ -16,23 +14,22 @@ const ChattingMessageItem = ({
     <div className={styles.list}>
       {user === name ? (
         <div className={styles.userContent}>
-          <span className={`${styles.userMessage}`}>{message}</span>
           <span className={`${styles.userSendDate}`}>{sendDate}</span>
-        </div>
+          <span className={`${styles.userMessage}`}>{message}</span>
+        </div> 
       ) : (
-        <div>
-          <div className={styles.leftContent}>
+        <div className={styles.friendContent}>
+          <div className={styles.content}>
             <div className={styles.profileImg}>
               <img
                 src={`${process.env.PUBLIC_URL}/logo.png`}
-                alt="earth"
+                // src={`http://localhost:8002/img/profile/${user.id}`}
+                alt="profileImg"
                 className={styles.img}
               />
             </div>
             <span className={`${styles.userName}`}>{user}</span>
             <span className={`${styles.message}`}>{message}</span>
-          </div>
-          <div className={styles.rightContent}>
             <span className={`${styles.sendDate}`}>{sendDate}</span>
           </div>
         </div>

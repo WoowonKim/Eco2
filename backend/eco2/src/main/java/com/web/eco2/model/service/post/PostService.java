@@ -46,7 +46,7 @@ public class PostService {
 
     //post 저장하기 (post + postImage)
     @Transactional
-    public void savePost(MultipartFile postImage, PostCreateDto postCreateDto) throws IOException {
+    public Post savePost(MultipartFile postImage, PostCreateDto postCreateDto) throws IOException {
         UUID uuid = UUID.randomUUID();
         String originalName = postImage.getOriginalFilename();
         String saveName = uuid + originalName.substring(originalName.lastIndexOf("."), originalName.length());
@@ -75,6 +75,7 @@ public class PostService {
 
         postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
 
+        return post;
     }
 
 

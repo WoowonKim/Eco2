@@ -29,7 +29,7 @@ const Regist = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [socialType, setSocialType] = useState(0);
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState("");
 
   const [visibility, setVisibility] = useState(false);
 
@@ -140,16 +140,17 @@ const Regist = () => {
         <p className={isEmail ? styles.success : styles.fail}>{emailMessage}</p>
       )}
       {email.length === 0 && <div className={styles.test}></div>}
-      {visibility && isEmail && (
+      {visibility && isEmail && !isCode && (
         <div>
           <div className={`${styles.EmailInput}, ${displayType}`}>
             <input
               type="text"
-              className={styles.inputEmail}
+              className={styles.input}
               onChange={(e) => setCode(e.target.value)}
               placeholder="인증 번호"
             />
             <button
+              disabled={isCode || code.trim().length == 0}
               className={styles.buttonEmail}
               type="button"
               onClick={() =>
@@ -214,9 +215,6 @@ const Regist = () => {
                 })
               )
                 .then((res) => {
-                  axiosService.defaults.headers.common[
-                    "Auth-accessToken"
-                  ] = `${res.payload.user.accessToken}`;
                   setUserEmail(false, email);
                   setUserId(false, res.payload.user.id);
                   setAccessToken(false, res.payload.accessToken);

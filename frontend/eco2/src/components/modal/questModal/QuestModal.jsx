@@ -1,20 +1,17 @@
 import React, { useState } from "react";
+import { getUserId } from "../../../store/user/common";
 import styles from "./QuestModal.module.css";
 
 const QuestModal = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-  const { open, close } = props;
-  const [imageSrc, setImageSrc] = useState("");
-
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
+  const { open, close, questList, setPayload, setMakeFlag } = props;
+  let payload = {
+    userId: getUserId(),
+    missionId: 2,
+    lat: null,
+    lng: null,
+    achieveCount: 3,
+    content: "",
   };
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -25,19 +22,58 @@ const QuestModal = (props) => {
         <section>
           <header>미션 생성하기</header>
           <main className={styles.main}>
-            <select name="category" className={styles.selectBox}>
-              <option value="카테고리 선택">미션 선택</option>
-              <option value="수질">수질</option>
-              <option value="땅">땅</option>
+            <select
+              name="mission"
+              onChange={(e) => {
+                console.log(e.target.value);
+                payload.missionId = e.target.value;
+              }}
+              className={styles.selectBox}
+            >
+              {questList.map((item, i) => {
+                return (
+                  <option value={item.id} key={i}>
+                    {item.title}
+                  </option>
+                );
+              })}
             </select>
             <p>퀘스트는 24시간 동안 유지됩니다.</p>
+            <label htmlFor="achieveCount">참여 인원</label>
+            <input
+              type="number"
+              name="achieveCount"
+              min="3"
+              max="100"
+              defaultValue={3}
+              className={styles.numInput}
+              onChange={(e) => {
+                payload.achieveCount = e.target.value;
+              }}
+            ></input>
             <fieldset className={styles.fieldset}>
               <label>내용</label>
-              <textarea id="content" />
+              <textarea
+                id="content"
+                className={styles.contentBox}
+                onChange={(e) => {
+                  payload.content = e.target.value;
+                }}
+              />
             </fieldset>
           </main>
           <footer>
-            <button className={styles.create}>생성하기</button>
+            <button
+              className={styles.create}
+              onClick={() => {
+                console.log(payload);
+                setPayload(payload);
+                close();
+                setMakeFlag(true);
+              }}
+            >
+              생성하기
+            </button>
             <button className={styles.close} onClick={close}>
               취소하기
             </button>

@@ -7,12 +7,15 @@ import { dailymissionSlice } from "./mission/dailymissionSlice";
 import { myEcoMissionSlice } from "./mission/missionMainSlice";
 import { cumtomSlice } from "./mission/customMissionSlice";
 import { favoriteSlice } from "./mission/favoriteSlice";
+import { alarmSlice } from "./alarm/alarmSlice";
 
 import { postSlice } from "./post/postSlice";
 import { commentSlice } from "./post/commentSlice";
 import { noticeSlice } from "./admin/noticeSlice";
 import { imgSlice } from "./img/imgSlice";
 import { questSlice } from "./quest/questSlice";
+import { reportSlice } from "./admin/reportSlice";
+import { chattingSlice } from "./chat/chattingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +31,9 @@ export const store = configureStore({
     post: postSlice.reducer,
     notice: noticeSlice.reducer,
     img: imgSlice.reducer,
+    alarm: alarmSlice.reducer,
     quest: questSlice.reducer,
+    report: reportSlice.reducer,
+    chatting: chattingSlice.reducer,
   },
 });

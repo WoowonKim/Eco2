@@ -71,7 +71,7 @@ public class ImageController {
                 return ResponseHandler.generateResponse("존재하지 않는 유저입니다.", HttpStatus.ACCEPTED);
             }
 
-            String saveName = "default.jpg";
+            String saveName = "default.png";
             if (profileImg.getSaveFolder() != null) {
                 saveName = profileImg.getSaveName();
             }

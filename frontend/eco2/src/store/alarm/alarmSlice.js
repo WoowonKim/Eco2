@@ -3,31 +3,9 @@ import axiosService from "../axiosService";
 import { firestore, dbService } from "../../store/firebase";
 
 const alarmState = {
-  alarmList: [],
+  commonAlarms: [],
+  friendRequestAlarms: [],
 };
-
-export const getAlarms = createAsyncThunk(
-  "alarmSlice/getAlarms",
-  async (args, { rejectWithValue }) => {
-    try {
-      // const dbAlarms = await firestore.getDocs(
-      //   firestore.collection(dbService, `alarm/${args.userId}/common`)
-      // );
-      // const response = [];
-      // dbAlarms.forEach((document) => {
-      //   const alarmObject = {
-      //     ...document.data(),
-      //     id: document.id,
-      //   };
-      //   response.push(alarmObject);
-      // });
-      // return response;
-    } catch (err) {
-      console.log(err);
-      return rejectWithValue(err.response);
-    }
-  }
-);
 
 export const deleteAlarm = createAsyncThunk(
   "alarmSlice/deleteAlarm",
@@ -63,7 +41,20 @@ export const alarmSlice = createSlice({
   name: "alarm",
   initialState: alarmState,
   reducers: {
-    getAlarms: (state, action) => {},
+    setAlarms: (state, action) => {
+      if (action.payload.name === "common") {
+        state.commonAlarms = action.payload.data;
+      } else if (action.payload.name === "friendRequest") {
+        state.friendRequestAlarms = action.payload.data;
+      }
+    },
+    putAlarm: (state, action) => {
+      if (action.payload.name === "common") {
+        state.commonAlarms.push(action.payload.data);
+      } else if (action.payload.name === "friendRequest") {
+        state.friendRequestAlarms.push(action.payload.data);
+      }
+    },
   },
   extraReducers: {
     [responseFriendRequest.fulfilled]: (state, action) => {
@@ -76,3 +67,11 @@ export const alarmSlice = createSlice({
     },
   },
 });
+
+export const selectCommonAlarms = (state) => state.alarm.commonAlarms;
+export const selectFriendRequestAlarms = (state) =>
+  state.alarm.friendRequestAlarms;
+export const selectIsNew = (state) =>
+  state.alarm.commonAlarms.length + state.alarm.friendRequestAlarms.length > 0;
+export const { setAlarms, putAlarm } = alarmSlice.actions;
+export default alarmSlice.reducer;

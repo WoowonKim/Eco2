@@ -1,15 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserEmail, getUserId } from "../../store/user/common";
+import {
+  getAccessToken,
+  getUserEmail,
+  getUserId,
+} from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(getUserId());
+  const [imgSrc, setImgSrc] = useState("");
+
   let navigate = useNavigate();
 
   useEffect(() => {
     setUserId(getUserId());
-  }, [userId]);
+    if (!userId) {
+      return;
+    }
+    const headers = new Headers();
+    headers.append("Auth-accessToken", getAccessToken());
+    const options = {
+      method: "GET",
+      headers: headers,
+    };
+    fetch(`http://localhost:8002/img/profile/${userId}`, options)
+      .then((res) => {
+        res.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          setImgSrc(url);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [userId, imgSrc]);
   return (
     <header className={styles.Header}>
       <div
@@ -30,15 +55,12 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate(`/profile/${getUserId()}`);
+            navigate(`/profile/${getUserId()}`, { replace: true });
           }}
         >
-          <img
-            src={`http://localhost:8002/img/profile/${getUserId()}`}
-            alt="profileImg"
-            className={styles.profileImg}
-          />
-        </button>
+          
+          <i class="fa-solid fa-emergency">신고</i>        
+          </button>
 
         <button
           className={styles.profileButton}
@@ -46,17 +68,20 @@ const Header = () => {
             navigate("/chatting");
           }}
         >
-          <i className="fa-solid fa-comments"></i>
+          <i className={`fa-solid fa-comments ${styles.headerIcon}`}></i>
         </button>
-
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate("/report");
+            navigate(`/profile/${getUserId()}`);
           }}
         >
-        <i className="fa-solid">신고</i>
+          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
         </button>
+
+
+
+
       </nav>
     </header>
   );

@@ -185,10 +185,29 @@ li {
   opacity: 0.6;
 }
 
-i {
+.heading {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #dddddd;
+  border-top: 1px solid #696969;
+}
+
+.basicMission {
+  width: 180px;
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  font-size: small;
+  color: #000000;
+}
+
+/* i {
   color: #adc178;
   cursor: pointer;
-}
+} */
 
 .btn {
   margin-bottom: 0px;

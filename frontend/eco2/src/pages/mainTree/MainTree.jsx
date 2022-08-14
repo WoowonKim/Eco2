@@ -46,6 +46,7 @@ const MainTree = () => {
   useEffect(() => {
     dispatch(statisticLeaves({ userId: getUserId() })).then((res) => {
       if (res.payload?.status === 200) {
+        console.log(res.payload);
         setStatistic(res.payload.statistic);
       }
     });
@@ -53,7 +54,7 @@ const MainTree = () => {
   return (
     <div className={styles.Tree} ref={drop}>
       <img
-        src={process.env.PUBLIC_URL + "tree_leaves/mainTree.png"}
+        src={process.env.PUBLIC_URL + "tree_leaves/mainBrownTree.png"}
         className={styles.Img}
         draggable="false"
       ></img>

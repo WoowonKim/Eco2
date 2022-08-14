@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import styles from "./DetailModal.module.css";
 import FeedList from "../../feed/feedList/FeedList";
+import { getUserId } from "../../../store/user/common";
+import axiosService from "../../../store/axiosService";
+import { useDispatch } from "react-redux";
+import { deleteQuest, getQuestList } from "../../../store/quest/questSlice";
 const DetailModal = (props) => {
   // 열기, 닫기
-  const { open, close, content, openPost } = props;
-
+  const { open, close, questDetail, openPost, questDetailFeeds } = props;
+  let finishDate = questDetail ? questDetail.finishTime.slice(0, 10) : null;
+  let finishTime = questDetail ? questDetail.finishTime.slice(11, 19) : null;
+  let currUser = getUserId();
+  let dispatch = useDispatch();
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div
@@ -13,17 +20,26 @@ const DetailModal = (props) => {
       {open ? (
         <section>
           <header>참여하기</header>
+          {currUser == questDetail.user.id ? (
+            <button
+              onClick={() => {
+                dispatch(deleteQuest(questDetail.id));
+                close();
+              }}
+            >
+              삭제하기
+            </button>
+          ) : null}
           <main className={styles.main}>
-            <div className={styles.imgBox}>
-              <img src={content.imgURL} className={styles.img}></img>
-            </div>
             <div className={styles.info}>
-              <div>공원 미화</div>
-              <div>대전광역시 유성구 유림공원</div>
-              <div>22:17 이후 퀘스트가 종료됩니다.</div>
-              <div>97명이 참여 했어요!</div>
-              <div>{content.title}</div>
-              <div>{content.content}</div>
+              <div>{questDetail.mission.title}</div>
+              <div>
+                {finishDate}/{finishTime}에 종료됩니다.
+              </div>
+              <div>
+                {questDetail.participantCount}/{questDetail.achieveCount}명이
+                참가했어요
+              </div>
             </div>
           </main>
           <footer>
@@ -35,7 +51,7 @@ const DetailModal = (props) => {
             </button>
           </footer>
           <div>참여자 인증글</div>
-          <FeedList display={"list"}></FeedList>
+          <FeedList display={"list"} feeds={questDetailFeeds}></FeedList>
         </section>
       ) : null}
     </div>

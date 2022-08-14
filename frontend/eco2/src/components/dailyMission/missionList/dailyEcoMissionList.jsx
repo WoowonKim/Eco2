@@ -14,6 +14,7 @@ import DailyCustomMissionList from "./dailyCustomMissionList";
 // CSS
 import { GreenBtn } from "../../styled";
 import styles from "./dailyMissionDetail.module.css";
+import axiosService from "../../../store/axiosService";
 
 const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   const [ecoId, setEcoId] = useState([]);
@@ -22,7 +23,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
 
   const [favoriteArr, setFavoriteArr] = useState([]); // 즐겨찾기 화면노출을 위한 State
   const [cnt, setCnt] = useState(0); //리렌더링을 방지하기 위한 State
-
+  const [trendingMission, setTrendingMission] = useState(null);
   const ecoCount = ecoId.length; // user 미션 목록에 추가하기 위한 count
   const favoriteTrue = true; // 서버 연동에 필요한 값 : 미션목록 이 true여서
   const favoriteBoolean = false; // 서버에 삭제 요청에 필요한 값 : 삭제할 때 false값을 전달 하기 위함.
@@ -52,6 +53,12 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
     });
   }, [faDelete, faAdd, famiAdd]);
 
+  useEffect(() => {
+    axiosService.get("/daily/trending").then((res) => {
+      console.log(res.data);
+      setTrendingMission(res.data.trendingList);
+    });
+  }, []);
   /**
    * user 미션 목록에 보내기 위한 함수
    * item에 prop으로 전달하여 ecoState 증가.
@@ -132,15 +139,16 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
       <div className={styles.Font}>
         <p>오늘은 어떤 도전을 해볼까?</p>
       </div>
-      <fieldset>
-        <legend className={styles.word}>Trending</legend>
-      </fieldset>
 
-      {/* <div>
-        {trend.map((it) => (
-          <div key={it.id}>{it.mission.title}</div>
-        ))}
-      </div> */}
+
+      {trendingMission && (
+        <fieldset>
+          <legend className={styles.word}>Trending</legend>
+          {trendingMission.map((e) => {
+            return <p className={styles.trending}>{e.mission.title}</p>;
+          })}
+        </fieldset>
+      )}
 
       <div>
         <span className={styles.favoriteHead}>즐겨찾기</span>

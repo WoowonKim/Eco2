@@ -1,33 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Map from "../../../components/map/Map";
 import { getUserName } from "../../../store/user/common";
 import styles from "./QuestMain.module.css";
 import QuestModal from "../../../components/modal/questModal/QuestModal";
 import DetailModal from "../../../components/modal/questModal/DetailModal";
 import PostModal from "../../../components/modal/questModal/PostModal";
+import axiosService from "../../../store/axiosService";
 const QuestMain = () => {
+  const name = getUserName();
   const [count, setCount] = useState(0);
   const [makeFlag, setMakeFlag] = useState(false);
-  const name = getUserName();
   const [createModal, setCreateModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [postModal, setPostModal] = useState(false);
-  const [testDetail] = useState({
-    userId: 1,
-    missionId: 1,
-    title: "공원 청소를 합시다!",
-    content: "공원에 쓰레기가 너무 많아요 쓰레기를 치웁시다!",
-    imgURL: process.env.PUBLIC_URL + "test.jpg",
-  });
-
+  const [questList, setQuestList] = useState(null);
+  const [payload, setPayload] = useState(null);
+  const [questDetail, setQuestDetail] = useState(null);
+  const [questDetailFeeds, setQuestDetailFeeds] = useState(null);
+  useEffect(() => {
+    axiosService.get("/mission/quest").then((res) => {
+      setQuestList(res.data.missions);
+    });
+  }, []);
+  // const [testDetail] = useState({
+  //   userId: 1,
+  //   missionId: 1,
+  //   title: "공원 청소를 합시다!",
+  //   content: "공원에 쓰레기가 너무 많아요 쓰레기를 치웁시다!",
+  //   imgURL: process.env.PUBLIC_URL + "test.jpg",
+  // });
   const openCreateModal = () => {
     setCreateModal(true);
   };
   const closeCreateModal = () => {
     setCreateModal(false);
   };
-  const openDeatailModal = () => {
-    setDetailModal(true);
+  const openDetailModal = (id) => {
+    axiosService
+      .get(`/quest/detail/${id}`)
+      .then((res) => {
+        console.log(res.data.quest);
+        setQuestDetail(res.data.quest);
+        axiosService.get(`quest/${res.data.quest.id}`).then((r) => {
+          setQuestDetailFeeds(r.data.questPosts);
+        });
+      })
+      .finally(() => {
+        setDetailModal(true);
+      });
   };
   const closeDetailModal = () => {
     setDetailModal(false);
@@ -45,17 +65,24 @@ const QuestMain = () => {
         <button
           className={styles.button}
           onClick={() => {
-            setMakeFlag(!makeFlag);
+            openCreateModal();
           }}
         >
-          {makeFlag ? "취소하기" : "생성하기"}
+          <div className={styles.createButton}>
+            {makeFlag ? "취소하기" : "생성하기"}
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
+            ></i>
+          </div>
         </button>
       </div>
       <Map
         makeFlag={makeFlag}
         openCreateModal={openCreateModal}
-        openDeatailModal={openDeatailModal}
+        openDeatailModal={openDetailModal}
         setMakeFlag={setMakeFlag}
+        payload={payload}
+        setCount={setCount}
       />
       <div>
         <p className={styles.text}>
@@ -66,14 +93,27 @@ const QuestMain = () => {
         open={createModal}
         close={closeCreateModal}
         header="Modal heading"
+        questList={questList}
+        setPayload={setPayload}
+        setMakeFlag={setMakeFlag}
       ></QuestModal>
-      <DetailModal
-        open={detailModal}
-        close={closeDetailModal}
-        openPost={openPostModal}
-        content={testDetail}
-      ></DetailModal>
-      <PostModal open={postModal} close={closePostModal}></PostModal>
+      {questDetail && (
+        <DetailModal
+          open={detailModal}
+          close={closeDetailModal}
+          openPost={openPostModal}
+          questDetail={questDetail}
+          questDetailFeeds={questDetailFeeds}
+        ></DetailModal>
+      )}
+      {questDetail && (
+        <PostModal
+          open={postModal}
+          questDetail={questDetail}
+          close={closePostModal}
+          closeDetail={closeDetailModal}
+        ></PostModal>
+      )}
     </div>
   );
 };

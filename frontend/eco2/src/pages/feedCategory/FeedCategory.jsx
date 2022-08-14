@@ -9,7 +9,6 @@ const FeedCategory = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>카테고리 {params.feedCategory}</h1>
       {!!location.state?.feeds ? (
         <FeedList
           category={location.state?.category}

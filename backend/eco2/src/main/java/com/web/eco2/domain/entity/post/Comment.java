@@ -1,5 +1,6 @@
 package com.web.eco2.domain.entity.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.eco2.domain.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -45,6 +46,7 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Comment comment;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
@@ -57,6 +59,5 @@ public class Comment {
         this.post = post;
         this.comment = comment;
         this.comments = comments;
-
     }
 }

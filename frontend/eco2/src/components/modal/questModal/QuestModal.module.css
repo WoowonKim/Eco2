@@ -85,7 +85,9 @@
   border-radius: 20px;
   z-index: 1;
 }
-
+.numInput {
+  width: 20%;
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -94,6 +96,11 @@
   width: 80%;
   margin: 10px auto;
 }
+
+.selectBox:hover {
+  background: #fcf9f0;
+}
+
 p {
   font-size: small;
   margin-top: 14px;
@@ -104,6 +111,7 @@ p {
   align-items: flex-start;
   padding: 5px;
   width: 100%;
+  border-radius: 5px;
 }
 .fieldset label {
   margin: 3px;
@@ -125,6 +133,11 @@ p {
   cursor: pointer;
   margin-top: 10px;
 }
+
+.contentBox {
+  border-radius: 5px;
+}
+
 @keyframes modal-show {
   from {
     opacity: 0;

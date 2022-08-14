@@ -1,8 +1,8 @@
 .Header {
-  height: 50px;
-  padding: 1rem;
+  height: 60px;
+  padding: 0.7rem;
   color: white;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -11,30 +11,38 @@
   top: 0;
   left: 0;
   right: 0;
-  width: 330px;
+  width: 390px;
   z-index: 1;
+  /* border-bottom-color: beige;
+  border-bottom-width: 0.005em;
+  border-bottom-style: solid; */
 }
 
 .Img {
-  height: 30px;
+  height: 40px;
 }
 
 .profileImg {
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  /* background-color: white; */
+  /* box-shadow: 10px 10px 10px 10px inset grey; */
+  /* border: 1px solid black; */
   border-radius: 50%;
-  margin-right: 5px;
+  /* margin-right: 5px; */
 }
 
 .profileButton {
-  background-color: white;
+  background-color: transparent;
   border: none;
 }
 
-.icon {
-  color: #adc178;
-  font-size: 20px;
-  margin: 5px;
+.headerIcon {
+  color: rgb(201, 201, 201);
+  font-size: 30px;
 }
+
+.headerIcon:hover{
+  color: rgb(196, 196, 196);
+}
+

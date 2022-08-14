@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +121,7 @@ public class PostController {
                 postListDto.setUserName(post.getUser().getName());
                 postListDto.setUserEmail(post.getUser().getEmail());
                 postListDto.setContent(post.getContent());
+                postListDto.setRegistTime(post.getRegistTime());
                 postListDto.setPostImgUrl(postImgPath);
                 postListDto.setPublicFlag(post.isPublicFlag());
                 postListDto.setCommentFlag(post.isCommentFlag());
@@ -127,6 +129,7 @@ public class PostController {
                 postListDto.setCustomMission(customMission);
                 postListDto.setQuest(quest);
                 postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
+                postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(post.getId()));
                 postListDtos.add(postListDto);
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
@@ -165,6 +168,7 @@ public class PostController {
             postListDto.setUserName(post.getUser().getName());
             postListDto.setUserEmail(post.getUser().getEmail());
             postListDto.setContent(post.getContent());
+            postListDto.setRegistTime(post.getRegistTime());
             postListDto.setPostImgUrl(postImgPath);
             postListDto.setPublicFlag(post.isPublicFlag());
             postListDto.setCommentFlag(post.isCommentFlag());
@@ -182,6 +186,7 @@ public class PostController {
                         CommentDto commentDto = new CommentDto();
                         commentDto.setId(comment.getId());
                         commentDto.setContent(comment.getContent());
+                        commentDto.setRegistTime(comment.getRegistTime());
                         commentDto.setUserId(comment.getUser().getId());
                         commentDto.setUserName(comment.getUser().getName());
                         commentDto.setUserEmail(comment.getUser().getEmail());
@@ -230,18 +235,25 @@ public class PostController {
                 postCreateDto.setCustomMission(mission);
                 category = mission.getCategory();
             } else if(postCreateDto.getQuest() != null) {
-                Optional<Quest> quest = questService.findById(postCreateDto.getQuest().getId());
-                if(quest.isEmpty()) {
+                Optional<Quest> questOpt = questService.findById(postCreateDto.getQuest().getId());
+                if(questOpt.isEmpty()) {
                     return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
-                postCreateDto.setQuest(quest.get());
-                category = quest.get().getMission().getCategory();
+                Quest quest = questOpt.get();
+                quest.setParticipantCount(quest.getParticipantCount()+1);
+                questService.save(quest);
+                postCreateDto.setQuest(quest);
+                category = quest.getMission().getCategory();
                 isQuest = true;
             } else {
                 return ResponseHandler.generateResponse("요청값이 부족합니다.", HttpStatus.ACCEPTED);
             }
 
             postCreateDto.setUser(user);
+            
+            postCreateDto.setRegistTime(LocalDateTime.now());
+            // 친구 인증글 알림 시 사용
+//            Post post = postService.savePost(postImage, postCreateDto);
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
             itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
@@ -251,7 +263,8 @@ public class PostController {
 //            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {
 //                alarmService.insertAlarm(FirebaseAlarm.builder()
 //                        .userId(friend.getId()).senderId(userId)
-//                        .dType("friendPost").content("친구 "+user.getName()+"님이 인증글을 올렸습니다.").build());
+//                        .dType("friendPost").content("친구 "+user.getName()+"님이 인증글을 올렸습니다.")
+//                        .url("/post/"+post.getId()).build());
 //            });
             return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK, "postCreateDto", postCreateDto);
         } catch (Exception e) {

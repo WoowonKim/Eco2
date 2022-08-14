@@ -20,7 +20,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/socket")
-//                .addHandler(webSocketHandler, "/ws/chat")
+//                .addHandler(webSocketHandler, "/socket")
                 .setAllowedOrigins("https://i7b103.p.ssafy.io", "https://i7b103.p.ssafy.io:80", "http://localhost:3000", "http://localhost:8002")
                 .withSockJS()
         ;
@@ -37,10 +37,10 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
         //SimpleBroker의 기능과 외부 Message Broker( RabbitMQ, ActiveMQ 등 )에 메세지를 전달하는 기능을 가짐
     }
 
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration){
-        registration.interceptors(stompHandler);
-    }
-
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration){
+//        registration.interceptors(stompHandler);
+//    }
+//
 
 }

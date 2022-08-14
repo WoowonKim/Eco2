@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import FeedItem from "../feedItem/FeedItem";
 import styles from "./FeedList.module.css";
 
-const FeedList = ({ category, display, feeds }) => {
+const FeedList = ({ category, display, feeds, setLikeCount }) => {
   const displayType = display === "list" ? styles.list : styles.grid;
   return (
     <div className={styles.container}>
@@ -23,8 +23,10 @@ const FeedList = ({ category, display, feeds }) => {
                     feed.mission?.category || feed.customMission?.category
                   }
                   content={feed.content}
-                  like={feed.like}
+                  like={feed.likeCount}
                   userEmail={feed.userEmail}
+                  likeUsers={feed?.postLikeUserIds}
+                  setLikeCount={setLikeCount}
                 />
               )
           )

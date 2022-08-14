@@ -1,17 +1,21 @@
 /* global kakao */
 import React, { useEffect, useRef, useState } from "react";
+import { createQuest, getQuestList } from "../../store/quest/questSlice";
 import { getLocation } from "../../utils";
 import styles from "./Map.module.css";
-
-const Map = ({ makeFlag, setMakeFlag, openCreateModal, openDeatailModal }) => {
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/";
+const Map = ({
+  makeFlag,
+  payload,
+  openDeatailModal,
+  setCount,
+  setMakeFlag,
+}) => {
+  let dispatch = useDispatch();
+  const [counter, setCounter] = useState(0);
   const [lat, setLat] = useState(33.450701);
   const [lon, setLon] = useState(126.570667);
-  const [questMarkers, setQuestMarkers] = useState([
-    { missionId: 1, La: 127.35375221326012, Ma: 36.35524897554767 },
-    { missionId: 2, La: 127.34753975918593, Ma: 36.35119389270093 },
-    { missionId: 3, La: 127.35074429523057, Ma: 36.35031940093884 },
-    { missionId: 4, La: 127.34903313341236, Ma: 36.35630821632346 },
-  ]);
   const [kakaoMap, setKakaoMap] = useState(null);
   const [mapCircle, setMapCircle] = useState(
     new kakao.maps.Circle({
@@ -25,11 +29,10 @@ const Map = ({ makeFlag, setMakeFlag, openCreateModal, openDeatailModal }) => {
       fillOpacity: 0.5, // 채우기 불투명도 입니다
     })
   );
-
+  const questMarkers = useSelector((state) => state.quest);
   function getMyLocation() {
     getLocation().then((res) => {
       console.log("위치구했다.");
-      //내위치를 구한다.
       setLat(res.latitude);
       setLon(res.longitude);
     });
@@ -46,8 +49,8 @@ const Map = ({ makeFlag, setMakeFlag, openCreateModal, openDeatailModal }) => {
     const map = new kakao.maps.Map(container.current, options);
     setKakaoMap(map);
     getMyLocation();
+    dispatch(getQuestList());
   }, [container]);
-
   // 내위치에 마크와 원을 입력하는 이펙트
   useEffect(() => {
     if (kakaoMap === null) {
@@ -80,34 +83,56 @@ const Map = ({ makeFlag, setMakeFlag, openCreateModal, openDeatailModal }) => {
     console.log("영역 표시");
     circle.setMap(kakaoMap);
   }, [kakaoMap, lat]);
-
+  let markers = [];
   //기존 마커 데이터를 지도에 표시하는 이펙트
   useEffect(() => {
     if (kakaoMap === null) {
       return;
     }
     console.log("퀘스트마커를 찍자");
-    questMarkers.map((quest) => {
-      let position = new kakao.maps.LatLng(quest.Ma, quest.La);
+    questMarkers.data.map((quest) => {
+      let position = new kakao.maps.LatLng(quest.lng * 1, quest.lat * 1);
       let marker = new kakao.maps.Marker({ map: kakaoMap, position });
       kakao.maps.event.addListener(marker, "click", function () {
-        console.log(quest.missionId);
-        openDeatailModal(true);
+        openDeatailModal(quest.id);
       });
+      markers.push(marker);
+      let lat1 = position.La * 0.017453;
+      let lng1 = position.Ma * 0.017453;
+      let lat2 = lon * 0.017453;
+      let lng2 = lat * 0.017453;
+      let dist =
+        6378137 *
+        Math.acos(
+          Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
+            Math.sin(lat1) * Math.sin(lat2)
+        );
+      console.log(dist);
+      if (dist < 500) {
+        console.log("카운터 증가");
+        console.log(counter);
+        setCounter((counter) => counter + 1);
+      }
     });
-  }, [kakaoMap, questMarkers]);
-
-  //생성하기를 누르면 핀을 찍을 수 있게 해주는 이펙트
-  useEffect(() => {
-    function addMarker(position) {
-      var marker = new kakao.maps.Marker({
-        position: position,
+    return () => {
+      markers.map((marker) => {
+        marker.setMap(null);
       });
-      marker.setMap(kakaoMap);
-    }
+      setCounter(0);
+    };
+  }, [kakaoMap, questMarkers]);
+  //핀을 찍을 수 있게 해주는 이펙트
+  useEffect(() => {
+    setCount(counter);
+  }, [counter]);
+  useEffect(() => {
     let clickHandler = function (event) {
-      console.log(event.latLng);
-      openCreateModal(true);
+      let quest = payload;
+      quest.lat = event.latLng.La.toString();
+      quest.lng = event.latLng.Ma.toString();
+      console.log(quest);
+      dispatch(createQuest(quest));
+      setMakeFlag(false);
     };
     if (makeFlag) {
       kakao.maps.event.addListener(mapCircle, "click", clickHandler);
@@ -116,7 +141,6 @@ const Map = ({ makeFlag, setMakeFlag, openCreateModal, openDeatailModal }) => {
       kakao.maps.event.removeListener(mapCircle, "click", clickHandler);
     };
   }, [kakaoMap, makeFlag]);
-
   return (
     <div className={styles.map_wrap}>
       <div ref={container} id="map" className={styles.map}></div>
