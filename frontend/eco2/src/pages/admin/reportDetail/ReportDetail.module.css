@@ -14,9 +14,13 @@
   border-radius: 20px;
   padding: 7px;
   /* border: 1px solid; */
-  width: 260px;
+  width: 300px;
   /* box-shadow: 0px 0px 1px 0px gray inset; */
   box-shadow: 2px 3px 8px 2px rgb(218 218 218);
+}
+
+.post:hover {
+  background-color: #f3f3f359;
 }
 
 .postTitle {
@@ -79,7 +83,7 @@
   margin-top: 10px;
   padding: 10px;
   /* border: 1px solid; */
-  width: 260px;
+  width: 300px;
   box-shadow: 2px 3px 8px 2px rgb(218 218 218);
 
 }
@@ -111,7 +115,7 @@
   font-size: 11px;
   color: #FFF;
   text-align: left;
-  background-color: #97a773;
+  background-color: rgb(87, 214, 150);
   border-radius: 5px;
 }
 
@@ -124,31 +128,33 @@
 }
 
 .acceptButton {
-  background-color: #acbe81;
+  background-color: rgb(87, 214, 150);
   border: none;
-  border-radius: 20px;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  color: #FFF;
+  border-radius: 5px;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: #FFF;  
+  box-shadow: 0px 1px 5px 0px  gray;
   font-size: small;
   font-weight: bold;
   margin-right: 15px;
 }
 
 .acceptButton:hover {
-  background-color: #d3dfb8;
-  color: rgb(75, 97, 66);
+  background-color: rgb(166, 228, 166);
+  /* color: rgb(75, 97, 66); */
 }
 
 
 .cancleButton {
   background-color: #e07668;
   border: none;
-  border-radius: 20px;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  box-shadow: 0px 1px 5px 0px  gray;
   color: #FFF;
   font-size: small;
   font-weight: bold;

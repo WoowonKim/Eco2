@@ -73,6 +73,12 @@ const ChattingRoom = () => {
     }
     setMessage("");
   };
+  const onKeyPress = (e) => {
+    if(e.key=='Enter'){
+      sendMessage();
+    }
+  };
+  
   return (
     <div className={styles.chattingRoom} ref={scrollRef}>
       <div className={styles.header}>
@@ -83,7 +89,7 @@ const ChattingRoom = () => {
               <div>
                 <img
                   src={`http://localhost:8002/img/profile/${user.id}`}
-                  alt="profileImg"
+                  alt="profile"
                   className={styles.profileImg}
                 />
                 <div className={styles.toUserName}>{user.name}</div>
@@ -117,7 +123,7 @@ const ChattingRoom = () => {
             placeholder="메시지를 입력하세요"
             onChange={(e) => setMessage(e.target.value)}
             className={styles.messageInput}
-            onKeyPress={sendMessage}
+            onKeyPress={onKeyPress}
           />
         </div>
         <button onClick={sendMessage} className={styles.sendButton}>

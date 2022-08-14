@@ -58,8 +58,9 @@ const Header = () => {
             navigate(`/profile/${getUserId()}`, { replace: true });
           }}
         >
-          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
-        </button>
+          
+          <i class="fa-solid fa-emergency">신고</i>        
+          </button>
 
         <button
           className={styles.profileButton}
@@ -67,17 +68,20 @@ const Header = () => {
             navigate("/chatting");
           }}
         >
-          <i className="fa-solid fa-comments"></i>
+          <i className={`fa-solid fa-comments ${styles.headerIcon}`}></i>
         </button>
-
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate("/report");
+            navigate(`/profile/${getUserId()}`);
           }}
         >
-          <i className="fa-solid">신고</i>
+          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
         </button>
+
+
+
+
       </nav>
     </header>
   );

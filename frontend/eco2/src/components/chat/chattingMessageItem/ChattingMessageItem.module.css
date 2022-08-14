@@ -13,6 +13,7 @@
 .img {
   height: 40px;
   width: 40px;
+  border-radius: 50%;
 }
 
 .friendContent {
@@ -42,9 +43,10 @@
   color: #6a707c;
   font-size: 12px;
   font-weight: bold;
-  width: 150px;
+  /* width: 170px; */
+  max-width: 200px;
   border: none;
-  background-color: #adc178;
+  background-color: rgb(87, 214, 150);
   color: #FFF;
   padding: 7px;
   border-radius: 10px;
@@ -58,8 +60,8 @@
   /* float: right; */
   font-size: 5px;
   font-weight: 400;
-  padding-top: 40px;
- margin-left: 5px;
+  /* padding-top: 80px; */
+  margin-left: 5px;
 }
 
 .userContent {
@@ -74,14 +76,14 @@
 
 .userSendDate {
   justify-content: start;
+  position: relative;
+  bottom: 3px;
   color: #6a707c;
   font-size: 5px;
   font-weight: 400;
   float: right;
   margin-top: 15px;
   margin-right: 7px;
-
-
 }
 
 .userMessage {
@@ -90,11 +92,13 @@
   color: #6a707c;
   font-size: 11px;
   font-weight: bold;
-  width: 150px;
+  /* width: 150px; */
+  max-width: 200px;
   border: none;
   background-color: beige;
   color: #6a707c;
   padding: 7px;
   border-radius: 10px;
+  text-align: left;
   float: right;
 }

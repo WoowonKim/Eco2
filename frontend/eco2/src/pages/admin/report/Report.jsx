@@ -18,9 +18,11 @@ const Report = () => {
           <tbody>
             <tr>
               <th width="8%">유형</th>
-              <th width="17%">신고내용</th>
+              <th width="8%">신고내용</th>
               <th width="10%"></th>
-              <th width="9%">내역</th>
+              <th width="8%"></th>
+              <th width="8%"></th>
+              <th width="7%">내역</th>
             </tr>
           </tbody>
         </table>

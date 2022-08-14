@@ -17,6 +17,7 @@ const ReportDetail = () => {
   const [id, setId] = useState("");
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (comment === null) {
@@ -42,21 +43,24 @@ const ReportDetail = () => {
   }, []);
 
   const sendReportAccept = () => {
-    dispatch(reportAccept({ id: id, type: type })).then((res) => {
-      if (res.payload.status === 200) {
-        alert("신고 승인되었습니다.");
-        window.location.reload("/report");
-      }
-    });
-
+    if (window.confirm("신고 승인하시겠습니까?")) {
+      dispatch(reportAccept({ id: id, type: type })).then((res) => {
+        if (res.payload.status === 200) {
+          alert("신고 승인되었습니다.");
+          navigate("/report");          
+        }
+      });
+    }
   }
   const sendReportCancle = () => {
-    dispatch(reportCancle({ id: id, type: type })).then((res) => {
-      if (res.payload.status === 200) {
-        alert("신고 반려되었습니다.");
-        window.location.reload("/report");
-      }
-    });
+    if (window.confirm("신고 반려하시겠습니까?")) {
+      dispatch(reportCancle({ id: id, type: type })).then((res) => {
+        if (res.payload.status === 200) {
+          alert("신고 반려되었습니다.");
+          navigate("/report");          
+        }
+      });
+    }
   }
 
   return (
@@ -114,8 +118,8 @@ const ReportDetail = () => {
             <tbody>
               <tr>
                 <th width="8%">유형</th>
-                <th width="17%">신고내용</th>
-                <th width="9%">신고자</th>
+                <th width="20%">신고내용</th>
+                <th width="13%">신고자</th>
               </tr>
             </tbody>
           </table>
