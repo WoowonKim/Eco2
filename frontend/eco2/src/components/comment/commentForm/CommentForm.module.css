@@ -4,21 +4,27 @@
 }
 
 .input {
-  border: 1px solid #dadada;
-  border-radius: 8px;
+  background: white;
+  border: none;
+  border-bottom: 1.5px solid #dadada;
   width: 80%;
   height: 30px;
   font-size: x-small;
   padding-left: 10px;
-  margin: 5px 0;
+  margin: 5px 5px 5px 0;
+}
+
+.input:focus {
+  outline: none;
+  /* border-bottom: 1.5px solid #d5e3b0; */
 }
 
 .button {
   background: #adc178;
   border: 1px solid #dadada;
   border-radius: 8px;
-  width: 15%;
-  height: 30px;
+  width: 13%;
+  height: 28px;
   font-size: x-small;
   text-align: center;
   color: white;
@@ -32,21 +38,21 @@
 }
 
 .closeButton {
-  background: #adc178;
+  background: #dadada;
   border: 1px solid #dadada;
   border-radius: 8px;
-  width: 15%;
-  height: 30px;
+  width: 13%;
+  height: 28px;
   font-size: x-small;
   text-align: center;
   color: white;
   cursor: pointer;
-  margin-top: 10px;
+  margin: 10px 0 0 5px;
   padding: 0;
 }
 
 .smallButton {
-  width: 70%;
+  width: 60%;
 }
 .largeButton {
   width: 80%;

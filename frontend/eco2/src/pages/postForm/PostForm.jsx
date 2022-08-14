@@ -25,6 +25,7 @@ const PostForm = () => {
   useEffect(() => {
     if (location.state?.content) {
       setEditText(location.state?.content);
+      setImageCheck(true);
     }
 
     if (location.state?.postId) {
@@ -191,12 +192,16 @@ const PostForm = () => {
             <img
               className={styles.img}
               alt="originalImg"
-              src={`http://localhost:8002/img/post/${location.state?.postId}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/post/${location.state.postId}`}
             />
           ) : null}
-          {!fileImage && (
+          {!fileImage && !imageCheck ? (
             <label htmlFor="file" className={styles.imgLabel}>
               파일찾기
+            </label>
+          ) : (
+            <label htmlFor="file" className={styles.imgLabelUpdate}>
+              <i className={`fa-solid fa-pencil ${styles.editIcon}`}></i>
             </label>
           )}
           <input
@@ -249,7 +254,7 @@ const PostForm = () => {
         ></textarea>
         <ShortGreenBtn
           type="submit"
-          // disabled={!imageCheck}
+          disabled={!imageCheck}
           className={styles.button}
         >
           작성

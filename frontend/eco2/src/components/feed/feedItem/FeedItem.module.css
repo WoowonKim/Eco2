@@ -53,19 +53,31 @@
   height: 160px;
 }
 
-.heart {
+.iconGroup {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* .heart {
+=======
   position: absolute;
   right: 10px;
   font-size: small;
-}
+} */
 
 .heartIcon {
   color: red;
   font-size: large;
-  margin-left: 5px;
+  margin-right: 5px;
 }
 
-.link {
-  text-decoration: none;
-  color: black;
+.heartButton {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  border: none;
+  background-color: white;
+  margin-right: 5px;
 }

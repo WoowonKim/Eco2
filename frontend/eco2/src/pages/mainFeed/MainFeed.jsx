@@ -6,60 +6,53 @@ import { postList } from "../../store/post/postSlice";
 import { useDispatch } from "react-redux";
 
 const MainFeed = () => {
-  const [feeds, setFeeds] = useState([]);
-  const [likeCount, setLikeCount] = useState(0);
-
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    console.log("likeCount", likeCount);
     document.getElementById("scroll-container").scrollTop = 0;
-    dispatch(postList()).then((res) => {
-      console.log(res);
-      if (res.payload?.status === 200) {
-        setFeeds(res.payload.postListDtos);
-      }
-    });
-  }, [likeCount]);
+  }, []);
   return (
     <div className={styles.mainFeed}>
       <div className={styles.session1}>
-        <Link to={`/mainFeed/${"do"}`} state={{ category: 1, feeds }}>
+        <Link to={`/mainFeed/${"do"}`} state={{ category: 1 }}>
           <div className={styles.do1}>
             <div className={styles.do1Title}>
-              <i className={`fa-solid fa-person-walking fa-1x`}></i><span> 실천하기</span>
+              <i className={`fa-solid fa-person-walking fa-1x`}></i>
+              <span> 실천하기</span>
             </div>
           </div>
         </Link>
       </div>
       <div className={styles.session2}>
-        <Link to={`/mainFeed/${"do"}`} state={{ category: 2, feeds }}>
+        <Link to={`/mainFeed/${"use"}`} state={{ category: 2 }}>
           <div className={styles.do2}>
             <div className={styles.do2Title}>
-              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i><span> 사용하기</span>
+              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i>
+              <span> 사용하기</span>
             </div>
           </div>
         </Link>
-        <Link to={`/mainFeed/${"do"}`} state={{ category: 3, feeds }}>
+        <Link to={`/mainFeed/${"save"}`} state={{ category: 3 }}>
           <div className={styles.do3}>
             <div className={styles.do3Title}>
-              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i><span> 절약하기</span>
+              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i>
+              <span> 절약하기</span>
             </div>
           </div>
         </Link>
       </div>
       <div className={styles.session3}>
-        <Link to={`/mainFeed/${"do"}`} state={{ category: 4, feeds }}>
+        <Link to={`/mainFeed/${"buy"}`} state={{ category: 4 }}>
           <div className={styles.do4}>
             <div className={styles.do4Title}>
-              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i><span> 구매하기</span>
+              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i>
+              <span> 구매하기</span>
             </div>
           </div>
         </Link>
-        <Link to={`/mainFeed/${"do"}`} state={{ category: 5, feeds }}>
+        <Link to={`/mainFeed/${"recycle"}`} state={{ category: 5 }}>
           <div className={styles.do5}>
             <div className={styles.do5Title}>
-              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i><span> 재활용하기</span>
+              <i className={`fa-solid fa-cookie-bite fa-1x`}> </i>
+              <span> 재활용하기</span>
             </div>
           </div>
         </Link>

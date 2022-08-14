@@ -35,7 +35,13 @@ const NoticeItem = ({
       align="start"
       onClick={() =>
         navigate(`/notice/${id}`, {
-          state: { admin, next, prev, index },
+          state: {
+            admin,
+            next,
+            prev,
+            index,
+            notices,
+          },
         })
       }
     >
