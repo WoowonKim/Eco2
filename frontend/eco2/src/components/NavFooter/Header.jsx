@@ -34,7 +34,7 @@ const Header = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userId, imgSrc]);
+  }, []);
   return (
     <header className={styles.Header}>
       <div
@@ -76,7 +76,7 @@ const Header = () => {
             navigate(`/profile/${getUserId()}`);
           }}
         >
-          {/* <img src={imgSrc} alt="profileImg" className={styles.profileImg} /> */}
+          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
         </button>
 
 
