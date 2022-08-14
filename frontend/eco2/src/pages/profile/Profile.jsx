@@ -141,7 +141,7 @@ const Profile = () => {
                 >
                   <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
                 </button>
-              )}
+              
               <button
                 className={styles.button}
                 onClick={() => {
@@ -193,9 +193,13 @@ const Profile = () => {
           </div>
         )}
       </div>
-      <Calendar id={userId} />
+      
       
       <div className={styles.missionList}>
+        <div onClick={() => setUserSetting(3)} className={styles.missionTitle}>
+          <p className={`${styles.dailyText} ${displayType}`}>달력</p>
+          {userSetting === 1 && <hr className={styles.line} />}
+        </div>
         <div onClick={() => setUserSetting(1)} className={styles.missionTitle}>
           <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
           {userSetting === 1 && <hr className={styles.line} />}
@@ -231,7 +235,9 @@ const Profile = () => {
           ))}
         </div>
       )}
+      {userSetting === 3 && <Calendar id={userId} />}
     </div>
+  </div>
   );
 };
 

@@ -34,7 +34,7 @@ const Header = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userId, imgSrc]);
+  }, []);
   return (
     <header className={styles.Header}>
       <div

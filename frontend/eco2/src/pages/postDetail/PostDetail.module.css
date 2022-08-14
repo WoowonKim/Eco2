@@ -1,5 +1,5 @@
 .container {
-  width: 300px;
+  width: 380px;
   margin-top: 20px;
   display: block;
 
@@ -9,7 +9,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10%;
+  margin-bottom: 3%;
 }
+
 
 .text {
   text-align: start;
@@ -18,8 +21,6 @@
 .dropdown {
   position: relative;
   display: inline-block;
-  padding: 10px 20px;
-  margin-left: 300px;
 }
 
 .dropdownContent {
@@ -56,13 +57,18 @@
 }
 
 .postImg {
+  margin: 0px;
   width: 100%;
-  height: 100%;
+  height: 280px;
 }
 
 
 .user {
+  margin: 3px;
   font-weight: bold;
+  font-size: 15px;
+  display: flex;
+  justify-content: start;
 }
 
 .info {
@@ -71,6 +77,7 @@
 }
 
 .button {
+  display: flex;
   border: none;
   background-color: white;
 }
@@ -86,16 +93,25 @@
 }
 
 .profileImg {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   background-color: white;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  border: none;
   border-radius: 50%;
   margin-right: 5px;
 }
 
+
+.heartAndRegistTime {
+  display: flex;
+  margin-top: 3%;
+}
+
+
 .heart {
   color: red;
+  
   margin-right: 5px;
 }
 
@@ -136,8 +152,9 @@
 
 .registTime {
   display: flex;
-  font-size: 10px;
-  /* text-align: end; */
-  justify-content: end;
-  margin-right: 0;
+  font-size: 12px;
+  text-align: end;
+  /* justify-content: end; */
+  margin-top: 2%;
+  margin-left: 67%;
 }
