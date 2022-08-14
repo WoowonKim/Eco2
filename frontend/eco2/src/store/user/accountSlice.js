@@ -117,7 +117,7 @@ export const calendar = createAsyncThunk(
 export const accountSlice = createSlice({
   name: "account",
   initialState: {
-    loading: false,
+    isPending: false,
     data: [],
   },
   reducers: {
@@ -132,11 +132,17 @@ export const accountSlice = createSlice({
     [friends.rejected]: (state, action) => {
       console.log("friends rejected", action.payload);
     },
+    [friendRequest.pending]: (state, action) => {
+      console.log("friendRequest pending", action.payload);
+      state.isPending = true;
+    },
     [friendRequest.fulfilled]: (state, action) => {
       console.log("friendRequest fulfilled", action.payload);
+      state.isPending = false;
     },
     [friendRequest.rejected]: (state, action) => {
       console.log("friendRequest rejected", action.payload);
+      state.isPending = false;
     },
     [friendDelete.fulfilled]: (state, action) => {
       console.log("friendDelete fulfilled", action.payload);
