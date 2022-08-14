@@ -130,7 +130,7 @@ const Profile = () => {
                         navigate("/chatting/room", {
                           state: {
                             roomId: res.payload.roomId,
-                            userId: params.userId,
+                            userId: Number(params.userId),
                           },
                         });
                         window.location.reload(`/chatting/room`);
