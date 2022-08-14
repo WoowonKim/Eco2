@@ -38,8 +38,6 @@ const UserSettings = () => {
   const [nameMessage, setNameMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
-  const [profileEdit, setProfileEdit] = useState(false);
-  const [fileImage, setFileImage] = useState("");
   const [file, setFile] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
   const [originalImg, setOriginalImg] = useState("");
@@ -115,36 +113,10 @@ const UserSettings = () => {
     }
   };
 
-  const saveFileImage = (e) => {
-    setFile(e.target.files[0]);
-    setFileImage(URL.createObjectURL(e.target.files[0]));
-  };
-
-  const profileImg = () => {
-    dispatch(profileImgChange({ email, img: file ? file : originalImg })).then(
-      (res) => {
-        if (res.payload.status === 200) {
-          setProfileEdit(false);
-        }
-      }
-    );
-  };
-
   useEffect(() => {
     setName(getUserName());
     setUserSetting(location.state?.notice === 3 ? 3 : 1);
     setAutoLogin(localStorage.getItem("email") ? true : false);
-
-    axiosService({
-      url: `${process.env.REACT_APP_BE_HOST}img/profile/${getUserId()}`,
-      method: "GET",
-      responseType: "blob",
-    }).then((res) => {
-      const file = new File([res.data], "profileImg.png", {
-        type: "image/png",
-      });
-      setOriginalImg(file);
-    });
   }, []);
 
   return (
@@ -165,53 +137,6 @@ const UserSettings = () => {
       </div>
       {userSetting === 1 ? (
         <div>
-          <div className={styles.profileImg}>
-            <div>
-              {fileImage ? (
-                <img className={styles.img} alt="profileImg" src={fileImage} />
-              ) : (
-                <img
-                  className={styles.img}
-                  alt="profileImg"
-                  src={`${
-                    process.env.REACT_APP_BE_HOST
-                  }img/profile/${getUserId()}`}
-                />
-              )}
-            </div>
-            {!profileEdit ? (
-              <div className={styles.profileImgGroup}>
-                <p className={styles.profileImgText}>프로필 사진</p>
-                <i
-                  className={`fa-solid fa-pencil ${styles.editIcon}`}
-                  onClick={() => setProfileEdit(true)}
-                ></i>
-              </div>
-            ) : (
-              <div>
-                <div className={styles.fileInputGroup}>
-                  <input className={styles.fileInput} placeholder="첨부파일" />
-                  <label htmlFor="file" className={styles.imgLabel}>
-                    파일찾기
-                  </label>
-                  <input
-                    encType="multipart/form-data"
-                    type="file"
-                    id="file"
-                    name="post_file"
-                    onChange={saveFileImage}
-                    className={`${styles.fileInput} ${styles.baseFileInput}`}
-                  />
-                  <button onClick={profileImg} className={styles.button}>
-                    수정완료
-                  </button>
-                  {/* <button onClick={() => deleteFileImage()} className={styles.button}>
-            삭제
-          </button> */}
-                </div>
-              </div>
-            )}
-          </div>
           <div className={styles.emailGroup}>
             <div className={styles.emailTitleGroup}>
               <p className={styles.emailTitle}>이메일</p>

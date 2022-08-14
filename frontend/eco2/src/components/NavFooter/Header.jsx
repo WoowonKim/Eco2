@@ -10,6 +10,7 @@ import styles from "./Header.module.css";
 const Header = () => {
   const [userId, setUserId] = useState(getUserId());
   const [imgSrc, setImgSrc] = useState("");
+  const [checkImg, setCheckImg] = useState(0);
 
   let navigate = useNavigate();
 
@@ -18,9 +19,8 @@ const Header = () => {
     if (!userId) {
       return;
     }
-
-    setImgSrc(`http://localhost:8002/img/profile/${userId}`);
-  }, [userId, imgSrc]);
+    // setImgSrc(`http://localhost:8002/img/profile/${userId}`);
+  }, [userId, checkImg]);
 
   return (
     <header className={styles.Header}>
@@ -59,10 +59,14 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate(`/profile/${getUserId()}`);
+            navigate(`/profile/${getUserId()}`, { state: { setCheckImg } });
           }}
         >
-          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
+          <img
+            src={`http://localhost:8002/img/profile/${userId}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
         </button>
       </nav>
     </header>

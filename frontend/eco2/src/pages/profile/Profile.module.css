@@ -17,6 +17,62 @@
   align-items: center;
 }
 
+.profileImgGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editIcon {
+  font-size: 10px;
+  color: black;
+  margin: 3px;
+  background-color: transparent;
+}
+
+.fileInputGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* .imgLabel {
+  display: flex;
+  justify-content: center;
+} */
+
+.fileInput {
+  height: 30px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  width: 50%;
+  color: #999999;
+  display: none;
+}
+
+.baseFileInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.label {
+  display: flex;
+  justify-content: start;
+  font-size: large;
+  margin: 20px 0 5px 5px;
+}
+
+.button {
+  border: none;
+  background-color: white;
+}
+
 .userSettingAndFriends {
   display: flex;
   justify-content: center;
