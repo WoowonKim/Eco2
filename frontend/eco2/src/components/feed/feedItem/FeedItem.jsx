@@ -15,7 +15,7 @@ const FeedItem = ({
   like,
   userEmail,
   likeUsers,
-  setLikeCount, 
+  setLikeCount,
 }) => {
   const [likeUserId, setLikeUserId] = useState(false);
 
@@ -71,9 +71,9 @@ const FeedItem = ({
         </div>
         <button className={styles.heartButton} onClick={handlePostLike}>
           {likeUserId ? (
-            <i className={`fa-solid fa-heart ${styles.heart}`}></i>
+            <i className={`fa-solid fa-heart ${styles.heartIcon}`}></i>
           ) : (
-            <i className={`fa-regular fa-heart ${styles.heart}`}></i>
+            <i className={`fa-regular fa-heart ${styles.heartIcon}`}></i>
           )}
           <span className={styles.likeText}>{like}</span>
         </button>
