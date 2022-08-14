@@ -194,9 +194,11 @@ const PostForm = () => {
               src={`http://localhost:8002/img/post/${location.state?.postId}`}
             />
           ) : null}
-          <label htmlFor="file" className={styles.imgLabel}>
-            파일찾기
-          </label>
+          {!fileImage && (
+            <label htmlFor="file" className={styles.imgLabel}>
+              파일찾기
+            </label>
+          )}
           <input
             encType="multipart/form-data"
             type="file"
