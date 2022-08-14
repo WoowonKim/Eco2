@@ -1,37 +1,36 @@
 .Tree {
-  width: 400px;
-  margin-top: 80px;
-  margin-left: 0;
-  margin-right: auto;
   position: relative;
 }
 
 .Img {
-  width: 350px;
-  margin-left: 0;
-  margin-right: auto;
+  /* margin-top: 20%; */
+  width: 390px;
+height: 90vh;
 }
 
 .Statis {
-  width: 120px;
-  height: 150px;
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 100px;
+  /* height: 150px; */
   font-size: small;
-  /* background-color: #d9d9d991; */
-  /* background-color: beige; */
-  background: linear-gradient(45deg, #fef6de, #fef6de);
-  border-radius: 10px 20px;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   align-items: start;
 }
 
 .Statis p {
-  margin: auto 10px;
 }
 
 .Statis i {
-  margin-right: 5px;
+  margin: 10px;
   color: black;
 }
 
 
+.leaf{
+  width: 15px;
+  margin-right: 10px;
+}

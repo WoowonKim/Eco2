@@ -76,7 +76,7 @@ const Header = () => {
             navigate(`/profile/${getUserId()}`);
           }}
         >
-          {/* <img src={imgSrc} alt="profileImg" className={styles.profileImg} /> */}
+          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
         </button>
 
 
