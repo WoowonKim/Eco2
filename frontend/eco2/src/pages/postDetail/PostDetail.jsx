@@ -100,6 +100,24 @@ const PostDetail = () => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
+        {/* <h1 className={styles.text}>{feedItem.category}</h1> */}
+        <div className={styles.info}>
+          <div
+            className={styles.userProfile}
+            onClick={() =>
+              navigate(`/profile/${feedItem.userId}`, {
+                state: { userEmail: feedItem.userEmail },
+              })
+            }
+          >
+            <img
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${feedItem.userId}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
+            <p className={styles.user}>{feedItem.userName}</p>
+          </div>
+        </div>
         <div className={styles.dropdown}>
           <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
           <div className={styles.dropdownContent}>
@@ -184,32 +202,17 @@ const PostDetail = () => {
         alt="postImg"
         className={styles.postImg}
       />
-      <div className={styles.info}>
-        <div
-          className={styles.userProfile}
-          onClick={() =>
-            navigate(`/profile/${feedItem.userId}`, {
-              state: { userEmail: feedItem.userEmail },
-            })
-          }
-        >
-          <img
-            src={`${process.env.REACT_APP_BE_HOST}img/profile/${feedItem.userId}`}
-            alt="profileImg"
-            className={styles.profileImg}
-          />
-          <p className={styles.user}>{feedItem.userName}</p>
-        </div>
+      <div className={styles.heartAndRegistTime}>
         <button className={styles.button} onClick={handlePostLike}>
           {likeUsers ? (
-            <i className={`fa-solid fa-heart ${styles.heart}`}></i>
+            <i className={`fa-solid fa-heart fa-2x ${styles.heart}`}></i>
           ) : (
-            <i className={`fa-regular fa-heart ${styles.heart}`}></i>
+            <i className={`fa-regular fa-heart fa-2x ${styles.heart}`}></i>
           )}
           {feedItem.likeCount}
         </button>
+        <span className={styles.registTime}>{registTime}</span>
       </div>
-      <span className={styles.registTime}>작성일 : {registTime}</span>
       <pre className={styles.content}>{feedItem.content}</pre>
       <hr className={styles.line} />
       {feedItem.commentFlag && (

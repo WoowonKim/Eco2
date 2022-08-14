@@ -2,15 +2,16 @@
   /* display: flex; */
   /* justify-content: space-between; */
   /* background-image: url(../../../public/ocean.PNG); */
-  background: linear-gradient(beige 30%, white);
+
   /* background-color: beige; */
-  width: 400px;
+  width: 390px;
   justify-content: center;
   align-items: center;
   padding: 10px;
 }
 
 .user {
+  background: linear-gradient(beige 30%, white);
   /* display: flex; */
   justify-content: start;
   align-items: center;
@@ -20,7 +21,6 @@
   display: flex;
   justify-content: center;
 }
-
 
 .profileImg {
   width: 150px;
@@ -41,7 +41,7 @@
 }
 
 .buttonGroup {
-  /* display: flex; */
+  display: flex;
   justify-content: end;
   background-color: transparent;
 }
@@ -52,7 +52,6 @@
   transition: all 2s ease-in;
   padding: 0 0 5px 3px;
   margin: 0px;
- 
 }
 
 .button :hover {
@@ -74,7 +73,7 @@
 .missionList {
   display: grid;
   margin-top: 50px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 /* .missionTitle {
@@ -94,7 +93,6 @@
   justify-content: start;
   /* grid-template-columns: 1fr 1fr 1fr; */
   flex-wrap: wrap;
-  
 }
 
 .missionImg {
@@ -102,5 +100,5 @@
   margin: 5px;
   border: 1px solid #dadada;
   border-radius: 5px;
-  height: 90px;
+  height: 110px;
 }

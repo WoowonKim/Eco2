@@ -21,6 +21,7 @@ const Header = () => {
 
     setImgSrc(`http://localhost:8002/img/profile/${userId}`);
   }, [userId, imgSrc]);
+
   return (
     <header className={styles.Header}>
       <div
