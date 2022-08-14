@@ -1,11 +1,10 @@
 .list {
-  width: 300px;
+  width: 380px;
   height: 45px;
   /* margin: 20px; */
 }
 
 .list:hover {
-  width: 300px;
   background-color: #EAEAEA;
 }
 
@@ -21,27 +20,27 @@
   display: inline-block;
   float: left;
   text-align: left;
-  width: 70%;
+  width: 80%;
 }
 
 .rightContent {
   margin-top: 10px;
   display: inline-block;
   /*float: right; */
-  width: 30%;
+  width: 20%;
 
 }
 .typeBox{
   float: left;
-  width: 60px;
+  width: 70px;
 }
 .type{
   margin: 10px;
   font-weight: bold;
   font-size: 12px;
   color: #353535;
-  width: 300px;
-  text-align: center;
+  /* width: 300px; */
+  /* text-align: center; */
 }
 
 .text{

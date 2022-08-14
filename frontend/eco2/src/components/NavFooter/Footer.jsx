@@ -13,25 +13,25 @@ const Footer = () => {
       <AlarmPopUpContainer />
       <footer className={styles.Footer}>
         <i
-          className="fa-solid fa-tree"
-          onClick={() => {
+          className={`fa-solid fa-tree ${styles.icon}`}
+                    onClick={() => {
             navigate("/mainTree");
           }}
         ></i>
         <i
-          className="fa-solid fa-envelope-open-text"
+          className={`fa-solid fa-envelope-open-text ${styles.icon}`}
           onClick={() => {
             navigate("/dailymissionmain");
           }}
         ></i>
         <i
-          className="fa-solid fa-earth-americas"
+          className={`fa-solid fa-earth-americas ${styles.icon}`}
           onClick={() => {
             navigate("/mainFeed");
-          }}
+          }} 
         ></i>
         <i
-          className="fa-solid fa-map-location-dot"
+          className={`fa-solid fa-map-location-dot ${styles.icon}`}
           onClick={() => {
             navigate("/quest");
           }}
@@ -42,7 +42,7 @@ const Footer = () => {
           }}
         >
           {isNew && <div className={styles.btn}></div>}
-          <i className="fa-solid fa-bullhorn"></i>
+          <i className={`fa-solid fa-bullhorn ${styles.icon}`}></i>
         </div>
       </footer>
     </>

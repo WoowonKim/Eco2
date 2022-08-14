@@ -1,29 +1,23 @@
-.container {
-  width: 300px;
-  margin-top: 50px;
+/* .container {
+  width: 370px;
+  margin-top: 40px;
 }
-
-
 .title {
-  
   display: flex;
   align-items: center;
-  justify-content: start;
 }
-
-
 
 .text {
   font-weight: bold;
-  /* color: #615e5e; */
+  color: #615e5e;
   color: black;
   margin: 5px 0;
   margin-right: 10px;
+  font-size: 17px;
 }
 
 .list {
-  margin-bottom: 50px;
-
+  margin-bottom: 5px;
 }
 
 
@@ -46,37 +40,442 @@
 
 .plusIcon:hover {
   cursor: pointer;
-  color: #adc178;
+  color: rgb(166, 228, 166);
   transform: scale(1.1);
 }
 
 .iconDo {
   color: #615e5e;
-  margin-right: 5px;
-  width: 40px;
+  margin-right: 10px;
+  font-size: 25px;
 }
 
 .iconUse {
   color: #615e5e;
-  margin-right: 5px;
-  width: 40px;
+  margin-right: 10px;
+  font-size: 25px;
 }
 
 .iconSave {
   color: #615e5e;
-  margin-right: 5px;
-  width: 40px;
+  margin-right: 10px;
+  font-size: 25px;
 }
 
 .iconBuy {
   color: #615e5e;
-  margin-right: 5px;
-  width: 40px;
+  margin-right: 10px;
+  font-size: 25px;
 }
 
 .iconRecycle {
   color: #615e5e;
-  margin-right: 5px;
-  width: 40px;
+  margin-right: 10px;
+  font-size: 25px;
+}
+ */
+
+.mainFeed {
 }
 
+.session1 {
+  background-color: transparent;
+  width: 390px;
+  height: 28vh;
+  text-align: left;
+}
+
+.do1 {
+  position: relative;
+  background-color: #afc5a0;
+  width: 390px;
+  height: 28vh;
+}
+.do1:hover{
+  background-color: rgb(85, 109, 101);
+  transform: scale(0.9);
+  transition: .5s;
+}
+
+.do1Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  /* font-weight: bold; */
+  left: 20px;
+  color: rgb(255, 255, 255);
+}
+
+.session2 {
+  float: left;
+  height: 28vh;
+  width: 390px;
+}
+
+.do2 {
+  width: 230px;
+  position: relative;
+  height: 28vh;
+  background-color: #efefae;
+  float: left;
+}
+.do2:hover{
+  background-color: rgb(122, 160, 91);
+  transform: scale(0.9);
+  transition: .5s;
+}
+.do2Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 20px;
+  color: rgb(255, 255, 255);
+}
+
+.do3 {
+  position: relative;
+  height: 28vh;
+  width: 160px;
+  float: left;
+  background-color: #eac88e;
+}
+.do3:hover{
+  background-color: rgb(136, 98, 91);
+  transform: scale(0.9);
+  transition: .5s;
+}
+.do3Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 15px;
+  color: rgb(255, 255, 255);
+}
+
+.session3 {
+  clear: both;
+  height: 27vh;
+  float: left;
+  width: 390px;
+}
+
+.do4 {
+  position: relative;
+  height: 28vh;
+  width: 160px;
+  float: left;
+  background-color: #d07a7a;
+}
+.do4:hover{
+  background-color: rgb(75, 98, 110);
+  transform: scale(0.9);
+  transition: .5s;
+}
+.do4Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 30px;
+  left: 13px;
+  color: rgb(255, 255, 255);
+}
+.do5 {
+  position: relative;
+  height: 28vh;
+  width: 230px;
+  float: left;
+  background-color: #ccde79;
+}
+.do5:hover{
+  background-color: rgb(93, 69, 94);
+  transform: scale(0.9);
+  transition: .5s;
+}
+
+.do5Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 30px;
+  left: 20px;
+  color: rgb(255, 255, 255);
+} 
+
+
+/* .mainFeed {
+  padding-top: 50px;
+}
+
+.session1 {
+  position: relative;
+  display: flex;
+  background-color: transparent;
+  width: 390px;
+  height: 25vh;
+  text-align: left;
+  bottom: 10px;
+}
+
+.do1 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform:  translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  border: 2px solid rgb(69, 104, 218);
+}
+.do1:hover{
+  background-color: rgb(220, 228, 253);
+}
+
+.do1Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 20px;
+  color: rgb(39, 38, 38);
+}
+
+.session2 {
+  position: relative;
+  float: left;
+  display: flex;
+  background-color: transparent;
+  height: 30vh;
+  width: 390px;
+}
+.do2 {
+  position: absolute;
+  left: 30%;
+  top: 45%;
+  transform:  translate(-50%, -50%);
+  width: 50%;
+  height: 90%;
+  border: 2px solid rgb(132, 206, 71);
+  float: left;
+}
+.do2:hover{
+  background-color: rgb(232, 255, 213);
+}
+.do2Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 20px;
+  color: rgb(7, 7, 7);
+}
+
+.do3 {
+  position: absolute;
+  left: 77%;
+  top: 45%;
+  transform:  translate(-50%, -50%);
+  width: 35%;
+  height: 90%;
+  border: 2px solid rgb(248, 63, 140);
+  float: left;
+}
+
+.do3:hover{
+  background-color: rgb(255, 213, 205);
+}
+.do3Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 15px;
+  color: rgb(48, 48, 48);
+}
+
+.session3 {
+  clear: both;
+  position: relative;
+  float: left;
+  display: flex;
+  background-color: transparent;
+  height: 40vh;
+  width: 390px;
+}
+
+
+.do4 {
+  position: absolute;
+  left: 22.5%;
+  top: 34%;
+  transform:  translate(-50%, -50%);
+  width: 35%;
+  height: 70%; 
+  float: left;
+  border: 2px solid rgba(223, 211, 42, 0.877);
+}
+.do4:hover{
+  background-color: rgb(255, 252, 203);
+}
+
+.do4Title {
+  position: absolute;
+  font-size: 20px;
+  bottom: 20px;
+  left: 10px;
+  color: rgb(53, 53, 53);
+}
+
+.do5 {
+  position: absolute;
+  left: 70%;
+  top: 34%;
+  transform:  translate(-50%, -50%);
+  width: 50%;
+  height: 70%; 
+  float: left;
+  border: 2px solid rgb(222, 0, 252);
+}
+.do5:hover{
+  background-color: rgb(255, 223, 255);
+}
+.do5Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 13px;
+  color: rgb(61, 61, 61);
+} */
+
+/* .mainFeed {
+  padding-top: 50px;
+}
+
+.session1 {
+  position: relative;
+  display: flex;
+  background-color: transparent;
+  width: 390px;
+  height: 25vh;
+  text-align: left;
+  bottom: 10px;
+}
+
+.do1 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform:  translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  background-color: rgb(185, 223, 182);
+}
+.do1:hover{
+  background-color: rgb(220, 228, 253);
+}
+
+.do1Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 20px;
+  color: rgb(39, 38, 38);
+}
+
+.session2 {
+  position: relative;
+  float: left;
+  display: flex;
+  background-color: transparent;
+  height: 30vh;
+  width: 390px;
+}
+.do2 {
+  position: absolute;
+  left: 30%;
+  top: 45%;
+  transform:  translate(-50%, -50%);
+  width: 50%;
+  height: 90%;
+  background-color: rgb(213, 214, 189);
+  float: left;
+}
+.do2:hover{
+  background-color: rgb(232, 255, 213);
+}
+.do2Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 20px;
+  color: rgb(7, 7, 7);
+}
+
+.do3 {
+  position: absolute;
+  left: 77%;
+  top: 45%;
+  transform:  translate(-50%, -50%);
+  width: 35%;
+  height: 90%;
+  background-color: rgb(214, 245, 212);
+  float: left;
+}d
+
+.do3:hover{
+  background-color: rgb(255, 213, 205);
+}
+.do3Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 15px;
+  color: rgb(48, 48, 48);
+}
+
+.session3 {
+  clear: both;
+  position: relative;
+  float: left;
+  display: flex;
+  background-color: transparent;
+  height: 40vh;
+  width: 390px;
+}
+
+
+.do4 {
+  position: absolute;
+  left: 22.5%;
+  top: 34%;
+  transform:  translate(-50%, -50%);
+  width: 35%;
+  height: 70%; 
+  float: left;
+  background-color: rgb(161, 185, 159);
+}
+.do4:hover{
+  background-color: rgb(255, 252, 203);
+}
+
+.do4Title {
+  position: absolute;
+  font-size: 20px;
+  bottom: 20px;
+  left: 10px;
+  color: rgb(53, 53, 53);
+}
+
+.do5 {
+  position: absolute;
+  left: 70%;
+  top: 34%;
+  transform:  translate(-50%, -50%);
+  width: 50%;
+  height: 70%; 
+  float: left;
+  background-color: rgb(240, 243, 215);
+}
+.do5:hover{
+  background-color: rgb(255, 223, 255);
+}
+.do5Title {
+  position: absolute;
+  font-size: 25px;
+  bottom: 20px;
+  left: 13px;
+  color: rgb(61, 61, 61);
+} */

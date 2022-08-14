@@ -5,16 +5,16 @@ const ReportDetailList = ({ reportType, content, name }) => {
   return (
     <div>
       <div className={styles.list}>
-        <div className={styles.type}>
-          <div className={styles.text}>{reportType.type}</div>
+        <div className={styles.leftContent}>
+          <div className={styles.type}>
+            <div className={styles.text}>{reportType.type}</div>
+          </div>
+          <span className={styles.text}>{content}</span>
         </div>
-        <div className={styles.content}>
-          <div className={styles.text}>{content}</div>
-        </div>
-        <div className={styles.name}>
+        <div className={styles.rightContent}>
           <div className={styles.text}>{name}</div>
         </div>
-        <hr className={styles.line}></hr>
+        {/* <hr className={styles.line}></hr> */}
       </div>
     </div>
   );
