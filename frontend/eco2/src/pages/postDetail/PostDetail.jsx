@@ -100,7 +100,6 @@ const PostDetail = () => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        {/* <h1 className={styles.text}>{feedItem.category}</h1> */}
         <div className={styles.dropdown}>
           <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
           <div className={styles.dropdownContent}>
@@ -130,10 +129,6 @@ const PostDetail = () => {
                     className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
                   ></i>
                 </button>
-                {/* <button className={styles.dropdownItem}>
-                  비공개
-                  <i className={`fa-solid fa-lock ${styles.dropdownIcon}`}></i>
-                </button> */}
               </div>
             ) : (
               <button
@@ -215,10 +210,10 @@ const PostDetail = () => {
         </button>
       </div>
       <span className={styles.registTime}>작성일 : {registTime}</span>
-      <p className={styles.content}>{feedItem.content}</p>
+      <pre className={styles.content}>{feedItem.content}</pre>
       <hr className={styles.line} />
       {feedItem.commentFlag && (
-        <div>
+        <>
           <div className={styles.CommentForm}>
             <CommentForm
               postId={feedItem.id}
@@ -233,7 +228,7 @@ const PostDetail = () => {
             replys={replys}
             setTest={setTest}
           />
-        </div>
+        </>
       )}
     </div>
   );

@@ -2,7 +2,6 @@
   width: 300px;
   margin-top: 20px;
   display: block;
-
 }
 
 .title {
@@ -60,7 +59,6 @@
   height: 100%;
 }
 
-
 .user {
   font-weight: bold;
 }
@@ -89,8 +87,6 @@
   width: 20px;
   height: 20px;
   background-color: white;
-  border: 1px solid black;
-  border-radius: 50%;
   margin-right: 5px;
 }
 
@@ -100,11 +96,12 @@
 }
 
 .content {
-  height: 100px;
+  /* height: 100px; */
   margin: 20px 0;
   text-align: left;
-  font-size: 16px;
+  font-size: small;
   word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .line {
@@ -113,7 +110,9 @@
 }
 
 .CommentForm {
-  margin-bottom: 10px;
+  width: 100%;
+  margin: 0 0 10px 0;
+  padding: 0;
 }
 
 .visible {

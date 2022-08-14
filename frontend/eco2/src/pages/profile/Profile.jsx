@@ -141,96 +141,103 @@ const Profile = () => {
                 >
                   <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
                 </button>
-              )}
+
+                <button
+                  className={styles.button}
+                  onClick={() => {
+                    dispatch(
+                      createRoom({ userId: getUserId(), id: params.userId })
+                    )
+                      .then((res) => {
+                        if (res.payload?.status === 200) {
+                          navigate("/chatting/room", {
+                            state: {
+                              roomId: res.payload.roomId,
+                              userId: Number(params.userId),
+                            },
+                          });
+                          window.location.reload(`/chatting/room`);
+                        }
+                      })
+                      .catch((err) => console.log(err));
+                  }}
+                >
+                  <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
+                </button>
+              </div>
+            )}
+          </div>
+          {visible && (
+            <PostModal
+              title={"친구 신청"}
+              content={"친구 신청을 하시겠습니까?"}
+              type={"친구"}
+              fromId={getUserId()}
+              toId={params.userId}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
+          {getUserId() === params.userId && (
+            <div className={styles.friend}>
               <button
+                onClick={() =>
+                  navigate("/user/friends", {
+                    state: { userId: userId, friendList: friendList },
+                  })
+                }
                 className={styles.button}
-                onClick={() => {
-                  dispatch(
-                    createRoom({ userId: getUserId(), id: params.userId })
-                  )
-                    .then((res) => {
-                      if (res.payload?.status === 200) {
-                        navigate("/chatting/room", {
-                          state: {
-                            roomId: res.payload.roomId,
-                            userId: Number(params.userId),
-                          },
-                        });
-                        window.location.reload(`/chatting/room`);
-                      }
-                    })
-                    .catch((err) => console.log(err));
-                }}
               >
-                <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
+                <i className={`fa-solid fa-users ${styles.friendIcon}`}></i>
               </button>
+              {friendList.length}
             </div>
           )}
         </div>
-        {visible && (
-          <PostModal
-            title={"친구 신청"}
-            content={"친구 신청을 하시겠습니까?"}
-            type={"친구"}
-            fromId={getUserId()}
-            toId={params.userId}
-            closeModal={() => setVisible(!visible)}
-          />
+        <Calendar id={userId} />
+
+        <div className={styles.missionList}>
+          <div
+            onClick={() => setUserSetting(1)}
+            className={styles.missionTitle}
+          >
+            <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
+            {userSetting === 1 && <hr className={styles.line} />}
+          </div>
+          <div
+            onClick={() => setUserSetting(2)}
+            className={styles.missionTitle}
+          >
+            <p className={`${styles.questText} ${displayType2}`}>퀘스트</p>
+            {userSetting === 2 && <hr className={styles.line} />}
+          </div>
+        </div>
+        {userSetting === 1 && (
+          <div className={`${styles.mission}`}>
+            {missionList.map((mission) => (
+              <img
+                key={mission.id}
+                src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                alt="missionImg"
+                className={styles.missionImg}
+                onClick={() => navigate(`/post/${mission.id}`)}
+              />
+            ))}
+          </div>
         )}
-        {getUserId() === params.userId && (
-          <div className={styles.friend}>
-            <button
-              onClick={() =>
-                navigate("/user/friends", {
-                  state: { userId: userId, friendList: friendList },
-                })
-              }
-              className={styles.button}
-            >
-              <i className={`fa-solid fa-users ${styles.friendIcon}`}></i>
-            </button>
-            {friendList.length}
+        {userSetting === 2 && (
+          <div className={`${styles.quest} ${displayType2}`}>
+            {questList.map((mission) => (
+              <img
+                key={mission.id}
+                src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                alt="profileImg"
+                className={styles.missionImg}
+                onClick={() => navigate(`/post/${mission.id}`)}
+              />
+            ))}
           </div>
         )}
       </div>
-      <Calendar id={userId} />
-      
-      <div className={styles.missionList}>
-        <div onClick={() => setUserSetting(1)} className={styles.missionTitle}>
-          <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
-          {userSetting === 1 && <hr className={styles.line} />}
-        </div>
-        <div onClick={() => setUserSetting(2)} className={styles.missionTitle}>
-          <p className={`${styles.questText} ${displayType2}`}>퀘스트</p>
-          {userSetting === 2 && <hr className={styles.line} />}
-        </div>
-      </div>
-      {userSetting === 1 && (
-        <div className={`${styles.mission}`}>
-          {missionList.map((mission) => (
-            <img
-              key={mission.id}
-              src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-              alt="missionImg"
-              className={styles.missionImg}
-              onClick={() => navigate(`/post/${mission.id}`)}
-            />
-          ))}
-        </div>
-      )}
-      {userSetting === 2 && (
-        <div className={`${styles.quest} ${displayType2}`}>
-          {questList.map((mission) => (
-            <img
-              key={mission.id}
-              src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-              alt="profileImg"
-              className={styles.missionImg}
-              onClick={() => navigate(`/post/${mission.id}`)}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 };

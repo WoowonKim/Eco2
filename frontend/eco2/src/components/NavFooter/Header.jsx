@@ -18,22 +18,8 @@ const Header = () => {
     if (!userId) {
       return;
     }
-    const headers = new Headers();
-    headers.append("Auth-accessToken", getAccessToken());
-    const options = {
-      method: "GET",
-      headers: headers,
-    };
-    fetch(`http://localhost:8002/img/profile/${userId}`, options)
-      .then((res) => {
-        res.arrayBuffer().then(function (buffer) {
-          const url = window.URL.createObjectURL(new Blob([buffer]));
-          setImgSrc(url);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    setImgSrc(`http://localhost:8002/img/profile/${userId}`);
   }, [userId, imgSrc]);
   return (
     <header className={styles.Header}>
@@ -55,12 +41,11 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate(`/profile/${getUserId()}`, { replace: true });
+            navigate(`/profile/${getUserId()}`);
           }}
         >
-          
-          <i class="fa-solid fa-emergency">신고</i>        
-          </button>
+          <i className="fa-solid fa-emergency">신고</i>
+        </button>
 
         <button
           className={styles.profileButton}
@@ -76,12 +61,8 @@ const Header = () => {
             navigate(`/profile/${getUserId()}`);
           }}
         >
-          {/* <img src={imgSrc} alt="profileImg" className={styles.profileImg} /> */}
+          <img src={imgSrc} alt="profileImg" className={styles.profileImg} />
         </button>
-
-
-
-
       </nav>
     </header>
   );
