@@ -55,7 +55,7 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate(`/profile/${getUserId()}`);
+            navigate(`/profile/${getUserId()}`, { replace: true });
           }}
         >
           <img

@@ -53,10 +53,12 @@ const ReplyItem = ({
               </div>{" "}
               <p className={styles.content}>{content}</p>
             </div>
-            <div className={styles.dropdown}>
-              <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
-              <div className={styles.dropdownContent}>
-                {name === user && (
+            {name === user && (
+              <div className={styles.dropdown}>
+                <i
+                  className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}
+                ></i>
+                <div className={styles.dropdownContent}>
                   <div>
                     <button
                       onClick={() => {
@@ -83,23 +85,9 @@ const ReplyItem = ({
                       ></i>
                     </button>
                   </div>
-                )}
-                {name !== user && (
-                  <button
-                    onClick={() => {
-                      setModalType(!modalType);
-                      setModalType("신고");
-                    }}
-                    className={styles.dropdownItem}
-                  >
-                    신고
-                    <i
-                      className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
-                    ></i>
-                  </button>
-                )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {modalVisible && modalType === "삭제" && (
             <PostModal
@@ -111,16 +99,6 @@ const ReplyItem = ({
               commentId={id}
               setTest={setTest}
               closeModal={() => setModalVisible(!modalVisible)}
-            />
-          )}
-          {modalVisible && modalType === "신고" && (
-            <ReportModal
-              className={`${displayType}`}
-              title={"댓글 신고"}
-              content={"해당 댓글을 신고하시겠습니까?"}
-              id={postId}
-              type="댓글"
-              closeModal={() => setVisible(!visible)}
             />
           )}
         </li>

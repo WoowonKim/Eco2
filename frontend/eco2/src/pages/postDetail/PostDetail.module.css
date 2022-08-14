@@ -73,7 +73,6 @@
 .button {
   border: none;
   background-color: white;
-
 }
 
 .button:hover {
@@ -134,3 +133,11 @@
   height: 100%;
   overflow: unset;
 } */
+
+.registTime {
+  display: flex;
+  font-size: 10px;
+  /* text-align: end; */
+  justify-content: end;
+  margin-right: 0;
+}

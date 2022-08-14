@@ -10,7 +10,12 @@ import MissionMain from "../../../components/dailyMission/missionItem/missionMai
 import MissionCustomItem from "../../../components/dailyMission/missionItem/missionCustomItem";
 
 // Store
-import { getMission, missionPost, postTodayMission, missionItem } from "../../../store/mission/missionMainSlice";
+import {
+  getMission,
+  missionPost,
+  postTodayMission,
+  missionItem,
+} from "../../../store/mission/missionMainSlice";
 import { getUserId } from "../../../store/user/common";
 import { getLocation } from "../../../utils";
 
@@ -61,16 +66,18 @@ const DailyMissionMain = () => {
    */
   useEffect(() => {
     if (id !== 0) {
-      dispatch(postTodayMission({ id: id, lat, lng, date: nowTime })).then((res) => {
-        if (res.payload.status === 200) {
-          if (id !== 0) {
-            dispatch(getMission({ id: getUserId() })).then((res) => {
-              setMain(res.payload.dailyMissionList);
-              setcusMain(res.payload.dailyCustomMissionList);
-            });
+      dispatch(postTodayMission({ id: id, lat, lng, date: nowTime })).then(
+        (res) => {
+          if (res.payload?.status === 200) {
+            if (id !== 0) {
+              dispatch(getMission({ id: getUserId() })).then((res) => {
+                setMain(res.payload.dailyMissionList);
+                setcusMain(res.payload.dailyCustomMissionList);
+              });
+            }
           }
         }
-      });
+      );
     }
   }, [id, missionDelete, cusMissionDelete]);
 
@@ -92,7 +99,9 @@ const DailyMissionMain = () => {
 
   const onSucsses = () => {
     if (sumClearMission === sumMission) {
-      alert(`축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`);
+      alert(
+        `축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`
+      );
       dispatch(missionPost({ id })).then((res) => {
         dispatch(missionItem({ id, date: toDayGet }));
       });
@@ -111,7 +120,9 @@ const DailyMissionMain = () => {
           <span className={styles.mainHeaderLeft}>오늘의 도전과제</span>
           <span className={styles.mainHeaderRight}>
             추가하기
-            <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
+            ></i>
           </span>
         </div>
       ) : (
@@ -120,7 +131,9 @@ const DailyMissionMain = () => {
           <Link to="/dailymissionDetail" className={styles.mainHeaderRight}>
             <span>
               추가하기
-              <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+              <i
+                className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
+              ></i>
             </span>
           </Link>
         </div>
@@ -164,7 +177,13 @@ const DailyMissionMain = () => {
         ))}
       </div>
 
-      <div className={styles.btn}>{successBtn ? <GreenBtn>오늘 미션 보상 완료!</GreenBtn> : <GreenBtn onClick={onSucsses}>오늘 미션 보상 받기</GreenBtn>}</div>
+      <div className={styles.btn}>
+        {successBtn ? (
+          <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
+        ) : (
+          <GreenBtn onClick={onSucsses}>오늘 미션 보상 받기</GreenBtn>
+        )}
+      </div>
     </div>
   );
 };
