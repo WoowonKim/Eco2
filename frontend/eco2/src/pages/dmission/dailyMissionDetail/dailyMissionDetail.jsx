@@ -13,11 +13,10 @@ import { useLocation } from "react-router-dom";
 const DailyMissionDetail = () => {
   const [missionList, setMissionList] = useState([]); // 서버에서 미션리스트를 불러오기 위한 State
   const [id, setId] = useState(getUserId()); // user id를 갖고 오기 위한 State
-  const [test, setTest] = useState(false);
 
   const dispatch = useDispatch();
   const location = useLocation();
-  // const [test, setTest] = useState(true);
+
   /**
    * getUserId() : id를 불러오기 위한 함수
    * dMission() : 서버에서 미션을 갖고 오기 위한 함수

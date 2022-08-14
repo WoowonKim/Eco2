@@ -39,7 +39,7 @@ const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, category, cnt, setC
         </span>
         <i
           // `${favoritesType} `
-          className={"fa-solid fa-circle-plus"}
+          className={"fa-solid fa-star"}
           onClick={() => {
             // setFavorites(!favorites);
             onFavorite(id, favoritesTrue, ecoId, favoriteTrue);
