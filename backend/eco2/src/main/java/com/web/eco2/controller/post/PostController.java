@@ -129,6 +129,7 @@ public class PostController {
                 postListDto.setCustomMission(customMission);
                 postListDto.setQuest(quest);
                 postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
+                postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(post.getId()));
                 postListDtos.add(postListDto);
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
