@@ -5,8 +5,15 @@ import { getLocation } from "../../utils";
 import styles from "./Map.module.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/";
-const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
+const Map = ({
+  makeFlag,
+  payload,
+  openDeatailModal,
+  setCount,
+  setMakeFlag,
+}) => {
   let dispatch = useDispatch();
+  const [counter, setCounter] = useState(0);
   const [lat, setLat] = useState(33.450701);
   const [lon, setLon] = useState(126.570667);
   const [kakaoMap, setKakaoMap] = useState(null);
@@ -44,7 +51,6 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
     getMyLocation();
     dispatch(getQuestList());
   }, [container]);
-
   // 내위치에 마크와 원을 입력하는 이펙트
   useEffect(() => {
     if (kakaoMap === null) {
@@ -91,20 +97,40 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
         openDeatailModal(quest.id);
       });
       markers.push(marker);
+      let lat1 = position.La * 0.017453;
+      let lng1 = position.Ma * 0.017453;
+      let lat2 = lon * 0.017453;
+      let lng2 = lat * 0.017453;
+      let dist =
+        6378137 *
+        Math.acos(
+          Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
+            Math.sin(lat1) * Math.sin(lat2)
+        );
+      console.log(dist);
+      if (dist < 500) {
+        console.log("카운터 증가");
+        console.log(counter);
+        setCounter((counter) => counter + 1);
+      }
     });
     return () => {
       markers.map((marker) => {
         marker.setMap(null);
       });
+      setCounter(0);
     };
   }, [kakaoMap, questMarkers]);
-
   //핀을 찍을 수 있게 해주는 이펙트
+  useEffect(() => {
+    setCount(counter);
+  }, [counter]);
   useEffect(() => {
     let clickHandler = function (event) {
       let quest = payload;
       quest.lat = event.latLng.La.toString();
       quest.lng = event.latLng.Ma.toString();
+      console.log(quest);
       dispatch(createQuest(quest));
       setMakeFlag(false);
     };
@@ -115,7 +141,6 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
       kakao.maps.event.removeListener(mapCircle, "click", clickHandler);
     };
   }, [kakaoMap, makeFlag]);
-
   return (
     <div className={styles.map_wrap}>
       <div ref={container} id="map" className={styles.map}></div>

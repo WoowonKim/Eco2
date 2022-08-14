@@ -70,7 +70,9 @@ const QuestMain = () => {
         >
           <div className={styles.createButton}>
             {makeFlag ? "취소하기" : "생성하기"}
-            <i className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}></i>
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
+            ></i>
           </div>
         </button>
       </div>
@@ -80,6 +82,7 @@ const QuestMain = () => {
         openDeatailModal={openDetailModal}
         setMakeFlag={setMakeFlag}
         payload={payload}
+        setCount={setCount}
       />
       <div>
         <p className={styles.text}>
