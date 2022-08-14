@@ -44,7 +44,7 @@ function KakaoLogin() {
         navigate("/");
       } else if (res.payload.status === 203) {
         alert(res.payload.msg);
-        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
+        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.PUBLIC_URL}/kakao&scope=account_email`;
       } else {
         removeUserSession();
         navigate("/");

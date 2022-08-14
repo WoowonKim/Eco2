@@ -109,7 +109,10 @@ const Profile = () => {
                     .then((res) => {
                       if (res.payload?.status === 200) {
                         navigate("/chatting/room", {
-                          state: { roomId: res.payload.roomId },
+                          state: {
+                            roomId: res.payload.roomId,
+                            userId: params.userId,
+                          },
                         });
                       }
                     })

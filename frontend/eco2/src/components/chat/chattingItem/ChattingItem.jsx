@@ -15,7 +15,7 @@ const ChattingItem = ({
   fromUser,
   lastSendTime,
   lastSendMessage,
-  setDeleteFlag
+  setDeleteFlag,
 }) => {
   const [toUserName, setToUserName] = useState("");
   const dispatch = useDispatch();
@@ -37,13 +37,17 @@ const ChattingItem = ({
         }
       });
     }
-  }
+  };
   const room = () => {
     window.location.reload(`/chatting/room`);
-  }
+  };
   return (
-    <button className={styles.list} onClick={room}> 
-      <Link to={`/chatting/room`} state={{ roomId: id }} className={styles.link}>
+    <button className={styles.list} onClick={room}>
+      <Link
+        to={`/chatting/room`}
+        state={{ roomId: id, userName: toUserName }}
+        className={styles.link}
+      >
         <div className={styles.leftContent}>
           <img
             src={`http://localhost:8002/img/profile/${id}`}
@@ -53,13 +57,14 @@ const ChattingItem = ({
           <div className={`${styles.toUserName}`}>{toUserName}</div>
           <div className={`${styles.lastSendMessage}`}>
             {lastSendMessage !== null ? (
-              lastSendMessage.length < 20
-                ? lastSendMessage
-                : lastSendMessage.slice(0, 20) + '...'
+              lastSendMessage.length < 20 ? (
+                lastSendMessage
+              ) : (
+                lastSendMessage.slice(0, 20) + "..."
+              )
             ) : (
               <div></div>
             )}
-
           </div>
         </div>
         <div className={styles.rightContent}>
@@ -75,15 +80,12 @@ const ChattingItem = ({
               className={styles.dropdownItem}
             >
               나가기
-              <i
-                className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-              ></i>
+              <i className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}></i>
             </button>
           </div>
         </div>
       </div>
     </button>
-
   );
 };
 

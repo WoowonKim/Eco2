@@ -81,7 +81,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
     }
   };
 
-  const onClickNavigate = (id, type) => {
+  const onClickNavigate = (id, type, senderId) => {
     // TODO: 알림을 눌러서 이동했을 시 알림을 삭제할 것인지?
     if (type !== "friendRequest") {
       dispatch(deleteAlarm({ id: id, userId: getUserId() }));
@@ -89,10 +89,11 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
     if (type !== "newChat") {
       navigate(alarm.url);
     } else {
+      // 채팅 이동
       const url = alarm.url.split("?");
       const uri = url[0];
       const roomId = Number(url[1].split("=")[1]);
-      navigate(uri, { state: { roomId: roomId } });
+      navigate(uri, { state: { roomId: roomId, userId: senderId } });
     }
   };
 
@@ -116,7 +117,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
       <div
         className={styles.content}
         onClick={() => {
-          onClickNavigate(alarm.id, alarm.dtype);
+          onClickNavigate(alarm.id, alarm.dtype, alarm.senderId);
         }}
       >
         <img
