@@ -46,6 +46,7 @@ const MainTree = () => {
   useEffect(() => {
     dispatch(statisticLeaves({ userId: getUserId() })).then((res) => {
       if (res.payload?.status === 200) {
+        console.log(res.payload);
         setStatistic(res.payload.statistic);
       }
     });
