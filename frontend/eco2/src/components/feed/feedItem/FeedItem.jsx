@@ -48,7 +48,6 @@ const FeedItem = ({
   }, [likeUsers]);
 
   return (
-    <Link to={`/post/${id}`} className={styles.link}>
       <div className={styles.list}>
         <img
           src={`http://localhost:8002/img/post/${id}`}
@@ -72,9 +71,6 @@ const FeedItem = ({
           </div>
         </div>
       </div>
-
-      {/* <p className={styles.content}>{content}</p> */}
-    </div>
   );
 };
 
