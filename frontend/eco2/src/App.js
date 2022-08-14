@@ -55,6 +55,7 @@ function App() {
   const [userdata, setUserdata] = useState(false);
   const pending = useSelector((state) => state.user.isPending);
   const recommendPending = useSelector((state) => state.missionMain.isPending);
+  const friendPending = useSelector((state) => state.account.isPending);
   // console.log(recommendPending);
 
   // 친구 신청 알림 기능 구현 예정
@@ -265,10 +266,12 @@ function App() {
         </Routes>
         <div
           className={`${styles.spinner} ${
-            pending || recommendPending ? styles.visible : styles.hidden
+            pending || recommendPending || friendPending
+              ? styles.visible
+              : styles.hidden
           }`}
         >
-          <Spinner visible={pending || recommendPending} />
+          <Spinner visible={pending || recommendPending || friendPending} />
         </div>
       </div>
       {userdata && <Footer></Footer>}

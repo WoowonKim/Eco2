@@ -31,7 +31,7 @@
   color: rgb(165, 165, 165);
   font-size: 25px;
 }
-.icon:hover{
+.icon:hover {
   color: rgb(196, 196, 196);
 }
 
@@ -56,4 +56,9 @@
   right: 12px;
   bottom: 30px;
   /* line-height: 150px; */
+}
+
+.active {
+  color: rgb(87, 214, 150);
+  transform: scale(1.3);
 }

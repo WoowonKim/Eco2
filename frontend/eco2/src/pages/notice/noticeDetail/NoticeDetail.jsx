@@ -32,36 +32,49 @@ const NoticeDetail = () => {
   }, [name, notice.registTime, registTime]);
 
   useEffect(() => {
-    console.log(
-      "now",
-      location.state?.prev,
-      location.state?.next,
-      location.state?.index
-    );
+    // console.log(
+    //   "now",
+    //   location.state.notices[location.state.index - 1].id,
+    //   location.state.notices[location.state.index].id,
+    //   location.state.notices[location.state.index + 1].id,
+    //   location.state?.index
+    // );
     setName(getUserName());
     dispatch(noticeDetail({ noticeId: params.noticeId })).then((res) => {
       if (res.payload.status === 200) {
         setNotice(res.payload.notice);
         if (location.state?.index) {
-          setIndex(params.noticeId);
-          dispatch(noticeDetail({ noticeId: params.noticeId-- })).then(
-            (res) => {
-              if (res.payload?.status === 200) {
-                setNext(res.payload?.notice);
-              }
-            }
-          );
-          dispatch(noticeDetail({ noticeId: params.noticeId++ })).then(
-            (res) => {
+          setIndex(location.state.index);
+          if (location.state?.notices.length > location.state.index + 1) {
+            dispatch(
+              noticeDetail({
+                noticeId: location.state.notices[location.state.index + 1].id,
+              })
+            ).then((res) => {
               if (res.payload?.status === 200) {
                 setPrev(res.payload?.notice);
               }
-            }
-          );
+            });
+          } else {
+            setPrev(false);
+          }
+          if (0 <= location.state.index - 1) {
+            dispatch(
+              noticeDetail({
+                noticeId: location.state.notices[location.state.index - 1].id,
+              })
+            ).then((res) => {
+              if (res.payload?.status === 200) {
+                setNext(res.payload?.notice);
+              }
+            });
+          } else {
+            setNext(false);
+          }
         }
       }
     });
-  }, [params.noticeId]);
+  }, [params.noticeId, location.state?.index]);
   return (
     <div className={styles.notice}>
       <div className={styles.header}>
@@ -145,7 +158,8 @@ const NoticeDetail = () => {
                   admin: location.state?.admin,
                   next,
                   prev,
-                  index,
+                  index: index + 1,
+                  notices: location.state?.notices,
                 },
               });
             }}
@@ -170,7 +184,8 @@ const NoticeDetail = () => {
                   admin: location.state?.admin,
                   next,
                   prev,
-                  index,
+                  index: index - 1,
+                  notices: location.state?.notices,
                 },
               });
             }}
