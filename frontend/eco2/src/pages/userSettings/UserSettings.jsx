@@ -136,7 +136,7 @@ const UserSettings = () => {
     setAutoLogin(localStorage.getItem("email") ? true : false);
 
     axiosService({
-      url: `http://localhost:8002/img/profile/${getUserId()}`,
+      url: `${process.env.REACT_APP_BE_HOST}img/profile/${getUserId()}`,
       method: "GET",
       responseType: "blob",
     }).then((res) => {
@@ -173,7 +173,9 @@ const UserSettings = () => {
                 <img
                   className={styles.img}
                   alt="profileImg"
-                  src={`http://localhost:8002/img/profile/${getUserId()}`}
+                  src={`${
+                    process.env.REACT_APP_BE_HOST
+                  }img/profile/${getUserId()}`}
                 />
               )}
             </div>

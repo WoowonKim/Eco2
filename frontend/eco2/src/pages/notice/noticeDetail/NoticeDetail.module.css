@@ -14,11 +14,13 @@
   text-align: start;
   font-weight: bold;
   font-size: 23px;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .info {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 .text {
@@ -28,10 +30,12 @@
 }
 
 .content {
-  margin: 20px 0;
+  margin: 40px 0 10px 0;
   text-align: left;
-  font-size: 16px;
+  font-size: small;
   word-break: break-all;
+  white-space: pre-wrap;
+  height: 300px;
 }
 
 .dropdown {
@@ -79,4 +83,31 @@
 
 .hidden {
   display: none;
+}
+
+/* .otherPage {
+} */
+
+.pageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  text-align: left;
+  font-size: x-small;
+  word-break: break-all;
+  white-space: pre-wrap;
+  border-bottom: 1px solid #dadada;
+  color: #ada8a8;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+}
+
+.page {
+  margin-right: 10px;
+  width: 30px;
+}
+
+.pageTitle:hover {
+  color: black;
+  cursor: pointer;
 }

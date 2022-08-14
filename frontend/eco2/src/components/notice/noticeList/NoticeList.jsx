@@ -2,7 +2,7 @@ import React from "react";
 import NoticeItem from "../noticeItem/NoticeItem";
 import styles from "./NoticeList.module.css";
 
-const NoticeList = ({ notices }) => {
+const NoticeList = ({ notices, admin }) => {
   return (
     <>
       {!!notices.content &&
@@ -17,6 +17,9 @@ const NoticeList = ({ notices }) => {
             title={notice.title}
             urgentFlag={notice.urgentFlag}
             userName={notice.user.name}
+            admin={admin}
+            notices={notices.content}
+            notice={notice}
           />
         ))}
     </>
