@@ -53,7 +53,7 @@ const MainTree = () => {
   return (
     <div className={styles.Tree} ref={drop}>
       <img
-        src={process.env.PUBLIC_URL + "tree_leaves/tree2.png"}
+        src={process.env.PUBLIC_URL + "tree_leaves/mainBrownTree.png"}
         className={styles.Img}
         draggable="false"
       ></img>
