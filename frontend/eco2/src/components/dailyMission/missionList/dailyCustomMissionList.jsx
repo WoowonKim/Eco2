@@ -5,15 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux/es/exports";
 import { customDeleteMission } from "../../../store/mission/customMissionSlice";
 import { postMission } from "../../../store/mission/missionMainSlice";
+import ZeroCustom from "./zeroCustom";
+import NotZeroCustom from "./notZeroCustom";
 
 const DailyCustomMissionList = ({ id }) => {
   const [cos, setCos] = useState([]);
   const customList = useSelector((state) => state.custom);
-  const dispatch = useDispatch();
-  const naviGate = useNavigate();
-  const [list, setList] = useState([]);
+  const [cusMi, setCusMi] = useState([]);
+
   const [cusDelete, setCusDelete] = useState(false);
   const [cusSubmit, setCusSubmit] = useState(false);
+
+  const dispatch = useDispatch();
+  const naviGate = useNavigate();
 
   useEffect(() => {
     dispatch(customMission({ id })).then((res) => {
@@ -25,6 +29,7 @@ const DailyCustomMissionList = ({ id }) => {
     if (window.confirm("커스텀 미션을 삭제하시겠습니까?")) {
       dispatch(customDeleteMission({ id: deleteId })).then((res) => {
         setCusDelete(!cusDelete);
+        console.log("삭제 ===>", deleteId);
       });
       alert("삭제 완료!");
     } else {
@@ -32,45 +37,29 @@ const DailyCustomMissionList = ({ id }) => {
     }
   };
 
-  const onCusMission = (postId) => {
+  const onCusMission = (id, postId) => {
     if (window.confirm("데일리 미션으로 옮기시겠어요?")) {
-      dispatch(postMission({ id, customMissionList: postId })).then((res) => {
+      cusMi.push(postId);
+      // console.log("cusMi===>", cusMi);
+      dispatch(postMission({ id, customMissionList: cusMi })).then((res) => {
         setCusSubmit(!cusSubmit);
+        console.log("등록 ===>", postId);
       });
       alert(`이동완료!\n삭제버튼을 누를 경우 다시 목록에 추가됩니다!`);
     }
   };
 
-  // console.log("CustomMissionList ID확인 용도 ===> ", cos);
+  console.log("cos ===>", cos);
   return (
     <div>
-      {cos.length === 0 ? (
-        <div>
-          <h2>커스텀 미션이 없습니다.</h2>
-          <h4> 아래 버튼을 눌러 생성해보세요!</h4>
-        </div>
-      ) : (
+      {cos.length !== 0 ? (
         <div>
           {cos.map((it) => (
-            <div key={it.id}>
-              <span>{it.content}</span>
-              <button
-                onClick={() => {
-                  onDelete(it.id);
-                }}
-              >
-                삭제
-              </button>
-              <button
-                onClick={() => {
-                  onCusMission([it.id]);
-                }}
-              >
-                저장
-              </button>
-            </div>
+            <NotZeroCustom key={it.id} content={it.content} cosId={it.id} onDelete={onDelete} onCusMission={onCusMission} id={id}></NotZeroCustom>
           ))}
         </div>
+      ) : (
+        <ZeroCustom />
       )}
 
       <div className={styles.plusP}>
