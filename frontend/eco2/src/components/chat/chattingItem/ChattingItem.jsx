@@ -1,15 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import styles from "./ChattingItem.module.css";
 import { getUserName } from "../../../store/user/common";
-
 import {  deleteRoom } from "../../../store/chat/chattingSlice";
 
 const ChattingItem = ({
-  key,
   id,
   toUser,
   fromUser,
@@ -32,7 +29,6 @@ const ChattingItem = ({
     if (window.confirm("채팅방을 삭제하시겠습니까?")) {
       dispatch(deleteRoom({ roodId: id })).then((res) => {
         if (res.payload.status === 200) {
-          // window.location.reload(`/chatting/${loginId}`);
           setDeleteFlag((curr) => curr + 1);
         }
       });
@@ -54,9 +50,9 @@ const ChattingItem = ({
             <div className={`${styles.toUserName}`}>{toUserName}</div>
             <div className={`${styles.lastSendMessage}`}>
               {lastSendMessage !== null ? (
-                lastSendMessage.length < 20
+                lastSendMessage.length < 15
                   ? lastSendMessage
-                  : lastSendMessage.slice(0, 20) + '...'
+                  : lastSendMessage.slice(0, 15) + '...'
               ) : (
                 <div></div>
               )}
@@ -83,6 +79,7 @@ const ChattingItem = ({
             </div>
           </div>
         </div>
+        {/* <hr className={`${styles.line}`}></hr> */}
       </button>
     </div>
   );
