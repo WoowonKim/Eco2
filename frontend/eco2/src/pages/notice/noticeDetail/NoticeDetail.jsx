@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { noticeDetail } from "../../../store/admin/noticeSlice";
 import styles from "./NoticeDetail.module.css";
@@ -13,12 +13,22 @@ const NoticeDetail = () => {
   const [modalType, setModalType] = useState("");
   const [name, setName] = useState("");
   const [registTime, setRegistTime] = useState("");
+  const [next, setNext] = useState(0);
+  const [prev, setPrev] = useState(0);
 
   const params = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const displayType = visible ? styles.visible : styles.hidden;
+
+  // useEffect(() => {
+  //   if (!notice) {
+  //     return;
+  //   }
+
+  // }, [params.noticeId, notice]);
 
   useEffect(() => {
     if (!name || !notice.registTime) {
@@ -32,9 +42,22 @@ const NoticeDetail = () => {
     dispatch(noticeDetail({ noticeId: params.noticeId })).then((res) => {
       if (res.payload.status === 200) {
         setNotice(res.payload.notice);
+        if (location.state?.notices) {
+          const index = location.state.notices.indexOf(res.payload.notice);
+          console.log(location.state.notices, res.payload.notice, index);
+          console.log(index);
+          if (location.state?.notices.length > index + 1) {
+            setNext(location.state?.notices[index + 1]);
+            console.log("next", location.state?.notices[index + 1]);
+          }
+          if (0 <= index - 1) {
+            setPrev(location.state?.notices[index - 1]);
+            console.log("prev", location.state?.notices[index - 1]);
+          }
+        }
       }
     });
-  }, []);
+  }, [params.noticeId]);
   return (
     <div className={styles.notice}>
       <div className={styles.header}>
@@ -109,9 +132,47 @@ const NoticeDetail = () => {
       </div>
       <pre className={styles.content}>{notice.content}</pre>
       {/* <hr /> */}
-      <div>
-        <div>{location.state?.next.id}</div>
-        <div>{location.state?.prev.id}</div>
+      <div className={styles.otherPage}>
+        {prev ? (
+          <div
+            className={styles.pageContainer}
+            onClick={() => {
+              navigate(`/notice/${location.state.prev.id}`, {
+                state: { admin: location.state?.admin, next, prev },
+              });
+            }}
+          >
+            <span className={styles.page}>이전</span>
+            <span className={styles.pageTitle}>
+              {location.state.prev.title}
+            </span>
+          </div>
+        ) : (
+          <div className={styles.pageContainer}>
+            <span className={styles.page}>이전</span>
+            <span className={styles.pageTitle}>이전글이 없습니다.</span>
+          </div>
+        )}
+        {next ? (
+          <div
+            className={styles.pageContainer}
+            onClick={() => {
+              navigate(`/notice/${location.state.next.id}`, {
+                state: { admin: location.state?.admin, next, prev },
+              });
+            }}
+          >
+            <span className={styles.page}>다음</span>
+            <span className={styles.pageTitle}>
+              {location.state.next.title}
+            </span>
+          </div>
+        ) : (
+          <div className={styles.pageContainer}>
+            <span className={styles.page}>다음</span>
+            <span className={styles.pageTitle}>다음글이 없습니다.</span>
+          </div>
+        )}
       </div>
     </div>
   );

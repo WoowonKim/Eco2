@@ -28,13 +28,15 @@ const NoticeItem = ({
     if (0 < index - 1) {
       setPrev(notices[index - 1]);
     }
-  });
+  }, []);
   return (
     <tr
       className={styles.list}
       align="start"
       onClick={() =>
-        navigate(`/notice/${id}`, { state: { admin, next, prev } })
+        navigate(`/notice/${id}`, {
+          state: { admin, next, prev, notices },
+        })
       }
     >
       <td
