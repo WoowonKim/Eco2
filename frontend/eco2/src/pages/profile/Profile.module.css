@@ -35,13 +35,12 @@
   border: none;
   background-color: white;
   transition: all 2s ease-in;
-  padding: 0px;
+  padding: 0 0 5px 3px;
   margin: 0;
 }
 
 .button :hover {
   cursor: pointer;
-  /* color: #adc178; */
   transform: scale(1.1);
 }
 

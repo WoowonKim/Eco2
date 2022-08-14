@@ -109,6 +109,10 @@ const NoticeDetail = () => {
       </div>
       <pre className={styles.content}>{notice.content}</pre>
       {/* <hr /> */}
+      <div>
+        <div>{location.state?.next.id}</div>
+        <div>{location.state?.prev.id}</div>
+      </div>
     </div>
   );
 };

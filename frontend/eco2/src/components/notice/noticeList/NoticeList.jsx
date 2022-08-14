@@ -18,6 +18,8 @@ const NoticeList = ({ notices, admin }) => {
             urgentFlag={notice.urgentFlag}
             userName={notice.user.name}
             admin={admin}
+            notices={notices.content}
+            notice={notice}
           />
         ))}
     </>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./NoticeItem.module.css";
 
@@ -12,13 +13,29 @@ const NoticeItem = ({
   urgentFlag,
   userName,
   admin,
+  notices,
+  notice,
 }) => {
+  const [next, setNext] = useState(0);
+  const [prev, setPrev] = useState(0);
   const navigate = useNavigate();
+  const index = notices.indexOf(notice);
+
+  useEffect(() => {
+    if (notices.length > index + 1) {
+      setNext(notices[index + 1]);
+    }
+    if (0 < index - 1) {
+      setPrev(notices[index - 1]);
+    }
+  });
   return (
     <tr
       className={styles.list}
       align="start"
-      onClick={() => navigate(`/notice/${id}`, { state: { admin } })}
+      onClick={() =>
+        navigate(`/notice/${id}`, { state: { admin, next, prev } })
+      }
     >
       <td
         width="10%"
