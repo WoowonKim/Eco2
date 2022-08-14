@@ -12,15 +12,8 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     @Query(value = "select * from tb_mission c where c.mis_id=:missionId", nativeQuery = true)
     Mission findByMisId(@Param("missionId") Long missionId);
 
-    List<Mission> findByCategoryAndClearFlag(Integer category, Boolean clearFlag);
-
-    List<Mission> findByCategoryAndClearFlagIsNull(Integer category);
-
-    @Query(value = "select * from tb_mission c where c.mis_category!=:category1 and c.mis_category!=:category2 and c.mis_clear_flag=:isClear", nativeQuery = true)
-    List<Mission> findWithoutCategoryAndClearFlag(@Param("category1") Integer category1, @Param("category2") Integer category2, @Param("isClear") Boolean isClear);
-
-    @Query(value = "select * from tb_mission c where c.mis_category!=:category1 and c.mis_category!=:category2", nativeQuery = true)
-    List<Mission> findWithoutCategory(@Param("category1") Integer category1, @Param("category2") Integer category2);
+    @Query(value = "select * from tb_mission c where c.mis_sunny_flag & :sunnyFlag AND c.mis_outside_flag & :outsideFlag AND c.mis_temperature_flag & :temperatureFlag", nativeQuery = true)
+    List<Mission> findForRecommendation(@Param("sunnyFlag") Integer sunnyFlag, @Param("outsideFlag") Integer outsideFlag, @Param("temperatureFlag") Integer temperatureFlag);
 
     List<Mission> findByQuestFlag(boolean b);
 }
