@@ -63,18 +63,16 @@ const Footer = () => {
             navigate("/quest");
           }}
         ></i>
-        <div
+        <i
+          className={`fa-solid fa-bullhorn ${styles.icon} ${
+            active === "alarm" ? styles.active : null
+          }`}
           onClick={() => {
             navigate("/alarm");
           }}
         >
-          {isNew && <div className={styles.btn}></div>}
-          <i
-            className={`fa-solid fa-bullhorn ${styles.icon} ${
-              active === "alarm" ? styles.active : null
-            }`}
-          ></i>
-        </div>
+          {isNew && <div className={styles.newbadge}></div>}
+        </i>
       </footer>
     </>
   );
