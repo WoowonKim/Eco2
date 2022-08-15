@@ -3,7 +3,22 @@
   text-align: left;
   margin-bottom: 15px;
 }
+.rolling > ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
 
+.rolling {
+  height: 34px;
+  overflow: hidden;
+}
+.li {
+  height: 34px;
+  padding: 0 1rem;
+  line-height: 34px;
+}
 .trending {
   font-size: small;
   color: #706e6e;
