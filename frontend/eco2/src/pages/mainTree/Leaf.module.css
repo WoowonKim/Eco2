@@ -11,6 +11,7 @@
   -webkit-transition-property: box-shadow, transform;
   transition-property: box-shadow, transform;
   animation-name: leafImg;
+  animation-timing-function: ease-out;
   transform-origin: center top;
   animation-duration: 8s;
   animation-iteration-count: infinite;
@@ -50,7 +51,7 @@
   40% {
     transform: rotate(-30deg);
   }
-  45% {
+  60% {
     transform: rotate(-50deg);
   }
   100% {
