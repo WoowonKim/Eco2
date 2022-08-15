@@ -159,7 +159,7 @@ public class JwtTokenUtil {
     }
 
     public Map<String, Object> get(HttpServletRequest request) {
-        String jwt = request.getHeader("access-token");
+        String jwt = getAccessToken(request);
         Jws<Claims> claims = null;
         try {
             claims = Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(jwt);
