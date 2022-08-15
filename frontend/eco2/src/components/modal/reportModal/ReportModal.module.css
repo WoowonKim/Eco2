@@ -142,21 +142,16 @@
   display: none;
 }
 
-.selectBox2 * {
-  box-sizing: border-box;
-}
 .selectBox2 {
   position: relative;
-  width: 150px;
+  width: 100%;
   height: 35px;
   border-radius: 4px;
-  border: 2px solid lightcoral;
-  /* background: url("https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png")
-    calc(100% - 7px) center no-repeat; */
+  border: 2px solid #dadada;
   background-size: 20px;
   cursor: pointer;
 }
-
+/* 
 .selectBox2:after {
   content: "";
   display: block;
@@ -166,47 +161,48 @@
   top: 0;
   right: 35px;
   background: lightcoral;
-}
+} */
 
 .selectBox2 .label {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: inherit;
   height: inherit;
   border: 0 none;
   outline: 0 none;
-  padding-left: 15px;
+  padding: 0 15px;
   background: transparent;
   cursor: pointer;
+  font-family: "NanumBarunGothicLight";
 }
 
-.selectBox2 .optionList {
-  position: absolute;
-  top: 28px;
-  left: 0;
-  width: 100%;
-  background: lightcoral;
-  color: #fff;
+.optionList {
   list-style-type: none;
+  transition: 0.3s ease-in;
+  position: relative;
+  display: inline-block;
+  background-color: #f1f1f1;
+  right: 0;
+  width: 100%;
   padding: 0;
   border-radius: 6px;
-  overflow: hidden;
   max-height: 0;
-  transition: 0.3s ease-in;
-}
-
-.selectBox2.active .optionList {
-  max-height: 500px;
 }
 
 .selectBox2 .optionItem {
-  border-bottom: 1px dashed rgb(170, 72, 72);
-  padding: 5px 15px 5px;
   transition: 0.1s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 5px 10px;
+  background-color: #6e6e6eb9;
+  color: white;
 }
 
 .selectBox2 .optionItem:hover {
-  background: rgb(175, 93, 93);
+  background: rgb(87, 214, 150);
 }
 
 .selectBox2 .optionItem:last-child {

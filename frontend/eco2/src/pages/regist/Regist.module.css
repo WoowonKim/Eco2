@@ -46,9 +46,14 @@
   background: white;
   border: none;
   border-bottom: 1px solid #dadada;
-  width: 270px;
+  width: 83%;
   height: 35px;
   padding-left: 10px;
+  font-family: "NanumBarunGothicLight";
+}
+
+.input::placeholder {
+  color: #dadada;
 }
 
 .input:focus {
@@ -58,19 +63,18 @@
 .button {
   width: 55px;
   height: 35px;
-  border: 1px solid #dadada;
+  border: 1px solid rgb(87, 214, 150);
   border-radius: 8px;
   margin-left: 5px;
   cursor: pointer;
-  background-color: #adc178;
+  background-color: rgb(87, 214, 150);
   color: white;
+  font-family: "NanumBarunGothicLight";
 }
 
 .buttonEmail:disabled {
   background-color: #dadada;
-}
-.signupButton:disabled {
-  background-color: #dadada;
+  border: none;
 }
 
 .inputEmail {
@@ -91,12 +95,22 @@
 .buttonEmail {
   width: 55px;
   height: 35px;
-  border: 1px solid #dadada;
+  border: 1px solid rgb(87, 214, 150);
   border-radius: 8px;
   margin-left: 5px;
   cursor: pointer;
-  background-color: #adc178;
+  background-color: rgb(87, 214, 150);
   color: white;
+  font-family: "NanumBarunGothicLight";
+}
+
+.signupButton {
+  font-family: "NanumBarunGothicLight";
+}
+
+.signupButton:disabled {
+  background-color: #dadada;
+  border: none;
 }
 
 .timer {

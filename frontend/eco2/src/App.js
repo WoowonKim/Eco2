@@ -271,7 +271,16 @@ function App() {
               : styles.hidden
           }`}
         >
-          <Spinner visible={pending || recommendPending || friendPending} />
+          <Spinner
+            visible={pending || recommendPending || friendPending}
+            message={
+              pending
+                ? "인증 메일을 전송 중입니다 :D"
+                : recommendPending
+                ? "오늘의 추천 미션을 불러오는 중입니다 :D"
+                : "친구 요청을 보내는 중입니다 :D"
+            }
+          />
         </div>
       </div>
       {userdata && <Footer></Footer>}
