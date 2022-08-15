@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ChattingRoom.module.css";
+import { useNavigate } from "react-router-dom";
 import ChattingMessage from "../../../components/chat/chattingMessage/ChattingMessage";
 import { chattingMessageList } from "../../../store/chat/chattingSlice";
 import {
@@ -22,6 +23,7 @@ const ChattingRoom = () => {
   const stompClient = getStompClient();
   const dispatch = useDispatch();
   const scrollRef = useRef();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (stompClient === null) {
@@ -78,10 +80,13 @@ const ChattingRoom = () => {
       sendMessage();
     }
   };
-  
+  const backPage = () => {
+    navigate("/chatting");
+  };
   return (
     <div className={styles.chattingRoom} ref={scrollRef}>
       <div className={styles.header}>
+      <i className={`fa-solid fa-angles-left ${styles.backIcon}`} onClick={backPage}></i>
         {
           users.map((user) => (
             user.id != userId &&
