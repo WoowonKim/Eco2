@@ -13,6 +13,7 @@
 .createRoomButton {
   margin-left: 15px;
   font-size: 60px;
+  display: block;
   position: fixed;
   bottom: 90px;
   color: rgb(87, 214, 150);

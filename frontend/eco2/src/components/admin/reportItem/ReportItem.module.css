@@ -1,6 +1,6 @@
 .list {
   width: 380px;
-  height: 45px;
+  height: 40px;
   /* margin: 20px; */
 }
 
@@ -9,10 +9,7 @@
 }
 
 .link {
-  width: 280px;
-  /* display: inline-block; */
-  /* padding: 5px; */
-  /* margin: 30px; */
+
 }
 
 .leftContent {
@@ -20,19 +17,18 @@
   display: inline-block;
   float: left;
   text-align: left;
-  width: 80%;
+  width: 82%;
 }
 
 .rightContent {
   margin-top: 10px;
   display: inline-block;
-  /*float: right; */
-  width: 20%;
+  width: 18%;
 
 }
 .typeBox{
   float: left;
-  width: 70px;
+  width: 68px;
 }
 .type{
   margin: 10px;
@@ -44,13 +40,13 @@
 }
 
 .text{
-  font-size: x-small;
+  font-size: 11px;
   color: grey;
 }
 .report{
   color:darkred;
   font-weight: 600;
-  font-size: x-small;
+  font-size: 11px;
 }
 .line {
   border: solid #D5D5D5;

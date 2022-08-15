@@ -113,20 +113,25 @@ export const missionItem = createAsyncThunk(
   }
 );
 
-export const trending = createAsyncThunk("missionMainSlice/trending", async (args, { rejectWithValue }) => {
-  try {
-    const response = await axiosService.get(`/daily/trending`);
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err.response);
+export const trending = createAsyncThunk(
+  "missionMainSlice/trending",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.get(`/daily/trending`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
-});
+);
 
 export const myEcoMissionSlice = createSlice({
   name: "myEcoMission",
   initialState: {
     successBtn: false,
     isPending: false,
+    data: null,
+    open: true,
   },
   reducers: {
     onEcoArr: (state, actions) => {
@@ -183,7 +188,9 @@ export const myEcoMissionSlice = createSlice({
     },
     [postTodayMission.fulfilled]: (state, action) => {
       console.log("postTodayMission Fulfilled===>", action.payload);
+      state.data = action.payload.recommendedMission;
       state.isPending = false;
+      state.open = false;
     },
     [postTodayMission.rejected]: (state, action) => {
       console.log("postTodayMission Rejected===>", action.payload);
@@ -192,5 +199,5 @@ export const myEcoMissionSlice = createSlice({
   },
 });
 
-export const { onEcoArr } = myEcoMissionSlice.actions;
+export const { onEcoArr, changeOpenFlag } = myEcoMissionSlice.actions;
 export const myEcoMissionActions = myEcoMissionSlice.actions;

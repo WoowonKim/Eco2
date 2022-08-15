@@ -4,22 +4,23 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./ReportDetail.module.css";
 import { useLocation } from 'react-router-dom';
 import { reportDetailList } from "../../../store/admin/reportSlice";
-import { reportAccept } from "../../../store/admin/reportSlice";
 import { reportCancle } from "../../../store/admin/reportSlice";
 import ReportDetailItem from "../../../components/admin/reportDetailItem/ReportDetailItem";
+import AdminModal from "../../../components/modal/adminModal/AdminModal";
 
 const ReportDetail = () => {
   const post = useLocation().state.post;
   const comment = useLocation().state.comment;
   const reportDetails = useSelector((state) => state.report.detail);
-  // const [reportDetails, setReportDetails] = useState([]);
   const dispatch = useDispatch();
   const [id, setId] = useState("");
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
   const [registTime, setRegistTime] = useState("");
   const navigate = useNavigate();
-
+  const [acceptModalVisible, setAcceptModalVisible] = useState(false);
+  const [cancleModalVisible, setCancleModalVisible] = useState(false);
+  const [modalType, setModalType] = useState("");
   useEffect(() => {
     if (comment === null) {
       setId(post.id);
@@ -50,24 +51,12 @@ const ReportDetail = () => {
   }, [post.registTime]);
 
   const sendReportAccept = () => {
-    if (window.confirm("신고 승인하시겠습니까?")) {
-      dispatch(reportAccept({ id: id, type: type })).then((res) => {
-        if (res.payload.status === 200) {
-          alert("신고 승인되었습니다.");
-          navigate("/report");          
-        }
-      });
-    }
+    setAcceptModalVisible(!acceptModalVisible);
+    setModalType("신고승인");
   }
   const sendReportCancle = () => {
-    if (window.confirm("신고 반려하시겠습니까?")) {
-      dispatch(reportCancle({ id: id, type: type })).then((res) => {
-        if (res.payload.status === 200) {
-          alert("신고 반려되었습니다.");
-          navigate("/report");          
-        }
-      });
-    }
+    setCancleModalVisible(!cancleModalVisible);
+    setModalType("신고반려");
   }
 
   return (
@@ -101,7 +90,7 @@ const ReportDetail = () => {
               className={styles.postImg}
             />
             <div className={styles.postContent}>{post.content}</div>
-            <div className={styles.postRegistTime}>작성일: {}</div>
+            <div className={styles.postRegistTime}>작성일: {registTime}</div>
           </div>
         </div>
       </Link>
@@ -124,9 +113,9 @@ const ReportDetail = () => {
           <table>
             <tbody>
               <tr>
-                <th width="8%">유형</th>
-                <th width="20%">신고내용</th>
-                <th width="13%">신고자</th>
+                <th width="5%">유형</th>
+                <th width="15%">신고내용</th>
+                <th width="7%">신고자</th>
               </tr>
             </tbody>
           </table>
@@ -158,9 +147,27 @@ const ReportDetail = () => {
         반려
       </button>
       </div>
+      {acceptModalVisible && modalType === "신고승인" && (
+        <AdminModal
+          title={"신고 승인"}
+          content={"신고 승인하시겠습니까?"}
+          type="승인"
+          id= {id} 
+          postType={type}
+          closeModal={() => setAcceptModalVisible(!acceptModalVisible)}
+        />
+      )}
 
-
-
+{cancleModalVisible && modalType === "신고반려" && (
+        <AdminModal
+          title={"신고 반려"}
+          content={"신고 반려하시겠습니까?"}
+          type="반려"
+          id= {id} 
+          postType={type}
+          closeModal={() => setCancleModalVisible(!cancleModalVisible)}
+        />
+      )}
 
     </div>
   );

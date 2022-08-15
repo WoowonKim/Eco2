@@ -30,6 +30,7 @@
 .settingButton {
   margin-top: 50px;
   background-color: rgba(87, 214, 150, 0.8);
+  color: white;
   border: none;
   border-radius: 15px;
   width: 100%;
@@ -58,12 +59,12 @@
   left: 0.2rem;
   transform: translateY(-50%);
   border-radius: 50%;
-  background: rgb(87, 214, 150);
+  background: rgba(87, 214, 150, 1);
 }
 
 /* 체크박스가 체크되면 변경 이벤트 */
 .toggle:checked ~ .toggleSwitch {
-  background: rgb(87, 214, 150);
+  background: rgba(87, 214, 150, 1)
 }
 
 .toggle:checked ~ .toggleSwitch .toggleButton {
