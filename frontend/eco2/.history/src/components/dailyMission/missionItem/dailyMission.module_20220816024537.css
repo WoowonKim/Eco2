@@ -1,0 +1,94 @@
+/* 상단 START */
+.mainHeader {
+  margin-top: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mainHeaderRight {
+  color: #6a707c;
+  font-size: small;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.mainHeaderLeft {
+  color: #6a707c;
+  font-size: small;
+  font-weight: bold;
+  border-bottom: 2px solid #adc178;
+}
+
+.mainColor {
+  color: #adc178;
+  margin-left: 3px;
+}
+/* 상단 END */
+
+/* 미션 LIST START*/
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+}
+
+.missionList {
+  color: #6a707c;
+  font-size: small;
+  font-weight: bold;
+}
+
+.trashColor {
+  color: #6a707c;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/*미션 END*/
+
+/* 하단 START */
+.btn {
+  margin-top: 10px;
+}
+.greenTrash {
+  color: #adc178;
+}
+.whiteTrash {
+  color: white;
+}
+
+/* 여기부터 missionMainItem */
+.mainList {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #dadada;
+  border-radius: 5px;
+  background: #fff;
+}
+.leafSize {
+  padding-top: 3px;
+  /* margin-top: 5px;
+  margin-left: 5px; */
+  width: 20px;
+  height: 25px;
+}
+.itemContent {
+  padding: 0px 3px;
+  padding-top: 10px;
+  padding-bottom: 3px;
+  font-weight: bold;
+  font-size: small;
+}
+.circleType {
+  padding-top: 5px;
+  padding-bottom: 3px;
+  padding-left: 2px;
+}
+.trashType {
+  padding-top: 5px;
+  padding-right: 5px;
+}
