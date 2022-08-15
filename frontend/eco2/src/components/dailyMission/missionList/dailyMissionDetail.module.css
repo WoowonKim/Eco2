@@ -101,12 +101,18 @@ li {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.zeroFavorite {
+  padding-top: 10px;
+  font-weight: bold;
+}
+
 /* 즐겨찾기 End */
 
 /* 미션 목록 START */
 .headCheck {
   margin-top: 30px;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 }
 ul {
   margin: 0;
@@ -120,7 +126,7 @@ li {
 }
 .listType {
   display: block;
-  padding: 6px 18px;
+  padding: 12px 70px;
   text-transform: uppercase;
   text-decoration: none;
   font-weight: bold;
@@ -128,11 +134,38 @@ li {
   transition: all 0.3s ease-in-out;
 }
 .listType:hover {
-  color: #adc178;
-  /* background: #111; */
+  color: #fff;
+  background-color: #adc178;
   cursor: pointer;
   border-bottom: 2px solid #333;
 }
+
+/* 미션목록 END */
+
+/* 미션리스트 START */
+.scrollMission {
+  height: 300px;
+  width: 360px;
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+.scrollMission::-webkit-scrollbar {
+  width: 5px; /*스크롤바의 너비*/
+}
+
+.scrollMission::-webkit-scrollbar-thumb {
+  background-color: #adc178; /*스크롤바의 색상*/
+  border-radius: 8px;
+}
+
+.scrollMission::-webkit-scrollbar-track {
+  background-color: #f4f9e5; /*스크롤바 트랙 색상*/
+}
+
+/* 미션리스트 END */
+
+/* 잡 */
 .heading {
   margin-top: 20px;
   display: flex;
@@ -235,12 +268,10 @@ li {
   margin: 0 auto;
   font-size: 12px;
   vertical-align: middle;
-
   position: relative;
   left: 150px;
   top: 20px;
-
-  /* line-height: 150px; */
+  padding-top: 3px;
 }
 
 .word {
@@ -281,25 +312,6 @@ fieldset {
   height: 100vh;
 }
 
-.scrollMission {
-  height: 300px;
-  width: 360px;
-  overflow-x: auto;
-  overflow-y: scroll;
-}
-
-.scrollMission::-webkit-scrollbar {
-  width: 5px; /*스크롤바의 너비*/
-}
-
-.scrollMission::-webkit-scrollbar-thumb {
-  background-color: #adc178; /*스크롤바의 색상*/
-  border-radius: 8px;
-}
-
-.scrollMission::-webkit-scrollbar-track {
-  background-color: #f4f9e5; /*스크롤바 트랙 색상*/
-}
 .trendCss {
   width: 100%;
   height: 100%;
