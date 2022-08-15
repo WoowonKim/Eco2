@@ -7,11 +7,11 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/";
 const Map = ({
   openCreateModal,
-
+  makeFlag,
   payload,
   openDeatailModal,
   setCount,
-
+  setMakeFlag,
   count,
   name,
 }) => {
@@ -19,7 +19,6 @@ const Map = ({
   const [counter, setCounter] = useState(0);
   const [lat, setLat] = useState(33.450701);
   const [lon, setLon] = useState(126.570667);
-  const [makeFlag, setMakeFlag] = useState(false);
   const [kakaoMap, setKakaoMap] = useState(null);
   const [mapCircle, setMapCircle] = useState(
     new kakao.maps.Circle({
@@ -149,6 +148,7 @@ const Map = ({
       dispatch(createQuest(quest));
       setMakeFlag(false);
     };
+    console.log(payload);
     if (makeFlag) {
       kakao.maps.event.addListener(mapCircle, "click", clickHandler);
     }
@@ -182,7 +182,6 @@ const Map = ({
             className={styles.createButton}
             onClick={() => {
               openCreateModal();
-              setMakeFlag(true);
             }}
           >
             {/* <div className={styles.createButton}>

@@ -9,7 +9,7 @@ let LoginInput = styled.input`
 `;
 
 let GreenBtn = styled.button`
-  background: #adc178;
+  background: #57d696;
   border: 1px solid #dadada;
   border-radius: 8px;
   width: 330px;
@@ -21,7 +21,7 @@ let GreenBtn = styled.button`
 `;
 
 let ShortGreenBtn = styled.button`
-  background: #adc178;
+  background: #57d696;
   border: 1px solid #dadada;
   border-radius: 8px;
   width: 150px;
