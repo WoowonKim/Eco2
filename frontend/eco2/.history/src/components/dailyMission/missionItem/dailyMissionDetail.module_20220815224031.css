@@ -1,0 +1,157 @@
+.Font {
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.trending {
+  font-size: small;
+  color: #706e6e;
+}
+
+.tablehead {
+  margin-top: 20px;
+  padding: 10px;
+
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #706e6e;
+
+  background-color: #e6e4e4;
+  font-weight: bold;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  padding: 10px;
+  border: none #852d2d;
+  border-bottom: 2px solid #dadada;
+  border-radius: 5px;
+}
+
+.plusbutton {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 30px;
+  color: #adc178;
+}
+
+.plus {
+  cursor: pointer;
+}
+
+.test {
+  margin-top: 70px;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.gray {
+  background-color: #f6f4f4;
+}
+
+.skyblue {
+  background-color: #7dd6fc;
+  opacity: 0.6;
+}
+
+.heading {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #dddddd;
+  border-top: 1px solid #696969;
+}
+
+.basicMission {
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  font-size: small;
+  color: #000000;
+}
+
+/* i {
+  color: #adc178;
+  cursor: pointer;
+} */
+
+.btn {
+  margin-bottom: 0px;
+  background-color: #7dd6fc;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin: 0 auto;
+  font-size: 12px;
+  vertical-align: middle;
+
+  position: relative;
+  left: 150px;
+  top: 20px;
+
+  /* line-height: 150px; */
+}
+
+.word {
+  text-align: start;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: bold;
+  font-size: small;
+  color: #706e6e;
+}
+
+fieldset {
+  border: 1px solid #dadada;
+  width: 100%;
+  padding-top: 0px;
+  padding-bottom: 15px;
+  padding-left: 10px;
+}
+
+.plusP {
+  margin-top: 20px;
+  margin-bottom: 1px;
+}
+.customHeader {
+  margin-top: 50px;
+}
+
+.leafSize {
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 15px;
+  height: 20px;
+}
+
+/* 미션 목록 정렬 */
+.content {
+  display: flex;
+  justify-content: space-between;
+  /* margin: auto;
+  padding: 8px; */
+  /* border: none #dddddd; */
+  border-bottom: 3px solid #dadada;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #fff;
+}
+/* 타이틀 */
+.itemFont {
+  font-weight: bold;
+  text-align: center;
+  font-size: small;
+  padding: 10px 0px;
+}
+.star {
+  padding-top: 10px;
+  padding-right: 3px;
+  color: #ffcc66;
+}

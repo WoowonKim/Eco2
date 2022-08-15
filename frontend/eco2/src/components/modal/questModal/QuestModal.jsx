@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { getUserId } from "../../../store/user/common";
 import styles from "./QuestModal.module.css";
 
-const QuestModal = (props) => {
+const QuestModal = props => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close, questList, setPayload, setMakeFlag } = props;
   const [load, setLoad] = useState({

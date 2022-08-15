@@ -1,0 +1,412 @@
+/* 상단 위치 조정 */
+.topRoot {
+  margin-top: 70px;
+}
+/* 오늘은 어떤 도전을 해볼까 */
+.Font {
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 10px;
+}
+.rolling > ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.rolling {
+  height: 34px;
+  overflow: hidden;
+}
+.li {
+  height: 34px;
+  padding: 0 1rem;
+  line-height: 34px;
+}
+.trending {
+  font-size: small;
+  color: #706e6e;
+}
+/* 즐겨찾기 */
+.favoriteHead {
+  padding-top: 5px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: start;
+  background-color: #ffffff;
+  /* border-bottom: 1px solid #696969; */
+  font-weight: bold;
+  font-size: small;
+  text-align: left;
+  color: #000000;
+}
+
+.favoriteLine {
+  padding: 0px;
+  margin: 0px;
+  margin-top: 2px;
+  margin-bottom: 3px;
+  height: 2px;
+  background-color: #adc178;
+  width: 80px;
+  text-align: left;
+  margin-left: 0px;
+}
+
+.favoriteadd {
+  margin-right: 3px;
+  cursor: pointer;
+  color: #0e0301;
+}
+.favoritetrash {
+  cursor: pointer;
+  color: #adc178;
+}
+
+.itemFont {
+  margin-left: 3px;
+  font-weight: bold;
+  text-align: center;
+  font-size: small;
+  padding-top: 5px;
+}
+
+.favoritescroll {
+  height: 80px;
+  width: 360px;
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+.favoritescroll::-webkit-scrollbar {
+  width: 5px; /*스크롤바의 너비*/
+}
+
+.favoritescroll::-webkit-scrollbar-thumb {
+  background-color: #adc178; /*스크롤바의 색상*/
+  border-radius: 8px;
+}
+
+.favoritescroll::-webkit-scrollbar-track {
+  background-color: #f4f9e5; /*스크롤바 트랙 색상*/
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #dadada;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.zeroFavorite {
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+/* 즐겨찾기 End */
+
+/* 미션 목록 START */
+.headCheck {
+  margin-top: 30px;
+  margin-bottom: 3px;
+}
+.headType {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
+.liType {
+  list-style-type: none;
+  display: inline-block;
+}
+.listType {
+  display: block;
+  padding: 12px 70px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  transition: all 0.3s ease-in-out;
+}
+.listType:hover {
+  color: #fff;
+  background-color: #adc178;
+  cursor: pointer;
+  /* border-bottom: 2px solid #333; */
+}
+
+/* 미션목록 END */
+
+/* 미션리스트 START */
+.scrollMission {
+  height: 300px;
+  width: 360px;
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+.scrollMission::-webkit-scrollbar {
+  width: 5px; /*스크롤바의 너비*/
+}
+
+.scrollMission::-webkit-scrollbar-thumb {
+  background-color: #adc178; /*스크롤바의 색상*/
+  border-radius: 8px;
+}
+
+.scrollMission::-webkit-scrollbar-track {
+  background-color: #f4f9e5; /*스크롤바 트랙 색상*/
+}
+
+.cateListOne {
+  cursor: pointer;
+  background-color: #a0bee3;
+  /* border-bottom: 2px solid #a0bee3; */
+  /* padding: 10px 0; */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 2px;
+  border-radius: 7px;
+  color: #fff;
+  font-weight: bold;
+}
+.cateListTwo {
+  cursor: pointer;
+  /* background-color: #b7dab1; */
+  border-bottom: 3px solid #b7dab1;
+  padding-top: 10px;
+  padding-bottom: 3px;
+  /* padding: 10px 0; */
+  margin-bottom: 2px;
+  border-radius: 5px;
+  /* color: #ffffff; */
+  font-weight: bold;
+}
+.cateListThree {
+  cursor: pointer;
+  background-color: #f8cccf;
+  padding: 10px 0;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: bold;
+}
+.cateListFour {
+  cursor: pointer;
+  background-color: #c6b3d5;
+  padding: 10px 0;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: bold;
+}
+.cateListFive {
+  cursor: pointer;
+  background-color: #8cd0e7;
+  padding: 10px 0;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.leafSize {
+  /* margin-top: 5px;
+  margin-right: 5px; */
+  width: 15px;
+  height: 20px;
+  /* text-align: left;
+  margin-left: 0px; */
+}
+
+/* 미션리스트 END */
+
+/* 잡 */
+.heading {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #dddddd;
+  border-bottom: 1px solid #696969;
+}
+
+.basicMission {
+  width: 180px;
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  font-size: small;
+  color: #000000;
+}
+
+.tablehead {
+  margin-top: 20px;
+  padding: 10px;
+
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #706e6e;
+
+  background-color: #e6e4e4;
+  font-weight: bold;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  padding: 10px;
+  border: none #dddddd;
+  border-bottom: 2px solid #dadada;
+  border-radius: 5px;
+}
+
+.plusbutton {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 30px;
+  color: #adc178;
+}
+
+.plus {
+  cursor: pointer;
+}
+
+.test {
+  margin-top: 70px;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.gray {
+  background-color: #f6f4f4;
+}
+
+.skyblue {
+  background-color: #7dd6fc;
+  opacity: 0.6;
+}
+
+.heading {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #dddddd;
+  border-top: 1px solid #696969;
+}
+
+.basicMission {
+  width: 180px;
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  font-size: small;
+  color: #000000;
+}
+
+/* i {
+  color: #adc178;
+  cursor: pointer;
+} */
+
+.btn {
+  margin-bottom: 0px;
+  background-color: #7dd6fc;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin: 0 auto;
+  font-size: 12px;
+  vertical-align: middle;
+  position: relative;
+  left: 150px;
+  top: 20px;
+  padding-top: 3px;
+}
+
+.word {
+  text-align: start;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: bold;
+  font-size: small;
+  color: #706e6e;
+}
+
+fieldset {
+  border: 1px solid #dadada;
+  width: 100%;
+  padding-top: 0px;
+  padding-bottom: 15px;
+  padding-left: 10px;
+}
+
+.plusP {
+  margin-top: 20px;
+  margin-bottom: 1px;
+}
+
+.conBack {
+  background-color: #dadada;
+  border-radius: 3px;
+  border-bottom: 1px solid #696969;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.zero {
+  margin-bottom: 100px;
+}
+
+.scrollHead {
+  height: 100vh;
+}
+
+.trendCss {
+  width: 100%;
+  height: 100%;
+
+  margin: 0 auto;
+  border: 10px solid transparent;
+  padding: 0px;
+
+  z-index: 100;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.trendCSSs {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  font-size: 15px;
+  font-size: initial;
+  line-height: normal;
+  transition: all 0.5s cubic-bezier(0.4, 1.3, 0.65, 1); /* Slide css animation */
+  background-size: cover;
+  vertical-align: top;
+  box-sizing: border-box;
+  white-space: normal;
+}
+
+.itemFont {
+  font-weight: bold;
+  text-align: center;
+  font-size: small;
+  padding-top: 5px;
+}
