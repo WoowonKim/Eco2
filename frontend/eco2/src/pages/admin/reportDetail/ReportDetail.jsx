@@ -17,6 +17,7 @@ const ReportDetail = () => {
   const [id, setId] = useState("");
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
+  const [registTime, setRegistTime] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +42,12 @@ const ReportDetail = () => {
       setCategory("재활용하기");
     }
   }, []);
+  useEffect(() => {
+    if (!post.registTime) {
+      return;
+    }
+    setRegistTime(post.registTime.split("T")[0]);
+  }, [post.registTime]);
 
   const sendReportAccept = () => {
     if (window.confirm("신고 승인하시겠습니까?")) {
@@ -94,7 +101,7 @@ const ReportDetail = () => {
               className={styles.postImg}
             />
             <div className={styles.postContent}>{post.content}</div>
-            <div className={styles.postRegistTime}>작성일: {post.registTime}</div>
+            <div className={styles.postRegistTime}>작성일: {}</div>
           </div>
         </div>
       </Link>
@@ -139,19 +146,18 @@ const ReportDetail = () => {
           })
         )}
       </div>
-
+      <div className={styles.reportButton}>
       <button
         onClick={sendReportAccept}
         className={`${styles.acceptButton}`}
-      >
-        승인
-      </button>
+      >승인</button>
       <button
         onClick={sendReportCancle}
         className={`${styles.cancleButton}`}
       >
         반려
       </button>
+      </div>
 
 
 

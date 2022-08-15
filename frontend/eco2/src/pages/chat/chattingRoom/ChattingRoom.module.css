@@ -21,6 +21,9 @@
 .link{
   color:rgb(87, 87, 87);
 }
+.backIcon{
+  color: grey;
+}
 .profileImg {
   width: 40px;
   height: 40px;
@@ -40,7 +43,7 @@
   padding: 0;
   width: 365px;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 5px;
   padding-bottom: 70px;
 }
 .chatting {

@@ -1,6 +1,6 @@
 .titleGroup {
   display: flex;
-  margin-top: 20px;
+  /* margin-top: 65px; */
   justify-content: space-between;
   align-items: center;
 }
