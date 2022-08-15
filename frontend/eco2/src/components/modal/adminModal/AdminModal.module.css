@@ -1,0 +1,134 @@
+.modal {
+  position: fixed;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modalBody {
+  position: absolute;
+  display: block;
+  width: 280px;
+  height: 170px;
+  background-color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.editIcon {
+  border-radius: 5px;
+  color: rgb(87, 214, 150);
+  font-size: large;
+}
+
+.deleteIcon {
+  border-radius: 5px;
+  color: rgb(87, 214, 150);
+  font-size: large;
+}
+
+.friendIcon {
+  border-radius: 5px;
+  color: rgb(87, 214, 150);
+  font-size: large;
+}
+
+.title {
+  margin: 5px;
+  text-align: center;
+}
+
+.content {
+  font-size: small;
+  text-align: start;
+  margin: 10px 5px 20px 5px;
+  text-align: center;
+}
+
+.buttonGroup {
+  display: block;
+}
+
+.editButton {
+  display: block;
+  background-color: rgb(87, 214, 150);
+  padding: 3px 5px;
+  border-radius: 10px;
+  border: 2px solid rgb(87, 214, 150);
+  width: 100%;
+  color: white;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+  transition: all 200ms ease-in;
+  font-family: "NanumBarunGothicLight";
+}
+
+.editButton:hover {
+  transform: scale(1.02);
+}
+
+
+.warningButton {
+  display: block;
+  background-color: #e07668;
+  padding: 3px 5px;
+  border-radius: 10px;
+border:none;
+  width: 100%;
+  color: white;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 5px;
+  transition: all 200ms ease-in;
+}
+
+.warningButton:hover {
+  transform: scale(1.02);
+}
+
+.cancleButton {
+  display: block;
+  background-color: white;
+  padding: 3px 5px;
+  border-radius: 10px;
+  color: #6e6e6e;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid #dadada;
+  width: 100%;
+  transition: all 200ms ease-in;
+}
+
+.cancleButton:hover {
+  transform: scale(1.02);
+}
+
+.hidden {
+  display: none;
+}

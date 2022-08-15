@@ -19,30 +19,60 @@
   position: absolute;
   display: block;
   width: 280px;
-  height: 370px;
+  /* height: 170px; */
   background-color: white;
   padding: 1rem;
   border: none;
   border-radius: 10px;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .modalTitle {
   display: flex;
   align-items: center;
+  text-align: center;
 }
-
-.title {
-  margin: 5px;
-  text-align: start;
+.deleteIcon {
+  border-radius: 5px;
+  color: rgb(87, 214, 150);
   font-size: large;
 }
-.line {
-  border: solid #D5D5D5;
-  border-width: 1px 0px 0px 0px;
+.title {
+  margin: 5px;
+  text-align: center;
+  font-size: 22px;
+
 }
+.content {
+  font-size: small;
+  text-align: start;
+  margin: 10px 5px 20px 5px;
+  text-align: center;
+}
+
+.editButton {
+  display: block;
+  background-color: rgb(87, 214, 150);
+  padding: 3px 5px;
+  border-radius: 10px;
+  border: 2px solid rgb(87, 214, 150);
+  width: 100%;
+  color: white;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+  transition: all 200ms ease-in;
+  font-family: "NanumBarunGothicLight";
+}
+
+.editButton:hover {
+  transform: scale(1.02);
+}
+
 .friends{
   overflow: scroll;
+  height: 200px;
 }
 
 .leftContent{
@@ -88,18 +118,22 @@ font-size: small;
 }
 
 .cancleButton {
-  position: absolute;
-  bottom: 15px;
-  width: 88%;
-  margin-top: 7px;
-  padding: 7px 10px;
+  display: block;
+  background-color: white;
+  padding: 3px 5px;
   border-radius: 10px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  color: #ffffff;
-  background-color: rgb(153, 153, 153);
+  color: #6e6e6e;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid #dadada;
+  width: 100%;
+  transition: all 200ms ease-in;
 }
 
+.cancleButton:hover {
+  transform: scale(1.02);
+}
 
 .hidden {
   display: none;

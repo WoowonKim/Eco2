@@ -1,0 +1,33 @@
+.leafSize {
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 15px;
+  height: 20px;
+}
+
+.favoriteadd {
+  margin-right: 3px;
+  cursor: pointer;
+  color: #0e0301;
+}
+.favoritetrash {
+  cursor: pointer;
+  color: #adc178;
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #dadada;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #fff;
+}
+.itemFont {
+  font-weight: bold;
+  text-align: center;
+  font-size: small;
+  padding: 10px 0px;
+}
+.itemIcon {
+  padding-top: 15px;
+}

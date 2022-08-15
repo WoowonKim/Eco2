@@ -1,6 +1,8 @@
 .form {
   margin: 0;
   padding: 0;
+  display: flex;
+  aligh-contents: center;
 }
 
 .input {
@@ -12,6 +14,7 @@
   font-size: x-small;
   padding-left: 10px;
   margin: 5px 5px 5px 0;
+  font-family: "NanumBarunGothicLight";
 }
 
 .input:focus {
@@ -20,8 +23,8 @@
 }
 
 .button {
-  background: #adc178;
-  border: 1px solid #dadada;
+  background: rgb(87, 214, 150);
+  border: none;
   border-radius: 8px;
   width: 13%;
   height: 28px;
@@ -31,6 +34,7 @@
   cursor: pointer;
   margin-top: 10px;
   padding: 0;
+  font-family: "NanumBarunGothicLight";
 }
 
 .button:disabled {
@@ -52,8 +56,9 @@
 }
 
 .smallButton {
-  width: 60%;
-}
-.largeButton {
   width: 80%;
+}
+
+.largeButton {
+  width: 100%;
 }

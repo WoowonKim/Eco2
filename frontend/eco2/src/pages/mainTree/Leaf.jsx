@@ -6,7 +6,7 @@ const style = {
   cursor: "move",
   height: "40px",
 };
-export const Leaf = ({ id, left, top, category, delay }) => {
+export const Leaf = ({ id, left, top, category, delay, createdItem }) => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "leaf",
@@ -20,15 +20,23 @@ export const Leaf = ({ id, left, top, category, delay }) => {
   if (isDragging) {
     return <img ref={drag} />;
   }
+
   return (
     <img
-      className={category <= 6 ? styles.leaf : styles.item}
+      className={` ${
+        category <= 6
+          ? createdItem !== id
+            ? styles.leaf
+            : styles.createdItem
+          : styles.item
+      } `}
       src={
         process.env.PUBLIC_URL + "/tree_leaves/" + "Leaf" + category + ".png"
       }
       ref={drag}
       style={{ ...style, left, top, animationDelay: delay }}
       data-testid="leaf"
+      alt="leaf"
     ></img>
   );
 };
