@@ -6,7 +6,8 @@
   font-weight: 600;
   font-size: 0.65em;
   /* padding: 3px; */
-  color: darkgray;
+  /* color: darkgray; */
+  color: white;
   margin: 7px 0;
 }
 
@@ -15,7 +16,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #d2eabaa8;
+  background-color: rgba(87, 214, 150, 1);
   padding: 1px 3px;
   width: 50px;
   border-radius: 8px;
