@@ -58,6 +58,14 @@ const MainTree = () => {
         className={styles.Img}
         draggable="false"
       ></img>
+      <img
+        className={styles.windImg}
+        src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
+      ></img>
+      <img
+        className={styles.windImg2}
+        src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
+      ></img>
       {leaves.data.map((leaf) => {
         const { id, left, top, category } = leaf;
         return (

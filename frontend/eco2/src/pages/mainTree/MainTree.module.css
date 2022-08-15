@@ -11,7 +11,35 @@
   margin-left: 0;
   margin-right: auto;
 }
-
+.windImg {
+  position: absolute;
+  width: 40%;
+  left: 20px;
+  top: 80px;
+  animation-name: qimg;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+}
+.windImg2 {
+  position: absolute;
+  width: 40%;
+  left: 150px;
+  top: 200px;
+  animation-name: qimg;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+}
+@keyframes qimg {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .Statis {
   width: 120px;
   height: 150px;
@@ -33,5 +61,3 @@
   margin-right: 5px;
   color: black;
 }
-
-
