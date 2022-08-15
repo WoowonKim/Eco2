@@ -7,11 +7,11 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/";
 const Map = ({
   openCreateModal,
-
+setMakeFlag,
   payload,
   openDeatailModal,
   setCount,
-
+makeFlag,
   count,
   name,
 }) => {
@@ -19,7 +19,6 @@ const Map = ({
   const [counter, setCounter] = useState(0);
   const [lat, setLat] = useState(33.450701);
   const [lon, setLon] = useState(126.570667);
-  const [makeFlag, setMakeFlag] = useState(false);
   const [kakaoMap, setKakaoMap] = useState(null);
   const [mapCircle, setMapCircle] = useState(
     new kakao.maps.Circle({
@@ -83,7 +82,6 @@ const Map = ({
     });
     setMapCircle(circle);
     kakaoMap.setCenter(locPosition);
-    console.log("영역 표시");
     circle.setMap(kakaoMap);
   }, [kakaoMap, lat]);
   let markers = [];
@@ -182,7 +180,6 @@ const Map = ({
             className={styles.createButton}
             onClick={() => {
               openCreateModal();
-              setMakeFlag(true);
             }}
           >
             {/* <div className={styles.createButton}>

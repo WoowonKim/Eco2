@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { noticeDelete } from "../../../store/admin/noticeSlice";
-import { reportAccept } from "../../../store/admin/reportSlice";
-import { commentDelete } from "../../../store/post/commentSlice";
-import { postDelete, report, reportCancle } from "../../../store/post/postSlice";
-import { friendRequest } from "../../../store/user/accountSlice";
+import { reportAccept ,reportCancle} from "../../../store/admin/reportSlice";
 import {
   getUserEmail,
-  getUserId,
-  removeUserSession,
 } from "../../../store/user/common";
 import { deleteUser, logout } from "../../../store/user/userSettingSlice";
 import styles from "./AdminModal.module.css";
@@ -32,15 +26,14 @@ const AdminModal = ({
   const sendReportAccept = () => {
       dispatch(reportAccept({ id: id, type: postType })).then((res) => {
         if (res.payload.status === 200) {
-          alert("신고 승인되었습니다.");
           navigate("/report");          
         }
       });
   }
   const sendReportCancle = () => {
+    console.log(id);
       dispatch(reportCancle({ id: id, type: postType })).then((res) => {
         if (res.payload.status === 200) {
-          alert("신고 반려되었습니다.");
           navigate("/report");          
         }
       });
