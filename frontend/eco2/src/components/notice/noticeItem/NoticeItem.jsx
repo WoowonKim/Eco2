@@ -25,9 +25,10 @@ const NoticeItem = ({
     if (notices.length > index + 1) {
       setNext(notices[index + 1]);
     }
-    if (0 < index - 1) {
+    if (0 <= index - 1) {
       setPrev(notices[index - 1]);
     }
+    console.log(index);
   }, []);
   return (
     <tr
