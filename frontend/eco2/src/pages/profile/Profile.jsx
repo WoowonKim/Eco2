@@ -183,7 +183,7 @@ const Profile = () => {
             </>
           )}
           <div className={styles.userSettingAndFriends}>
-            <p>{userName}</p>
+            <p className={styles.userName}>{userName}</p>
             {getUserId() === params.userId ? (
               <button
                 onClick={() =>
@@ -267,24 +267,25 @@ const Profile = () => {
         <div className={styles.missionList}>
           <div
             onClick={() => setUserSetting(1)}
-            className={styles.missionTitle}
+            className={`${styles.missionTitle} ${userSetting === 1 ? styles.selectedMenu1 : null}`}
           >
-            <p className={`${styles.dailyText} ${displayType}`}>달력</p>
-            {userSetting === 1 && <hr className={styles.line} />}
+            <p className={`${styles.calendarText} ${displayType}`}>달력</p>
+            {userSetting === 1}
           </div>
           <div
             onClick={() => setUserSetting(2)}
-            className={styles.missionTitle}
+            className={`${styles.missionTitle} ${userSetting === 2 ? styles.selectedMenu2 : null}`}
           >
             <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
-            {userSetting === 2 && <hr className={styles.line} />}
+            {userSetting === 2}
+            {/* {userSetting === 2 && <hr className={styles.line} />} */}
           </div>
           <div
             onClick={() => setUserSetting(3)}
-            className={styles.missionTitle}
+            className={`${styles.missionTitle} ${userSetting === 3 ? styles.selectedMenu3 : null}`}
           >
             <p className={`${styles.questText} ${displayType2}`}>퀘스트</p>
-            {userSetting === 3 && <hr className={styles.line} />}
+            {userSetting === 3}
           </div>
         </div>
         {userSetting === 1 && <Calendar id={userId} />}
