@@ -6,7 +6,7 @@ const style = {
   cursor: "move",
   height: "40px",
 };
-export const Leaf = ({ id, left, top, category }) => {
+export const Leaf = ({ id, left, top, category, delay }) => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "leaf",
@@ -27,7 +27,7 @@ export const Leaf = ({ id, left, top, category }) => {
         process.env.PUBLIC_URL + "/tree_leaves/" + "Leaf" + category + ".png"
       }
       ref={drag}
-      style={{ ...style, left, top }}
+      style={{ ...style, left, top, animationDelay: delay }}
       data-testid="leaf"
     ></img>
   );
