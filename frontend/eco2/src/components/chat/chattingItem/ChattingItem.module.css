@@ -5,8 +5,20 @@
   background-color: transparent;
 }
 
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
 .list:hover {
   background-color: #f3f3f3;
+}
+.link{
+width: 96%;
+display: inline-block;  
+float: left;
 }
 .leftContent {
   display: inline-block;
@@ -16,7 +28,6 @@
 
 .rightContent {
   display: inline-block;
-  /*float: right; */
   width: 20%;
 }
 
@@ -30,18 +41,16 @@
   font-size: 14px;
   font-weight: bold;
   color: #6a707c;
-  /* float: left; */
-  margin-top: 13px;
+  margin-top: 20px;
   margin-bottom: 3px;
   text-align: left;
+  font-family: "NanumBarunGothicLight";
+
 }
 
 .profileImg {
   width: 50px;
   height: 50px;
-  /* border: grey solid 1px; */
-  /* box-shadow: 5px 5px 2px 30px gray inset; */
-
   border-radius: 30px;
   display: inline-block;
   float: left;
@@ -52,6 +61,7 @@
   text-align: left;
   font-size: 11px;
   color: #6a707c;
+  font-family: "NanumBarunGothicLight";
 }
 
 .lastSendTime {
@@ -60,60 +70,17 @@
   font-size: x-small;
   color: #BDBDBD;
   float: right;
-  line-height: 85px;
+  line-height: 95px;
+  font-family: "NanumBarunGothicLight";
 
 }
-
 .deleteButton {
-  margin-top: 5px;
-  position: absolute;
-  border: none;
+  float: left;
+  width: 3%;
+}
+.icon {
   color: #6a707c;
-  background-color: transparent;
-  font-size: medium;
-  padding: 3px;
-  float: right;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-  /* padding: 10px 20px; */
-}
-
-.dropdownContent {
-  display: none;
-  position: absolute;
-  background-color: #000;
-  right: 0;
-}
-
-.dropdownItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100px;
-  background-color: #FFF;
-  padding: 10px 10px;
-  border: none;
-}
-
-.dropdownItem:hover {
-  background-color: rgb(240, 255, 240);
-}
-
-.dropdown:hover .dropdownContent {
-  display: block;
-}
-
-/* .icon {
-  color: #6a707c;
-  font-size: 15px;
-} */
-
-.dropdownIcon {
-  font-size: 15px;
-  color: rgb(65, 65, 65);
+  font-size: 14px;
 }
 
 .visible {

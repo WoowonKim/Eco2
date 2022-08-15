@@ -182,7 +182,7 @@ const Map = ({
           }}
         >
           {/* <div className={styles.createButton}>
-            {makeFlag ? "취소하기" : "생성하기"} */}
+             {makeFlag ? "취소하기" : "생성하기"} */}
             생성하기 <i
               className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
             ></i>
