@@ -28,6 +28,7 @@ public class PostCreateDto {
     private Quest quest;
     private boolean publicFlag;
     private boolean commentFlag;
+    private Long itemId;
 
 
 

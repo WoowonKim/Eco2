@@ -404,14 +404,15 @@ public class PostController {
             }
 
             postCreateDto.setUser(user);
-            
             postCreateDto.setRegistTime(LocalDateTime.now());
-            // 친구 인증글 알림 시 사용
-//            Post post = postService.savePost(postImage, postCreateDto);
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
-            itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
+            Item item = Item.builder().left(50).top(50).category(category).user(user).build();
+            itemService.save(item);
+            postCreateDto.setItemId(item.getId());
 
+            // 친구 인증글 알림 시 사용
+//            Post post = postService.savePost(postImage, postCreateDto);
 
             // 친구 인증글 알림
 //            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {

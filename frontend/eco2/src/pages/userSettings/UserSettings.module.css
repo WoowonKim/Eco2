@@ -93,7 +93,7 @@
 }
 
 .passwordFormButton {
-  background: #adc178;
+  background: rgba(87, 214, 150, 1);
   border: 1px solid #dadada;
   border-radius: 8px;
   width: 55px;
