@@ -44,9 +44,9 @@ const Settings = ({ email }) => {
     <div>
       <div className={styles.setting}>
         <div className={styles.settingGroup}>
-          <p className={styles.settingTitle}>계정 비공개</p>
+          <p className={styles.settingTitle}>계정 공개</p>
           <p className={styles.settingContent}>
-            계정을 비공개로 설정하면 다른 유저들이 게시물을 볼 수 없습니다.
+            계정을 공개로 설정하면 다른 유저들이 게시물을 볼 수 있습니다.
           </p>
         </div>
         <div className={styles.toggleGroup}>
