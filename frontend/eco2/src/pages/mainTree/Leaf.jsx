@@ -22,7 +22,7 @@ export const Leaf = ({ id, left, top, category }) => {
   }
   return (
     <img
-      className={styles.leaf}
+      className={category <= 6 ? styles.leaf : styles.item}
       src={
         process.env.PUBLIC_URL + "/tree_leaves/" + "Leaf" + category + ".png"
       }

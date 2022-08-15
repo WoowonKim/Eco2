@@ -186,6 +186,9 @@ public class PostService {
         });
     }
 
+    public boolean existsByUserIdAndQuestId(Long userId, Long questId) {
+        return postRepository.existsByUserIdAndQuestId(userId, questId) != null;
+    }
 
 //    @Transactional()
 //    public List<Post> getPostList() {
