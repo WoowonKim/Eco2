@@ -201,7 +201,7 @@ public class PostController {
 
             if (userSetting.isPublicFlag() == false) {
                 // API 요청을 보낸 user의 친구 중 postuUser가 포함되어있거나, 게시물 작성자와 요청 user가 같은 경우 게시물 공개!
-                if (friendService.getFriends(userId).contains(postUser) || postId == userId) {
+                if (friendService.getFriends(userId).contains(postUser) || postUser.getId() == userId) {
                     Mission mission = null;
                     CustomMission customMission = null;
                     QuestDto quest = null;

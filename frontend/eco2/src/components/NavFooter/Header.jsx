@@ -48,8 +48,8 @@ const Header = () => {
           navigate("/mainTree");
         }}
       >
-        <img src={`${process.env.PUBLIC_URL}/logo.png`} className={styles.Img}></img>
-        <img src={`${process.env.PUBLIC_URL}/logoText.png`} className={styles.Img}></img>
+        <img src={`${process.env.PUBLIC_URL}/logo2.png`} className={styles.Img}></img>
+        <img src={`${process.env.PUBLIC_URL}/logoText2.png`} className={styles.Img}></img>
       </div>
       <nav>
        
