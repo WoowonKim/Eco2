@@ -93,6 +93,7 @@
   width: 40px;
   height: 40px;
   background-color: white;
+  border-radius: 50%;
   border: none;
   margin-right: 5px;
 }
