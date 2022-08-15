@@ -49,5 +49,7 @@ code {
   /* padding-top: 65px; */
   display: flex;
   justify-content: center;
-  padding: 30px;
+  padding-top: 65px;
+  padding-bottom: 65px;
+
 }
