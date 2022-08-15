@@ -17,7 +17,7 @@ const FindPassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState("");
 
   const [message, setMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
@@ -29,11 +29,11 @@ const FindPassword = () => {
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
-  const isEmailValid = useSelector((state) => state.user.isEmailValid);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const buttonText = visibility ? "재전송" : "인증";
+  const displayType = visibility ? styles.visible : styles.hidden;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -106,16 +106,19 @@ const FindPassword = () => {
           </p>
         )}
         {email.length === 0 && <div className={styles.test}></div>}
-        {visibility && isEmail && (
+        {visibility && isEmail && !isCode && (
           <div>
-            <div className={styles.EmailInput}>
+            <div className={`${styles.EmailInput}, ${displayType}`}>
               <input
                 type="text"
-                className={styles.inputEmail}
+                className={styles.input}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="인증 번호"
               />
               <button
+                disabled={isCode || code.trim().length == 0}
+                className={styles.buttonEmail}
+                type="button"
                 onClick={() =>
                   dispatch(emailVerifyCode({ email, code })).then((res) => {
                     if (res.payload.status === 200) {
@@ -125,7 +128,6 @@ const FindPassword = () => {
                     setMessage(`${res.payload.msg}`);
                   })
                 }
-                className={styles.buttonEmail}
               >
                 인증
               </button>
@@ -140,6 +142,7 @@ const FindPassword = () => {
         <LoginInput
           onChange={passwordValidation}
           type="password"
+          className={styles.input}
           placeholder="새 비밀번호"
         />
         {password.length > 0 && (
@@ -152,6 +155,7 @@ const FindPassword = () => {
         <LoginInput
           onChange={passwordConfirmValidation}
           type="password"
+          className={styles.input}
           placeholder="새 비밀번호 확인"
         />
         {password2.length > 0 && (
