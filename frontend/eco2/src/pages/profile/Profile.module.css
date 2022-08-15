@@ -4,6 +4,7 @@
   /* background-image: url(../../../public/ocean.PNG); */
 
   /* background-color: beige; */
+  
   width: 390px;
   justify-content: center;
   align-items: center;
@@ -11,7 +12,9 @@
 }
 
 .user {
-  background: linear-gradient(beige 30%, white);
+  /* background: linear-gradient(beige 30%, white); */
+  border-radius: 10px;
+  background: linear-gradient(rgb(247, 241, 227) 30%, white);
   /* display: flex; */
   justify-content: start;
   align-items: center;
@@ -128,7 +131,7 @@
 
 .missionList {
   display: grid;
-  margin-top: 50px;
+  margin-top: 10px;
   grid-template-columns: 1fr 1fr 1fr;
 }
 

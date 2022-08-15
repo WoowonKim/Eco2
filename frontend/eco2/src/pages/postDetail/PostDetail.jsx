@@ -66,6 +66,9 @@ const PostDetail = () => {
   useEffect(() => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
+        if (res.payload?.msg === "비공개 계정입니다.") {
+          navigate("/mainFeed");
+        }
         setFeedItem(res.payload.post);
         if (res.payload.post.comments !== null) {
           setComments(
@@ -92,11 +95,11 @@ const PostDetail = () => {
   }, [test, likeUsers]);
 
   useEffect(() => {
-    if (!feedItem.registTime) {
+    if (!feedItem?.registTime) {
       return;
     }
-    setRegistTime(feedItem.registTime.split("T")[0]);
-  }, [feedItem.registTime]);
+    setRegistTime(feedItem?.registTime.split("T")[0]);
+  }, [feedItem?.registTime]);
   return (
     <div className={styles.container}>
       <div className={styles.title}>
