@@ -21,7 +21,11 @@ import { getLocation } from "../../../utils";
 
 // css
 import styles from "./dailyMission.module.css";
+
+import PostModal from "../../../components/modal/postModal/PostModal";
+
 import PopupModal from "../../../components/popup/PopupModal";
+
 
 const DailyMissionMain = () => {
   const [id, setId] = useState(getUserId()); // 서버 접속에 필요한 userid State
@@ -50,7 +54,10 @@ const DailyMissionMain = () => {
     return year + "-" + month + "-" + day;
   }
   const toDayGet = getToday();
-  const successBtn = useSelector((state) => state.missionMain.successBtn);
+  const successBtn = useSelector(state => state.missionMain.successBtn);
+  const [visible, setVisible] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const displayType = visible ? styles.visible : styles.hidden;
 
   /**
    * 현재 위치를 불러오기 위한 getLocation
@@ -59,7 +66,7 @@ const DailyMissionMain = () => {
    * setLng : 경도?
    */
   useEffect(() => {
-    getLocation().then((res) => {
+    getLocation().then(res => {
       setNowTime(res.timeTwo);
       setLat(res.latitude);
       setLng(res.longitude);
@@ -72,10 +79,10 @@ const DailyMissionMain = () => {
   useEffect(() => {
     if (id !== 0) {
       dispatch(postTodayMission({ id: id, lat, lng, date: nowTime })).then(
-        (res) => {
+        res => {
           if (res.payload?.status === 200) {
             if (id !== 0) {
-              dispatch(getMission({ id: getUserId() })).then((res) => {
+              dispatch(getMission({ id: getUserId() })).then(res => {
                 setMain(res.payload.dailyMissionList);
                 setcusMain(res.payload.dailyCustomMissionList);
               });
@@ -90,8 +97,8 @@ const DailyMissionMain = () => {
   /**
    *  미션들의 길이와 미션 완료값이 동일할 경우 오늘 미션 완료로 간주.
    */
-  const mainResult = main.filter((it) => it.achieveFlag === true);
-  const cusMainResult = cusMain.filter((it) => it.achieveFlag === true);
+  const mainResult = main.filter(it => it.achieveFlag === true);
+  const cusMainResult = cusMain.filter(it => it.achieveFlag === true);
   const sumClearMission = mainResult.length + cusMainResult.length;
   const sumMission = main.length + cusMain.length;
 
@@ -108,7 +115,7 @@ const DailyMissionMain = () => {
       alert(
         `축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`
       );
-      dispatch(missionPost({ id })).then((res) => {
+      dispatch(missionPost({ id })).then(res => {
         dispatch(missionItem({ id, date: toDayGet }));
       });
       naviGate("/mainTree");
@@ -118,6 +125,7 @@ const DailyMissionMain = () => {
   };
 
   //console.log("main ===>", main);
+  // console.log("cusMain===>", cusMain);
 
   return (
     <div className={styles.headerMain}>
@@ -144,22 +152,15 @@ const DailyMissionMain = () => {
           </Link>
         </div>
       )}
-
-      {/* 추천 미션 테이블에 안들어 와있으면 활성화 해야함. */}
-      {/* <div>
-        {todayMission.map(it => (
-          <MissionTodayItem key={it.id} content={it.title} />
-        ))}
-      </div> */}
-
       <div>
-        {cusMain.map((it) => (
+        {cusMain.map(it => (
           <MissionCustomItem
             key={it.id}
             content={it.customMission.title}
             idTest={id}
             missionIdTest={it.id}
             missionFlag={it.achieveFlag}
+            category={it.customMission.category}
             customMissionId={it.customMission.id}
             cusMissionDelete={cusMissionDelete}
             setCusMissionDelete={setCusMissionDelete}
@@ -168,7 +169,7 @@ const DailyMissionMain = () => {
       </div>
 
       <div>
-        {main.map((it) => (
+        {main.map(it => (
           <MissionMain
             key={it.id}
             content={it.mission.title}
@@ -187,7 +188,31 @@ const DailyMissionMain = () => {
         {successBtn ? (
           <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
         ) : (
-          <GreenBtn onClick={onSucsses}>오늘 미션 보상 받기</GreenBtn>
+          <div>
+            {sumClearMission !== sumMission ? (
+              <GreenBtn>미션완료시 눌러주세요 :)</GreenBtn>
+            ) : (
+              <GreenBtn
+                onClick={() => {
+                  setVisible(!visible);
+                  setModalType("미션등록");
+                }}
+                // onClick={onSucsses}
+              >
+                오늘 미션 보상 받기
+              </GreenBtn>
+            )}
+          </div>
+        )}
+        {visible && modalType === "미션등록" && (
+          <PostModal
+            className={`${displayType}`}
+            title={"오늘 미션 완료!"}
+            content={"클릭 시 오늘 미션은 추가가 안됩니다!"}
+            type={"미션등록"}
+            successId={id}
+            toDayGet={toDayGet}
+          />
         )}
       </div>
       <button
