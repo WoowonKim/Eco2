@@ -31,20 +31,20 @@ public class Post {
     private LocalDateTime registTime = LocalDateTime.now();
 
 
-    @Column(name = "pos_content")
+    @Column(name = "pos_content", length = 1000)
     private String content;
 
     @Column(name = "pos_report", nullable = false)
-    @ColumnDefault("0")
-    private boolean report = false;
+    @ColumnDefault("false")
+    private boolean report;
 
     @Column(name = "pos_public_flag", nullable = false)
-    @ColumnDefault("1")
-    private boolean publicFlag = true;
+    @ColumnDefault("true")
+    private boolean publicFlag;
 
     @Column(name = "pos_comment_flag", nullable = false)
-    @ColumnDefault("1")
-    private boolean commentFlag = true;
+    @ColumnDefault("true")
+    private boolean commentFlag;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usr_id", nullable = false)
