@@ -38,7 +38,8 @@ const FeedItem = ({
   };
 
   useEffect(() => {
-    if (likeUsers !== null) {
+    // console.log(likeUsers);
+    if (likeUsers !== null && !!likeUsers) {
       setLikeUserId(
         likeUsers.some((id) => {
           return id == getUserId();

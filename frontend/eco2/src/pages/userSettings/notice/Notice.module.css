@@ -55,8 +55,19 @@
 
 .pageNumber {
   padding: 7px;
+  margin: 0 10px;
+  font-size: small;
+  color: #b6b4b4;
 }
 
 .pageNumber:hover {
   cursor: pointer;
+  color: black;
+}
+
+.active {
+  color: black;
+  background-color: #dadada5d;
+  border-radius: 10px;
+  padding: 5px 10px;
 }
