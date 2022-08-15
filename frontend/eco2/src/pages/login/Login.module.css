@@ -1,9 +1,16 @@
 .login {
-  display: inline-block;
+  display: block;
   margin: 0;
   padding: 0;
   justify-content: center;
   margin-top: 10%;
+  width: 100%;
+}
+
+.form {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .img {
@@ -13,19 +20,16 @@
 
 .input {
   margin: 5px 0 10px 0;
+  width: 100%;
+  font-family: "NanumBarunGothicLight";
+}
+
+.input::placeholder {
+  color: #dadada;
 }
 
 .input:focus {
   outline: none;
-}
-
-.radio {
-  margin: 10px 0;
-  text-align: start;
-}
-
-.radioText {
-  font-size: small;
 }
 
 .lineGroup {
@@ -51,7 +55,7 @@
 }
 
 .longLine {
-  width: 35%;
+  width: 45%;
   height: 1px;
   padding: 0;
   margin: 0 0 0 5px;
@@ -60,21 +64,45 @@
 }
 
 .socialGroup {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 8%;
+  display: block;
 }
 
-.socialButton {
-  border: solid 2px #dadada;
-  border-radius: 15px;
+.kakaoButton {
+  border: none;
   background-color: white;
-  padding: 3% 15%;
+  /* width: 100%; */
+  margin-top: 10px;
 }
 
-.socialLogo {
-  width: 100%;
-  height: 30px;
+.kakaoLogo {
+  width: 360px;
+}
+
+.googleButton {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  /* border: 3px solid #dadada; */
+  border: none;
+  border-radius: 10px;
+  width: 360px;
+  height: 53px;
+  background-color: white;
+  padding: 0 0 0 10px;
+  margin: auto;
+  box-shadow: 1px 1px 1px rgba(218, 218, 218, 1);
+}
+
+.googleLogo {
+  width: 28px;
+}
+
+.google {
+  font-family: "NanumBarunGothic";
+  font-size: 17px;
+  border: none;
+  padding: 0 110px;
+  margin: 0;
 }
 
 .shortLine2 {
@@ -87,7 +115,7 @@
 }
 
 .longLine2 {
-  width: 70%;
+  width: 75%;
   height: 1px;
   padding: 0;
   margin-left: 0 0 0 5px;
@@ -126,6 +154,93 @@
   margin: 0;
 }
 
+.loginButton {
+  font-family: "NanumBarunGothicLight";
+}
+
 .loginButton:disabled {
   background-color: #dadada;
+  border: none;
+}
+
+.wrapper {
+  display: flex;
+  background: #fff;
+  /* border-radius: 5px; */
+  padding: 5px 0;
+  margin: 5px;
+}
+
+.wrapper .label {
+  background: #fff;
+  height: 30px;
+  width: 150px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.wrapper .label .dot {
+  height: 15px;
+  width: 15px;
+  background: #dadada9f;
+  border-radius: 50%;
+  position: relative;
+}
+
+.wrapper .label .dot::before {
+  position: absolute;
+  content: "";
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background: rgb(87, 214, 150);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+
+.checkbox1 {
+  display: none;
+}
+
+.button {
+  background: rgb(87, 214, 150);
+  border-radius: 30px;
+  width: 100%;
+  height: 25px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  border: none;
+}
+
+.checkbox1:checked:checked ~ .label1 {
+  border-color: rgb(87, 214, 150);
+}
+
+.checkbox1:checked:checked ~ .label1 .dot {
+  background: #dadada9f;
+}
+
+.checkbox1:checked:checked ~ .label1 .dot::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.wrapper .label .labelText {
+  font-size: small;
+  color: #808080;
+  margin-left: 5px;
+}
+
+.checkbox1:checked:checked ~ .label1 labelText {
+  color: #dadada9f;
 }

@@ -67,7 +67,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100px;
+  width: 80px;
+  padding: 5px;
   border: none;
 }
 

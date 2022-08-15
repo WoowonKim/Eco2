@@ -1,8 +1,13 @@
+.container {
+  width: 100%;
+}
+
 .setting {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 15px;
+  padding: auto;
+  margin: auto;
 }
 
 .settingGroup {
@@ -19,21 +24,23 @@
 
 .line {
   border: 0.5px solid #dadada;
+  /* margin: 30px 10px; */
 }
 
 .settingButton {
-  margin-top: 10px;
-  background-color: #d2eaba;
+  margin-top: 50px;
+  background-color: rgba(87, 214, 150, 0.8);
   border: none;
-  border-radius: 5px;
-  width: 150px;
+  border-radius: 15px;
+  width: 100%;
   height: 30px;
   cursor: pointer;
+  font-family: "NanumBarunGothicLight";
 }
 
 .toggleSwitch {
   width: 2.7rem;
-  margin: 2rem;
+  margin: 1rem;
   height: 1.3rem;
   display: block;
   position: relative;
@@ -51,12 +58,12 @@
   left: 0.2rem;
   transform: translateY(-50%);
   border-radius: 50%;
-  background: #d2eaba;
+  background: rgb(87, 214, 150);
 }
 
 /* 체크박스가 체크되면 변경 이벤트 */
 .toggle:checked ~ .toggleSwitch {
-  background: #d2eaba;
+  background: rgb(87, 214, 150);
 }
 
 .toggle:checked ~ .toggleSwitch .toggleButton {
@@ -70,5 +77,5 @@
 }
 
 .toggleSwitch {
-  margin: 0 0 0 30px;
+  margin: 0 0 0 10px;
 }

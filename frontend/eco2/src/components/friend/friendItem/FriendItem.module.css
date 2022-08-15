@@ -2,27 +2,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 300px;
-  border: 1px solid #dadada;
-  border-radius: 20px;
-  margin: 15px 5px;
-  padding: 5px 20px 10px 20px;
-  box-shadow: 5px 5px 10px 1px rgba(218, 218, 218, 1);
+  width: 100%;
+  margin: 15px 0;
+  padding: 5px 5px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
+
+/* .container:hover {
+  box-shadow: 1px 1px 1px 1px rgba(218, 218, 218, 10);
+} */
 
 .friendProfile {
   display: flex;
   align-items: center;
   cursor: pointer;
   margin: 4px 0 0 0;
+  position: inherit;
+  left: 0px;
+  transition: 0.5s;
 }
 
 .profileImg {
   width: 30px;
   height: 30px;
   background-color: white;
-  border: 1px solid black;
-  border-radius: 50%;
   margin-right: 10px;
 }
 
@@ -43,4 +48,47 @@
 
 .trash:hover {
   transform: scale(1.1);
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.buttonVisible {
+  position: relative;
+  overflow: hidden;
+}
+
+.buttonHidden {
+  position: relative;
+  overflow: hidden;
+}
+
+.testButton {
+  border: none;
+  background-color: #f14336;
+  color: white;
+  width: 50px;
+  height: 36px;
+  padding: auto;
+  position: absolute;
+  right: -50px;
+  transition: 0.5s;
+  z-index: 2;
+  cursor: pointer;
+  font-family: "NanumBarunGothicLight";
+}
+
+.buttonVisible .testButton {
+  right: 0;
+  transition: 0.5s;
+}
+
+.buttonVisible .friendProfile {
+  left: -50px;
+  transition: 0.5s;
 }

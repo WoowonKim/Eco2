@@ -80,7 +80,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100px;
+  width: 80px;
+  padding: 5px;
   border: none;
 }
 
@@ -100,6 +101,7 @@
   font-size: 7px;
   display: flex;
   justify-items: end;
+  padding: 3px 3px 3px 10px;
 }
 
 .dropdownIcon {
