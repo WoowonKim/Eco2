@@ -48,29 +48,37 @@ const FeedItem = ({
   }, [likeUsers]);
 
   return (
-      <div className={styles.list}>
-        <img
-          src={`http://localhost:8002/img/post/${id}`}
-          alt="postImg"
-          className={styles.postImg}
-        />
+    <div className={styles.list}>
+      <img
+        src={`${process.env.REACT_APP_BE_HOST}img/post/${id}`}
+        alt="postImg"
+        className={styles.postImg}
+        onClick={() => navigate(`/post/${id}`)}
+      />
+      <div className={styles.profile}>
         <div
-          className={styles.profile}
+          className={styles.userInfo}
           onClick={() =>
             navigate(`/profile/${userId}`, { state: { userEmail } })
           }
         >
           <img
-            src={`http://localhost:8002/img/profile/${userId}`}
+            src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`}
             alt="profileImg"
             className={styles.profileImg}
           />
-          <p className={styles.user}>{userName}</p>
-          <div className={styles.heart}>
-            {like}<i className={`fa-solid fa-heart ${styles.heartIcon}`}></i>
-          </div>
+          <p className={styles.user}>{userName}님</p>
         </div>
+        <button className={styles.heartButton} onClick={handlePostLike}>
+          {likeUserId ? (
+            <i className={`fa-solid fa-heart ${styles.heartIcon}`}></i>
+          ) : (
+            <i className={`fa-regular fa-heart ${styles.heartIcon}`}></i>
+          )}
+          <span className={styles.likeText}>{like}</span>
+        </button>
       </div>
+    </div>
   );
 };
 
