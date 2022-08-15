@@ -8,6 +8,7 @@ import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
 import com.web.eco2.domain.entity.Item.Item;
 import com.web.eco2.domain.entity.UserSetting;
+import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
@@ -347,12 +348,48 @@ public class PostController {
                 if(questOpt.isEmpty()) {
                     return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
+
                 Quest quest = questOpt.get();
-                quest.setParticipantCount(quest.getParticipantCount()+1);
-                questService.save(quest);
-                postCreateDto.setQuest(quest);
                 category = quest.getMission().getCategory();
                 isQuest = true;
+
+                if(postService.existsByUserIdAndQuestId(userId, quest.getId())) {
+                    return ResponseHandler.generateResponse("이미 참여한 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+                if(quest.isFinishFlag()) {
+                    return ResponseHandler.generateResponse("종료된 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+                if(quest.getFinishTime().isBefore(LocalDateTime.now())) {
+                    quest.setFinishFlag(true);
+                    questService.save(quest);
+                    return ResponseHandler.generateResponse("종료된 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+
+                if(quest.isAchieveFlag()) {
+                    return ResponseHandler.generateResponse("완료된 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+                int participantCount = quest.getParticipantCount()+1;
+                if(participantCount == quest.getAchieveCount()) {
+                    quest.setAchieveFlag(true);
+                    Item item = Item.builder().category(7).user(user).left(100).top(50).build();
+                    itemService.save(item);
+                    alarmService.insertAlarm(FirebaseAlarm.builder().userId(userId)
+                            .content("퀘스트가 완료되었습니다! 메인 화면에서 보상을 확인하세요.").dType("questAchieve")
+                            .url("/mainTree").build());
+
+                    for(QuestPost questPost : postService.findByQuest(quest)) {
+                        User questUser = questPost.getUser();
+                        item = Item.builder().category(7).user(questUser).left(200).top(50).build();
+//                        item = Item.builder().category(6+quest.getMission().getCategory()).user(questUser).left(200).top(50).build();
+                        itemService.save(item);
+                        alarmService.insertAlarm(FirebaseAlarm.builder().userId(questUser.getId())
+                                .content("퀘스트가 완료되었습니다! 메인 화면에서 보상을 확인하세요.").dType("questAchieve")
+                                .url("/mainTree").senderId(item.getId()).build());
+                    }
+                }
+                quest.setParticipantCount(participantCount);
+                questService.save(quest);
+                postCreateDto.setQuest(quest);
             } else {
                 return ResponseHandler.generateResponse("요청값이 부족합니다.", HttpStatus.ACCEPTED);
             }

@@ -9,11 +9,9 @@ const DailyEcoMissionitem = ({ ecoId, content, onCreate, id, category, cnt, setC
   const dispatch = useDispatch();
   const [color, setColor] = useState(true);
   const [favorites, setFavorites] = useState(false);
-  const favoritesType = !favorites ? "fa-regular fa-bookmark" : "fa-solid fa-bookmark";
   const colorType = color ? styles.gray : styles.skyblue;
   const favoriteTrue = true;
   const favoritesTrue = true;
-  const naviGate = useNavigate();
 
   const onFavorite = (id, favoritesTrue, ecoId, favoriteTrue) => {
     dispatch(putFavorite({ id, likeFlag: favoritesTrue, missionType: favoriteTrue, missionId: ecoId })).then((res) => {

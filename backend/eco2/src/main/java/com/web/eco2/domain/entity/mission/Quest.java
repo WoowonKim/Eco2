@@ -76,7 +76,7 @@ public class Quest {
         return QuestDto.builder()
                 .id(id).lat(lat).lng(lng)
                 .participantCount(participantCount)
-                .achieveCount(achieveCount)
+                .achieveCount(achieveCount).achieveFlag(achieveFlag)
                 .finishTime(finishTime).finishFlag(finishFlag)
                 .content(content)
                 .user(user.toDto()).mission(mission.toDto()).build();
