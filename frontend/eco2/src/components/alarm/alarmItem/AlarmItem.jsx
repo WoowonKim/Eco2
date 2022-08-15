@@ -12,13 +12,17 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [image, setImage] = useState("");
+  const [isDelete, setIsDelete] = useState(false);
 
   const getTime = (time) => {
     const now = new Date();
     const dateTime = new Date(0);
     dateTime.setUTCSeconds(time);
 
-    if (now.valueOf() - dateTime.valueOf() < 86400000) {
+    if (
+      now.valueOf() - dateTime.valueOf() < 86400000 &&
+      now.getDate() === dateTime.getDate()
+    ) {
       return (
         addZero(dateTime.getHours()) + ":" + addZero(dateTime.getMinutes())
       );
@@ -46,6 +50,8 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
         return "친구 신청";
       case "newChat":
         return "채팅";
+      case "questAchieve":
+        return "퀘스트 완료";
       default:
         return "알림";
     }
@@ -66,17 +72,21 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
 
   const onClickDelete = (id, userId) => {
     console.log("delete");
-    dispatch(deleteAlarm({ id: id, userId: userId }));
+    setIsDelete(true);
+    setTimeout(() => dispatch(deleteAlarm({ id: id, userId: userId })), 300);
   };
 
   const onClickFriendResponse = (friendId, response) => {
     if (window.confirm(`정말 ${response ? "수락" : "거절"}하시겠습니까?`)) {
-      dispatch(
-        responseFriendRequest({
-          id: parseInt(getUserId()),
-          friendId: friendId,
-          response: response,
-        })
+      setIsDelete(true);
+      setTimeout(() =>
+        dispatch(
+          responseFriendRequest({
+            id: parseInt(getUserId()),
+            friendId: friendId,
+            response: response,
+          })
+        )
       );
     }
   };
@@ -99,20 +109,28 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${
+        isDelete && styles["container-delete"]
+      }`}
+    >
       <div className={styles.head}>
         <div className={styles.title}>
           <i className={"fa-solid fa-circle-dot icon"}></i>
-          <p>{getType(alarm.dtype)}</p>
+          <p>
+            <b>{getType(alarm.dtype)}</b>
+          </p>
           <p>{getTime(alarm.sendTime)}</p>
         </div>
-        <div className={styles.button}>
-          <i
-            className={"fa-solid fa-x icon"}
-            onClick={() => {
-              onClickDelete(alarm.id, alarm.userId);
-            }}
-          ></i>
+        <div className={styles.close}>
+          {alarm.dtype === "friendRequest" || (
+            <i
+              className={`fa-solid fa-x icon`}
+              onClick={() => {
+                onClickDelete(alarm.id, alarm.userId);
+              }}
+            ></i>
+          )}
         </div>
       </div>
       <div
@@ -129,28 +147,30 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
         <p>{alarm.content}</p>
       </div>
       <>
-        {isFriendRequest ? (
-          <div className={styles.buttons}>
-            <button
-              onClick={() => {
-                onClickFriendResponse(alarm.senderId, true);
-              }}
-              type="button"
-            >
-              수락
-            </button>
-            <button
-              onClick={() => {
-                onClickFriendResponse(alarm.senderId, false);
-              }}
-              type="button"
-            >
-              거절
-            </button>
-          </div>
-        ) : (
-          <></>
-        )}
+        <div className={styles.buttons}>
+          {isFriendRequest && (
+            <>
+              <button
+                className={`${styles.button} ${styles.accept}`}
+                onClick={() => {
+                  onClickFriendResponse(alarm.senderId, true);
+                }}
+                type="button"
+              >
+                수락
+              </button>
+              <button
+                className={`${styles.button} ${styles.refuse}`}
+                onClick={() => {
+                  onClickFriendResponse(alarm.senderId, false);
+                }}
+                type="button"
+              >
+                거절
+              </button>
+            </>
+          )}
+        </div>
       </>
     </div>
   );

@@ -28,53 +28,51 @@ const Footer = () => {
 
   // alarm, mainTree, dailymissionmain, mainFeed, quest, pathname
   return (
-    <>
+    <footer className={styles.Footer}>
       <AlarmPopUpContainer />
-      <footer className={styles.Footer}>
-        <i
-          className={`fa-solid fa-tree ${styles.icon} ${
-            active === "mainTree" ? styles.active : null
-          }`}
-          onClick={() => {
-            navigate("/mainTree");
-          }}
-        ></i>
-        <i
-          className={`fa-solid fa-envelope-open-text ${styles.icon} ${
-            active === "dailymissionmain" ? styles.active : null
-          }`}
-          onClick={() => {
-            navigate("/dailymissionmain");
-          }}
-        ></i>
-        <i
-          className={`fa-solid fa-earth-americas ${styles.icon} ${
-            active === "mainFeed" ? styles.active : null
-          }`}
-          onClick={() => {
-            navigate("/mainFeed");
-          }}
-        ></i>
-        <i
-          className={`fa-solid fa-map-location-dot ${styles.icon} ${
-            active === "quest" ? styles.active : null
-          }`}
-          onClick={() => {
-            navigate("/quest");
-          }}
-        ></i>
-        <i
-          className={`fa-solid fa-bullhorn ${styles.icon} ${
-            active === "alarm" ? styles.active : null
-          }`}
-          onClick={() => {
-            navigate("/alarm");
-          }}
-        >
-          {isNew && <div className={styles.newbadge}></div>}
-        </i>
-      </footer>
-    </>
+      <i
+        className={`fa-solid fa-tree ${styles.icon} ${
+          active === "mainTree" ? styles.active : null
+        }`}
+        onClick={() => {
+          navigate("/mainTree");
+        }}
+      ></i>
+      <i
+        className={`fa-solid fa-envelope-open-text ${styles.icon} ${
+          active === "dailymissionmain" ? styles.active : null
+        }`}
+        onClick={() => {
+          navigate("/dailymissionmain");
+        }}
+      ></i>
+      <i
+        className={`fa-solid fa-earth-americas ${styles.icon} ${
+          active === "mainFeed" ? styles.active : null
+        }`}
+        onClick={() => {
+          navigate("/mainFeed");
+        }}
+      ></i>
+      <i
+        className={`fa-solid fa-map-location-dot ${styles.icon} ${
+          active === "quest" ? styles.active : null
+        }`}
+        onClick={() => {
+          navigate("/quest");
+        }}
+      ></i>
+      <i
+        className={`fa-solid fa-bullhorn ${styles.icon} ${
+          active === "alarm" ? styles.active : null
+        }`}
+        onClick={() => {
+          navigate("/alarm");
+        }}
+      >
+        {isNew && <div className={styles.newbadge}></div>}
+      </i>
+    </footer>
   );
 };
 
