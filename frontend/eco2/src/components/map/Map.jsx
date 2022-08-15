@@ -7,11 +7,11 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/";
 const Map = ({
   openCreateModal,
-setMakeFlag,
+  makeFlag,
   payload,
   openDeatailModal,
   setCount,
-makeFlag,
+  setMakeFlag,
   count,
   name,
 }) => {
@@ -147,6 +147,7 @@ makeFlag,
       dispatch(createQuest(quest));
       setMakeFlag(false);
     };
+    console.log(payload);
     if (makeFlag) {
       kakao.maps.event.addListener(mapCircle, "click", clickHandler);
     }

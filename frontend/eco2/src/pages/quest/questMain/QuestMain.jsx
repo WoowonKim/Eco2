@@ -59,6 +59,7 @@ const QuestMain = () => {
         openCreateModal={openCreateModal}
         openDeatailModal={openDetailModal}
         setMakeFlag={setMakeFlag}
+        makeFlag={makeFlag}
         payload={payload}
         setCount={setCount}
         name={name}

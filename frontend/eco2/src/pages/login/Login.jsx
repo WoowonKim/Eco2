@@ -14,7 +14,6 @@ import {
   setUserName,
 } from "../../store/user/common";
 import { emailValidationCheck } from "../../utils";
-import axiosService from "../../store/axiosService";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -144,12 +143,20 @@ function Login() {
           placeholder="비밀번호"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <div className={styles.radio}>
+        <div className={styles.wrapper}>
           <input
+            className={styles.checkbox1}
             type="checkbox"
+            id="autoLogin"
             onChange={(e) => setAutoLogin(e.target.checked)}
           />
-          <span className={styles.radioText}>자동 로그인</span>
+          <label
+            htmlFor="autoLogin"
+            className={`${styles.label1} ${styles.label}`}
+          >
+            <div className={styles.dot}></div>
+            <span className={styles.labelText}>자동로그인</span>
+          </label>
         </div>
         {loginFailMsg ? <WarningText>{message}</WarningText> : null}
         <GreenBtn
@@ -166,18 +173,19 @@ function Login() {
         <hr className={styles.longLine} />
       </div>
       <div className={styles.socialGroup}>
-        <button onClick={onGoogleLogin} className={styles.socialButton}>
+        <button onClick={onGoogleLogin} className={styles.googleButton}>
           <img
             src="google_logo.png"
             alt="social_logo"
-            className={styles.socialLogo}
+            className={styles.googleLogo}
           />
+          <p className={styles.google}>구글 로그인</p>
         </button>
-        <button onClick={onKakaoLogin} className={styles.socialButton}>
+        <button onClick={onKakaoLogin} className={styles.kakaoButton}>
           <img
-            src="kakao_logo.png"
-            alt="social_logo"
-            className={styles.socialLogo}
+            src="kakao_login_medium_wide.png"
+            alt="kakaoLogin"
+            className={styles.kakaoLogo}
           />
         </button>
       </div>

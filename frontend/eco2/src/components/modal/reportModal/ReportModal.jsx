@@ -16,6 +16,23 @@ const ReportModal = ({
   const displayType = hidden ? styles.hidden : null;
   const [message, setMessage] = useState("");
 
+  const [clicked, setClicked] = useState(false);
+  const [ttype, setType] = useState("신고 유형 선택");
+
+  const handleSelect = (value) => {
+    setType(value);
+    setClicked(false);
+    value === "욕설"
+      ? setSelected(1)
+      : value === "음란물"
+      ? setSelected(2)
+      : value === "허위인증"
+      ? setSelected(3)
+      : value === "광고"
+      ? setSelected(4)
+      : setSelected(5);
+  };
+
   useEffect(() => {
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
@@ -36,8 +53,8 @@ const ReportModal = ({
             </div>
             <p className={styles.content}>{content}</p>
             <p className={styles.content}>신고 유형과 내용을 입력해주세요</p>
-            <div className={styles.selectBox}>
-              <select
+            <div className={styles.selectBox2}>
+              {/* <select
                 name="category"
                 className={styles.select}
                 onChange={(e) => setSelected(e.target.value)}
@@ -60,7 +77,54 @@ const ReportModal = ({
                 <option className={styles.option} value="5">
                   기타
                 </option>
-              </select>
+              </select> */}
+              <button
+                className={styles.label}
+                onClick={() => setClicked(!clicked)}
+                id="label"
+              >
+                {ttype}
+                <i className="fa-solid fa-angle-down"></i>
+              </button>
+              {clicked && (
+                <ul className={styles.optionList}>
+                  <li
+                    className={styles.optionItem}
+                    id="optionItem"
+                    onClick={(e) => handleSelect(e.target.innerText)}
+                  >
+                    욕설
+                  </li>
+                  <li
+                    className={styles.optionItem}
+                    id="optionItem"
+                    onClick={(e) => handleSelect(e.target.innerText)}
+                  >
+                    음란물
+                  </li>
+                  <li
+                    className={styles.optionItem}
+                    id="optionItem"
+                    onClick={(e) => handleSelect(e.target.innerText)}
+                  >
+                    허위인증
+                  </li>
+                  <li
+                    className={styles.optionItem}
+                    id="optionItem"
+                    onClick={(e) => handleSelect(e.target.innerText)}
+                  >
+                    광고
+                  </li>
+                  <li
+                    className={styles.optionItem}
+                    id="optionItem"
+                    onClick={(e) => handleSelect(e.target.innerText)}
+                  >
+                    기타
+                  </li>
+                </ul>
+              )}
             </div>
             <textarea
               className={styles.textarea}

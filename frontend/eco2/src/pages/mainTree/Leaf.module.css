@@ -3,6 +3,7 @@
 } */
 
 .leaf {
+  height: "40px";
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
@@ -89,5 +90,19 @@
   100% {
     transform: scale(1);
     filter: drop-shadow(0 0 10px #ffe699);
+  }
+}
+
+.createdItem {
+  animation-name: createdImg;
+  animation-duration: 3s;
+}
+
+@keyframes createdImg {
+  from {
+    height: 300px;
+  }
+  to {
+    height: 40px;
   }
 }

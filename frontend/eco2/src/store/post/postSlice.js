@@ -138,8 +138,15 @@ export const reportCancle = createAsyncThunk(
 
 export const postSlice = createSlice({
   name: "post",
-  initialState: [],
-  reducers: {},
+  initialState: {
+    createdItem: null,
+  },
+  reducers: {
+    setCreatedToNull(state, action) {
+      console.log("초기화");
+      state.createdItem = null;
+    },
+  },
   extraReducers: {
     [postList.fulfilled]: (state, action) => {
       console.log("postList fulfilled", action.payload);
@@ -167,6 +174,8 @@ export const postSlice = createSlice({
     },
     [postCreate.fulfilled]: (state, action) => {
       console.log("postCreate fulfilled", action.payload);
+      console.log(action.payload.postCreateDto.itemId);
+      state.createdItem = action.payload.postCreateDto.itemId;
       if (action.payload.status === 200) {
       }
     },
@@ -175,6 +184,7 @@ export const postSlice = createSlice({
     },
     [postUpdate.fulfilled]: (state, action) => {
       console.log("postUpdate fulfilled", action.payload);
+
       if (action.payload.status === 200) {
       }
     },
@@ -208,4 +218,4 @@ export const postSlice = createSlice({
   },
 });
 
-export const postActions = postSlice.actions;
+export const { setCreatedToNull } = postSlice.actions;
