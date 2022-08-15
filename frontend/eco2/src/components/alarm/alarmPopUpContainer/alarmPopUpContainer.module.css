@@ -1,9 +1,15 @@
 .container {
-  position: fixed;
-  margin: 0 auto;
-  width: auto;
-  left: 0px;
-  right: 10px;
-  bottom: 48px;
+  position: absolute;
+  width: 100%;
+  bottom: 100%;
   z-index: 2;
+  /* background-color: blue; */
+}
+
+.toastify {
+  position: absolute;
+}
+
+.toastify-toast {
+  width: 90%;
 }
