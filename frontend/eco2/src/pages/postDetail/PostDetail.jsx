@@ -168,7 +168,7 @@ const PostDetail = () => {
       {visible && modalType === "수정" && (
         <PostModal
           title={"게시물 수정"}
-          content={"게시물을 수정하시겠습니까"}
+          content={"게시물을 수정하시겠습니까?"}
           type={"수정"}
           postId={feedItem.id}
           img={feedItem.postImgUrl}
@@ -181,7 +181,7 @@ const PostDetail = () => {
         <PostModal
           className={`${displayType}`}
           title={"게시물 삭제"}
-          content={"게시물을 삭제하시겠습니까"}
+          content={"게시물을 삭제하시겠습니까?"}
           type={"삭제"}
           postId={feedItem.id}
           closeModal={() => setVisible(!visible)}

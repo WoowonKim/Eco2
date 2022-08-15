@@ -8,17 +8,23 @@
   height: 30px;
   border: none;
   background-color: #eeeeee;
-  padding: 3px 10px;
+  padding: 5px 10px;
   border-radius: 10px;
   outline: none;
 }
 
-.button {
-  border: none;
-  /* background-color: #3c3c43;
-  opacity: 0.1; */
-  border-radius: 10px;
+.input::placeholder {
+  /* color: #dadada; */
+  font-size: small;
+  font-family: "NanumBarunGothicLight";
 }
+
+/* .button {
+  border: none;
+  background-color: #3c3c43;
+  opacity: 0.1;
+  border-radius: 10px;
+} */
 
 .searchIcon {
   color: black;
