@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import FeedItem from "../feedItem/FeedItem";
 import styles from "./FeedList.module.css";
 
-const FeedList = ({ category, display, feeds }) => {
+const FeedList = ({ category, display, feeds, setLikeCount }) => {
   const displayType = display === "list" ? styles.list : styles.grid;
+  const location = useLocation();
   return (
     <div className={styles.container}>
       <div className={displayType}>
@@ -25,6 +27,8 @@ const FeedList = ({ category, display, feeds }) => {
                   content={feed.content}
                   like={feed.likeCount}
                   userEmail={feed.userEmail}
+                  likeUsers={feed?.postLikeUserIds}
+                  setLikeCount={setLikeCount}
                 />
               )
           )

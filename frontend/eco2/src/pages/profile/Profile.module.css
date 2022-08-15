@@ -1,21 +1,91 @@
 .userInfo {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* background-image: url(../../../public/ocean.PNG); */
+
+  /* background-color: beige; */
+  width: 390px;
+  justify-content: center;
   align-items: center;
   padding: 10px;
 }
 
 .user {
-  display: flex;
+  background: linear-gradient(beige 30%, white);
+  /* display: flex; */
   justify-content: start;
   align-items: center;
 }
 
-.profileImg {
-  width: 25px;
+.profileImgGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editIcon {
+  font-size: 10px;
+  color: black;
+  margin: 3px;
+  background-color: transparent;
+}
+
+.fileInputGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* .imgLabel {
+  display: flex;
+  justify-content: center;
+} */
+
+.fileInput {
+  height: 30px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  width: 50%;
+  color: #999999;
+  display: none;
+}
+
+.baseFileInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.label {
+  display: flex;
+  justify-content: start;
+  font-size: large;
+  margin: 20px 0 5px 5px;
+}
+
+.button {
+  border: none;
   background-color: white;
-  border: 1px solid black;
+}
+
+.userSettingAndFriends {
+  display: flex;
+  justify-content: center;
+}
+
+.profileImg {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  /* border: 1px solid black; */
+  border: none;
   border-radius: 50%;
+  margin-top: 60px;
   margin-right: 5px;
 }
 
@@ -23,24 +93,25 @@
   font-size: 10px;
   color: black;
   margin: 3px;
+  background-color: transparent;
 }
 
 .buttonGroup {
   display: flex;
   justify-content: end;
+  background-color: transparent;
 }
 
 .button {
   border: none;
-  background-color: white;
+  background-color: transparent;
   transition: all 2s ease-in;
-  padding: 0px;
-  margin: 0;
+  padding: 0 0 5px 3px;
+  margin: 0px;
 }
 
 .button :hover {
   cursor: pointer;
-  /* color: #adc178; */
   transform: scale(1.1);
 }
 
@@ -58,7 +129,7 @@
 .missionList {
   display: grid;
   margin-top: 50px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 /* .missionTitle {
@@ -78,7 +149,6 @@
   justify-content: start;
   /* grid-template-columns: 1fr 1fr 1fr; */
   flex-wrap: wrap;
-  
 }
 
 .missionImg {
@@ -86,5 +156,5 @@
   margin: 5px;
   border: 1px solid #dadada;
   border-radius: 5px;
-  height: 90px;
+  height: 110px;
 }

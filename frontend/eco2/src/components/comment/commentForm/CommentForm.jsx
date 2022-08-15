@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { commentCreate, commentUpdate } from "../../../store/post/commentSlice";
+import { getUserId } from "../../../store/user/common";
 import styles from "./CommentForm.module.css";
 
 const CommentForm = ({
@@ -35,7 +36,12 @@ const CommentForm = ({
       closeModal();
     } else if (replyVisible) {
       dispatch(
-        commentCreate({ postId, content: value, userId, commentId: id })
+        commentCreate({
+          postId,
+          content: value,
+          userId: getUserId(),
+          commentId: id,
+        })
       ).then((res) => {
         if (res.payload?.status === 200) {
           setTest((curr) => curr + 1);
@@ -77,7 +83,11 @@ const CommentForm = ({
         작성
       </button>
       {!type && (
-        <button onClick={closeModal} className={styles.closeButton}>
+        <button
+          type="button"
+          onClick={closeModal}
+          className={styles.closeButton}
+        >
           닫기
         </button>
       )}

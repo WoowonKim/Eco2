@@ -7,21 +7,22 @@
   font-size: 10px;
   color: grey;
 }
-
+.leftContent {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  width: 65%;
+}
+.rightContent {
+  display: inline-block;
+  width: 35%;
+}
+.type{
+  float: left;
+  width: 60px;
+}
 .line{
   border-width: 0.5px 0px 0px 0px;
   border-color: #EAEAEA;
   clear: both;
-}
-
-.type{
-  width: 60px;
-}
-.content{
-  width: 100px;
-  float: left;
-}
-.name{
-  float: left;
-  width: 70px;
 }

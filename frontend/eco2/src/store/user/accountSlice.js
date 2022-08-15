@@ -30,15 +30,16 @@ export const friendRequest = createAsyncThunk(
   }
 );
 
-// 친구 수락
-export const friendResponse = createAsyncThunk(
-  "accountSlice/friendResponse",
+// 친구 삭제
+export const friendDelete = createAsyncThunk(
+  "accountSlice/friendDelete",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await axiosService.put("/account/friend", {
-        id: args.id,
-        response: true,
-        alarmId: args.alarmId,
+      const response = await axiosService.delete("/account/friend", {
+        data: {
+          id: args.id,
+          friendId: args.friendId,
+        },
       });
       return response.data;
     } catch (err) {
@@ -47,7 +48,21 @@ export const friendResponse = createAsyncThunk(
   }
 );
 
-// 조회는 되는 것 같은데 설정 저장이 안되고 있음 -> 확인 필요
+// 친구 여부 조회
+export const isFriend = createAsyncThunk(
+  "accountSlice/isFriend",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.get(
+        `/account/friend/${args.id}/${args.friendId}`
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 // 계정 설정 조회
 export const accountSetting = createAsyncThunk(
   "accountSlice/accountSetting",
@@ -67,7 +82,6 @@ export const accountSetting = createAsyncThunk(
   }
 );
 
-// 수정 안됨 rejected
 // 계정 설정 수정
 export const accountSettingChange = createAsyncThunk(
   "accountSlice/accountSettingChange",
@@ -100,27 +114,10 @@ export const calendar = createAsyncThunk(
   }
 );
 
-// 공지사항 테스트 요청
-// export const test = createAsyncThunk(
-//   "accountSlice/test",
-//   async (args, { rejectWithValue }) => {
-//     const accessToken = getToken();
-//     const response = await axios({
-//       url: `/admin/notice/${args.id}`,
-//       method: "post",
-//       data: {},
-//       headers: {
-//         "Auth-accessToken": accessToken,
-//       },
-//     });
-//     return response.data;
-//   }
-// );
-
 export const accountSlice = createSlice({
   name: "account",
   initialState: {
-    loading: false,
+    isPending: false,
     data: [],
   },
   reducers: {
@@ -135,17 +132,29 @@ export const accountSlice = createSlice({
     [friends.rejected]: (state, action) => {
       console.log("friends rejected", action.payload);
     },
+    [friendRequest.pending]: (state, action) => {
+      console.log("friendRequest pending", action.payload);
+      state.isPending = true;
+    },
     [friendRequest.fulfilled]: (state, action) => {
       console.log("friendRequest fulfilled", action.payload);
+      state.isPending = false;
     },
     [friendRequest.rejected]: (state, action) => {
       console.log("friendRequest rejected", action.payload);
+      state.isPending = false;
     },
-    [friendResponse.fulfilled]: (state, action) => {
-      console.log("friendResponse fulfilled", action.payload);
+    [friendDelete.fulfilled]: (state, action) => {
+      console.log("friendDelete fulfilled", action.payload);
     },
-    [friendResponse.rejected]: (state, action) => {
-      console.log("friendResponse rejected", action.payload);
+    [friendDelete.rejected]: (state, action) => {
+      console.log("friendDelete rejected", action.payload);
+    },
+    [isFriend.fulfilled]: (state, action) => {
+      console.log("isFriend fulfilled", action.payload);
+    },
+    [isFriend.rejected]: (state, action) => {
+      console.log("isFriend rejected", action.payload);
     },
     [accountSetting.fulfilled]: (state, action) => {
       console.log("accountSetting fulfilled", action.payload);
@@ -165,12 +174,6 @@ export const accountSlice = createSlice({
     [calendar.rejected]: (state, action) => {
       console.log("calendar rejected", action.payload);
     },
-    // [test.fulfilled]: (state, action) => {
-    //   console.log("test fulfilled", action.payload);
-    // },
-    // [test.rejected]: (state, action) => {
-    //   console.log("test rejected", action.payload);
-    // },
   },
 });
 

@@ -1,42 +1,53 @@
-.list {
-  list-style: none;
-  margin: 0 0 0 40px;
-}
-
 .commentContainer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  margin: 0 0 10px 30px;
 }
 
 .comment {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
+  flex-basis: 90%;
+  width: 90%;
 }
 
 .userInfo {
+  margin: 3px 0;
   display: flex;
-  align-items: center;
+  justify-content: start;
+  align-items: flex-start;
 }
 
 .profileImg {
-  width: 25px;
+  width: 20px;
+  height: 20px;
   background-color: white;
-  border: 1px solid black;
-  border-radius: 50%;
-  margin-right: 5px;
+  border: none;
+  margin-right: 3px;
 }
 
 .user {
-  font-weight: 700;
-  font-size: small;
-  margin-right: 15px;
+  font-weight: bold;
+  font-size: x-small;
+  margin: 1px 15px 0 0;
 }
 
 .content {
   font-size: x-small;
   text-align: start;
-  margin: 0;
+  margin: 3px 0;
+  padding: 0;
+  white-space: normal;
+  word-break: break-all;
+}
+
+.registTime {
+  font-size: xx-small;
+  text-align: start;
+  margin: 3px 0;
+  padding: 0;
+  color: #c6c4c4;
 }
 
 .dropdown {

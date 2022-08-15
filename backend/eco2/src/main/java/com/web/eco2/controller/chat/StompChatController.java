@@ -77,7 +77,8 @@ public class StompChatController {
         alarmService.insertAlarm(FirebaseAlarm.builder()
                 .senderId(user.getId()).dType("newChat")
                 .content(user.getName()+"님으로부터 새로운 메시지가 도착했습니다.")
-                .userId(receiver.getId()).url("/chatting/room?roomId="+chatRoom.getId()).build());
+                .userId(receiver.getId()).url("/chatting/room?roomId="+chatRoom.getId())
+                .senderName(user.getName()).build());
 
         chatRoom.setLastSendMessage(chatMessage.getMessage());
         chatRoom.setLastSendTime(chatMessage.getSendDate());

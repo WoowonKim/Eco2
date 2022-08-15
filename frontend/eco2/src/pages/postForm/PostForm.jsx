@@ -6,6 +6,7 @@ import { ShortGreenBtn } from "../../components/styled";
 import { postCreate, postUpdate } from "../../store/post/postSlice";
 import { getUserEmail, getUserId } from "../../store/user/common";
 import { clearMission } from "../../store/mission/missionMainSlice";
+import axiosService from "../../store/axiosService";
 
 const PostForm = () => {
   const [fileImage, setFileImage] = useState("");
@@ -16,6 +17,7 @@ const PostForm = () => {
   const [publicFlag, setPublicFlag] = useState(false);
   const [commentFlag, setCommentFlag] = useState(false);
   const [imageCheck, setImageCheck] = useState(false);
+  const [originalImg, setOriginalImg] = useState("");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +25,20 @@ const PostForm = () => {
   useEffect(() => {
     if (location.state?.content) {
       setEditText(location.state?.content);
+      setImageCheck(true);
+    }
+
+    if (location.state?.postId) {
+      axiosService({
+        url: `${process.env.REACT_APP_BE_HOST}img/post/${location.state?.postId}`,
+        method: "GET",
+        responseType: "blob",
+      }).then((res) => {
+        const file = new File([res.data], "profileImg.png", {
+          type: "image/png",
+        });
+        setOriginalImg(file);
+      });
     }
   }, []);
   const saveFileImage = (e) => {
@@ -65,7 +81,7 @@ const PostForm = () => {
       const blob = new Blob([json], {
         type: "application/json",
       });
-      formDataUpdate.append("postImage", file);
+      formDataUpdate.append("postImage", file ? file : originalImg);
       formDataUpdate.append("postUpdateDto", blob);
 
       dispatch(
@@ -169,22 +185,25 @@ const PostForm = () => {
       </div>
       <hr className={styles.line} />
       <form onSubmit={(e) => onSubmit(e)}>
-        <div>
+        <div className={styles.fileInputGroup}>
           {fileImage ? (
             <img className={styles.img} alt="sample" src={fileImage} />
           ) : location.state?.postId ? (
             <img
               className={styles.img}
               alt="originalImg"
-              src={`http://localhost:8002/img/post/${location.state.postId}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/post/${location.state.postId}`}
             />
           ) : null}
-        </div>
-        <div className={styles.fileInputGroup}>
-          <input className={styles.fileInput} placeholder="첨부파일" />
-          <label htmlFor="file" className={styles.imgLabel}>
-            파일찾기
-          </label>
+          {!fileImage && !imageCheck ? (
+            <label htmlFor="file" className={styles.imgLabel}>
+              파일찾기
+            </label>
+          ) : (
+            <label htmlFor="file" className={styles.imgLabelUpdate}>
+              <i className={`fa-solid fa-pencil ${styles.editIcon}`}></i>
+            </label>
+          )}
           <input
             encType="multipart/form-data"
             type="file"
@@ -194,25 +213,36 @@ const PostForm = () => {
             className={`${styles.fileInput} ${styles.baseFileInput}`}
           />
         </div>
-        <div>
-          <label htmlFor="post">게시물 비공개</label>
+        <div className={styles.wrapper}>
           <input
+            className={styles.checkbox1}
             type="checkbox"
             id="post"
             onChange={(e) => {
               setPublicFlag(e.target.checked);
             }}
           />
-          <label htmlFor="comment">댓글 비공개</label>
+          <label htmlFor="post" className={`${styles.label1} ${styles.label}`}>
+            <div className={styles.dot}></div>
+            <span className={styles.labelText}>게시물 비공개</span>
+          </label>
           <input
+            className={styles.checkbox2}
             type="checkbox"
             id="comment"
             onChange={(e) => {
               setCommentFlag(e.target.checked);
             }}
           />
+          <label
+            htmlFor="comment"
+            className={`${styles.label2} ${styles.label}`}
+          >
+            <div className={styles.dot}></div>
+            <span className={styles.labelText}>댓글 비공개</span>
+          </label>
         </div>
-        <p className={styles.missionTitle}>미션 제목</p>
+        {/* <p className={styles.missionTitle}>미션 제목</p> */}
         <textarea
           required
           className={styles.content}

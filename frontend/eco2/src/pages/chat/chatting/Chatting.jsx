@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { createRoutesFromChildren, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-// import ChattingList from "../../../components/chat/chattingList/ChattingList";
 import { chattingList } from "../../../store/chat/chattingSlice";
 import styles from "./Chatting.module.css";
 import ChatModal from "../../../components/modal/chatModal/ChatModal";
@@ -42,13 +39,14 @@ const Chatting = () => {
           );
         })
       )}
-      <i
-        onClick={() => {
-          setVisible(!visible);
-          setModalType("친구목록");
-        }}
-        className={`${"fa-solid fa-circle-plus"} ${styles.createRoomButton}`}></i>
-
+    <div className={styles.createRoomDiv}>
+        <i
+          onClick={() => {
+            setVisible(!visible);
+            setModalType("친구목록");
+          }}
+          className={`${"fa-solid fa-circle-plus"} ${styles.createRoomButton}`}></i>
+      </div>
       {visible && modalType === "친구목록" && (
         <ChatModal
           title={"친구 목록"}

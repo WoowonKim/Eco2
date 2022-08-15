@@ -21,6 +21,7 @@ export const postTodayMission = createAsyncThunk(
   "missionMainSlice/postTodayMission",
   async (args, rejectWithValue) => {
     try {
+      console.log(1);
       const now = new Date().toISOString().substring(0, 16);
       //console.log("TRY서버연결 날짜 ====>", args);
       // console.log("TRY내부 now ===>", now);
@@ -112,10 +113,20 @@ export const missionItem = createAsyncThunk(
   }
 );
 
+export const trending = createAsyncThunk("missionMainSlice/trending", async (args, { rejectWithValue }) => {
+  try {
+    const response = await axiosService.get(`/daily/trending`);
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
+  }
+});
+
 export const myEcoMissionSlice = createSlice({
   name: "myEcoMission",
   initialState: {
     successBtn: false,
+    isPending: false,
   },
   reducers: {
     onEcoArr: (state, actions) => {
@@ -159,6 +170,24 @@ export const myEcoMissionSlice = createSlice({
     },
     [missionItem.rejected]: (state, action) => {
       console.log("missionItem Rejected===>", action.payload);
+    },
+    [trending.fulfilled]: (state, action) => {
+      console.log("Trending Fulfilled ===>", action.payload);
+    },
+    [trending.rejected]: (state, action) => {
+      console.log("Trending Rejected ===>", action.payload);
+    },
+    [postTodayMission.pending]: (state, action) => {
+      console.log("postTodayMission pending ===>", action.payload);
+      state.isPending = true;
+    },
+    [postTodayMission.fulfilled]: (state, action) => {
+      console.log("postTodayMission Fulfilled===>", action.payload);
+      state.isPending = false;
+    },
+    [postTodayMission.rejected]: (state, action) => {
+      console.log("postTodayMission Rejected===>", action.payload);
+      state.isPending = false;
     },
   },
 });

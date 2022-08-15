@@ -1,14 +1,15 @@
 .container {
-  width: 300px;
+  width: 380px;
   margin-top: 20px;
   display: block;
-
 }
 
 .title {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10%;
+  margin-bottom: 3%;
 }
 
 .text {
@@ -18,8 +19,6 @@
 .dropdown {
   position: relative;
   display: inline-block;
-  padding: 10px 20px;
-  margin-left: 300px;
 }
 
 .dropdownContent {
@@ -56,13 +55,17 @@
 }
 
 .postImg {
+  margin: 0px;
   width: 100%;
-  height: 100%;
+  height: 280px;
 }
 
-
 .user {
+  margin: 3px;
   font-weight: bold;
+  font-size: 15px;
+  display: flex;
+  justify-content: start;
 }
 
 .info {
@@ -71,9 +74,9 @@
 }
 
 .button {
+  display: flex;
   border: none;
   background-color: white;
-
 }
 
 .button:hover {
@@ -87,34 +90,42 @@
 }
 
 .profileImg {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   background-color: white;
-  border: 1px solid black;
-  border-radius: 50%;
+  border: none;
   margin-right: 5px;
+}
+
+.heartAndRegistTime {
+  display: flex;
+  margin-top: 3%;
 }
 
 .heart {
   color: red;
+
   margin-right: 5px;
 }
 
 .content {
-  height: 100px;
+  /* height: 100px; */
   margin: 20px 0;
   text-align: left;
-  font-size: 16px;
+  font-size: small;
   word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .line {
-  color: #dadada;
   margin: 30px 0 20px 0;
+  border: 0.5px solid #dadada;
 }
 
 .CommentForm {
-  margin-bottom: 10px;
+  width: 100%;
+  margin: 0 0 10px 0;
+  padding: 0;
 }
 
 .visible {
@@ -134,3 +145,12 @@
   height: 100%;
   overflow: unset;
 } */
+
+.registTime {
+  display: flex;
+  font-size: 12px;
+  text-align: end;
+  /* justify-content: end; */
+  margin-top: 2%;
+  margin-left: 67%;
+}

@@ -19,6 +19,7 @@ public class FirebaseAlarm {
     private String url;
     private String dType;
     private Long senderId; // 보낸 사람
+    private String senderName;
 
     //user 2개
 //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -30,7 +31,7 @@ public class FirebaseAlarm {
 //    private User user1;
 
     @Builder
-    public FirebaseAlarm(String id, Long userId, String content, String url, String dType, Long senderId) {
+    public FirebaseAlarm(String id, Long userId, String content, String url, String dType, Long senderId, String senderName) {
         this.id = id;
         this.userId = userId;
         this.content = content;
@@ -38,5 +39,6 @@ public class FirebaseAlarm {
         this.dType = dType;
         this.senderId = senderId;
         this.sendTime = ZonedDateTime.now().toEpochSecond();
+        this.senderName = senderName;
     }
 }

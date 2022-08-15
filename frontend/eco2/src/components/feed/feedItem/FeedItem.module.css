@@ -1,90 +1,56 @@
 .list {
-  width: 180px;
+  position: relative;
   flex-shrink: 0;
   flex-basis: 50%;
-  border: 1px solid #dadada;
   border-radius: 10%;
   margin: 15px 5px;
-  /* padding: 5px 20px 0 20px; */
   padding: 0px;
-  box-shadow: 5px 5px 10px 1px rgba(218, 218, 218, 1);
+  box-shadow: 3px 3px 10px 1px rgba(218, 218, 218, 1);
 
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
-  /* box-shadow: 0 0 1px rgba(0, 0, 0, 0); */
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
   -webkit-transition-property: box-shadow;
   transition-property: box-shadow;
-
 }
 
-.list:hover, .hvr-glow:focus, .hvr-glow:active {
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-} 
-
-.title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.list:hover,
+.hvr-glow:focus,
+.hvr-glow:active {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
 .profile {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
   margin-top: 10px;
 }
 
+.userInfo {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
 .profileImg {
-  width: 20px;
-  height: 20px;
-  background-color: white;
-  border: 1px solid black;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  margin-left: 10px;
-  /* margin-right: 5px; */
-}
-
-.icon {
-  font-size: 10px;
-  color: black;
-  margin: 3px;
-}
-
-.button {
-  border: none;
-  background-color: white;
-  transition: all 2s ease-in;
-  padding: 0px;
-  margin: 0;
-}
-
-.button :hover {
-  cursor: pointer;
-  /* color: #adc178; */
-  transform: scale(1.1);
+  margin: 5px;
 }
 
 .user {
   text-align: start;
   font-size: small;
-  padding: 0 5px;
-  margin: 5px 0;
   font-weight: bold;
-}
-
-.line {
-  margin: 0 0 10px 0;
-  border: 0.5px solid #dadada;
 }
 
 .postImg {
   border-top-left-radius: 10%;
   border-top-right-radius: 10%;
-  width: 178px;
+  width: 180px;
   height: 160px;
 }
 
@@ -95,45 +61,24 @@
   margin-top: 15px;
 }
 
-.heart {
+/* .heart {
+=======
+  position: absolute;
+  right: 10px;
   font-size: small;
-  margin-right: 7px;
-}
+} */
 
 .heartIcon {
   color: red;
-  font-size: small;
-  margin-top: 2px;
-  margin-left: 55px;
+  font-size: large;
+  margin-right: 5px;
 }
 
-.comment {
-  font-size: small;
-}
-
-.commentIcon {
-  color: darkgray;
-  font-size: small;
-  margin: 0;
-}
-
-.content {
-  text-align: end;
-  font-size: smaller;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 120px;
-  height: 30px;
-  margin: 8px 0;
-}
-
-.buttonGroup {
+.heartButton {
   display: flex;
   justify-content: end;
-}
-
-.link {
-  text-decoration: none;
-  color: black;
+  align-items: center;
+  border: none;
+  background-color: white;
+  margin-right: 5px;
 }

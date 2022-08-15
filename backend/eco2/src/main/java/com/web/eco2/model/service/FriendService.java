@@ -35,8 +35,11 @@ public class FriendService {
     public void deleteFriend(Long fromId, Long toId) {
         User fromUser = User.builder().id(fromId).build();
         User toUser = User.builder().id(toId).build();
-        friendRepository.delete(Friend.builder().fromUser(fromUser).toUser(toUser).build());
-        friendRepository.delete(Friend.builder().fromUser(toUser).toUser(fromUser).build());
+        Friend friend = friendRepository.findByFromUserAndToUser(fromUser, toUser);
+        if(friend == null) {
+            friend = friendRepository.findByFromUserAndToUser(toUser, fromUser);
+        }
+        friendRepository.delete(friend);
     }
 
     public boolean isFriend(Long fromId, Long toId) {

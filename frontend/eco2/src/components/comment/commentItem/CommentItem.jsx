@@ -20,6 +20,7 @@ const CommentItem = ({
   replys,
   setTest,
   userEmail,
+  registTime,
 }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
@@ -29,6 +30,7 @@ const CommentItem = ({
   const [modalType, setModalType] = useState("");
   const [name, setName] = useState("");
   const [userId, setUserId] = useState(0);
+  // const [registTime, setRegistTime] = useState("");
 
   const displayType = modalType ? styles.visible : styles.hidden;
   const navigate = useNavigate();
@@ -36,121 +38,114 @@ const CommentItem = ({
   useEffect(() => {
     setName(getUserName());
     setUserId(getUserId());
+    // setRegistTime(feedItem.registTime.split("T")[0]);
   }, []);
+
   return (
     <div>
       {!visible && (
-        <li className={styles.list}>
-          <div className={styles.commentContainer}>
-            <div className={styles.comment}>
-              <div
-                className={styles.userInfo}
-                onClick={() =>
-                  navigate(`/profile/${commentUserId}`, {
-                    state: { userEmail },
-                  })
-                }
-              >
-                <img
-                  src={`http://localhost:8002/img/profile/${commentUserId}`}
-                  // src={`${imgSrc}`}
-                  alt="profileImg"
-                  className={styles.profileImg}
-                />
-                <p className={styles.user}>{user}</p>
-              </div>
-              <p className={styles.content}>{content}</p>
+        <div className={styles.commentContainer}>
+          <div className={styles.comment}>
+            <div
+              className={styles.userInfo}
+              onClick={() =>
+                navigate(`/profile/${commentUserId}`, {
+                  state: { userEmail },
+                })
+              }
+            >
+              <img
+                src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
+                // src={`${imgSrc}`}
+                alt="profileImg"
+                className={styles.profileImg}
+              />
+              <p className={styles.user}>{user}</p>
             </div>
             <div>
-              <button
-                onClick={() => {
-                  setReplyVisible(!replyVisible);
-                }}
-                className={styles.replyButton}
-              >
-                답글
-              </button>
-              <div className={styles.dropdown}>
-                <i
-                  className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}
-                ></i>
-                <div className={styles.dropdownContent}>
-                  {name === user ? (
-                    <div>
-                      <button
-                        onClick={() => {
-                          setVisible(!visible);
-                        }}
-                        className={styles.dropdownItem}
-                      >
-                        수정
-                        <i
-                          className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
-                        ></i>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setModalVisible(!modalVisible);
-                          setModalType("삭제");
-                        }}
-                        className={styles.dropdownItem}
-                      >
-                        삭제
-                        <i
-                          className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-                        ></i>
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      <button
-                        onClick={() => {
-                          setReportModalVisible(!reportModalVisible);
-                          setModalType("신고");
-                        }}
-                        className={styles.dropdownItem}
-                      >
-                        신고으으
-                      </button>
-                    </div>
-                  )}
-                </div>
+              <p className={styles.content}>{content}</p>
+              <p className={styles.registTime}>{registTime.split("T")[0]}</p>
+            </div>
+          </div>
+          <div className={styles.buttonGroup}>
+            <button
+              onClick={() => {
+                setReplyVisible(!replyVisible);
+              }}
+              className={styles.replyButton}
+            >
+              답글
+            </button>
+            <div className={styles.dropdown}>
+              <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
+              <div className={styles.dropdownContent}>
+                {name === user ? (
+                  <div>
+                    <button
+                      onClick={() => {
+                        setVisible(!visible);
+                      }}
+                      className={styles.dropdownItem}
+                    >
+                      수정
+                      <i
+                        className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
+                      ></i>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setModalVisible(!modalVisible);
+                        setModalType("삭제");
+                      }}
+                      className={styles.dropdownItem}
+                    >
+                      삭제
+                      <i
+                        className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
+                      ></i>
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <button
+                      onClick={() => {
+                        setReportModalVisible(!reportModalVisible);
+                        setModalType("신고");
+                      }}
+                      className={styles.dropdownItem}
+                    >
+                      신고
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          {reportModalVisible && modalType === "신고" && (
-            <ReportModal
-              className={`${displayType}`}
-              title={"댓글 신고"}
-              content={"해당 댓글 신고하시겠습니까?"}
-              type="댓글"
-              commentId={commentId}
-              closeModal={() => setReportModalVisible(!reportModalVisible)}
-            />
-          )}
-          {modalVisible && modalType === "삭제" && (
-            <PostModal
-              className={`${displayType}`}
-              title={"댓글 삭제"}
-              content={"댓글을 삭제하시겠습니까"}
-              type={"삭제"}
-              postId={postId}
-              commentId={commentId}
-              setTest={setTest}
-              closeModal={() => setModalVisible(!modalVisible)}
-            />
-          )}
-          {/* <div>
-          <button 
-            onClick={() => {setVisible(!visible)}}
-            className={styles.editButton}
-          >
-            { visible ? '숨기기' : '수정' }
-          </button>
-          <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
-        </div> */}
-        </li>
+        </div>
       )}
+      {reportModalVisible && modalType === "신고" && (
+        <ReportModal
+          className={`${displayType}`}
+          title={"댓글 신고"}
+          content={"해당 댓글 신고하시겠습니까?"}
+          type="댓글"
+          commentId={commentId}
+          closeModal={() => setReportModalVisible(!reportModalVisible)}
+        />
+      )}
+      {modalVisible && modalType === "삭제" && (
+        <PostModal
+          className={`${displayType}`}
+          title={"댓글 삭제"}
+          content={"댓글을 삭제하시겠습니까"}
+          type={"삭제"}
+          postId={postId}
+          commentId={commentId}
+          setTest={setTest}
+          closeModal={() => setModalVisible(!modalVisible)}
+        />
+      )}
+
       {visible && (
         <div className={styles.editFormGroup}>
           <span className={styles.editFormUser}>{user}</span>

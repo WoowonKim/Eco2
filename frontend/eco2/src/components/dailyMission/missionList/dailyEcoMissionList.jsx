@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 //Store
-import { postMission } from "../../../store/mission/missionMainSlice";
+import { postMission, trending } from "../../../store/mission/missionMainSlice";
 import { getFavorite, putFavorite } from "../../../store/mission/favoriteSlice";
 
 //Component
@@ -20,7 +20,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   const [ecoId, setEcoId] = useState([]);
   const missionValue = customMake !== 0 ? true : false;
   const [list, getList] = useState(missionValue); //미션 목록과 커스텀 미션을 구분하기 위한 State
-  //console.log("LIST ====>", list);
+
   const [favoriteArr, setFavoriteArr] = useState([]); // 즐겨찾기 화면노출을 위한 State
   const [cnt, setCnt] = useState(0); //리렌더링을 방지하기 위한 State
   const [trendingMission, setTrendingMission] = useState(null);
@@ -34,6 +34,11 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   const [faDelete, setFaDelete] = useState(false);
   const [faAdd, setFaAdd] = useState(false);
   const [faIdArr, setFaIdArr] = useState([]);
+  const [trend, setTrend] = useState([]);
+  const [trendChk, setTrendChk] = useState(false);
+  const [famiAdd, setFamiAdd] = useState(false);
+
+  // console.log("리액트 트렌딩 Test ===> ", trend[0].mission.title);
   /**
    * 서버의 즐겨찾기 목록을 갖고 오기 위한 함수.
    * id : id가 접속 되었을 때 첫 번째 렌더링
@@ -43,11 +48,11 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   useEffect(() => {
     dispatch(getFavorite({ id: id })).then((res) => {
       if (res.payload.status === 200) {
-        //console.log("즐겨찾기");
         setFavoriteArr(res.payload.missionList);
       }
     });
-  }, [faDelete, faAdd]);
+  }, [faDelete, faAdd, famiAdd]);
+
   useEffect(() => {
     axiosService.get("/daily/trending").then((res) => {
       console.log(res.data);
@@ -110,7 +115,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
     faIdArr.push(faId);
     dispatch(postMission({ id, dailyMissionList: faIdArr })).then((res) => {
       if (res.payload?.status === 200) {
-        alert("성공~");
+        setFamiAdd(!famiAdd);
       }
     });
   };
@@ -119,33 +124,40 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
    * 즐겨찾기 목록에서 삭제 하기 위한 함수.
    */
   const onDeleButton = (id, favoriteBoolean, faId, favoriteTrue) => {
-    if (window.confirm("미션을 삭제 하시겠습니까?")) {
-      dispatch(
-        putFavorite({
-          id,
-          likeFlag: favoriteBoolean,
-          missionType: favoriteTrue,
-          missionId: faId,
-        })
-      ).then((res) => {
-        if (res.payload.status === 200) {
-          setFaDelete(!faDelete);
-        }
-      });
-      alert("삭제 완료!");
-    } else {
-      alert("포기하지 말고 화이팅!");
-    }
+    dispatch(
+      putFavorite({
+        id,
+        likeFlag: favoriteBoolean,
+        missionType: favoriteTrue,
+        missionId: faId,
+      })
+    ).then((res) => {
+      if (res.payload.status === 200) {
+        setFaDelete(!faDelete);
+      }
+    });
   };
 
-  //console.log("TEST ====> ", test);
-  // favoriteArr.id는 미션 아이디랑 같다.
-  // console.log("즐겨찾기 미션 아이디 찾기 ===>", favoriteArr);
+  useEffect(() => {
+    if (id === 0) {
+      return;
+    }
+    dispatch(trending()).then((res) => {
+      if (res.payload.status === 200) {
+        // console.log("트렌딩 리스트 ===>", res.payload.trendingList);
+        setTrend(res.payload.trendingList);
+      }
+    });
+  }, []);
+  console.log("리액트 트렌딩 ===>", trend);
+
   return (
-    <div className={styles.zero}>
+    <div className={styles.topRoot}>
       <div className={styles.Font}>
         <p>오늘은 어떤 도전을 해볼까?</p>
       </div>
+
+
       {trendingMission && (
         <fieldset>
           <legend className={styles.word}>Trending</legend>
@@ -162,46 +174,67 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
           </div>
         </fieldset>
       )}
+
       <div>
-        <div className={styles.faHeading}>
-          <span className={styles.basicMission}>즐겨찾기</span>
-        </div>
-        <div>
+        <span className={styles.favoriteHead}>즐겨찾기</span>
+        <hr className={styles.favoriteLine} />
+
+        <div className={styles.favoritescroll}>
           {favoriteArr.map((it, idx) => (
-            <div key={idx}>
-              {it.title}
-              <button
-                onClick={() => {
-                  const faId = it.id;
-                  favoMissionSub(id, faId);
-                }}
-              >
-                등록
-              </button>
-              <button
-                onClick={() => {
-                  const faId = it.id;
-                  onDeleButton(id, favoriteBoolean, faId, favoriteTrue);
-                }}
-              >
-                삭제
-              </button>
+            <div key={idx} className={styles.content}>
+              <div>
+                <span className={styles.itemFont}>{it.title}</span>
+              </div>
+              <div>
+                <i
+                  className={`${"fa-solid fa-plus"} ${styles.favoriteadd}`}
+                  onClick={() => {
+                    const faId = it.id;
+                    favoMissionSub(id, faId);
+                  }}
+                ></i>
+                <i
+                  className={`${"fa-solid fa-trash-can"} ${styles.favoritetrash}`}
+                  onClick={() => {
+                    const faId = it.id;
+                    onDeleButton(id, favoriteBoolean, faId, favoriteTrue);
+                  }}
+                ></i>
+              </div>
             </div>
           ))}
         </div>
       </div>
+      <div className={styles.headCheck}>
+        <ul className={styles.headType}>
+          <li>
+            {" "}
+            <span
+              className={styles.listType}
+              onClick={() => {
+                getList(true);
+              }}
+            >
+              {" "}
+              기본{" "}
+            </span>
+          </li>
+          <li>
+            {" "}
+            <span
+              className={styles.listType}
+              onClick={() => {
+                getList(false);
+              }}
+            >
+              {" "}
+              내목록{" "}
+            </span>
+          </li>
+        </ul>
+      </div>
 
-      {/* <div style={{ height: "700px", overflow: "auto" }}>
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={loadFunc}
-          hasMore={true||false}
-          loader={<div className="loader" key={0}>Loading...</div>}
-          useWindow={false}
-        ></InfiniteScroll>
-      </div> */}
-
-      <div className={styles.heading}>
+      {/* <div className={styles.heading}>
         <span
           className={styles.basicMission}
           onClick={() => {
@@ -218,11 +251,11 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
         >
           내목록
         </span>
-      </div>
+      </div> */}
 
-      <div>
+      <div className={styles.scrollMission}>
         {list === true ? (
-          <div className={styles.scrollMission}>
+          <div>
             {ecomissionList.map((it) => (
               <DailyEcoMissionitem
                 key={it.id}
