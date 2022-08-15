@@ -79,7 +79,7 @@ const PostModal = (props) => {
                 const formDataCreate = new FormData();
                 console.log(payload);
                 const postCreateDto = {
-                  constent: payload.content,
+                  content: payload.content,
                   user: {
                     id: getUserId(),
                   },
