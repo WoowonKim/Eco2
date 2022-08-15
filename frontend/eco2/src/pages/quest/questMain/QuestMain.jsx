@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../components/map/Map";
-import { getUserName } from "../../../store/user/common";
+import { getUserName, getUserId } from "../../../store/user/common";
 import styles from "./QuestMain.module.css";
 import QuestModal from "../../../components/modal/questModal/QuestModal";
 import DetailModal from "../../../components/modal/questModal/DetailModal";
@@ -37,7 +37,7 @@ const QuestMain = () => {
   };
   const openDetailModal = (id) => {
     axiosService
-      .get(`/quest/detail/${id}`)
+      .get(`/quest/detail/${id}/${getUserId()}`)
       .then((res) => {
         console.log(res.data.quest);
         setQuestDetail(res.data.quest);

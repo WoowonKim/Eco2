@@ -23,4 +23,5 @@ public class QuestDto {
     private String content;
     private UserDto user;
     private MissionDto mission;
+    private boolean participated;
 }
