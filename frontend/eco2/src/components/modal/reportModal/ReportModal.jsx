@@ -16,26 +16,6 @@ const ReportModal = ({
   const displayType = hidden ? styles.hidden : null;
   const [message, setMessage] = useState("");
 
-  /* 화살표 함수 */
-  // const label = document.getElementById("label");
-  // const options = document.querySelectorAll("li");
-  // const handleSelect = (item) => {
-  //   label.parentNode.classList.remove("active");
-  //   label.innerHTML = item.textContent;
-  // };
-  // console.log(label, options);
-  // options.forEach((option) => {
-  //   option.addEventListener("click", () => handleSelect(option));
-  // });
-
-  // const onClick = () => {
-  //   if (label.parentNode.classList.contains("active")) {
-  //     label.parentNode.classList.remove("active");
-  //   } else {
-  //     label.parentNode.classList.add("active");
-  //   }
-  // };
-
   useEffect(() => {
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
@@ -81,39 +61,6 @@ const ReportModal = ({
                   기타
                 </option>
               </select>
-              {/* <button className={styles.label} onClick={onClick} id="label">
-                fruits 🍊
-              </button>
-              <ul className={styles.optionList}>
-                <li
-                  className={styles.optionItem}
-                  id="optionItem"
-                  onClick={(e) => handleSelect(e.value)}
-                >
-                  apple
-                </li>
-                <li
-                  className={styles.optionItem}
-                  id="optionItem"
-                  onClick={(e) => handleSelect(e.value)}
-                >
-                  orange
-                </li>
-                <li
-                  className={styles.optionItem}
-                  id="optionItem"
-                  onClick={(e) => handleSelect(e.value)}
-                >
-                  grape
-                </li>
-                <li
-                  className={styles.optionItem}
-                  id="optionItem"
-                  onClick={(e) => handleSelect(e.value)}
-                >
-                  melon
-                </li>
-              </ul> */}
             </div>
             <textarea
               className={styles.textarea}
