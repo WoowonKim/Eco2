@@ -10,7 +10,7 @@
 }
 
 .list::-webkit-scrollbar {
-  height: 13px;
+  height: 10px;
 }
 
 .list::-webkit-scrollbar-thumb {
@@ -27,5 +27,5 @@
 }
 
 .box {
-  height: 100px;
+  /* height: 100px; */
 }
