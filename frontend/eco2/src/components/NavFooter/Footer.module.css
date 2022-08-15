@@ -40,7 +40,7 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
-.btn {
+.newbadge {
   margin-bottom: 0px;
   background-color: #7dd6fc;
   width: 10px;
@@ -53,8 +53,8 @@
   vertical-align: middle;
 
   position: absolute;
-  right: 12px;
-  bottom: 30px;
+  left: 80%;
+  bottom: 80%;
   /* line-height: 150px; */
 }
 

@@ -5,10 +5,7 @@ import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.security.UserDetail;
 import com.web.eco2.security.UserDetailService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -159,5 +156,22 @@ public class JwtTokenUtil {
 //            ResponseBodyWriteUtil.sendSocketError(response, "토큰이 유효하지 않습니다.");
 //            return false;
         }
+    }
+
+    public Map<String, Object> get(HttpServletRequest request) {
+        String jwt = request.getHeader("access-token");
+        Jws<Claims> claims = null;
+        try {
+            claims = Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(jwt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+        Map<String, Object> value = claims.getBody();
+        return value;
+    }
+
+    public String getEmail(HttpServletRequest request) {
+        return (String) get(request).get("sub");
     }
 }
