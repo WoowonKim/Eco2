@@ -20,11 +20,11 @@
   color: #6a707c;
   font-size: small;
   font-weight: bold;
-  border-bottom: 2px solid #adc178;
+  border-bottom: 2px solid rgba(87, 214, 150, 1);
 }
 
 .mainColor {
-  color: #adc178;
+  color: rgba(87, 214, 150, 1);
   margin-left: 3px;
 }
 /* 상단 END */
@@ -70,8 +70,12 @@
 }
 
 .greenTrash {
-  color: #adc178;
+  color: rgba(87, 214, 150, 1);
 }
 .whiteTrash {
   color: white;
+}
+
+.btn {
+  color: rgba(87, 214, 150, 1);
 }

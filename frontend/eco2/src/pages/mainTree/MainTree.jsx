@@ -10,19 +10,12 @@ import {
   updateLeaf,
 } from "../../store/mainTree/leavesSlice";
 import { getUserId } from "../../store/user/common";
+import { setCreatedToNull } from "../../store/post/postSlice";
 const MainTree = () => {
   let dispatch = useDispatch();
   const leaves = useSelector((state) => state.leaves);
-  let currUser = useSelector((state) => state.user.user);
-  let categoryCounts = useMemo(() => {
-    const categoryCounts = [0, 0, 0, 0, 0, 0];
-    for (let i in leaves.data) {
-      categoryCounts[leaves.data[i].category - 1]++;
-    }
-    return categoryCounts;
-  }, [leaves]);
+  let createdItem = useSelector((state) => state.post.createdItem);
   useEffect(() => {
-    console.log(currUser);
     dispatch(getLeaves(getUserId()));
   }, []);
   const moveLeaf = (id, left, top) => {
@@ -37,6 +30,7 @@ const MainTree = () => {
         const left = Math.round(item.left + delta.x);
         const top = Math.round(item.top + delta.y);
         moveLeaf(item.id, left, top);
+        dispatch(setCreatedToNull());
         return undefined;
       },
     }),
@@ -46,10 +40,12 @@ const MainTree = () => {
   useEffect(() => {
     dispatch(statisticLeaves({ userId: getUserId() })).then((res) => {
       if (res.payload?.status === 200) {
-        console.log(res.payload);
         setStatistic(res.payload.statistic);
       }
     });
+    return () => {
+      dispatch(setCreatedToNull());
+    };
   }, []);
   return (
     <div className={styles.Tree} ref={drop}>
@@ -66,7 +62,7 @@ const MainTree = () => {
         className={styles.windImg2}
         src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
       ></img>
-            <img
+      <img
         className={styles.windImg3}
         src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
       ></img>
@@ -76,6 +72,10 @@ const MainTree = () => {
         delay *= 10;
         delay = Math.floor(delay);
         delay /= 10;
+
+        if (id === createdItem) {
+          delay = 0;
+        }
         return (
           <Leaf
             key={id}
@@ -84,6 +84,7 @@ const MainTree = () => {
             top={top}
             category={category}
             delay={delay + "s"}
+            createdItem={createdItem}
           ></Leaf>
         );
       })}

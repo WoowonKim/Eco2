@@ -13,7 +13,7 @@ const Map = ({
   setCount,
   setMakeFlag,
   count,
-  name
+  name,
 }) => {
   let dispatch = useDispatch();
   const [counter, setCounter] = useState(0);
@@ -82,7 +82,6 @@ const Map = ({
     });
     setMapCircle(circle);
     kakaoMap.setCenter(locPosition);
-    console.log("영역 표시");
     circle.setMap(kakaoMap);
   }, [kakaoMap, lat]);
   let markers = [];
@@ -103,7 +102,11 @@ const Map = ({
         );
 
         let position = new kakao.maps.LatLng(quest.lng * 1, quest.lat * 1);
-        let marker = new kakao.maps.Marker({ map: kakaoMap, image: markerImage, position });
+        let marker = new kakao.maps.Marker({
+          map: kakaoMap,
+          image: markerImage,
+          position,
+        });
 
         kakao.maps.event.addListener(marker, "click", function () {
           openDeatailModal(quest.id);
@@ -144,6 +147,7 @@ const Map = ({
       dispatch(createQuest(quest));
       setMakeFlag(false);
     };
+    console.log(payload);
     if (makeFlag) {
       kakao.maps.event.addListener(mapCircle, "click", clickHandler);
     }
@@ -155,42 +159,39 @@ const Map = ({
     <div className={styles.map_wrap}>
       <div ref={container} id="map" className={styles.map}></div>
       <div className={styles.title}>
-      <div className={styles.userCount}>
-        <p className={styles.text}>
-          {name}님 주변에는 현재 {count}개의 퀘스트가 있습니다.
-        </p>
-      </div>
-      <div className={styles.map_my_position}>
-        <div
-          id="btnMyPosiotion"
-          className={styles.btn_my_position}
-          onClick={() => {
-            kakaoMap.setCenter(new kakao.maps.LatLng(lat, lon));
-          }}
-        >
-        <i className="fa-solid fa-location-arrow"></i>
+        <div className={styles.userCount}>
+          <p className={styles.text}>
+            {name}님 주변에는 현재 {count}개의 퀘스트가 있습니다.
+          </p>
         </div>
-      </div>
-
-      <div className={styles.createQuest}>
-오늘의 퀘스트를 생성하고 함께 참여해보세요!
-
-<div
-          className={styles.createButton}
-          onClick={() => {
-            openCreateModal();
-          }}
-        >
-          {/* <div className={styles.createButton}>
+        <div className={styles.map_my_position}>
+          <div
+            id="btnMyPosiotion"
+            className={styles.btn_my_position}
+            onClick={() => {
+              kakaoMap.setCenter(new kakao.maps.LatLng(lat, lon));
+            }}
+          >
+            <i className="fa-solid fa-location-arrow"></i>
+          </div>
+        </div>
+        <div className={styles.createQuest}>
+          오늘의 퀘스트를 생성하고 함께 참여해보세요!
+          <div
+            className={styles.createButton}
+            onClick={() => {
+              openCreateModal();
+            }}
+          >
+            {/* <div className={styles.createButton}>
             {makeFlag ? "취소하기" : "생성하기"} */}
-            생성하기 <i
+            생성하기{" "}
+            <i
               className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
             ></i>
-          {/* </div> */}
+            {/* </div> */}
+          </div>
         </div>
-</div>
-
-
       </div>
     </div>
   );

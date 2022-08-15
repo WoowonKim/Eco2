@@ -21,7 +21,11 @@ import { getLocation } from "../../../utils";
 
 // css
 import styles from "./dailyMission.module.css";
+
 import PostModal from "../../../components/modal/postModal/PostModal";
+
+import PopupModal from "../../../components/popup/PopupModal";
+
 
 const DailyMissionMain = () => {
   const [id, setId] = useState(getUserId()); // 서버 접속에 필요한 userid State
@@ -35,6 +39,10 @@ const DailyMissionMain = () => {
 
   const [missionDelete, setMissionDelete] = useState(false);
   const [cusMissionDelete, setCusMissionDelete] = useState(false);
+  const recommendedMission = useSelector((state) => state.missionMain.data);
+  const modalOpen = useSelector((state) => state.missionMain.open);
+
+  const [open, setOpen] = useState(false);
 
   const naviGate = useNavigate();
   const dispatch = useDispatch();
@@ -79,6 +87,7 @@ const DailyMissionMain = () => {
                 setcusMain(res.payload.dailyCustomMissionList);
               });
             }
+            setOpen(modalOpen);
           }
         }
       );
@@ -206,6 +215,20 @@ const DailyMissionMain = () => {
           />
         )}
       </div>
+      <button
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        열려라
+      </button>
+      {recommendedMission && (
+        <PopupModal
+          open={open}
+          setOpen={setOpen}
+          recommendedMission={recommendedMission}
+        ></PopupModal>
+      )}
     </div>
   );
 };

@@ -130,15 +130,16 @@ public class DailyMissionService {
     public void deleteByUsrId(Long usrId) {
         dailyMissionRepository.deleteByUsrId(usrId);
     }
+
     // TODO: 알고리즘 고치기
     // 에어컨/난방 미션의 경우의 처리가 미흡. 플래그 추가 생각 중
-    public Map<String, List<?>> getRecommendMission(String lat, String lng, String time) throws IOException {
+    public Map<String, Object> getRecommendMission(String lat, String lng, String time) throws IOException {
         List<Long> recommendMissionsNum = new ArrayList<>();
         List<Mission> recommendMission = new ArrayList<>();
 
-        Integer sunnyFlag = 3;
-        Integer outsideFlag = 3;
-        Integer temperatureFlag = 4;
+        int sunnyFlag = 3;
+        int outsideFlag = 3;
+        int temperatureFlag = 4;
         UltraShortNowcast ultraShortNowcast = weatherService.getUltraSrtNcst(lat, lng, time);
         if(ultraShortNowcast != null) {
             if(ultraShortNowcast.getRainAmount() <= 0) {
@@ -175,9 +176,10 @@ public class DailyMissionService {
             missions.remove(num);
         }
 
-        Map<String, List<?>> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("missions", recommendMission);
         map.put("missionsNum", recommendMissionsNum);
+        map.put("weather", Map.of("sunny", sunnyFlag, "outside", outsideFlag, "temperature", temperatureFlag));
         return map;
     }
 

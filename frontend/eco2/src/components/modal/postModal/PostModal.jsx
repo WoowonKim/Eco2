@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { noticeDelete } from "../../../store/admin/noticeSlice";
 import { commentDelete } from "../../../store/post/commentSlice";
 import { postDelete, report } from "../../../store/post/postSlice";
-import { friendRequest } from "../../../store/user/accountSlice";
+import { friendDelete, friendRequest } from "../../../store/user/accountSlice";
 import {
   getUserEmail,
   getUserId,
@@ -35,6 +35,7 @@ const PostModal = ({
   message,
   fromId,
   toId,
+
   userID,
   setCusDelete,
   cusDelete,
@@ -54,8 +55,12 @@ const PostModal = ({
   custommissiondeleteIdTest,
   setCusMissionDelete,
   cusMissionDelete,
+
+  friendId,
+  setFriendDelete,
+
 }) => {
-  console.log(commentId);
+  console.log(friendId, type);
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
   const [cusMi, setCusMi] = useState([]);
@@ -133,6 +138,7 @@ const PostModal = ({
         }
       });
     } else if (type === "친구") {
+
       dispatch(friendRequest({ fromId, toId })).then(res => {
         if (res.payload.status === 200 || res.payload.status === 202) {
           closeModal();
@@ -177,6 +183,23 @@ const PostModal = ({
       ).then(res => {
         setCusMissionDelete(!cusMissionDelete);
       });
+
+      dispatch(friendRequest({ fromId, toId })).then((res) => {
+        closeModal();
+        if (res.payload?.status === 202) {
+          alert("이미 친구 신청한 유저입니다!");
+        }
+      });
+    } else if (type === "친구삭제") {
+      dispatch(friendDelete({ id: getUserId(), friendId: friendId })).then(
+        (res) => {
+          if (res.payload.status === 200) {
+            setFriendDelete((curr) => curr + 1);
+            closeModal();
+          }
+        }
+      );
+
     } else {
       window.location.replace(`/post/${postId}`);
     }

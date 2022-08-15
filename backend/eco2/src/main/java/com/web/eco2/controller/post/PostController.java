@@ -383,7 +383,7 @@ public class PostController {
                     Item item = Item.builder().category(7).user(user).left(100).top(50).build();
                     itemService.save(item);
                     alarmService.insertAlarm(FirebaseAlarm.builder().userId(userId)
-                            .content("퀘스트가 완료되었습니다! 메인 화면에서 보상을 확인하세요.").dType("questAchieve")
+                            .content(quest.getContent()+" 퀘스트가 완료되었습니다.").dType("questAchieve")
                             .url("/mainTree").build());
 
                     for(QuestPost questPost : postService.findByQuest(quest)) {
@@ -392,7 +392,7 @@ public class PostController {
 //                        item = Item.builder().category(6+quest.getMission().getCategory()).user(questUser).left(200).top(50).build();
                         itemService.save(item);
                         alarmService.insertAlarm(FirebaseAlarm.builder().userId(questUser.getId())
-                                .content("퀘스트가 완료되었습니다! 메인 화면에서 보상을 확인하세요.").dType("questAchieve")
+                                .content(quest.getContent()+" 퀘스트가 완료되었습니다.").dType("questAchieve")
                                 .url("/mainTree").senderId(item.getId()).build());
                     }
                 }
@@ -404,14 +404,15 @@ public class PostController {
             }
 
             postCreateDto.setUser(user);
-            
             postCreateDto.setRegistTime(LocalDateTime.now());
-            // 친구 인증글 알림 시 사용
-//            Post post = postService.savePost(postImage, postCreateDto);
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
-            itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
+            Item item = Item.builder().left(50).top(50).category(category).user(user).build();
+            itemService.save(item);
+            postCreateDto.setItemId(item.getId());
 
+            // 친구 인증글 알림 시 사용
+//            Post post = postService.savePost(postImage, postCreateDto);
 
             // 친구 인증글 알림
 //            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {

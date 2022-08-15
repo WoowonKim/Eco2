@@ -25,14 +25,8 @@ const QuestModal = props => {
     >
       {open ? (
         <section>
-          <header>미션 생성하기</header>
+          <header>퀘스트 생성하기</header>
           <main className={styles.main}>
-            <img
-              src={process.env.PUBLIC_URL + "/questImg/quest" + qNUm + ".png"}
-              alt=""
-              key={qNUm}
-              className={styles.questImg}
-            />
             <div className={styles.selectBox}>
               <select
                 name="mission"
@@ -41,13 +35,13 @@ const QuestModal = props => {
                   let copy = { ...load };
                   copy.missionId = e.target.value;
                   setLoad(copy);
-                  console.log(load);
                 }}
                 className={styles.select}
               >
                 {questList.map((item, i) => {
                   return (
-                    <option value={item.id} key={i}>
+                    <option className={styles.option}
+                     value={item.id} key={i}>
                       {item.title}
                     </option>
                   );
@@ -57,9 +51,10 @@ const QuestModal = props => {
                 <i className="fa-solid fa-arrow-down"></i>
               </span>
             </div>
-            <span className={styles.span} htmlFor="achieveCount">
+            <div className={styles.countBox}>
+            <div className={styles.countTitle} htmlFor="achieveCount">
               목표 참여 인원
-            </span>
+            </div>
             <input
               type="number"
               name="achieveCount"
@@ -73,25 +68,25 @@ const QuestModal = props => {
                 setLoad(copy);
               }}
             ></input>
-            <fieldset className={styles.fieldset}>
-              <legend style={{ textAlign: "start" }}>about mission</legend>
-              <textarea
+            </div>
+            <div className={styles.contentBox}>
+            <div className={styles.contentTitle}>퀘스트 내용</div>
+            <textarea
                 id="content"
-                className={styles.contentBox}
+                className={styles.contentText}
                 onChange={(e) => {
                   let copy = { ...load };
                   copy.content = e.target.value;
                   setLoad(copy);
                 }}
               />
-            </fieldset>
-            <p className={styles.p}>퀘스트는 24시간 동안 유지됩니다.</p>
+              </div>
+            {/* <p className={styles.p}>퀘스트는 24시간 동안 유지됩니다.</p> */}
           </main>
           <footer>
             <button
               className={styles.create}
               onClick={() => {
-                console.log(load);
                 setPayload(load);
                 close();
                 setMakeFlag(true);

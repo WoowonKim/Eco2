@@ -212,14 +212,14 @@ public class DailyMissionController {
                         "recommendedMission",
                         oldRecommendMission.stream()
                                 .map(missionId -> missionService.findByMisId(missionId))
-                                .collect(Collectors.toList())
+                                .collect(Collectors.toList()), "weather", null
                 );
             } else if (oldRecommendMission == null) {
                 // 하루가 지났을 경우에만 리셋
                 dailyMissionService.deleteByUsrId(usrId);
             }
 
-            Map<String, List<?>> missionData = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
+            Map<String, Object> missionData = dailyMissionService.getRecommendMission(dailyMissionRecommendRequest.getLat(), dailyMissionRecommendRequest.getLng(), dailyMissionRecommendRequest.getDate());
             if (missionData == null) {
                 redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
                 return ResponseHandler.generateResponse("미션 추천에 실패했습니다.", HttpStatus.ACCEPTED);
@@ -236,7 +236,7 @@ public class DailyMissionController {
 
             redisService.setListDataExpire(usrId.toString(), (List<Long>) missionData.get("missionsNum"), getDuration());
 
-            return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions);
+            return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions, "weather", missionData.get("weather"));
         } catch (Exception e) {
             log.error("데일리미션 추천 API 에러", e);
             if (oldRecommendMission == null) redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());

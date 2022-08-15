@@ -19,7 +19,7 @@
   position: absolute;
   display: block;
   width: 280px;
-  /* height: 170px; */
+  height: 170px;
   background-color: white;
   padding: 1rem;
   border: none;
@@ -30,24 +30,45 @@
 .modalTitle {
   display: flex;
   align-items: center;
-  text-align: center;
+  justify-content: center;
 }
+
+.link {
+  text-decoration: none;
+}
+
+.editIcon {
+  border-radius: 5px;
+  color: rgb(87, 214, 150);
+  font-size: large;
+}
+
 .deleteIcon {
   border-radius: 5px;
   color: rgb(87, 214, 150);
   font-size: large;
 }
+
+.friendIcon {
+  border-radius: 5px;
+  color: rgb(87, 214, 150);
+  font-size: large;
+}
+
 .title {
   margin: 5px;
   text-align: center;
-  font-size: 22px;
-
 }
+
 .content {
   font-size: small;
   text-align: start;
   margin: 10px 5px 20px 5px;
   text-align: center;
+}
+
+.buttonGroup {
+  display: block;
 }
 
 .editButton {
@@ -70,65 +91,24 @@
   transform: scale(1.02);
 }
 
-.friends{
-  overflow-y: scroll;
-  height: 200px;
-}
-.friends::-webkit-scrollbar {
-  width: 5px;
-}
-.friends::-webkit-scrollbar-thumb {
-  background-color: lightgrey;
-  background-clip: padding-box;
-  border: 3px solid transparent;
-  border-radius: 100px;
-}
-.friends::-webkit-scrollbar-track {
-  background-color: white;
-  border: 1px solid #dadada;
-  border-radius: 100px;
-}
 
-.leftContent{
-  display: inline-block;
-  width: 70%;
-  float: left;
-  text-align: left;
-}
-.profileImg{
-  width: 40px;
-  height: 40px;
-  border: #EAEAEA solid 1px;
-  border-radius: 30px;
-  margin: 5px;
-  float: left;
-
-}
-.text{
-margin-top: 18px;
-font-size: small;
-}
-.rightContent{
-  float: right;
-}
-
-.chatStartButton{
-  margin-top: 20px;
-}
-
-.createButton {
-  position: relative;
-  margin-top: 7px;
-  padding: 7px 10px;
+.warningButton {
+  display: block;
+  background-color: #e07668;
+  padding: 3px 5px;
   border-radius: 10px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  color: #ffffff;
-  background-color: rgb(87, 214, 150);
+border:none;
+  width: 100%;
+  color: white;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 5px;
+  transition: all 200ms ease-in;
 }
 
-.createButton:hover {
-  background-color:rgb(166, 228, 166);
+.warningButton:hover {
+  transform: scale(1.02);
 }
 
 .cancleButton {
@@ -151,12 +131,4 @@ font-size: small;
 
 .hidden {
   display: none;
-}
-.noFriendList{
-  padding-top: 30px;
-}
-.noFriendMessage{
-  font-size: small;
-  font-weight: bold;
-  color: grey;
 }
