@@ -14,15 +14,18 @@ const FeedList = ({ category, display, feeds, setLikeCount }) => {
           feeds.map(
             (feed) =>
               (category === feed.mission?.category ||
-                category === feed.customMission?.category) &&
-              feed.publicFlag && (
+                category === feed.customMission?.category ||
+                category === feed.quest?.mission.category) &&
+              feed.postPublicFlag && (
                 <FeedItem
                   key={feed.id}
                   id={feed.id}
                   userId={feed.userId}
                   userName={feed.userName}
                   category={
-                    feed.mission?.category || feed.customMission?.category
+                    feed.quest?.category ||
+                    feed.mission?.category ||
+                    feed.customMission?.category
                   }
                   content={feed.content}
                   like={feed.likeCount}

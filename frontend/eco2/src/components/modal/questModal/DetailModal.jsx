@@ -68,10 +68,14 @@ const DetailModal = (props) => {
               </>
             )}
           </footer>
-          {questDetailFeeds.length > 0 && (
+          {questDetailFeeds !== null && questDetailFeeds.length > 0 && (
             <>
               <div>참여자 인증글</div>
-              <FeedList display={"list"} feeds={questDetailFeeds}></FeedList>
+              <FeedList
+                display={"list"}
+                feeds={questDetailFeeds}
+                category={questDetail.mission.category}
+              ></FeedList>
             </>
           )}
         </section>

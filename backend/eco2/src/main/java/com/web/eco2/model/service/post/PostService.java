@@ -218,8 +218,8 @@ public class PostService {
             PostListDto postListDto = PostListDto.builder().id(p.getId()).userId(p.getUser().getId())
                     .userName(p.getUser().getName()).userEmail(p.getUser().getEmail())
                     .content(p.getContent()).registTime(p.getRegistTime())
-                    .postImgUrl("img/post/" + p.getId()).publicFlag(p.isPublicFlag()).commentFlag(p.isCommentFlag())
-                    .mission(p.getMission()).customMission(p.getCustomMission())
+                    .postImgUrl("img/post/" + p.getId()).postPublicFlag(p.isPublicFlag()).commentFlag(p.isCommentFlag())
+                    .userPublicFlag(true).mission(p.getMission()).customMission(p.getCustomMission())
                     .likeCount(postLikeService.likeCount(p.getId()))
                     .postLikeUserIds(postLikeService.specificPostLikeUserIdList(p.getId())).build();
 
