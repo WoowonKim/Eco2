@@ -54,7 +54,7 @@ const QuestMain = () => {
   return (
     <div>
       <Map
-        // makeFlag={makeFlag}
+        makeFlag={makeFlag}
         setCreateModal={setCreateModal}
         openCreateModal={openCreateModal}
         openDeatailModal={openDetailModal}

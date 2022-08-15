@@ -82,7 +82,6 @@ const Map = ({
     });
     setMapCircle(circle);
     kakaoMap.setCenter(locPosition);
-    console.log("영역 표시");
     circle.setMap(kakaoMap);
   }, [kakaoMap, lat]);
   let markers = [];

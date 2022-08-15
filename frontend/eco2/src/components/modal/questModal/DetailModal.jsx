@@ -19,58 +19,56 @@ const DetailModal = (props) => {
     >
       {open ? (
         <section>
-          <header>
-            참여하기
-            {currUser == questDetail.user.id && !questDetail.participated ? (
-              <button
+          <main className={styles.main}>
+          {currUser == questDetail.user.id && !questDetail.participated ? (
+              <div
                 onClick={() => {
                   dispatch(deleteQuest(questDetail.id));
                   close();
                 }}
-                className={styles.delete}
+                className={styles.deleteButton}
               >
-                삭제하기
-              </button>
-            ) : null}
-          </header>
-          <main className={styles.main}>
+             <i className={`fa-solid fa-trash-can-arrow-up ${styles.deleteIcon}`}></i>  
+              </div>
+          ) : null}
+
             <div className={styles.info}>
-              <h2>미션! {questDetail.mission.title}</h2>
+            <div className={styles.title}>미션! {questDetail.mission.title}</div>
+              <div className={styles.content}>{questDetail.content}</div>
               <div className={styles.endTime}>
-                미션 종료 : {finishDate}/{finishTime}
+                {finishDate} {finishTime}에 종료됩니다! 놓치지말고 참여하세요!
               </div>
               <div className={styles.endTime}>
                 {questDetail.participantCount}/{questDetail.achieveCount}명이
                 참가했어요
               </div>
-              <div>{questDetail.content}</div>
             </div>
           </main>
           <footer>
             {questDetail.achieveFlag ? (
-              <button type="button" className={styles.close} onClick={close}>
+              <button type="button" className={styles.already}  onClick={close}>
                 이미 완료된 퀘스트입니다.
               </button>
             ) : questDetail.participated ? (
               <>
-                <button type="button" className={styles.close} onClick={close}>
+                <button type="button" className={styles.already}  onClick={close}>
                   이미 참여한 퀘스트입니다.
                 </button>
               </>
             ) : (
               <>
                 <button className={styles.create} onClick={openPost}>
-                  인증하기
+                  참여하기
                 </button>
                 <button className={styles.close} onClick={close}>
-                  참여안하기
+                  닫기
                 </button>
               </>
             )}
           </footer>
           {questDetailFeeds !== null && questDetailFeeds.length > 0 && (
             <>
-              <div>참여자 인증글</div>
+              <div className={styles.post}>참여자 인증글</div>
               <FeedList
                 display={"list"}
                 feeds={questDetailFeeds}

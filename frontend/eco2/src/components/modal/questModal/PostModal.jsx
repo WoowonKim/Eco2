@@ -19,14 +19,14 @@ const PostModal = (props) => {
         resolve();
       };
     });
-  };
+  }; 
   let dispatch = useDispatch();
   let setPayloadImg = (e) => {
     let copy = { ...payload };
     copy.postImg = e.target.files[0];
     setPayload(copy);
   };
-
+ 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div
@@ -34,7 +34,7 @@ const PostModal = (props) => {
     >
       {open ? (
         <section>
-          <header>인증하기</header>
+          <header>참여하기</header>
           <main className={styles.main}>
             <div className={styles.imgBox}>
               <label htmlFor="chooseFile" className={styles.imgBtn}>

@@ -8,15 +8,8 @@
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.6);
 }
-.delete {
-  outline: none;
-  cursor: pointer;
-  border: 0;
-  color: red;
-  position: absolute;
-  right: 10px;
-}
 .modal > section {
+  position: relative;
   width: 90%;
   max-width: 450px;
   margin: 0 auto;
@@ -25,12 +18,6 @@
   /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-show 0.3s;
   overflow: hidden;
-}
-.modal > section > header {
-  padding: 16px 16px;
-  background-color: #f1f1f1;
-  font-weight: 700;
-  position: relative;
 }
 
 .modal > section > main {
@@ -42,87 +29,76 @@
   padding: 12px 16px;
   text-align: center;
 }
-.modal > section > footer .close {
-  padding: 6px 12px;
-  color: #fff;
-  background-color: #6c757d;
-  font-size: 13px;
-  border-radius: 8px;
-  width: 330px;
-  height: 35px;
-  text-align: center;
-  color: white;
-  cursor: pointer;
-  margin-top: 10px;
-}
 .modal.openModal {
   display: flex;
   align-items: center;
   /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-bg-show 0.3s;
 }
-.modal .imgBox {
-  background-color: #6c757d;
-  width: 100%;
-  height: 200px;
-  border-radius: 20px;
-  display: flex;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
+.deleteButton{
+  color: rgb(87, 214, 150);
+  position: absolute;
+  right: 15px;
+}
+.deleteIcon{
+  color: rgb(87, 214, 150);
+}
+.title{
+  font-size: 25px;
+  font-weight: bold;
+  color: #3f3f3f;
+  margin-top: 20px;
+}
+.content{
+  margin: 30px;
+  font-size: large;
+}
+.endTime{
+  margin-top: 12px;
+  font-size: small;
+  background-color: rgba(255, 255, 255, 0.719);
+}
+.create{
+  border: none;
+  background-color: rgb(87, 214, 150) ;
+  color:#FFF;
+  padding:10px 17px;
+  margin-right: 10px;
+  font-family: "NanumBarunGothicLight";
+  border-radius: 10px;
+  box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
+}
+.create:hover{
+  background-color:rgb(166, 228, 166);;
+}
+.close{
+  border: none;
+  background-color: #FFF ;
+  color:rgb(122, 122, 122);
+  padding:10px 17px;
+  font-family: "NanumBarunGothicLight";
+  border-radius: 10px;
+  box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
+}
+.close:hover{
+  background-color:rgb(221, 221, 221);;
 }
 
-.img {
-  width: 100%;
-  object-fit: cover;
-  border-radius: 20px;
+.already{
+  border: none;
+  background-color: rgb(87, 214, 150);
+  color:#FFF;
+  padding:7px 25px;
+  font-family: "NanumBarunGothicLight";
+  border-radius: 10px;
+  box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
 }
-.info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.already:hover{
+  background-color:rgb(168, 168, 168);;
 }
-.info div {
-  margin: 5px;
-}
-.endTime {
+.post{
   font-size: small;
-  align-self: flex-end;
-}
-.selectBox {
-  width: 35%;
-  margin: 10px auto;
-}
-p {
-  font-size: small;
-  margin-top: 14px;
-}
-.fieldset {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 5px;
-  width: 100%;
-}
-.fieldset label {
-  margin: 3px;
-}
-.fieldset textarea {
-  width: 100%;
-  height: 6.25em;
-  resize: none;
-}
-
-.create {
-  background: #adc178;
-  border: 1px solid #dadada;
-  border-radius: 8px;
-  width: 330px;
-  height: 35px;
-  text-align: center;
-  color: white;
-  cursor: pointer;
-  margin-top: 10px;
+  color:grey;
 }
 @keyframes modal-show {
   from {

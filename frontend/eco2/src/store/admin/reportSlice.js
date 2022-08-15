@@ -44,7 +44,7 @@ export const reportAccept = createAsyncThunk(
   }
 );
 
-//신고승인
+//신고반려
 export const reportCancle = createAsyncThunk(
   "reportSlice/reportCancle",
   async (args, rejectWithValue) => {
