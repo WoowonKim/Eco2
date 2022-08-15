@@ -101,7 +101,21 @@ const ReplyItem = ({
 
       {visible && (
         <div className={styles.editFormGroup}>
-          <span className={styles.editFormUser}>{user}</span>
+          <div
+            className={styles.userInfo}
+            onClick={() =>
+              navigate(`/profile/${commentUserId}`, {
+                state: { userEmail },
+              })
+            }
+          >
+            <img
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
+            <p className={styles.user}>{user}</p>
+          </div>
           <div className={styles.editForm}>
             <CommentForm
               id={id}

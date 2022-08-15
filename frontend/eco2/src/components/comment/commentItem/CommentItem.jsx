@@ -114,7 +114,11 @@ const CommentItem = ({
                       }}
                       className={styles.dropdownItem}
                     >
+                      {" "}
                       신고
+                      <i
+                        className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
+                      ></i>
                     </button>
                   </div>
                 )}
@@ -148,7 +152,22 @@ const CommentItem = ({
 
       {visible && (
         <div className={styles.editFormGroup}>
-          <span className={styles.editFormUser}>{user}</span>
+          <div
+            className={styles.userInfo}
+            onClick={() =>
+              navigate(`/profile/${commentUserId}`, {
+                state: { userEmail },
+              })
+            }
+          >
+            <img
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
+              // src={`${imgSrc}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
+            <p className={styles.user}>{user}</p>
+          </div>
           <div className={styles.editForm}>
             <CommentForm
               userId={userId}

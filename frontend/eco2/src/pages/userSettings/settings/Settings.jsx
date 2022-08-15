@@ -41,12 +41,12 @@ const Settings = ({ email }) => {
     });
   }, []);
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.setting}>
         <div className={styles.settingGroup}>
-          <p className={styles.settingTitle}>계정 비공개</p>
+          <p className={styles.settingTitle}>계정 공개</p>
           <p className={styles.settingContent}>
-            계정을 비공개로 설정하면 다른 유저들이 게시물을 볼 수 없습니다.
+            계정을 공개로 설정하면 다른 유저들이 게시물을 볼 수 있습니다.
           </p>
         </div>
         <div className={styles.toggleGroup}>
@@ -119,32 +119,9 @@ const Settings = ({ email }) => {
           </label>
         </div>
       </div>
-      {/* <hr className={styles.line} /> */}
-      {/* <div className={styles.setting}>
-        <div className={styles.settingGroup}>
-          <p className={styles.settingTitle}>다크모드</p>
-        </div>
-        <div className={styles.toggleGroup}>
-          <input
-            type="checkbox"
-            id="darkmodeFlag"
-            hidden
-            className={styles.toggle}
-            onClick={() => {
-              let data = { ...checked };
-              data.darkmodeFlag = !checked.darkmodeFlag;
-              setChecked(data);
-            }}
-            defaultChecked={checked.darkmodeFlag}
-            checked={checked.darkmodeFlag}
-          />
-          <label htmlFor="darkmodeFlag" className={styles.toggleSwitch}>
-            <span className={styles.toggleButton}></span>
-          </label>
-        </div>
-      </div> */}
       <button className={styles.settingButton} onClick={onClick}>
-        설정 저장하기
+        {/* <i className="fa-solid fa-check"></i>  */}
+        저장
       </button>
     </div>
   );
