@@ -90,30 +90,35 @@ const Map = ({
       return;
     }
     console.log("퀘스트마커를 찍자");
-    questMarkers.data.map((quest) => {
-      let position = new kakao.maps.LatLng(quest.lng * 1, quest.lat * 1);
-      let marker = new kakao.maps.Marker({ map: kakaoMap, position });
-      kakao.maps.event.addListener(marker, "click", function () {
-        openDeatailModal(quest.id);
+    questMarkers.data
+      .filter((quest) => {
+        return !quest.finishFlag;
+      })
+      .map((quest) => {
+        let position = new kakao.maps.LatLng(quest.lng * 1, quest.lat * 1);
+        let marker = new kakao.maps.Marker({ map: kakaoMap, position });
+
+        kakao.maps.event.addListener(marker, "click", function () {
+          openDeatailModal(quest.id);
+        });
+        markers.push(marker);
+        let lat1 = position.La * 0.017453;
+        let lng1 = position.Ma * 0.017453;
+        let lat2 = lon * 0.017453;
+        let lng2 = lat * 0.017453;
+        let dist =
+          6378137 *
+          Math.acos(
+            Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
+              Math.sin(lat1) * Math.sin(lat2)
+          );
+        console.log(dist);
+        if (dist < 500) {
+          console.log("카운터 증가");
+          console.log(counter);
+          setCounter((counter) => counter + 1);
+        }
       });
-      markers.push(marker);
-      let lat1 = position.La * 0.017453;
-      let lng1 = position.Ma * 0.017453;
-      let lat2 = lon * 0.017453;
-      let lng2 = lat * 0.017453;
-      let dist =
-        6378137 *
-        Math.acos(
-          Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
-            Math.sin(lat1) * Math.sin(lat2)
-        );
-      console.log(dist);
-      if (dist < 500) {
-        console.log("카운터 증가");
-        console.log(counter);
-        setCounter((counter) => counter + 1);
-      }
-    });
     return () => {
       markers.map((marker) => {
         marker.setMap(null);

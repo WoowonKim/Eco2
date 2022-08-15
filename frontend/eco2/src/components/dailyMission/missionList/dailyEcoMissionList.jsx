@@ -82,7 +82,24 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
       setEcoId(reEcoId);
     }
   };
-
+  const ul = useRef();
+  useEffect(() => {
+    let a;
+    let b = window.setInterval(() => {
+      ul.current.style.transitionDuration = "400ms";
+      ul.current.style.marginTop = "-34px";
+      a = window.setTimeout(() => {
+        ul.current.style.transitionDuration = "";
+        ul.current.style.marginTop = "";
+        // send the first element to the back 400ms later.
+        ul.current.appendChild(ul.current.querySelector("li:first-child"));
+      }, 400);
+    }, 1500);
+    return () => {
+      clearInterval(b);
+      clearTimeout(a);
+    };
+  }, []);
   /**
    * 선택한 미션들을 서버에 전송하기 위한 함수.
    */
@@ -178,9 +195,17 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
       {trendingMission && (
         <fieldset>
           <legend className={styles.word}>Trending</legend>
-          {trendingMission.map((e) => {
-            return <p className={styles.trending}>{e.mission.title}</p>;
-          })}
+          <div className={styles.rolling}>
+            <ul ref={ul} className={styles.rolling_list}>
+              {trendingMission.map((e, i) => {
+                return (
+                  <li key={i} className={styles.li}>
+                    {i + 1} . {e.mission.title}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </fieldset>
       )}
 

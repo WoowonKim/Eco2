@@ -5,7 +5,7 @@ import styles from "./CommentList.module.css";
 
 const CommentList = ({ comments, replys, setTest }) => {
   return (
-    <ul className={styles.ul}>
+    <div className={styles.commentList}>
       {comments?.length > 0 &&
         comments.map((comment) => (
           <CommentItem
@@ -19,9 +19,10 @@ const CommentList = ({ comments, replys, setTest }) => {
             replys={replys}
             setTest={setTest}
             userEmail={comment.userEmail}
+            registTime={comment.registTime}
           />
         ))}
-    </ul>
+    </div>
   );
 };
 

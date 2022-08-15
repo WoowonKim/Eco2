@@ -5,6 +5,7 @@ import styles from "./QuestModal.module.css";
 const QuestModal = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close, questList, setPayload, setMakeFlag } = props;
+  const [qNUm, setQNum] = useState(2);
   let payload = {
     userId: getUserId(),
     missionId: 2,
@@ -22,10 +23,17 @@ const QuestModal = (props) => {
         <section>
           <header>미션 생성하기</header>
           <main className={styles.main}>
+            <img
+              src={process.env.PUBLIC_URL + "/questImg/quest" + qNUm + ".png"}
+              alt=""
+              key={qNUm}
+              className={styles.questImg}
+            />
             <select
               name="mission"
               onChange={(e) => {
                 console.log(e.target.value);
+                setQNum(e.target.value);
                 payload.missionId = e.target.value;
               }}
               className={styles.selectBox}
@@ -38,8 +46,9 @@ const QuestModal = (props) => {
                 );
               })}
             </select>
-            <p>퀘스트는 24시간 동안 유지됩니다.</p>
-            <label htmlFor="achieveCount">참여 인원</label>
+            <span className={styles.span} htmlFor="achieveCount">
+              목표 참여 인원
+            </span>
             <input
               type="number"
               name="achieveCount"
@@ -52,7 +61,7 @@ const QuestModal = (props) => {
               }}
             ></input>
             <fieldset className={styles.fieldset}>
-              <label>내용</label>
+              <legend style={{ textAlign: "start" }}>about mission</legend>
               <textarea
                 id="content"
                 className={styles.contentBox}
@@ -61,6 +70,7 @@ const QuestModal = (props) => {
                 }}
               />
             </fieldset>
+            <p className={styles.p}>퀘스트는 24시간 동안 유지됩니다.</p>
           </main>
           <footer>
             <button

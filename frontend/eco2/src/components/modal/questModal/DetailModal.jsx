@@ -43,13 +43,28 @@ const DetailModal = (props) => {
             </div>
           </main>
           <footer>
-            <button className={styles.create} onClick={openPost}>
-              인증하기
-            </button>
-            <button className={styles.close} onClick={close}>
-              참여안하기
-            </button>
+            {questDetail.achieveFlag ? (
+              <button type="button" className={styles.close} onClick={close}>
+                이미 완료된 퀘스트입니다.
+              </button>
+            ) : questDetail.participated ? (
+              <>
+                <button type="button" className={styles.close} onClick={close}>
+                  이미 참여한 퀘스트입니다.
+                </button>
+              </>
+            ) : (
+              <>
+                <button className={styles.create} onClick={openPost}>
+                  인증하기
+                </button>
+                <button className={styles.close} onClick={close}>
+                  참여안하기
+                </button>
+              </>
+            )}
           </footer>
+
           <div>참여자 인증글</div>
           <FeedList display={"list"} feeds={questDetailFeeds}></FeedList>
         </section>

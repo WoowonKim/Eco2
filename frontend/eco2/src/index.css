@@ -46,6 +46,8 @@ code {
   box-sizing: border-box;
 }
 #root {
+  /* padding-top: 65px; */
   display: flex;
   justify-content: center;
+  padding: 30px;
 }

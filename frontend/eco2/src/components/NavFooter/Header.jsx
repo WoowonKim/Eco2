@@ -6,6 +6,7 @@ import styles from "./Header.module.css";
 const Header = () => {
   const [userId, setUserId] = useState(getUserId());
   const [imgSrc, setImgSrc] = useState("");
+  const [checkImg, setCheckImg] = useState(0);
 
   let navigate = useNavigate();
 
@@ -46,10 +47,10 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate(`/profile/${getUserId()}`, { replace: true });
+            navigate(`/profile/${getUserId()}`);
           }}
         >
-          <i class="fa-solid fa-emergency">신고</i>
+          <i className="fa-solid fa-emergency">신고</i>
         </button>
 
         <button
@@ -63,10 +64,14 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate(`/profile/${getUserId()}`);
+            navigate(`/profile/${getUserId()}`, { state: { setCheckImg } });
           }}
         >
-          {/* <img src={imgSrc} alt="profileImg" className={styles.profileImg} /> */}
+          <img
+            src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
         </button>
       </nav>
     </header>
