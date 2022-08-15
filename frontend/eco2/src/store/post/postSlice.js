@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosService from "../axiosService";
+import { getUserId } from "../user/common";
 
 // 전체 게시물 조회
 export const postList = createAsyncThunk(
   "postSlice/postList",
   async (args, rejectWithValue) => {
     try {
-      const response = await axiosService.get("/post");
+      const response = await axiosService.get(`/post/${getUserId()}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -19,7 +20,9 @@ export const post = createAsyncThunk(
   "postSlice/post",
   async (args, rejectWithValue) => {
     try {
-      const response = await axiosService.get(`/post/${args.postId}`);
+      const response = await axiosService.get(
+        `/post/${args.postId}/${getUserId()}`
+      );
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

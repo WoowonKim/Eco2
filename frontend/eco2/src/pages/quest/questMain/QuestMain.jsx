@@ -22,13 +22,6 @@ const QuestMain = () => {
       setQuestList(res.data.missions);
     });
   }, []);
-  // const [testDetail] = useState({
-  //   userId: 1,
-  //   missionId: 1,
-  //   title: "공원 청소를 합시다!",
-  //   content: "공원에 쓰레기가 너무 많아요 쓰레기를 치웁시다!",
-  //   imgURL: process.env.PUBLIC_URL + "test.jpg",
-  // });
   const openCreateModal = () => {
     setCreateModal(true);
   };
@@ -60,35 +53,17 @@ const QuestMain = () => {
   };
   return (
     <div>
-      <div className={styles.titleGroup}>
-        <p className={styles.title}>퀘스트 조회하기</p>
-        <button
-          className={styles.button}
-          onClick={() => {
-            openCreateModal();
-          }}
-        >
-          <div className={styles.createButton}>
-            {makeFlag ? "취소하기" : "생성하기"}
-            <i
-              className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
-            ></i>
-          </div>
-        </button>
-      </div>
       <Map
-        makeFlag={makeFlag}
+        // makeFlag={makeFlag}
+        setCreateModal={setCreateModal}
         openCreateModal={openCreateModal}
         openDeatailModal={openDetailModal}
         setMakeFlag={setMakeFlag}
         payload={payload}
         setCount={setCount}
+        name={name}
+        count={count}
       />
-      <div>
-        <p className={styles.text}>
-          {name}님 주변에는 현재 {count}개의 퀘스트가 있습니다.
-        </p>
-      </div>
       <QuestModal
         open={createModal}
         close={closeCreateModal}

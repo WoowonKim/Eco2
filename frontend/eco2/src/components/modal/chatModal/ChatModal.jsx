@@ -46,15 +46,14 @@ const ChatModal = ({
           )}
         </div>
         <div className={styles.buttonGroup}>
-          <button
+          <div
             onClick={() => {
               setHidden(true);
               document.body.style = `overflow: auto`;
             }}
             className={`${styles.cancleButton}`}
-          >
-            닫기
-          </button>
+          >닫기
+        </div>
         </div>
       </div>
     </div>

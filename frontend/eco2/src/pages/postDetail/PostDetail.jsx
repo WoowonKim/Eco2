@@ -66,6 +66,9 @@ const PostDetail = () => {
   useEffect(() => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
+        if (res.payload?.msg === "비공개 계정입니다.") {
+          navigate("/mainFeed");
+        }
         setFeedItem(res.payload.post);
         if (res.payload.post.comments !== null) {
           setComments(
@@ -92,11 +95,11 @@ const PostDetail = () => {
   }, [test, likeUsers]);
 
   useEffect(() => {
-    if (!feedItem.registTime) {
+    if (!feedItem?.registTime) {
       return;
     }
-    setRegistTime(feedItem.registTime.split("T")[0]);
-  }, [feedItem.registTime]);
+    setRegistTime(feedItem?.registTime.split("T")[0]);
+  }, [feedItem?.registTime]);
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -168,7 +171,7 @@ const PostDetail = () => {
       {visible && modalType === "수정" && (
         <PostModal
           title={"게시물 수정"}
-          content={"게시물을 수정하시겠습니까"}
+          content={"게시물을 수정하시겠습니까?"}
           type={"수정"}
           postId={feedItem.id}
           img={feedItem.postImgUrl}
@@ -181,7 +184,7 @@ const PostDetail = () => {
         <PostModal
           className={`${displayType}`}
           title={"게시물 삭제"}
-          content={"게시물을 삭제하시겠습니까"}
+          content={"게시물을 삭제하시겠습니까?"}
           type={"삭제"}
           postId={feedItem.id}
           closeModal={() => setVisible(!visible)}

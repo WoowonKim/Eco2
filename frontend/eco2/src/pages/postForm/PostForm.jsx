@@ -179,11 +179,11 @@ const PostForm = () => {
   }, []);
   return (
     <div>
-      <div className={styles.titleGroup}>
+      {/* <div className={styles.titleGroup}>
         <i className={`fa-brands fa-pagelines ${styles.titleIcon}`}></i>
         <h2 className={styles.title}>인증하기</h2>
       </div>
-      <hr className={styles.line} />
+      <hr className={styles.line} /> */}
       <form onSubmit={(e) => onSubmit(e)}>
         <div className={styles.fileInputGroup}>
           {fileImage ? (
@@ -245,6 +245,7 @@ const PostForm = () => {
         {/* <p className={styles.missionTitle}>미션 제목</p> */}
         <textarea
           required
+          placeholder="미션 인증글을 작성해주세요!"
           className={styles.content}
           value={editText ? editText : text}
           onChange={(e) => {
@@ -252,13 +253,9 @@ const PostForm = () => {
             setEditText(e.target.value);
           }}
         ></textarea>
-        <ShortGreenBtn
-          type="submit"
-          disabled={!imageCheck}
-          className={styles.button}
-        >
+        <button type="submit" disabled={!imageCheck} className={styles.button}>
           작성
-        </ShortGreenBtn>
+        </button>
       </form>
     </div>
   );

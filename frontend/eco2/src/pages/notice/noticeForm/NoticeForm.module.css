@@ -1,5 +1,5 @@
 .container {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .titleGroup {
@@ -32,6 +32,12 @@
   outline: none;
 }
 
+.titleInput::placeholder {
+  color: #dadada;
+  font-size: small;
+  font-family: "NanumBarunGothicLight";
+}
+
 .line {
   border: 1px solid #adc178;
   width: 50%;
@@ -41,8 +47,8 @@
 .wrapper {
   display: flex;
   background: #fff;
-  border-radius: 5px;
-  padding: 10px 0;
+  /* border-radius: 5px; */
+  padding: 5px 0;
 }
 
 .wrapper .label {
@@ -51,18 +57,17 @@
   width: 70px;
   display: flex;
   align-items: center;
-  margin: 0 10px;
+  margin: 10px 5px 0 0;
   border-radius: 5px;
   cursor: pointer;
-  padding: 0 10px;
-  border: 1px solid lightgrey;
+  /* padding: 0 10px; */
   transition: all 0.3s ease;
 }
 
 .wrapper .label .dot {
   height: 15px;
   width: 15px;
-  background: #d9d9d9;
+  background: #dadada9f;
   border-radius: 50%;
   position: relative;
 }
@@ -74,7 +79,7 @@
   left: 3px;
   width: 10px;
   height: 10px;
-  background: #adc178;
+  background: rgb(87, 214, 150);
   border-radius: 50%;
   opacity: 0;
   transform: scale(1.5);
@@ -89,13 +94,26 @@
 }
 
 .content {
+  margin-top: 10px;
   display: flex;
   justify-content: start;
-  width: 300px;
+  width: 100%;
   height: 200px;
-  border: 1px solid #dadada;
-  border-radius: 10px;
-  padding: 0.5rem;
+  border: none;
+  padding-left: 10px;
+
+  resize: none;
+  font-family: "NanumBarunGothicLight";
+}
+
+.content::placeholder {
+  color: #dadada;
+  font-size: small;
+  font-family: "NanumBarunGothicLight";
+}
+
+.content:focus {
+  outline: none;
 }
 
 .content:focus {
@@ -103,25 +121,25 @@
 }
 
 .button {
-  background: #adc178;
-  border: 1px solid #dadada;
-  border-radius: 8px;
-  width: 150px;
-  height: 50px;
+  background: rgb(87, 214, 150);
+  border-radius: 30px;
+  width: 100%;
+  height: 25px;
   text-align: center;
   color: white;
   cursor: pointer;
   margin-top: 10px;
+  border: none;
 }
 
 .radioInput1:checked:checked ~ .label1 .radioInput2:checked:checked ~ .label2 {
-  border-color: #adc178;
-  background: #adc178;
+  border-color: rgb(87, 214, 150);
+  background: rgb(87, 214, 150);
 }
 
 .radioInput1:checked:checked ~ .label1 .dot,
 .radioInput2:checked:checked ~ .label2 .dot {
-  background: #fff;
+  background: #dadada9f;
 }
 
 .radioInput1:checked:checked ~ .label1 .dot::before,
@@ -133,9 +151,10 @@
 .wrapper .label .labelText {
   font-size: small;
   color: #808080;
+  margin-left: 5px;
 }
 
 .radioInput1:checked:checked ~ .label1 labelText,
 .radioInput2:checked:checked ~ .label2 labelText {
-  color: #fff;
+  color: #dadada9f;
 }

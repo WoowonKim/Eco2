@@ -9,7 +9,7 @@ const DetailModal = (props) => {
   // 열기, 닫기
   const { open, close, questDetail, openPost, questDetailFeeds } = props;
   let finishDate = questDetail ? questDetail.finishTime.slice(0, 10) : null;
-  let finishTime = questDetail ? questDetail.finishTime.slice(11, 19) : null;
+  let finishTime = questDetail ? questDetail.finishTime.slice(11, 16) : null;
   let currUser = getUserId();
   let dispatch = useDispatch();
   return (
@@ -19,27 +19,31 @@ const DetailModal = (props) => {
     >
       {open ? (
         <section>
-          <header>참여하기</header>
-          {currUser == questDetail.user.id ? (
-            <button
-              onClick={() => {
-                dispatch(deleteQuest(questDetail.id));
-                close();
-              }}
-            >
-              삭제하기
-            </button>
-          ) : null}
+          <header>
+            참여하기
+            {currUser == questDetail.user.id && !questDetail.participated ? (
+              <button
+                onClick={() => {
+                  dispatch(deleteQuest(questDetail.id));
+                  close();
+                }}
+                className={styles.delete}
+              >
+                삭제하기
+              </button>
+            ) : null}
+          </header>
           <main className={styles.main}>
             <div className={styles.info}>
-              <div>{questDetail.mission.title}</div>
-              <div>
-                {finishDate}/{finishTime}에 종료됩니다.
+              <h2>미션! {questDetail.mission.title}</h2>
+              <div className={styles.endTime}>
+                미션 종료 : {finishDate}/{finishTime}
               </div>
-              <div>
+              <div className={styles.endTime}>
                 {questDetail.participantCount}/{questDetail.achieveCount}명이
                 참가했어요
               </div>
+              <div>{questDetail.content}</div>
             </div>
           </main>
           <footer>
@@ -64,9 +68,16 @@ const DetailModal = (props) => {
               </>
             )}
           </footer>
-
-          <div>참여자 인증글</div>
-          <FeedList display={"list"} feeds={questDetailFeeds}></FeedList>
+          {questDetailFeeds !== null && questDetailFeeds.length > 0 && (
+            <>
+              <div>참여자 인증글</div>
+              <FeedList
+                display={"list"}
+                feeds={questDetailFeeds}
+                category={questDetail.mission.category}
+              ></FeedList>
+            </>
+          )}
         </section>
       ) : null}
     </div>

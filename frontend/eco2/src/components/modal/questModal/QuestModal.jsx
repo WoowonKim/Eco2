@@ -1,19 +1,23 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { getUserId } from "../../../store/user/common";
 import styles from "./QuestModal.module.css";
 
 const QuestModal = props => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close, questList, setPayload, setMakeFlag } = props;
-  const [qNUm, setQNum] = useState(2);
-  let payload = {
+  const [load, setLoad] = useState({
     userId: getUserId(),
     missionId: 2,
     lat: null,
     lng: null,
     achieveCount: 3,
     content: "",
-  };
+  });
+  const [qNUm, setQNum] = useState(2);
+  useEffect(() => {
+    setQNum(2);
+  }, [open]);
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div
@@ -29,23 +33,30 @@ const QuestModal = props => {
               key={qNUm}
               className={styles.questImg}
             />
-            <select
-              name="mission"
-              onChange={e => {
-                console.log(e.target.value);
-                setQNum(e.target.value);
-                payload.missionId = e.target.value;
-              }}
-              className={styles.selectBox}
-            >
-              {questList.map((item, i) => {
-                return (
-                  <option value={item.id} key={i}>
-                    {item.title}
-                  </option>
-                );
-              })}
-            </select>
+            <div className={styles.selectBox}>
+              <select
+                name="mission"
+                onChange={(e) => {
+                  setQNum(e.target.value);
+                  let copy = { ...load };
+                  copy.missionId = e.target.value;
+                  setLoad(copy);
+                  console.log(load);
+                }}
+                className={styles.select}
+              >
+                {questList.map((item, i) => {
+                  return (
+                    <option value={item.id} key={i}>
+                      {item.title}
+                    </option>
+                  );
+                })}
+              </select>
+              <span className={styles.icoArrow}>
+                <i className="fa-solid fa-arrow-down"></i>
+              </span>
+            </div>
             <span className={styles.span} htmlFor="achieveCount">
               목표 참여 인원
             </span>
@@ -56,8 +67,10 @@ const QuestModal = props => {
               max="100"
               defaultValue={3}
               className={styles.numInput}
-              onChange={e => {
-                payload.achieveCount = e.target.value;
+              onChange={(e) => {
+                let copy = { ...load };
+                copy.achieveCount = e.target.value;
+                setLoad(copy);
               }}
             ></input>
             <fieldset className={styles.fieldset}>
@@ -65,8 +78,10 @@ const QuestModal = props => {
               <textarea
                 id="content"
                 className={styles.contentBox}
-                onChange={e => {
-                  payload.content = e.target.value;
+                onChange={(e) => {
+                  let copy = { ...load };
+                  copy.content = e.target.value;
+                  setLoad(copy);
                 }}
               />
             </fieldset>
@@ -76,8 +91,8 @@ const QuestModal = props => {
             <button
               className={styles.create}
               onClick={() => {
-                console.log(payload);
-                setPayload(payload);
+                console.log(load);
+                setPayload(load);
                 close();
                 setMakeFlag(true);
               }}

@@ -8,10 +8,13 @@
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.6);
 }
-.modal button {
+.delete {
   outline: none;
   cursor: pointer;
   border: 0;
+  color: red;
+  position: absolute;
+  right: 10px;
 }
 .modal > section {
   width: 90%;
@@ -27,6 +30,7 @@
   padding: 16px 16px;
   background-color: #f1f1f1;
   font-weight: 700;
+  position: relative;
 }
 
 .modal > section > main {
@@ -46,7 +50,6 @@
   border-radius: 8px;
   width: 330px;
   height: 35px;
-
   text-align: center;
   color: white;
   cursor: pointer;
@@ -76,15 +79,15 @@
 }
 .info {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
 }
 .info div {
   margin: 5px;
 }
-.main {
-  display: flex;
-  flex-wrap: wrap;
+.endTime {
+  font-size: small;
+  align-self: flex-end;
 }
 .selectBox {
   width: 35%;

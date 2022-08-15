@@ -1,14 +1,19 @@
 package com.web.eco2.model.service.post;
 
 import com.web.eco2.domain.dto.post.PostCreateDto;
+import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
+import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.domain.entity.mission.Quest;
-import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.repository.post.PostRepository;
+import com.web.eco2.model.service.FriendService;
+import com.web.eco2.model.service.user.UserService;
+import com.web.eco2.model.service.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -17,12 +22,15 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -32,6 +40,18 @@ public class PostService {
 
     @Autowired
     private PostImgRepository postImgRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserSettingService userSettingService;
+
+    @Autowired
+    private FriendService friendService;
+
+    @Autowired
+    private PostLikeService postLikeService;
 
 
     public Post getById(Long id) {
@@ -52,13 +72,13 @@ public class PostService {
         String saveName = uuid + originalName.substring(originalName.lastIndexOf("."), originalName.length());
         Path postImgPath = Paths.get(uploadPath);
         File savePostImage = new File(postImgPath.toAbsolutePath().toString(), saveName);
-        if(!savePostImage.getParentFile().exists() && !savePostImage.getParentFile().mkdirs()) {
+        if (!savePostImage.getParentFile().exists() && !savePostImage.getParentFile().mkdirs()) {
             throw new IOException("폴더 생성 실패");
         }
         postImage.transferTo(savePostImage);
 
         Post post;
-        if(postCreateDto.getQuest() != null) {
+        if (postCreateDto.getQuest() != null) {
             post = postCreateDto.toQuestPostEntity();
         } else {
             post = postCreateDto.toEntity();
@@ -165,7 +185,6 @@ public class PostService {
     }
 
 
-
     public List<QuestPost> findByQuest(Quest quest) {
         return postRepository.findByQuest(quest);
     }
@@ -188,6 +207,45 @@ public class PostService {
 
     public boolean existsByUserIdAndQuestId(Long userId, Long questId) {
         return postRepository.existsByUserIdAndQuestId(userId, questId) != null;
+    }
+
+    public List<PostListDto> filterAvailablePost(List<? extends Post> posts, User user) {
+        UserSetting userSetting = userSettingService.findById(user.getId());
+        Set<Long> friends = friendService.getFriends(user.getId()).stream()
+                .map(User::getId).collect(Collectors.toSet());
+
+        return posts.stream().filter(p -> canView(p, user, userSetting, friends)).map(p -> {
+            PostListDto postListDto = PostListDto.builder().id(p.getId()).userId(p.getUser().getId())
+                    .userName(p.getUser().getName()).userEmail(p.getUser().getEmail())
+                    .content(p.getContent()).registTime(p.getRegistTime())
+                    .postImgUrl("img/post/" + p.getId()).postPublicFlag(p.isPublicFlag()).commentFlag(p.isCommentFlag())
+                    .userPublicFlag(true).mission(p.getMission()).customMission(p.getCustomMission())
+                    .likeCount(postLikeService.likeCount(p.getId()))
+                    .postLikeUserIds(postLikeService.specificPostLikeUserIdList(p.getId())).build();
+
+            if (p instanceof QuestPost) {
+                postListDto.setQuest(((QuestPost) p).getQuest().toDto());
+            }
+            return postListDto;
+        }).collect(Collectors.toList());
+    }
+
+    public List<PostListDto> filterAvailablePost(List<? extends Post> posts, String email) {
+        return filterAvailablePost(posts, userService.findByEmail(email));
+    }
+
+    public boolean canView(Post post, User user, UserSetting userSetting, Set<Long> friends) {
+        return post.getUser().getId().equals(user.getId())
+                || (post.isPublicFlag() && (userSetting.isPublicFlag() || friends.contains(post.getUser().getId())));
+    }
+
+    public boolean canView(Post post, String email) {
+        User user = userService.findByEmail(email);
+        UserSetting userSetting = userSettingService.findById(user.getId());
+        Set<Long> friends = friendService.getFriends(user.getId()).stream()
+                .map(User::getId).collect(Collectors.toSet());
+
+        return canView(post, user, userSetting, friends);
     }
 
 //    @Transactional()
