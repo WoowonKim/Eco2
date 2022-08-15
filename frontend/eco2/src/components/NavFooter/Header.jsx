@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  getAccessToken,
-  getUserEmail,
-  getUserId,
-} from "../../store/user/common";
+import { getAccessToken, getUserEmail, getUserId } from "../../store/user/common";
 import styles from "./Header.module.css";
 
 const Header = () => {
@@ -34,7 +30,8 @@ const Header = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userId, imgSrc]);
+    // imgSrc
+  }, [userId]);
   return (
     <header className={styles.Header}>
       <div
@@ -42,14 +39,8 @@ const Header = () => {
           navigate("/mainTree");
         }}
       >
-        <img
-          src={`${process.env.PUBLIC_URL}/logo.png`}
-          className={styles.Img}
-        ></img>
-        <img
-          src={`${process.env.PUBLIC_URL}/logoText.png`}
-          className={styles.Img}
-        ></img>
+        <img src={`${process.env.PUBLIC_URL}/logo.png`} className={styles.Img}></img>
+        <img src={`${process.env.PUBLIC_URL}/logoText.png`} className={styles.Img}></img>
       </div>
       <nav>
         <button
@@ -58,9 +49,8 @@ const Header = () => {
             navigate(`/profile/${getUserId()}`, { replace: true });
           }}
         >
-          
-          <i class="fa-solid fa-emergency">신고</i>        
-          </button>
+          <i class="fa-solid fa-emergency">신고</i>
+        </button>
 
         <button
           className={styles.profileButton}
@@ -78,10 +68,6 @@ const Header = () => {
         >
           {/* <img src={imgSrc} alt="profileImg" className={styles.profileImg} /> */}
         </button>
-
-
-
-
       </nav>
     </header>
   );
