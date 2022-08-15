@@ -3,8 +3,6 @@ package com.web.eco2.model.repository;
 import com.web.eco2.domain.entity.Friend;
 import com.web.eco2.domain.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
