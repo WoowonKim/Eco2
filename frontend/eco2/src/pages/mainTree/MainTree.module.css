@@ -5,7 +5,7 @@
 .Img {
   /* margin-top: 20%; */
   width: 390px;
-height: 90vh;
+height: 82vh;
 }
 .windImg {
   position: absolute;
@@ -13,7 +13,7 @@ height: 90vh;
   left: 20px;
   top: 80px;
   animation-name: qimg;
-  animation-duration: 8s;
+  animation-duration: 6s;
   animation-iteration-count: infinite;
 }
 .windImg2 {
@@ -21,6 +21,16 @@ height: 90vh;
   width: 40%;
   left: 150px;
   top: 200px;
+  animation-name: qimg;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+}
+
+.windImg3 {
+  position: absolute;
+  width: 40%;
+  left: 50px;
+  top: 300px;
   animation-name: qimg;
   animation-duration: 8s;
   animation-iteration-count: infinite;

@@ -13,8 +13,8 @@ const NoticeDetail = () => {
   const [modalType, setModalType] = useState("");
   const [name, setName] = useState("");
   const [registTime, setRegistTime] = useState("");
-  const [next, setNext] = useState(0);
-  const [prev, setPrev] = useState(0);
+  const [next, setNext] = useState([]);
+  const [prev, setPrev] = useState([]);
   const [index, setIndex] = useState(-1);
 
   const params = useParams();
@@ -32,13 +32,17 @@ const NoticeDetail = () => {
   }, [name, notice.registTime, registTime]);
 
   useEffect(() => {
-    // console.log(
-    //   "now",
-    //   location.state.notices[location.state.index - 1].id,
-    //   location.state.notices[location.state.index].id,
-    //   location.state.notices[location.state.index + 1].id,
-    //   location.state?.index
-    // );
+    console.log(
+      "now",
+      "prev",
+      location.state.notices[location.state.index - 1],
+      "now",
+      location.state.notices[location.state.index],
+      "next",
+      location.state.notices[location.state.index + 1],
+      "index",
+      location.state?.index
+    );
     setName(getUserName());
     dispatch(noticeDetail({ noticeId: params.noticeId })).then((res) => {
       if (res.payload.status === 200) {
@@ -52,11 +56,11 @@ const NoticeDetail = () => {
               })
             ).then((res) => {
               if (res.payload?.status === 200) {
-                setPrev(res.payload?.notice);
+                setNext(res.payload.notice);
               }
             });
           } else {
-            setPrev(false);
+            setNext(false);
           }
           if (0 <= location.state.index - 1) {
             dispatch(
@@ -65,11 +69,11 @@ const NoticeDetail = () => {
               })
             ).then((res) => {
               if (res.payload?.status === 200) {
-                setNext(res.payload?.notice);
+                setPrev(res.payload?.notice);
               }
             });
           } else {
-            setNext(false);
+            setPrev(false);
           }
         }
       }
@@ -124,7 +128,7 @@ const NoticeDetail = () => {
       {visible && modalType === "수정" && (
         <PostModal
           title={"게시물 수정"}
-          content={"게시물을 수정하시겠습니까"}
+          content={"게시물을 수정하시겠습니까?"}
           type={"수정"}
           noticeId={notice.id}
           noticeContent={notice.content}
@@ -136,7 +140,7 @@ const NoticeDetail = () => {
         <PostModal
           className={`${displayType}`}
           title={"게시물 삭제"}
-          content={"게시물을 삭제하시겠습니까"}
+          content={"게시물을 삭제하시겠습니까?"}
           type={"삭제"}
           noticeId={notice.id}
           closeModal={() => setVisible(!visible)}
@@ -149,7 +153,7 @@ const NoticeDetail = () => {
       </div>
       <pre className={styles.content}>{notice.content}</pre>
       <div className={styles.otherPage}>
-        {prev ? (
+        {!!prev ? (
           <div
             className={styles.pageContainer}
             onClick={() => {
@@ -165,9 +169,7 @@ const NoticeDetail = () => {
             }}
           >
             <span className={styles.page}>이전</span>
-            <span className={styles.pageTitle}>
-              {location.state.prev.title}
-            </span>
+            <span className={styles.pageTitle}>{prev.title}</span>
           </div>
         ) : (
           <div className={styles.pageContainer}>
@@ -175,7 +177,7 @@ const NoticeDetail = () => {
             <span className={styles.pageTitle}>이전글이 없습니다.</span>
           </div>
         )}
-        {next ? (
+        {!!next ? (
           <div
             className={styles.pageContainer}
             onClick={() => {
@@ -191,9 +193,7 @@ const NoticeDetail = () => {
             }}
           >
             <span className={styles.page}>다음</span>
-            <span className={styles.pageTitle}>
-              {location.state.next.title}
-            </span>
+            <span className={styles.pageTitle}>{next.title}</span>
           </div>
         ) : (
           <div className={styles.pageContainer}>

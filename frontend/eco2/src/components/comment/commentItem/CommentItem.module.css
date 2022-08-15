@@ -20,9 +20,10 @@
 }
 
 .profileImg {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   background-color: white;
+  border-radius: 50%;
   border: none;
   margin-right: 3px;
 }
@@ -30,7 +31,7 @@
 .user {
   font-weight: bold;
   font-size: x-small;
-  margin: 1px 15px 0 0;
+  margin: 5px 15px 0 0;
 }
 
 .content {

@@ -24,7 +24,7 @@ const ChattModalItem = ({ key, id, email, name }) => {
         <div className={`${styles.text}`}>{name}</div>
       </div>
       <div className={styles.rightContent}>
-        <button
+        <div
           onClick={() => {
             dispatch(createRoom({ userId, id })).then((res) => {
               if (res.payload?.status === 200) {
@@ -33,11 +33,11 @@ const ChattModalItem = ({ key, id, email, name }) => {
               }
             });
           }}
-          className={`${styles.cancleButton}`}
+          className={`${styles.createButton}`}
         >
           {" "}
           채팅
-        </button>
+        </div>
       </div>
     </div>
   );

@@ -55,7 +55,7 @@ const MainTree = () => {
     <div className={styles.Tree} ref={drop}>
       <img
         src={process.env.PUBLIC_URL + "tree_leaves/tree6.png"}
-        className={styles.Img} 
+        className={styles.Img}
         draggable="false"
       ></img>
       <img
@@ -66,8 +66,16 @@ const MainTree = () => {
         className={styles.windImg2}
         src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
       ></img>
+            <img
+        className={styles.windImg3}
+        src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
+      ></img>
       {leaves.data.map((leaf) => {
         const { id, left, top, category } = leaf;
+        let delay = Math.random() * 2;
+        delay *= 10;
+        delay = Math.floor(delay);
+        delay /= 10;
         return (
           <Leaf
             key={id}
@@ -75,47 +83,45 @@ const MainTree = () => {
             left={left}
             top={top}
             category={category}
+            delay={delay + "s"}
           ></Leaf>
         );
       })}
       <div className={styles.Statis}>
         <div>
-        <img
-      className={styles.leaf}
-      src={
-        process.env.PUBLIC_URL + "/tree_leaves/Leaf1.png"}
-    ></img>실천{" "}{statistic.category1}회
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf1.png"}
+          ></img>
+          실천 {statistic.category1}회
         </div>
         <div>
-        <img
-      className={styles.leaf}
-      src={
-        process.env.PUBLIC_URL + "/tree_leaves/Leaf2.png"}
-    ></img>사용 {statistic.category2}
-          회
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf2.png"}
+          ></img>
+          사용 {statistic.category2}회
         </div>
         <div>
-        <img
-      className={styles.leaf}
-      src={
-        process.env.PUBLIC_URL + "/tree_leaves/Leaf3.png"}
-    ></img>절약{" "}
-          {statistic.category3}회
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf3.png"}
+          ></img>
+          절약 {statistic.category3}회
         </div>
         <div>
-        <img
-      className={styles.leaf}
-      src={
-        process.env.PUBLIC_URL + "/tree_leaves/Leaf4.png"}
-    ></img>구매{" "}
-          {statistic.category4}회
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf4.png"}
+          ></img>
+          구매 {statistic.category4}회
         </div>
         <div>
-        <img
-      className={styles.leaf}
-      src={
-        process.env.PUBLIC_URL + "/tree_leaves/Leaf5.png"}
-    ></img>재활용 {statistic.category5}회
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf5.png"}
+          ></img>
+          재활용 {statistic.category5}회
         </div>
       </div>
     </div>

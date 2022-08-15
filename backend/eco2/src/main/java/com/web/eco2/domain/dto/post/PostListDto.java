@@ -3,6 +3,7 @@ package com.web.eco2.domain.dto.post;
 
 import com.google.gson.JsonArray;
 import com.web.eco2.domain.dto.mission.QuestDto;
+import com.web.eco2.domain.entity.Friend;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.post.Comment;
@@ -28,7 +29,9 @@ public class PostListDto {
     private String content;
     private LocalDateTime registTime;
     private String postImgUrl;
-    private boolean publicFlag;
+    private boolean userPublicFlag;
+//    private List<Long> friendIds;
+    private boolean postPublicFlag;
     private boolean commentFlag;
     private Mission mission;
     private CustomMission customMission;

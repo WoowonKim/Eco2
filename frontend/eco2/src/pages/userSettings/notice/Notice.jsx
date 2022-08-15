@@ -7,18 +7,21 @@ import { noticeList } from "../../../store/admin/noticeSlice";
 import { getUserName, getUserEmail } from "../../../store/user/common";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userInformation } from "../../../store/user/userSettingSlice";
+import { useRef } from "react";
 
 const Notice = () => {
   const [notices, setNotices] = useState({});
   const [pages, setPages] = useState(0);
   const [query, setQuery] = useState("");
   const [admin, setAdmin] = useState(false);
+  const [isSelected, setIsSelected] = useState(0);
 
   // const [pageNumber, setPageNumber] = useState(0);
 
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const pageRef = useRef();
 
   const pagenation = [];
 
@@ -31,10 +34,14 @@ const Notice = () => {
             if (res.payload.status === 200) {
               setNotices(res.payload.noticeList);
               setPages(res.payload.noticeList.totalPages);
+              setIsSelected(i);
             }
           });
         }}
-        className={styles.pageNumber}
+        ref={pageRef}
+        className={`${styles.pageNumber} ${
+          isSelected === i ? styles.active : null
+        }`}
       >
         {i + 1}
       </span>
@@ -68,6 +75,7 @@ const Notice = () => {
       }
     });
   }, []);
+  // console.log(pageRef.current.innerText, pages);
   return (
     <div>
       {admin && (

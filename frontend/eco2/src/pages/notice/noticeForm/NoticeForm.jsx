@@ -53,11 +53,11 @@ const NoticeForm = () => {
   }, []);
   return (
     <div className={styles.container}>
-      <div className={styles.titleGroup}>
+      {/* <div className={styles.titleGroup}>
         <i className={`fa-brands fa-pagelines ${styles.titleIcon}`}></i>
         <h2 className={styles.title}>공지 작성</h2>
       </div>
-      <hr className={styles.line} />
+      <hr className={styles.line} /> */}
       <form onSubmit={(e) => onSubmit(e)}>
         <div className={styles.wrapper}>
           <input
@@ -110,6 +110,7 @@ const NoticeForm = () => {
         />
         <textarea
           required
+          placeholder="내용을 입력해주세요"
           className={styles.content}
           value={editText ? editText : text}
           onChange={(e) => {

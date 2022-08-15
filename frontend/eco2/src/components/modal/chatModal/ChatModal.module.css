@@ -53,6 +53,7 @@
 }
 .profileImg{
   width: 40px;
+  height: 40px;
   border: #EAEAEA solid 1px;
   border-radius: 30px;
   margin: 5px;
@@ -60,7 +61,7 @@
 
 }
 .text{
-margin-top: 15px;
+margin-top: 18px;
 font-size: small;
 }
 .rightContent{
@@ -71,27 +72,34 @@ font-size: small;
   margin-top: 20px;
 }
 
+.createButton {
+  position: relative;
+  margin-top: 7px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  color: #ffffff;
+  background-color: rgb(87, 214, 150);
+}
 
-
+.createButton:hover {
+  background-color:rgb(166, 228, 166);
+}
 
 .cancleButton {
-  position: relative;
-  margin-top: 10px;
-  padding: 3px 5px;
+  position: absolute;
+  bottom: 15px;
+  width: 88%;
+  margin-top: 7px;
+  padding: 7px 10px;
   border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
   text-decoration: none;
-  font-weight: 600;
-  border: 2px solid #dadada;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
+  color: #ffffff;
+  background-color: rgb(153, 153, 153);
 }
 
-.cancleButton:hover {
-  background-color: #dadada;
-  color: #000000;
-}
 
 .hidden {
   display: none;

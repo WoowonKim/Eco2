@@ -1,27 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  getAccessToken,
-  getUserEmail,
-  getUserId,
-} from "../../store/user/common";
+import { getAccessToken, getUserEmail, getUserId } from "../../store/user/common";
+import { userInformation } from "../../store/user/userSettingSlice";
 import styles from "./Header.module.css";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
   const [userId, setUserId] = useState(getUserId());
   const [imgSrc, setImgSrc] = useState("");
   const [checkImg, setCheckImg] = useState(0);
+  const [admin, setAdmin] = useState(false);
 
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setUserId(getUserId());
     if (!userId) {
       return;
     }
-    // setImgSrc(`http://localhost:8002/img/profile/${userId}`);
-  }, [userId, checkImg]);
-
+    dispatch(userInformation({ email: getUserEmail() })).then((res) => {
+      if (res.payload.user.role === "[ROLE_ADMIN]") {
+        setAdmin(true);
+      }
+    });
+    const headers = new Headers();
+    headers.append("Auth-accessToken", getAccessToken());
+    const options = {
+      method: "GET",
+      headers: headers,
+    };
+    fetch(`http://localhost:8002/img/profile/${userId}`, options)
+      .then((res) => {
+        res.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          setImgSrc(url);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [userId]);
   return (
     <header className={styles.Header}>
       <div
@@ -29,24 +48,21 @@ const Header = () => {
           navigate("/mainTree");
         }}
       >
-        <img
-          src={`${process.env.PUBLIC_URL}/logo.png`}
-          className={styles.Img}
-        ></img>
-        <img
-          src={`${process.env.PUBLIC_URL}/logoText.png`}
-          className={styles.Img}
-        ></img>
+        <img src={`${process.env.PUBLIC_URL}/logo.png`} className={styles.Img}></img>
+        <img src={`${process.env.PUBLIC_URL}/logoText.png`} className={styles.Img}></img>
       </div>
       <nav>
-        <button
-          className={styles.profileButton}
-          onClick={() => {
-            navigate(`/profile/${getUserId()}`);
-          }}
-        >
-          <i className="fa-solid fa-emergency">신고</i>
-        </button>
+       
+        {admin && (
+ <button
+ className={styles.profileButton}
+ onClick={() => {
+   navigate(`/report`);
+ }}
+>
+ <i className={`fa-solid fa-circle-exclamation ${styles.headerIcon}`}></i></button>
+      )}
+
 
         <button
           className={styles.profileButton}
