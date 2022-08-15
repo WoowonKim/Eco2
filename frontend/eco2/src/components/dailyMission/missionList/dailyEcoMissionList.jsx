@@ -157,7 +157,6 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
         <p>오늘은 어떤 도전을 해볼까?</p>
       </div>
 
-
       {trendingMission && (
         <fieldset>
           <legend className={styles.word}>Trending</legend>
@@ -194,7 +193,9 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
                   }}
                 ></i>
                 <i
-                  className={`${"fa-solid fa-trash-can"} ${styles.favoritetrash}`}
+                  className={`${"fa-solid fa-trash-can"} ${
+                    styles.favoritetrash
+                  }`}
                   onClick={() => {
                     const faId = it.id;
                     onDeleButton(id, favoriteBoolean, faId, favoriteTrue);
