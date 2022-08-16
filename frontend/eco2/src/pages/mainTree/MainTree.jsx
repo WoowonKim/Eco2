@@ -72,7 +72,7 @@ const MainTree = () => {
         delay *= 10;
         delay = Math.floor(delay);
         delay /= 10;
-
+        console.log(id, createdItem);
         if (id === createdItem) {
           delay = 0;
         }

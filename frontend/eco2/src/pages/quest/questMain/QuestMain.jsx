@@ -6,6 +6,7 @@ import QuestModal from "../../../components/modal/questModal/QuestModal";
 import DetailModal from "../../../components/modal/questModal/DetailModal";
 import PostModal from "../../../components/modal/questModal/PostModal";
 import axiosService from "../../../store/axiosService";
+import ConfirmModal from "../../../components/modal/confirmModal/ConfirmModal";
 const QuestMain = () => {
   const name = getUserName();
   const [count, setCount] = useState(0);
@@ -18,7 +19,8 @@ const QuestMain = () => {
   const [questDetail, setQuestDetail] = useState(null);
   const [questDetailFeeds, setQuestDetailFeeds] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
-
+  const [confirm, setConfirm] = useState(false);
+  const [content, setContent] = useState("");
   useEffect(() => {
     axiosService.get("/mission/quest").then((res) => {
       setQuestList(res.data.missions);
@@ -78,6 +80,8 @@ const QuestMain = () => {
         setCount={setCount}
         name={name}
         count={count}
+        setConfirm={setConfirm}
+        setContent={setContent}
       />
       <QuestModal
         open={createModal}
@@ -104,6 +108,15 @@ const QuestMain = () => {
           close={closePostModal}
           closeDetail={closeDetailModal}
         ></PostModal>
+      )}
+      {confirm && (
+        <ConfirmModal
+          closeModal={() => {
+            setConfirm(!confirm);
+          }}
+          title={""}
+          content={content}
+        ></ConfirmModal>
       )}
     </div>
   );
