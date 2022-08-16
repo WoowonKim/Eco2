@@ -9,6 +9,7 @@ export const userInformation = createAsyncThunk(
       const response = await axiosService.get(
         `/userinformation/${args.email}/${args.userId}`
       );
+      console.log(response.data);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

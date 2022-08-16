@@ -72,6 +72,18 @@ export const deleteRoom = createAsyncThunk(
   }
 );
 
+// 이름으로 아이디 검색
+export const findByName = createAsyncThunk(
+  "chattingSlice/findByName",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.get(`/chat/findName/${args.toUser}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 export const chattingSlice = createSlice({
   name: "chatting",
   initialState: {

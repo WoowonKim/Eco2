@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./ChattingItem.module.css";
 import { getUserName } from "../../../store/user/common";
 import ChatModal from "../../../components/modal/chatModal/ChatModal";
+import { findByName } from "../../../store/chat/chattingSlice";
 
 const ChattingItem = ({
   id,
@@ -15,10 +16,12 @@ const ChattingItem = ({
   setDeleteFlag,
 }) => {
   const [toUserName, setToUserName] = useState("");
+  const [toUserId, setToUserId] = useState("");
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
  const displayType = modalType ? styles.visible : styles.hidden;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const name = getUserName();
@@ -26,20 +29,25 @@ const ChattingItem = ({
       setToUserName(fromUser);
     } else {
       setToUserName(toUser);
+      console.log(toUserName);
+      dispatch(findByName({ toUser: toUserName })).then((res) => {
+        if (res.payload.status === 200) {
+          setToUserId(res.payload.toUser.id);
+        }
+      });
     }
-  }, []);
+  }, [toUserName]);
 
-  const room = () => {
+  const room = () => { 
     navigate(`/chatting/room`, { state: { roomId: id, userName: toUserName } });
     window.location.reload(`/chatting/room`);
     };
   return (
       <div className={styles.list}>
-        {/* <Link to={`/chatting/room`} state={{ roomId: id, userName: toUserName }} className={styles.link}> */}
           <div onClick={room} className={styles.link}>
           <div className={styles.leftContent}>
             <img
-              src={`http://localhost:8002/img/profile/${id}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUserId}`}
               alt="profileImg"
               className={styles.profileImg}
             />
@@ -57,7 +65,6 @@ const ChattingItem = ({
           <div className={styles.rightContent}>
             <div className={`${styles.lastSendTime}`}>{lastSendTime}</div>
           </div>
-        {/* </Link> */}
         </div>
         <div className={styles.deleteButton}>
           <i className={`fa-solid fa-minus ${styles.icon}`}   
