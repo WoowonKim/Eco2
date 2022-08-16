@@ -190,12 +190,12 @@ const DailyMissionMain = () => {
           />
         ))}
       </div>
-      {/* <div>
+      <div>
         <img
           src={`${process.env.REACT_APP_BE_HOST}img/reward/${calUR}`}
           alt=""
         />
-      </div> */}
+      </div>
       <div className={styles.btn}>
         {successBtn ? (
           <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
@@ -208,7 +208,6 @@ const DailyMissionMain = () => {
                 onClick={() => {
                   setVisible(!visible);
                   setModalType("미션등록");
-                  setModalVisible(true);
                 }}
                 // onClick={onSucsses}
               >
@@ -229,12 +228,12 @@ const DailyMissionMain = () => {
             setCalUR={setCalUR}
           />
         )}
-        {calUR > 0 && modalVisible && (
+        {calUR > 0 && (
           <CalendarModal
             calendarId={calUR}
             month={month}
             day={days}
-            closeModal={() => setModalVisible(!modalVisible)}
+            // closeModal={()=>setModalVisible(!modalVisible)}
           />
         )}
       </div>

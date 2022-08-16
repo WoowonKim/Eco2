@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { GreenBtn } from "../../../components/styled";
 import MissionMain from "../../../components/dailyMission/missionItem/missionMainItem";
 import MissionCustomItem from "../../../components/dailyMission/missionItem/missionCustomItem";
-import CalendarModal from "../../../components/calendar/calendarModal/CalendarModal";
 
 // Store
 import {
@@ -72,11 +71,9 @@ const DailyMissionMain = () => {
       setLng(res.longitude);
     });
   }, [main]);
-  const month = nowTime.slice(5, 7);
-  const days = nowTime.slice(8, 10);
-  // console.log("날짜 ===>", nowTime);
-  // console.log("월 ===>", nowTime.slice(5, 7));
-  // console.log("일 ===>", nowTime.slice(8, 10));
+
+  console.log("날짜 ===>", nowTime);
+
   /**
    * 매일 추천 미션제공을 위한 postTodayMission
    */
@@ -190,12 +187,12 @@ const DailyMissionMain = () => {
           />
         ))}
       </div>
-      {/* <div>
+      <div>
         <img
           src={`${process.env.REACT_APP_BE_HOST}img/reward/${calUR}`}
           alt=""
         />
-      </div> */}
+      </div>
       <div className={styles.btn}>
         {successBtn ? (
           <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
@@ -208,7 +205,6 @@ const DailyMissionMain = () => {
                 onClick={() => {
                   setVisible(!visible);
                   setModalType("미션등록");
-                  setModalVisible(true);
                 }}
                 // onClick={onSucsses}
               >
@@ -227,14 +223,6 @@ const DailyMissionMain = () => {
             successId={id}
             toDayGet={toDayGet}
             setCalUR={setCalUR}
-          />
-        )}
-        {calUR > 0 && modalVisible && (
-          <CalendarModal
-            calendarId={calUR}
-            month={month}
-            day={days}
-            closeModal={() => setModalVisible(!modalVisible)}
           />
         )}
       </div>
