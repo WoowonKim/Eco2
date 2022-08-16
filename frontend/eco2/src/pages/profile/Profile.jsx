@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
 // import { postImage, profilImage } from "../../store/fetchService";
 import {
+  accountSetting,
   friendRequest,
   friends,
   isFriend,
@@ -41,6 +42,7 @@ const Profile = () => {
   const [fileImage, setFileImage] = useState("");
   const [file, setFile] = useState("");
   const [originalImg, setOriginalImg] = useState("");
+  const [isPublic, setIsPublic] = useState(true);
   // const [admin, setAdmin] = useState(false);
 
   const navigate = useNavigate();
@@ -61,10 +63,12 @@ const Profile = () => {
       setMissionList(res.payload.postList);
       setQuestList(res.payload.questPostList);
       setSocialType(res.payload.user.socialType);
+    });
 
-      // if (res.payload.user.role === "[ROLE_ADMIN]") {
-      //   setAdmin(true);
-      // }
+    dispatch(accountSetting({ email })).then((res) => {
+      if (res.payload?.status === 200) {
+        setIsPublic(res.payload.userSetting.publicFlag);
+      }
     });
 
     // 친구조회
@@ -125,6 +129,7 @@ const Profile = () => {
       });
     }
   }, [friend, userId]);
+  console.log(friend);
   return (
     <div className={styles.container}>
       <div className={styles.userInfo}>
@@ -294,43 +299,54 @@ const Profile = () => {
             {userSetting === 3}
           </div>
         </div>
-        {userSetting === 1 && <Calendar id={userId} />}
-        {userSetting === 2 && (
-          <div className={`${styles.mission}`}>
-            {missionList.map((mission) =>
-              getUserId() !== params.userId ? (
-                !!mission.publicFlag && (
+        {isPublic || friend || getUserId() === params.userId ? (
+          <>
+            {userSetting === 1 && <Calendar id={userId} />}
+            {userSetting === 2 && (
+              <div className={`${styles.mission}`}>
+                {missionList.map((mission) =>
+                  getUserId() !== params.userId ? (
+                    !!mission.publicFlag && (
+                      <img
+                        key={mission.id}
+                        src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                        alt="missionImg"
+                        className={styles.missionImg}
+                        onClick={() => navigate(`/post/${mission.id}`)}
+                      />
+                    )
+                  ) : (
+                    <img
+                      key={mission.id}
+                      src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                      alt="missionImg"
+                      className={styles.missionImg}
+                      onClick={() => navigate(`/post/${mission.id}`)}
+                    />
+                  )
+                )}
+              </div>
+            )}
+            {userSetting === 3 && (
+              <div className={`${styles.mission} ${displayType2}`}>
+                {questList.map((mission) => (
                   <img
                     key={mission.id}
                     src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                    alt="missionImg"
+                    alt="profileImg"
                     className={styles.missionImg}
                     onClick={() => navigate(`/post/${mission.id}`)}
                   />
-                )
-              ) : (
-                <img
-                  key={mission.id}
-                  src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                  alt="missionImg"
-                  className={styles.missionImg}
-                  onClick={() => navigate(`/post/${mission.id}`)}
-                />
-              )
+                ))}
+              </div>
             )}
-          </div>
-        )}
-        {userSetting === 3 && (
-          <div className={`${styles.mission} ${displayType2}`}>
-            {questList.map((mission) => (
-              <img
-                key={mission.id}
-                src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                alt="profileImg"
-                className={styles.missionImg}
-                onClick={() => navigate(`/post/${mission.id}`)}
-              />
-            ))}
+          </>
+        ) : (
+          <div>
+            <p>
+              <i className="fa-solid fa-lock"></i>
+              {""} 이 계정은 비공개 계정입니다.
+            </p>
           </div>
         )}
       </div>

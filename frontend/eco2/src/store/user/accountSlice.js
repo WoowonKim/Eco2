@@ -68,13 +68,7 @@ export const accountSetting = createAsyncThunk(
   "accountSlice/accountSetting",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await axiosService.get(`/account/${args.email}`, {
-        email: args.email,
-        publicFlag: args.publicFlag,
-        commentAlarmFlag: args.commentAlarmFlag,
-        chatAlarmFlag: args.chatAlarmFlag,
-        darkmodeFlag: args.darkmodeFlag,
-      });
+      const response = await axiosService.get(`/account/${args.email}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

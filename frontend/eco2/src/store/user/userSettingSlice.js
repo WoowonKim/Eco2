@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosService from "../axiosService";
 
-// 소셜 로그인한 회원 정보는 조회가 안되는 것 같음 -> 확인 필요
 // 유저 정보 조회
 export const userInformation = createAsyncThunk(
   "userInformationSlice/userInformation",
