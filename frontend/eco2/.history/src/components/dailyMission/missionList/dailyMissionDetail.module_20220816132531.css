@@ -1,6 +1,6 @@
 /* 상단 위치 조정 */
 .topRoot {
-  margin-top: 20px;
+  margin-top: 70px;
 }
 /* 오늘은 어떤 도전을 해볼까 */
 .Font {
@@ -23,7 +23,7 @@ li {
 .li {
   height: 34px;
   padding: 0 1rem;
-  line-height: 34px;
+  line-height: 340px;
 }
 .trending {
   font-size: small;
@@ -148,7 +148,7 @@ li {
 
 /* 미션리스트 START */
 .scrollMission {
-  height: 250px;
+  height: 300px;
   width: 360px;
   overflow-x: auto;
   overflow-y: scroll;
@@ -448,8 +448,4 @@ fieldset {
   text-align: center;
   font-size: small;
   padding-top: 5px;
-}
-
-.btnAdd {
-  margin-bottom: 20px;
 }
