@@ -38,6 +38,7 @@ const UserSettings = () => {
   const [isName, setIsName] = useState(false);
   const [nameMessage, setNameMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordMessage2, setPasswordMessage2] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [file, setFile] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
@@ -62,6 +63,8 @@ const UserSettings = () => {
       .then((res) => {
         if (res.payload?.status === 200) {
           setPasswordForm(true);
+        } else {
+          setPasswordMessage2(res.payload?.msg);
         }
       })
       .catch((err) => console.log(err, email, password));
@@ -284,7 +287,9 @@ const UserSettings = () => {
                   >
                     확인
                   </button>
-                  <p></p>
+                  <p className={passwordForm ? styles.success : styles.fail}>
+                    {passwordMessage2}
+                  </p>
                   <hr className={styles.line} />
                 </div>
               ) : (
