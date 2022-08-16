@@ -6,6 +6,7 @@ import styles from "./QuestModal.module.css";
 const QuestModal = props => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close, questList, setPayload, setMakeFlag } = props;
+  const [disabled, setDisabled] = useState(false);
   const [load, setLoad] = useState({
     userId: getUserId(),
     missionId: 2,
@@ -18,6 +19,16 @@ const QuestModal = props => {
   useEffect(() => {
     setQNum(2);
   }, [open]);
+
+  useEffect(() => {
+    if(load.content !=""){
+      setDisabled(true);
+    }
+    else{
+      setDisabled(false);
+    }
+    }, [load.content]);
+
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div
@@ -81,7 +92,7 @@ const QuestModal = props => {
                 }}
               />
               </div>
-            {/* <p className={styles.p}>퀘스트는 24시간 동안 유지됩니다.</p> */}
+            <div className={styles.p}>※ 퀘스트는 24시간 동안 유지됩니다.</div>
           </main>
           <footer>
             <button
@@ -91,10 +102,11 @@ const QuestModal = props => {
                 close();
                 setMakeFlag(true);
               }}
+              disabled={!disabled}
             >
               생성하기
             </button>
-            <button className={styles.close} onClick={close}>
+            <button className={styles.close} onClick={close} >
               취소하기
             </button>
           </footer>

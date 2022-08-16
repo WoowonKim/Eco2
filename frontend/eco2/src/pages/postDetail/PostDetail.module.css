@@ -1,6 +1,6 @@
 .container {
   width: 380px;
-  margin-top: 20px;
+  margin-top: 10px;
   display: block;
 }
 
@@ -8,7 +8,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10%;
   margin-bottom: 3%;
 }
 
@@ -114,7 +113,7 @@
   /* height: 100px; */
   margin: 20px 0;
   text-align: left;
-  font-size: small;
+  font-size: 15px;
   word-break: break-all;
   white-space: pre-wrap;
 }
@@ -150,9 +149,9 @@
 
 .registTime {
   display: flex;
-  font-size: 12px;
+  font-size: 10px;
   text-align: end;
   /* justify-content: end; */
-  margin-top: 2%;
+  margin-top: 1%;
   margin-left: 67%;
 }

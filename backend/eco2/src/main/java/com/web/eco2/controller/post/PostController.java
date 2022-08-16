@@ -115,9 +115,9 @@ public class PostController {
                 String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
                 User postUser = post.getUser();
                 UserSetting userSetting = userSettingRepository.getById(post.getUser().getId());
-                if (userSetting.isPublicFlag() == false) {
-                    if (friendService.getFriends(userId).contains(postUser) || postUser.getId() == userId) {
-                        if (post.isPublicFlag() == true) {
+                if (!userSetting.isPublicFlag()) {
+                    if (friendService.getFriends(userId).contains(postUser) || postUser.getId().equals(userId)) {
+                        if (post.isPublicFlag()) {
                             Mission mission = null;
                             CustomMission customMission = null;
                             QuestDto quest = null;
@@ -148,7 +148,7 @@ public class PostController {
                         }
                     }
                 } else {
-                    if (post.isPublicFlag() == true || postUser.getId() == userId) {
+                    if (post.isPublicFlag() || postUser.getId().equals(userId)) {
                         Mission mission = null;
                         CustomMission customMission = null;
                         QuestDto quest = null;
@@ -203,11 +203,11 @@ public class PostController {
             System.out.println(post.isCommentFlag());
 
 
-            if (userSetting.isPublicFlag() == false) {
+            if (!userSetting.isPublicFlag()) {
                 // API 요청을 보낸 user의 친구 중 postUser가 포함되어있거나, 게시물 작성자와 요청 user가 같은 경우 게시물 공개!
-                if (friendService.getFriends(userId).contains(postUser) || postUser.getId() == userId) {
+                if (friendService.getFriends(userId).contains(postUser) || postUser.getId().equals(userId)) {
                     // 특정 게시물 공개일 경우
-                    if (post.isPublicFlag() == true) {
+                    if (post.isPublicFlag()) {
                         Mission mission = null;
                         CustomMission customMission = null;
                         QuestDto quest = null;
@@ -264,7 +264,7 @@ public class PostController {
                     return ResponseHandler.generateResponse("비공개 계정입니다.", HttpStatus.OK);
                 }
             } else {
-                if (post.isPublicFlag() == true || postUser.getId() == userId) {
+                if (post.isPublicFlag() || postUser.getId().equals(userId)) {
                     Mission mission = null;
                     CustomMission customMission = null;
                     QuestDto quest = null;

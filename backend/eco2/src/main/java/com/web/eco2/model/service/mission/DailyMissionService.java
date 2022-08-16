@@ -68,6 +68,8 @@ public class DailyMissionService {
         BufferedImage img = ImageIO.read(new File(uploadFolder + "/rewardImage.png"));
         Graphics2D graphics = img.createGraphics();
         String rewardFontName = "한컴 울주 반구대 암각화체";
+//        String rewardFontName = "아임크리수진 보통";
+
         String rewardDate = calendarDto.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
         String rewardName = user.getName() + "님";
         String rewardContent1 = "오늘의 데일리미션 완료!!";
@@ -86,9 +88,6 @@ public class DailyMissionService {
 
         int width = metrics.stringWidth(rewardDate);
         graphics.drawString(rewardDate, 500 / 2 - width / 2, 90);
-//
-//        width = metrics.stringWidth(rewardFooter);
-//        graphics.drawString(rewardFooter, 500 / 2 - width / 2, 870);
 
         font = new Font(rewardFontName, Font.BOLD, 20);
         graphics.setFont(font);
@@ -105,16 +104,6 @@ public class DailyMissionService {
         metrics = graphics.getFontMetrics(font);
         width = metrics.stringWidth(rewardContent1);
         graphics.drawString(rewardContent1, 500 / 2 - width / 2, 140);
-
-//        font = new Font(rewardFontName, Font.BOLD, 60);
-//        graphics.setFont(font);
-//        metrics = graphics.getFontMetrics(font);
-//        width = metrics.stringWidth(rewardName);
-//        graphics.drawString(rewardName, 500 / 2 - width / 2, 235);
-//
-//        width = metrics.stringWidth(rewardContent2);
-//        graphics.drawString(rewardContent2, 500 / 2 - width / 2, 320);
-
         return img;
     }
 

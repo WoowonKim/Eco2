@@ -60,7 +60,7 @@ const Profile = () => {
 
   useEffect(() => {
     // 유저 객체 받아오기
-    dispatch(userInformation({ email, userId: getUserId() })).then(res => {
+    dispatch(userInformation({ email, userId: getUserId() })).then((res) => {
       setUserId(res.payload.user.id);
       setUserName(res.payload.user.name);
       setMissionList(res.payload.postList);
@@ -68,26 +68,26 @@ const Profile = () => {
       setSocialType(res.payload.user.socialType);
     });
 
-    dispatch(accountSetting({ email })).then(res => {
+    dispatch(accountSetting({ email })).then((res) => {
       if (res.payload?.status === 200) {
         setIsPublic(res.payload.userSetting.publicFlag);
       }
     });
 
     // 친구조회
-    dispatch(friends({ id: getUserId() })).then(res => {
+    dispatch(friends({ id: getUserId() })).then((res) => {
       if (res.payload?.status === 200) {
         setFriendList(res.payload?.friendList);
       }
     });
   }, [params.userId]);
 
-  const saveFileImage = e => {
+  const saveFileImage = (e) => {
     setFile(e.target.files[0]);
     setFileImage(URL.createObjectURL(e.target.files[0]));
   };
 
-  const deleteFileImage = e => {
+  const deleteFileImage = (e) => {
     URL.revokeObjectURL(fileImage);
     setFileImage("");
     setFile("");
@@ -97,7 +97,7 @@ const Profile = () => {
   const profileImg = () => {
     // 현재 수정한 이미지가 없을 경우 기존 이미지를 백으로 보내고 있음
     dispatch(profileImgChange({ email, img: file ? file : originalImg })).then(
-      res => {
+      (res) => {
         if (res.payload.status === 200) {
           setProfileEdit(false);
           // location.state?.setCheckImg((curr) => curr + 1);
@@ -113,7 +113,7 @@ const Profile = () => {
       url: `${process.env.REACT_APP_BE_HOST}img/profile/${getUserId()}`,
       method: "GET",
       responseType: "blob",
-    }).then(res => {
+    }).then((res) => {
       const file = new File([res.data], "profileImg.png", {
         type: "image/png",
       });
@@ -124,7 +124,7 @@ const Profile = () => {
   useEffect(() => {
     // 다른 유저 프로필 -> 나와 친구인지 판별
     if (getUserId() !== userId) {
-      dispatch(isFriend({ id: getUserId(), friendId: userId })).then(res => {
+      dispatch(isFriend({ id: getUserId(), friendId: userId })).then((res) => {
         if (res.payload?.status === 200) {
           setFriend(res.payload.isFriend);
         } else {
@@ -228,7 +228,7 @@ const Profile = () => {
                     dispatch(
                       createRoom({ userId: getUserId(), id: params.userId })
                     )
-                      .then(res => {
+                      .then((res) => {
                         if (res.payload?.status === 200) {
                           navigate("/chatting/room", {
                             state: {
@@ -239,7 +239,7 @@ const Profile = () => {
                           window.location.reload(`/chatting/room`);
                         }
                       })
-                      .catch(err => console.log(err));
+                      .catch((err) => console.log(err));
                   }}
                 >
                   <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
@@ -315,20 +315,10 @@ const Profile = () => {
           <>
             {userSetting === 1 && <Calendar id={userId} />}
             {userSetting === 2 && (
-              <div className={styles.dailyScroll}>
-                <div className={`${styles.mission}`}>
-                  {missionList.map(mission =>
-                    getUserId() !== params.userId ? (
-                      !!mission.publicFlag && (
-                        <img
-                          key={mission.id}
-                          src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                          alt="missionImg"
-                          className={styles.missionImg}
-                          onClick={() => navigate(`/post/${mission.id}`)}
-                        />
-                      )
-                    ) : (
+              <div className={`${styles.mission}`}>
+                {missionList.map((mission) =>
+                  getUserId() !== params.userId ? (
+                    !!mission.publicFlag && (
                       <img
                         key={mission.id}
                         src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
@@ -337,23 +327,29 @@ const Profile = () => {
                         onClick={() => navigate(`/post/${mission.id}`)}
                       />
                     )
-                  )}
-                </div>
-              </div>
-            )}
-            {userSetting === 3 && (
-              <div className={styles.dailyScroll}>
-                <div className={`${styles.mission} ${displayType2}`}>
-                  {questList.map(mission => (
+                  ) : (
                     <img
                       key={mission.id}
                       src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                      alt="profileImg"
+                      alt="missionImg"
                       className={styles.missionImg}
                       onClick={() => navigate(`/post/${mission.id}`)}
                     />
-                  ))}
-                </div>
+                  )
+                )}
+              </div>
+            )}
+            {userSetting === 3 && (
+              <div className={`${styles.mission} ${displayType2}`}>
+                {questList.map((mission) => (
+                  <img
+                    key={mission.id}
+                    src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                    alt="profileImg"
+                    className={styles.missionImg}
+                    onClick={() => navigate(`/post/${mission.id}`)}
+                  />
+                ))}
               </div>
             )}
           </>

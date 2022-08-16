@@ -78,15 +78,17 @@ public class UserInformationController {
             if (user != null) {
                 List<Post> posts = postService.getPostOnly(user.getId());
                 for (Post post : posts) {
+                    System.out.println("post:"+ post);
                     UserSetting userSetting = userSettingRepository.getById(user.getId());
-                    if (userSetting.isPublicFlag() == false) {
-                        if (friendService.getFriends(user.getId()).contains(requestUserId) || user.getId() == requestUserId) {
-                            if (post.isPublicFlag() == true) {
+
+                    if (!userSetting.isPublicFlag()) {
+                        if (friendService.getFriends(user.getId()).contains(userService.getById(requestUserId)) || user.getId().equals(requestUserId)) {
+                            if (post.isPublicFlag()) {
                                 postList.add(post);
                             }
                         }
                     } else {
-                        if (post.isPublicFlag() == true || user.getId() == requestUserId) {
+                        if (post.isPublicFlag() || user.getId().equals(requestUserId)) {
                             postList.add(post);
                         }
                     }
@@ -94,18 +96,19 @@ public class UserInformationController {
                 List<QuestPost> questPosts = postService.getQuestPostOnly(user.getId());
                 for (QuestPost questPost : questPosts) {
                     UserSetting userSetting = userSettingRepository.getById(user.getId());
-                    if (userSetting.isPublicFlag() == false) {
-                        if (friendService.getFriends(user.getId()).contains(requestUserId) || user.getId() == requestUserId) {
-                            if (questPost.isPublicFlag() == true) {
+                    if (!userSetting.isPublicFlag()) {
+                        if (friendService.getFriends(user.getId()).contains(userService.getById(requestUserId)) || user.getId().equals(requestUserId)) {
+                            if (questPost.isPublicFlag()) {
                                 questPostList.add(questPost);
                             }
                         }
                     } else {
-                        if (questPost.isPublicFlag() == true || user.getId() == requestUserId) {
+                        if (questPost.isPublicFlag() || user.getId().equals(requestUserId)) {
                             questPostList.add(questPost);
                         }
                     }
                 }
+                System.out.println("postList:" + postList);
                 return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
                         Map.of("user", user.toDto(), "postList", postList, "questPostList", questPostList));
             } else {
