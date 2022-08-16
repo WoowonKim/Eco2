@@ -83,18 +83,15 @@
 .close:hover{
   background-color:rgb(221, 221, 221);;
 }
-
-.already{
+ .already{
   border: none;
-  background-color: rgb(87, 214, 150);
+  background-color:rgb(168, 168, 168);;
   color:#FFF;
-  padding:7px 25px;
+  padding:10px 17px;
+  margin-right: 10px;
   font-family: "NanumBarunGothicLight";
   border-radius: 10px;
   box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
-}
-.already:hover{
-  background-color:rgb(168, 168, 168);;
 }
 .post{
   font-size: small;

@@ -17,31 +17,33 @@ const ChattingRoom = () => {
   const roomId = useLocation().state.roomId;
   const [chattingMessages, setChattingMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [name, setName] = useState("");
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(getUserId());
   const [users, setUserList] = useState([]);
+  const [toUser, setToUser] = useState({});
   const stompClient = getStompClient();
   const dispatch = useDispatch();
   const scrollRef = useRef();
   let navigate = useNavigate();
+
 
   useEffect(() => {
     if (stompClient === null) {
       return;
     }
     connect();
-  }, []);
-
-  useEffect(() => {
     dispatch(chattingMessageList({ roomId: roomId })).then((res) => {
       if (res.payload.status === 200) {
         setChattingMessages(res.payload.chatMessageList);
         setUserList(res.payload.userList);
       }
     });
-    setUserId(getUserId());
-    setName(getUserName());
   }, []);
+  useEffect(() => {
+    users.map((user) => (
+      user.id != userId && 
+      setToUser(user)
+    ));
+  }, [users]);
   const connect = () => {
     stompClient.connect({}, () => {
       stompClient.subscribe('/sub/chat/room/' + roomId, (data) => {
@@ -79,7 +81,7 @@ const ChattingRoom = () => {
     if(e.key=='Enter'){
       sendMessage();
     }
-  };
+  }; 
   const backPage = () => {
     navigate("/chatting");
   };
@@ -90,24 +92,31 @@ const ChattingRoom = () => {
         {
           users.map((user) => (
             user.id != userId &&
-            <Link to={`/profile/${user.id}`} className={styles.link}>
-              <div>
-                <img
-                  src={`http://localhost:8002/img/profile/${user.id}`}
-                  alt="profile"
-                  className={styles.profileImg}
-                />
-                <div className={styles.toUserName}>{user.name}</div>
-              </div>
-            </Link>
+        <div
+        className={styles.profileButton}
+        onClick={() => {
+          console.log(toUser);
+          navigate(`/profile/${toUser.id}`, {
+            state: { userEmail: toUser.email },
+          })
+         }}
+      >
+        <img
+          src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUser.id}`}
+          alt="profileImg"
+          className={styles.profileImg}
+        />
+        <div className={styles.toUserName}>{toUser.name}</div>
+        </div>
           ))
         }
-
       </div>
-
       {chattingMessages.length > 0 ? (
         <div className={styles.chatting}>
-          <ChattingMessage chattingMessages={chattingMessages} />
+          <ChattingMessage 
+          chattingMessages={chattingMessages}
+          toUser={toUser}
+           />
         </div>
       ) : (
         <div className={styles.noChattingList}>

@@ -23,7 +23,7 @@ const FeedCategory = () => {
 
   return (
     <div className={styles.container}>
-      {!!feeds ? (
+      {!feeds ? (
         <FeedList
           category={location.state?.category}
           display={"grid"}

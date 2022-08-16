@@ -51,17 +51,17 @@ public class ReportController {
             reportType.setType(reportTypeInformation.getType());
 
             if (reportRequest.getPosId() != null) {//게시물 신고
-                Report report = reportService.findByUsrIdAndPosId(usrId, reportRequest.getPosId());
-                if (report != null) {
-                    return ResponseHandler.generateResponse("이미 신고한 게시물입니다.", HttpStatus.ACCEPTED);
-                }
+//                Report report = reportService.findByUsrIdAndPosId(usrId, reportRequest.getPosId());
+//                if (report != null) {
+//                    return ResponseHandler.generateResponse("이미 신고한 게시물입니다.", HttpStatus.ACCEPTED);
+//                }
                 reportService.postSave(reportRequest.toPostEntity(userService.getById(usrId),
                         reportType, postService.getById(reportRequest.getPosId())));
             } else {
-                Report report = reportService.findByUsrIdAndComId(usrId, reportRequest.getComId());
-                if (report != null) {
-                    return ResponseHandler.generateResponse("이미 신고한 댓글입니다.", HttpStatus.ACCEPTED);
-                }
+//                Report report = reportService.findByUsrIdAndComId(usrId, reportRequest.getComId());
+//                if (report != null) {
+//                    return ResponseHandler.generateResponse("이미 신고한 댓글입니다.", HttpStatus.ACCEPTED);
+//                }
 //                Comment comment = postCommentService.getById(reportRequest.getComId());
                 reportService.commentSave(reportRequest.toCommentEntity(userService.getById(usrId),
                         reportType, postCommentService.getById(reportRequest.getComId()), null));

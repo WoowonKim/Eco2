@@ -97,7 +97,7 @@
 
 .passwordFormButton {
   background: rgba(87, 214, 150, 1);
-  border: 1px solid #dadada;
+  border: none;
   border-radius: 8px;
   width: 55px;
   height: 35px;
