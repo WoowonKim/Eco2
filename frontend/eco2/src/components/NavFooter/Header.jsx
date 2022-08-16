@@ -23,7 +23,7 @@ const Header = () => {
     if (!userId) {
       return;
     }
-    dispatch(userInformation({ email: getUserEmail() })).then((res) => {
+    dispatch(userInformation({ email: getUserEmail(), userId: getUserId() })).then((res) => {
       if (res.payload.user.role === "[ROLE_ADMIN]") {
         setAdmin(true);
       }

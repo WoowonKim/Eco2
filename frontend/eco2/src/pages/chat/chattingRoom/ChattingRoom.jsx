@@ -24,19 +24,13 @@ const ChattingRoom = () => {
   const dispatch = useDispatch();
   const scrollRef = useRef();
   let navigate = useNavigate();
-  const [checkImg, setCheckImg] = useState(0);
+
 
   useEffect(() => {
-    // users.map((user) => (
-    //   user.id != userId && 
-    // ));
     if (stompClient === null) {
       return;
     }
     connect();
-  }, []);
-
-  useEffect(() => {
     dispatch(chattingMessageList({ roomId: roomId })).then((res) => {
       if (res.payload.status === 200) {
         setChattingMessages(res.payload.chatMessageList);
@@ -44,6 +38,12 @@ const ChattingRoom = () => {
       }
     });
   }, []);
+  useEffect(() => {
+    users.map((user) => (
+      user.id != userId && 
+      setToUser(user)
+    ));
+  }, [users]);
   const connect = () => {
     stompClient.connect({}, () => {
       stompClient.subscribe('/sub/chat/room/' + roomId, (data) => {
@@ -81,7 +81,7 @@ const ChattingRoom = () => {
     if(e.key=='Enter'){
       sendMessage();
     }
-  };
+  }; 
   const backPage = () => {
     navigate("/chatting");
   };
@@ -92,40 +92,31 @@ const ChattingRoom = () => {
         {
           users.map((user) => (
             user.id != userId &&
-            // <Link to={`/profile/${commentUserId}`} className={styles.link}>
-            //   <div>
-            //     <img
-            //       src={`http://localhost:8002/img/profile/${user.id}`}
-            //       alt="profile"
-            //       className={styles.profileImg}
-            //     />
-            //     <div className={styles.toUserName}>{user.name}</div>
-            //   </div>
-            // </Link>
-        <button
+        <div
         className={styles.profileButton}
         onClick={() => {
-          // navigate(`/profile/${commentUserId}`, {
-          //   state: { userEmail },
-          // })
+          console.log(toUser);
+          navigate(`/profile/${toUser.id}`, {
+            state: { userEmail: toUser.email },
+          })
          }}
       >
-        {/* <img
-          src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
+        <img
+          src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUser.id}`}
           alt="profileImg"
           className={styles.profileImg}
         />
-        <div className={styles.toUserName}>{user.name}</div> */}
-      </button>
-
+        <div className={styles.toUserName}>{toUser.name}</div>
+        </div>
           ))
         }
-
       </div>
-
       {chattingMessages.length > 0 ? (
         <div className={styles.chatting}>
-          <ChattingMessage chattingMessages={chattingMessages} />
+          <ChattingMessage 
+          chattingMessages={chattingMessages}
+          toUser={toUser}
+           />
         </div>
       ) : (
         <div className={styles.noChattingList}>
