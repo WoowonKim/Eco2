@@ -42,7 +42,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
         content: {
           title: "미션 보상 완료",
           description: "오늘의 미션 완료를 축하드립니다 :D",
-          imageUrl: imgUrl,
+          imageUrl: `${process.env.REACT_APP_BE_HOST}img/reward/${calendarId}`,
           link: {
             mobileWebUrl: `http://localhost:3000/profile/${getUserId()}`,
             webUrl: `http://localhost:3000/profile/${getUserId()}`,

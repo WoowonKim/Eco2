@@ -59,6 +59,7 @@ const PostModal = ({
   setCalUR,
   friendId,
   setFriendDelete,
+  setConfirm,
 }) => {
   console.log(friendId, type);
   const [hidden, setHidden] = useState(false);
@@ -126,8 +127,8 @@ const PostModal = ({
         if (res.payload.status === 200) {
           removeUserSession();
           closeModal();
-          navigate("/");
-          // window.location.replace("/");
+          // navigate("/");/
+          window.location.replace("/");
         }
       });
     } else if (type === "탈퇴") {
@@ -135,15 +136,16 @@ const PostModal = ({
         if (res.payload.status === 200) {
           removeUserSession();
           closeModal();
-          navigate("/");
-          // window.location.replace("/");
+          // navigate("/");
+          window.location.replace("/");
         }
       });
     } else if (type === "친구") {
-      dispatch(friendRequest({ fromId, toId })).then(res => {
-        if (res.payload.status === 200 || res.payload.status === 202) {
-          closeModal();
+      dispatch(friendRequest({ fromId, toId })).then((res) => {
+        if (res.payload.status === 202) {
+          setConfirm(202);
         }
+        closeModal();
       });
     } else if (type === "옮기기") {
       cusMi.push(cosId);
@@ -198,17 +200,18 @@ const PostModal = ({
         setCusMissionDelete(!cusMissionDelete);
       });
 
-      dispatch(friendRequest({ fromId, toId })).then(res => {
-        closeModal();
-        if (res.payload?.status === 202) {
-          alert("이미 친구 신청한 유저입니다!");
-        }
-      });
+      // dispatch(friendRequest({ fromId, toId })).then((res) => {
+      //   if (res.payload?.status === 202) {
+      //     setConfirm((curr) => !curr);
+      //     console.log("test");
+      //   }
+      //   closeModal();
+      // });
     } else if (type === "친구삭제") {
       dispatch(friendDelete({ id: getUserId(), friendId: friendId })).then(
-        res => {
+        (res) => {
           if (res.payload.status === 200) {
-            setFriendDelete(curr => curr + 1);
+            setFriendDelete((curr) => curr + 1);
             closeModal();
           }
         }

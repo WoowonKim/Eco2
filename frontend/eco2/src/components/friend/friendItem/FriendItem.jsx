@@ -41,7 +41,7 @@ const FriendItem = ({ friendEmail, friendId, friendName, setFriendDelete }) => {
           />
           <span className={styles.friendName}>{friendName}</span>
         </div>
-        <i class="fa-solid fa-angle-left"></i>
+        <i className="fa-solid fa-angle-left"></i>
         <button
           className={styles.testButton}
           onClick={() => {

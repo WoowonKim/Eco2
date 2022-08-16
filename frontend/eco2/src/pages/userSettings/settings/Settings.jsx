@@ -5,6 +5,7 @@ import {
 } from "../../../store/user/accountSlice";
 import styles from "./Settings.module.css";
 import { useDispatch } from "react-redux";
+import ConfirmModal from "../../../components/modal/confirmModal/ConfirmModal";
 
 const Settings = ({ email }) => {
   const [checked, setChecked] = useState({
@@ -13,7 +14,8 @@ const Settings = ({ email }) => {
     chatAlarmFlag: false,
     darkmodeFlag: false,
   });
-
+  const [visible, setVisible] = useState(false);
+  const [modalType, setModalType] = useState("");
   const dispatch = useDispatch();
 
   const onClick = () => {
@@ -26,7 +28,12 @@ const Settings = ({ email }) => {
         chatAlarmFlag: checked.chatAlarmFlag,
         darkmodeFlag: false,
       })
-    );
+    ).then((res) => {
+      if (res.payload?.status == 200) {
+        setVisible(!visible);
+        setModalType("확인");
+      }
+    });
   };
   useEffect(() => {
     // 계정 설정 불러오기
@@ -123,6 +130,13 @@ const Settings = ({ email }) => {
         {/* <i className="fa-solid fa-check"></i>  */}
         저장
       </button>
+      {visible && modalType === "확인" && (
+        <ConfirmModal
+          title={"계정 설정 변경"}
+          content={"계정 설정 변경이 완료되었습니다."}
+          closeModal={() => setVisible(!visible)}
+        />
+      )}
     </div>
   );
 };

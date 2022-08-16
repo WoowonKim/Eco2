@@ -23,6 +23,7 @@ import {
 import { createRoom } from "../../store/chat/chattingSlice";
 import PostModal from "../../components/modal/postModal/PostModal";
 import axiosService from "../../store/axiosService";
+import ConfirmModal from "../../components/modal/confirmModal/ConfirmModal";
 // import { test } from "../../store/user/accountSlice";
 
 const Profile = () => {
@@ -43,6 +44,8 @@ const Profile = () => {
   const [file, setFile] = useState("");
   const [originalImg, setOriginalImg] = useState("");
   const [isPublic, setIsPublic] = useState(true);
+  const [confirm, setConfirm] = useState(false);
+
   // const [admin, setAdmin] = useState(false);
 
   const navigate = useNavigate();
@@ -57,7 +60,7 @@ const Profile = () => {
 
   useEffect(() => {
     // 유저 객체 받아오기
-    dispatch(userInformation({ email, userId })).then((res) => {
+    dispatch(userInformation({ email, userId: getUserId() })).then((res) => {
       setUserId(res.payload.user.id);
       setUserName(res.payload.user.name);
       setMissionList(res.payload.postList);
@@ -87,6 +90,7 @@ const Profile = () => {
   const deleteFileImage = (e) => {
     URL.revokeObjectURL(fileImage);
     setFileImage("");
+    setFile("");
     console.log(fileImage);
   };
 
@@ -96,7 +100,7 @@ const Profile = () => {
       (res) => {
         if (res.payload.status === 200) {
           setProfileEdit(false);
-          location.state?.setCheckImg((curr) => curr + 1);
+          // location.state?.setCheckImg((curr) => curr + 1);
           window.location.replace(`/profile/${getUserId()}`);
         }
       }
@@ -129,7 +133,7 @@ const Profile = () => {
       });
     }
   }, [friend, userId]);
-  console.log(friend);
+  console.log(confirm);
   return (
     <div className={styles.container}>
       <div className={styles.userInfo}>
@@ -251,6 +255,14 @@ const Profile = () => {
               fromId={getUserId()}
               toId={params.userId}
               closeModal={() => setVisible(!visible)}
+              setConfirm={setConfirm}
+            />
+          )}
+          {confirm === 202 && (
+            <ConfirmModal
+              title={"친구 신청"}
+              content={"이미 친구 신청한 유저입니다."}
+              closeModal={() => setConfirm(!confirm)}
             />
           )}
           {getUserId() === params.userId && (
