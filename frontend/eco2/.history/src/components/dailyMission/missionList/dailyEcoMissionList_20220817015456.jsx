@@ -127,7 +127,6 @@ const DailyEcoMissionList = ({
     dispatch(postMission({ id, dailyMissionList: faIdArr })).then(res => {
       if (res.payload?.status === 200) {
         setFamiAdd(!famiAdd);
-        setFamissionList(!famissionList);
       }
     });
   };
