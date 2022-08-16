@@ -63,7 +63,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
       case "comment":
       case "friendRequest":
       case "newChat":
-        return `http://localhost:8002/img/profile/${alarm.senderId}`;
+        return `${process.env.REACT_APP_BE_HOST}img/profile/${alarm.senderId}`;
       case "report":
       default:
         return process.env.PUBLIC_URL + `/logo.png`;
