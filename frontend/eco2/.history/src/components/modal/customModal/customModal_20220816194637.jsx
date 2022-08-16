@@ -51,7 +51,7 @@ const CustomModal = ({ open, close, setcusModal }) => {
         if (res.payload.status === 200) {
           naviGate("/dailymissiondetail", { state: { list: 0 } });
           setcusModal();
-          // console.log("이거보여요?");
+          console.log("이거보여요?");
         }
       })
       .catch(err => {

@@ -178,10 +178,8 @@ const PostModal = ({
           if (res.payload.status === 200) {
           }
         });
-
-        closeModal();
       });
-      // navigate("/mainTree");
+      navigate("/mainTree");
     } else if (type === "내목록이동") {
       dispatch(
         deleteMission({

@@ -208,7 +208,6 @@ const DailyMissionMain = () => {
                 onClick={() => {
                   setVisible(!visible);
                   setModalType("미션등록");
-                  setModalVisible(true);
                 }}
                 // onClick={onSucsses}
               >
@@ -218,16 +217,19 @@ const DailyMissionMain = () => {
           </div>
         )}
         {visible && modalType === "미션등록" && (
-          <PostModal
-            className={`${displayType}`}
-            title={"오늘 미션 완료!"}
-            content={"클릭 시 오늘 미션은 추가가 안됩니다!"}
-            type={"미션등록"}
-            closeModal={() => setVisible(!visible)}
-            successId={id}
-            toDayGet={toDayGet}
-            setCalUR={setCalUR}
-          />
+          <div>
+            {setModalVisible(true)}
+            <PostModal
+              className={`${displayType}`}
+              title={"오늘 미션 완료!"}
+              content={"클릭 시 오늘 미션은 추가가 안됩니다!"}
+              type={"미션등록"}
+              closeModal={() => setVisible(!visible)}
+              successId={id}
+              toDayGet={toDayGet}
+              setCalUR={setCalUR}
+            />
+          </div>
         )}
         {calUR > 0 && modalVisible && (
           <CalendarModal

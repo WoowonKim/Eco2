@@ -56,7 +56,7 @@ const PostModal = ({
   custommissiondeleteIdTest,
   setCusMissionDelete,
   cusMissionDelete,
-  setCalUR,
+
   friendId,
   setFriendDelete,
 }) => {
@@ -170,18 +170,20 @@ const PostModal = ({
       });
     } else if (type === "미션등록") {
       dispatch(missionPost({ id: successId })).then(res => {
-        // console.log("캘린더 아이디 ===>", res);
-        const calendarId = res.payload.calendarId;
-        console.log("calendarId===>", calendarId);
-        setCalUR(calendarId);
+        if (res.payload.status === 200) {
+          console.log("캘린더 아이디 ===>", res);
+          const calendarId = res.payload.calendarId;
+          dispatch(calendarImg({ calendarId })).then(res => {
+            console.log("res==>", res);
+            console.log("res.payload===>", res.payload);
+          });
+        }
         dispatch(missionItem({ id: successId, date: toDayGet })).then(res => {
           if (res.payload.status === 200) {
           }
         });
-
-        closeModal();
       });
-      // navigate("/mainTree");
+      navigate("/mainTree");
     } else if (type === "내목록이동") {
       dispatch(
         deleteMission({

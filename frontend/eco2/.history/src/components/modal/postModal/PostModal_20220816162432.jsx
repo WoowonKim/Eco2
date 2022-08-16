@@ -178,8 +178,6 @@ const PostModal = ({
           if (res.payload.status === 200) {
           }
         });
-
-        closeModal();
       });
       // navigate("/mainTree");
     } else if (type === "내목록이동") {

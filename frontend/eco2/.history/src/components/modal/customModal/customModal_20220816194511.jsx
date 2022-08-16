@@ -10,7 +10,7 @@ const CustomModal = ({ open, close, setcusModal }) => {
   // const { open, close } = props;
   const dispatch = useDispatch();
   const naviGate = useNavigate();
-  const [id, setId] = useState(getUserId());
+  const [id, setId] = useState(0);
   const [cate, setCate] = useState(1);
   const [tit, setTit] = useState("");
   const [cont, setCont] = useState("");
@@ -42,6 +42,14 @@ const CustomModal = ({ open, close, setcusModal }) => {
     setSelected(e.target.value);
   };
 
+  // useEffect(() => {
+  //   dispatch(userInformation({ email: getUserEmail() })).then(res => {
+  //     if (res.payload.status === 200) {
+  //       setId(res.payload.user.id);
+  //     }
+  //   });
+  // }, []);
+
   const subMit = () => {
     setId(getUserId());
     dispatch(
@@ -51,7 +59,7 @@ const CustomModal = ({ open, close, setcusModal }) => {
         if (res.payload.status === 200) {
           naviGate("/dailymissiondetail", { state: { list: 0 } });
           setcusModal();
-          // console.log("이거보여요?");
+          console.log("이거보여요?");
         }
       })
       .catch(err => {

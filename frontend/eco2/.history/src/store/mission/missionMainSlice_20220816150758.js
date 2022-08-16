@@ -114,9 +114,9 @@ export const missionItem = createAsyncThunk(
 export const calendarImg = createAsyncThunk(
   "missionMainSlice/calendarImg",
   async (args, { rejectWithValue }) => {
-    // console.log("ARG=>", args);
+    console.log("ARG=>", args);
     try {
-      const response = await axiosService.get(`img/reward/${args.calendarId}`);
+      const response = await axiosService.get(`img/reward/${args.calId}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

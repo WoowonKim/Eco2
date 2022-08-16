@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { GreenBtn } from "../../../components/styled";
 import MissionMain from "../../../components/dailyMission/missionItem/missionMainItem";
 import MissionCustomItem from "../../../components/dailyMission/missionItem/missionCustomItem";
-import CalendarModal from "../../../components/calendar/calendarModal/CalendarModal";
 
 // Store
 import {
@@ -72,11 +71,7 @@ const DailyMissionMain = () => {
       setLng(res.longitude);
     });
   }, [main]);
-  const month = nowTime.slice(5, 7);
-  const days = nowTime.slice(8, 10);
-  // console.log("날짜 ===>", nowTime);
-  // console.log("월 ===>", nowTime.slice(5, 7));
-  // console.log("일 ===>", nowTime.slice(8, 10));
+
   /**
    * 매일 추천 미션제공을 위한 postTodayMission
    */
@@ -130,10 +125,9 @@ const DailyMissionMain = () => {
 
   //console.log("main ===>", main);
   // console.log("cusMain===>", cusMain);
-  const [modalVisible, setModalVisible] = useState(false);
 
-  const [calUR, setCalUR] = useState(0);
-  console.log("이미지 받아와보자===>", calUR);
+  const [calUR, setCalUR] = useState("");
+  // console.log("이미지 받아와보자===>", calUR);
   return (
     <div className={styles.headerMain}>
       {successBtn ? (
@@ -190,12 +184,7 @@ const DailyMissionMain = () => {
           />
         ))}
       </div>
-      {/* <div>
-        <img
-          src={`${process.env.REACT_APP_BE_HOST}img/reward/${calUR}`}
-          alt=""
-        />
-      </div> */}
+      <img src={`${process.env.REACT_APP_BE_HOST}img/reward/${calUR}`} alt="" />
       <div className={styles.btn}>
         {successBtn ? (
           <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
@@ -208,7 +197,6 @@ const DailyMissionMain = () => {
                 onClick={() => {
                   setVisible(!visible);
                   setModalType("미션등록");
-                  setModalVisible(true);
                 }}
                 // onClick={onSucsses}
               >
@@ -223,18 +211,9 @@ const DailyMissionMain = () => {
             title={"오늘 미션 완료!"}
             content={"클릭 시 오늘 미션은 추가가 안됩니다!"}
             type={"미션등록"}
-            closeModal={() => setVisible(!visible)}
             successId={id}
             toDayGet={toDayGet}
             setCalUR={setCalUR}
-          />
-        )}
-        {calUR > 0 && modalVisible && (
-          <CalendarModal
-            calendarId={calUR}
-            month={month}
-            day={days}
-            closeModal={() => setModalVisible(!modalVisible)}
           />
         )}
       </div>
