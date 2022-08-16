@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/account")
@@ -90,10 +91,13 @@ public class UserSettingController {
 
     @ApiOperation(value = "친구 조회", response = Object.class)
     @GetMapping("/friend")
-    public ResponseEntity<?> getFriends(@RequestParam("id") Long id) {
+    public ResponseEntity<?> getFriends(@RequestParam("id") Long id, @RequestParam(value = "name", required = false) String name) {
         try {
             log.info("친구 조회 API 호출");
             List<User> friends = friendService.getFriends(id);
+            if(name != null) {
+                friends = friends.stream().filter(f->f.getName().contains(name)).collect(Collectors.toList());
+            }
             return ResponseHandler.generateResponse("친구 조회에 성공하였습니다.", HttpStatus.OK, "friendList", friends);
         } catch (Exception e) {
             log.error("친구 조회 API 에러", e);

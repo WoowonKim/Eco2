@@ -43,32 +43,6 @@ const AlarmPopUpContainer = () => {
         recentLookup = 0;
       }
       const loc = window.location;
-      // let isNew = false;
-      // 최근 조회 시간 이후의 알림에 대해 알림 띄우기
-      // snapshot.docChanges().forEach((change) => {
-      //   const alarm = change.doc.data();
-
-      //   const tt = new Date(0);
-      //   tt.setUTCSeconds(alarm.sendTime);
-      //   if (change.type === "added" && alarm.sendTime > recentLookup) {
-      //     isNew = true;
-      //     // console.log("new alarm:", alarm);
-      //     if (
-      //       location.pathname !== "/chatting/room" ||
-      //       alarm.dtype !== "newChat"
-      //     )
-      //       toast(alarm.content, {
-      //         position: "bottom-right",
-      //         autoClose: 4000,
-      //         hideProgressBar: true,
-      //         closeOnClick: true,
-      //         pauseOnHover: true,
-      //         draggable: true,
-      //         progress: undefined,
-      //       });
-      //   }
-      // });
-      let isNew = false;
       const deleteArray = [];
       // redux에 저장
       const alarmArray = snapshot.docs
@@ -89,8 +63,7 @@ const AlarmPopUpContainer = () => {
             loc.pathname !== "/alarm" &&
             alarm.sendTime > recentLookup
           ) {
-            isNew = true;
-            toast(alarm.content, {
+            toast("🔔 " + alarm.content, {
               position: "bottom-right",
               autoClose: 4000,
               hideProgressBar: true,
@@ -116,7 +89,6 @@ const AlarmPopUpContainer = () => {
         );
       });
 
-      // if (isNew) {
       // 최근 조회 시간 업데이트
       const docRef = firestore.doc(dbService, "alarm", getUserId());
       const data = {};
@@ -128,7 +100,6 @@ const AlarmPopUpContainer = () => {
       } catch (err) {
         console.log("err", err);
       }
-      // }
     });
   };
 
@@ -159,7 +130,6 @@ const AlarmPopUpContainer = () => {
         onClick={() => {
           navigate("/alarm");
         }}
-        className={styles.toastify}
         toastClassName={styles["toastify-toast"]}
       />
     </div>
