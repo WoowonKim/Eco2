@@ -7,6 +7,7 @@ import styles from "./FeedList.module.css";
 const FeedList = ({ category, display, feeds, setLikeCount }) => {
   const displayType = display === "list" ? styles.list : styles.grid;
   const location = useLocation();
+  console.log(feeds);
   return (
     <div className={styles.container}>
       <div className={displayType}>
@@ -23,7 +24,7 @@ const FeedList = ({ category, display, feeds, setLikeCount }) => {
                   userId={feed.userId}
                   userName={feed.userName}
                   category={
-                    feed.quest?.category ||
+                    feed.quest?.mission.category ||
                     feed.mission?.category ||
                     feed.customMission?.category
                   }
