@@ -194,6 +194,7 @@ const userState = {
   email: "",
   user: {},
   isPending: false,
+  isRejected: false,
 };
 
 export const userSlice = createSlice({
@@ -268,11 +269,11 @@ export const userSlice = createSlice({
     },
     [newPassword.fulfilled]: (state, action) => {
       console.log("newPassword fulfilled", action.payload);
-      if (action.payload.status === 200) {
-      }
+      state.isRejected = false;
     },
     [newPassword.rejected]: (state, action) => {
       console.log("newPassword rejected", action.payload);
+      state.isRejected = true;
     },
     [googleLogin.fulfilled]: (state, action) => {
       console.log("googleLogin fulfilled", action.payload);
