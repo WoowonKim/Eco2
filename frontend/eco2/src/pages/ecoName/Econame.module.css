@@ -53,3 +53,17 @@
 .link {
   text-decoration: none;
 }
+
+.success {
+  color: #949191;
+  margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}
+
+.fail {
+  color: red;
+  margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}

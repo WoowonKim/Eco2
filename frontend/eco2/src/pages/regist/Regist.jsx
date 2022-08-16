@@ -166,17 +166,18 @@ const Regist = () => {
               인증
             </button>
           </div>
-          <p className={isPassword ? styles.success : styles.fail}>{message}</p>
+          <p className={styles.codeMessage}>인증번호 유효시간은 5분입니다!</p>
+          <p className={isCode ? styles.success : styles.fail}>{message}</p>
         </div>
       )}
       <div>
         <label htmlFor="passwordInput" className={styles.label}>
           비밀번호
         </label>
-        <LoginInput
+        <input
           type="password"
           onChange={passwordValidation}
-          className={styles.input}
+          className={styles.passwordInput}
           placeholder="비밀번호"
         />
         {password.length > 0 && (
@@ -188,10 +189,10 @@ const Regist = () => {
         <label htmlFor="passwordInput2" className={styles.label}>
           비밀번호 확인
         </label>
-        <LoginInput
+        <input
           type="password"
           onChange={passwordConfirmValidation}
-          className={styles.input}
+          className={styles.passwordInput}
           placeholder="비밀번호 확인"
         />
         {password2.length > 0 && (

@@ -132,17 +132,16 @@ const FindPassword = () => {
                 인증
               </button>
             </div>
-            <p className={isPassword ? styles.success : styles.fail}>
-              {message}
-            </p>
+            <p className={styles.codeMessage}>인증번호 유효시간은 5분입니다!</p>
+            <p className={isCode ? styles.success : styles.fail}>{message}</p>
           </div>
         )}
       </form>
       <form onSubmit={handleSubmit}>
-        <LoginInput
+        <input
           onChange={passwordValidation}
           type="password"
-          className={styles.input}
+          className={styles.passwordInput}
           placeholder="새 비밀번호"
         />
         {password.length > 0 && (
@@ -152,10 +151,10 @@ const FindPassword = () => {
         )}
         {password.length === 0 && <div className={styles.test}></div>}
 
-        <LoginInput
+        <input
           onChange={passwordConfirmValidation}
           type="password"
-          className={styles.input}
+          className={styles.passwordInput}
           placeholder="새 비밀번호 확인"
         />
         {password2.length > 0 && (
@@ -179,6 +178,14 @@ const FindPassword = () => {
           비밀번호 변경
         </GreenBtn>
       </form>
+      <div className={styles.lineGroup}>
+        <hr className={styles.shortLine} />
+        <span className={styles.lineText}>다시 로그인하시겠어요?</span>
+        <hr className={styles.longLine} />
+      </div>
+      <button onClick={() => navigate("/")} className={styles.toLogin}>
+        로그인 하기
+      </button>
     </div>
   );
 };

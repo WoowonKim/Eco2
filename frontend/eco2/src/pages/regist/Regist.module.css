@@ -60,6 +60,24 @@
   outline: none;
 }
 
+.passwordInput {
+  background: white;
+  border: none;
+  border-bottom: 1px solid #dadada;
+  width: 100%;
+  height: 35px;
+  padding-left: 10px;
+  font-family: "NanumBarunGothicLight";
+}
+
+.passwordInput::placeholder {
+  color: #dadada;
+}
+
+.passwordInput:focus {
+  outline: none;
+}
+
 .button {
   width: 55px;
   height: 35px;
@@ -113,13 +131,6 @@
   border: none;
 }
 
-.timer {
-  font-size: small;
-  color: red;
-  margin: 0 8px;
-  text-align: center;
-}
-
 .lineGroup {
   margin: 30px 0;
   padding: 0;
@@ -143,7 +154,7 @@
 }
 
 .longLine {
-  width: 45%;
+  width: 53%;
   height: 1px;
   padding: 0;
   margin: 0 0 0 5px;
@@ -166,6 +177,13 @@
 .success {
   color: #949191;
   margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}
+
+.codeMessage {
+  color: #949191;
+  margin: 5px 0 5px 0;
   font-size: x-small;
   text-align: start;
 }

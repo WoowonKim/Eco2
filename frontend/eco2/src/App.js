@@ -28,7 +28,7 @@ import React, {
 } from "react";
 
 import Footer from "./components/NavFooter/Footer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MainTree from "./pages/mainTree/MainTree";
 
 import FeedCategory from "./pages/feedCategory/FeedCategory";
@@ -41,7 +41,7 @@ import { dbService, firestore } from "./store/firebase";
 import QuestMain from "./pages/quest/questMain/QuestMain";
 import NoticeForm from "./pages/notice/noticeForm/NoticeForm";
 import NoticeDetail from "./pages/notice/noticeDetail/NoticeDetail";
-import { getUserEmail } from "./store/user/common";
+import { getUserEmail, getUserId } from "./store/user/common";
 import RequireAuth from "./components/auth/requireAuth/RequireAuth";
 import Error from "./pages/error/Error";
 import KakaoLogin from "./pages/login/KakaoLogin";
@@ -50,35 +50,39 @@ import ChattingRoom from "./pages/chat/chattingRoom/ChattingRoom";
 import Report from "./pages/admin/report/Report";
 import ReportDetail from "./pages/admin/reportDetail/ReportDetail";
 import Spinner from "./components/spinner/Spinner";
+import { userInformation } from "./store/user/userSettingSlice";
+import RequireAdmin from "./components/auth/requireAuth/RequireAdmin";
 
 function App() {
   const [userdata, setUserdata] = useState(false);
   const pending = useSelector((state) => state.user.isPending);
   const recommendPending = useSelector((state) => state.missionMain.isPending);
   const friendPending = useSelector((state) => state.account.isPending);
-  // console.log(recommendPending);
-
-  // 친구 신청 알림 기능 구현 예정
-  // const [alarm, setAlarm] = useState([]);
+  const [admin, setAdmin] = useState(false);
+  const [userId, setUserId] = useState(getUserId());
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.getElementById("scroll-container").scrollTop = 0;
     setUserdata(getUserEmail());
-    // firestore.onSnapshot(
-    //   firestore.collection(dbService, "test/2/alarm"),
-    //   (snapshot) => {
-    //     const alarmArray = snapshot.docs.map((doc) => ({
-    //       id: doc.id,
-    //       ...doc.data(),
-    //     }));
-    //     console.log(alarmArray);
-    //     setAlarm(alarmArray);
-    //   }
-    // );
   }, []);
+
+  useEffect(() => {
+    setUserId(getUserId());
+    if (!userId) {
+      return;
+    }
+    dispatch(
+      userInformation({ email: getUserEmail(), userId: getUserId() })
+    ).then((res) => {
+      if (res.payload.user.role === "[ROLE_ADMIN]") {
+        setAdmin(true);
+      }
+    });
+  }, [userId]);
   return (
     <div className={styles.App} id="scroll-container">
-      {userdata && <Header></Header>}
+      {userdata && <Header admin={admin}></Header>}
       <div className={styles.body}>
         <Routes>
           <Route path="/" element={<Login />}></Route>
@@ -207,7 +211,9 @@ function App() {
             path="/notice"
             element={
               <RequireAuth>
-                <NoticeForm />
+                <RequireAdmin userRole={admin}>
+                  <NoticeForm />
+                </RequireAdmin>
               </RequireAuth>
             }
           ></Route>
@@ -224,7 +230,9 @@ function App() {
             path="/report"
             element={
               <RequireAuth>
-                <Report />
+                <RequireAdmin userRole={admin}>
+                  <Report />
+                </RequireAdmin>
               </RequireAuth>
             }
           ></Route>
@@ -232,7 +240,9 @@ function App() {
             path="/report/detail"
             element={
               <RequireAuth>
-                <ReportDetail />
+                <RequireAdmin userRole={admin}>
+                  <ReportDetail />
+                </RequireAdmin>
               </RequireAuth>
             }
           ></Route>

@@ -9,11 +9,8 @@ import { userInformation } from "../../store/user/userSettingSlice";
 import styles from "./Header.module.css";
 import { useDispatch } from "react-redux";
 
-const Header = () => {
+const Header = ({ admin }) => {
   const [userId, setUserId] = useState(getUserId());
-  const [imgSrc, setImgSrc] = useState("");
-  const [checkImg, setCheckImg] = useState(0);
-  const [admin, setAdmin] = useState(false);
 
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,11 +20,6 @@ const Header = () => {
     if (!userId) {
       return;
     }
-    dispatch(userInformation({ email: getUserEmail(), userId: getUserId() })).then((res) => {
-      if (res.payload.user.role === "[ROLE_ADMIN]") {
-        setAdmin(true);
-      }
-    });
   }, [userId]);
   return (
     <header className={styles.Header}>

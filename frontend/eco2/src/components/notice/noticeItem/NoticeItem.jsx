@@ -28,7 +28,6 @@ const NoticeItem = ({
     if (0 <= index - 1) {
       setPrev(notices[index - 1]);
     }
-    console.log(index);
   }, []);
   return (
     <tr

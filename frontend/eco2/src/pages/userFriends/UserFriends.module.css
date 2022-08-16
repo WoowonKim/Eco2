@@ -10,19 +10,14 @@
 }
 
 .friendContainer::-webkit-scrollbar {
-  height: 10px;
-  width: 12px;
+  width: 4px; /*스크롤바의 너비*/
 }
 
 .friendContainer::-webkit-scrollbar-thumb {
-  background-color: lightgrey;
-  background-clip: padding-box;
-  border: 3px solid transparent;
-  border-radius: 100px;
+  background-color: rgb(87, 214, 150); /*스크롤바의 색상*/
+  border-radius: 10px;
 }
 
 .friendContainer::-webkit-scrollbar-track {
-  background-color: white;
-  border: 1px solid #dadada;
-  border-radius: 100px;
+  background-color: #f4f9e5; /*스크롤바 트랙 색상*/
 }

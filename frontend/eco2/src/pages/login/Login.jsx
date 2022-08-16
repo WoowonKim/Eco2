@@ -143,6 +143,7 @@ function Login() {
           placeholder="비밀번호"
           onChange={(e) => setPassword(e.target.value)}
         />
+        {loginFailMsg ? <WarningText>{message}</WarningText> : null}
         <div className={styles.wrapper}>
           <input
             className={styles.checkbox1}
@@ -158,7 +159,6 @@ function Login() {
             <span className={styles.labelText}>자동로그인</span>
           </label>
         </div>
-        {loginFailMsg ? <WarningText>{message}</WarningText> : null}
         <GreenBtn
           type="submit"
           disabled={!(isEmail && password)}
