@@ -9,6 +9,7 @@ import com.web.eco2.domain.entity.admin.Report;
 import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.admin.NoticeService;
 import com.web.eco2.model.service.admin.ReportService;
@@ -108,19 +109,6 @@ public class AdminController {
         try {
             //TODO : 페이징 구현 필요..
             log.info("신고글 조회 API 호출");
-//            List<ReportInformation> reportPost = reportService.findAllPost();
-//            List<ReportDto> reportPostDtos = new ArrayList<>();
-//            for (ReportInformation report : reportPost) {
-//                Post post = postService.getById(report.getPosId());
-//                reportPostDtos.add(new ReportDto(report.getRepId(), report.getCount(), post.getId(), post.getUser(), post.getCategory()));
-//            }
-//
-//            List<ReportInformation> reportComment = reportService.findAllComment();
-//            List<ReportDto> reportCommentDtos = new ArrayList<>();
-//            for (ReportInformation report : reportComment) {
-//                Comment comment = postCommentService.getById(report.getComId());
-//                reportCommentDtos.add(new ReportDto(report.getRepId(), report.getCount(),comment.getPost().getId(), comment.getId(), comment.getUser()));
-//            }
             List<ReportInformation> reportListInformation = reportService.findAllReport();
             System.out.println(reportListInformation);
             List<ReportDto> reportList = new ArrayList<>();
@@ -132,14 +120,20 @@ public class AdminController {
                     post = comment.getPost();
                 } else {
                     post = postService.getById(report.getPosId());
+                    if(post.getMission() == null){
+                        QuestPost questPost = postService.getQuestById(report.getPosId());
+                        System.out.println(questPost);
+                        post.setMission(questPost.getQuest().getMission());
+                    }
                 }
                 User user = post.getUser();
                 if (report.getComId() != null) {
                     user = comment.getUser();
                 }
+
                 reportList.add(new ReportDto(report.getRepId(), report.getCount(), post, report.getComId(), user, post.getCategory()));
             }
-
+            System.out.println(reportList);
             return ResponseHandler.generateResponse("신고글 조회에 성공하였습니다.", HttpStatus.OK, "reportList", reportList);
         } catch (Exception e) {
             log.error("신고글 조회 API 에러", e);
