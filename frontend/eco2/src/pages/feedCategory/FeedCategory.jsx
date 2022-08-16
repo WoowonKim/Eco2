@@ -23,15 +23,13 @@ const FeedCategory = () => {
 
   return (
     <div className={styles.container}>
-      {!feeds ? (
+      {!!feeds && (
         <FeedList
           category={location.state?.category}
           display={"grid"}
           feeds={feeds}
           setLikeCount={setLikeCount}
         />
-      ) : (
-        <div className={styles.text}>게시물이 존재하지 않습니다.</div>
       )}
     </div>
   );

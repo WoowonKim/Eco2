@@ -148,6 +148,9 @@
 .create:hover{
   background-color:rgb(166, 228, 166);;
 }
+.create:disabled {
+  background-color: #b3b3b3;
+}
 .close{
   border: none;
   background-color: #FFF ;
@@ -160,7 +163,10 @@
 .close:hover{
   background-color:rgb(221, 221, 221);;
 }
-
+.p{
+  margin: 5px;
+  font-size: x-small;
+}
 @keyframes modal-show {
   from {
     opacity: 0;

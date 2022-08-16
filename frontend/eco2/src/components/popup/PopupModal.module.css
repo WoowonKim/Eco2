@@ -6,9 +6,8 @@
 }
 
 .popup {
-  /* display: none; */
   width: 330px;
-  height: 380px;
+  height: 350px;
   padding: 20px 20px;
   background-color: #f5f5f5;
   border-radius: 10px;
