@@ -52,15 +52,15 @@ public class UserInformationController {
     @Autowired
     private CalendarService calendarService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{email}")
     @ApiOperation(value = "회원 조회", response = Object.class)
-    public ResponseEntity<?> getUser(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getUser(@PathVariable("email") String email) {
         try {
             log.info("회원 조회 API 호출");
-            if (id == null) {
-                return ResponseHandler.generateResponse("회원아이디를 입력해주세요.", HttpStatus.ACCEPTED);
+            if (email == null || email.equals("")) {
+                return ResponseHandler.generateResponse("이메일을 입력해주세요.", HttpStatus.ACCEPTED);
             }
-            User user = userService.getById(id);
+            User user = userService.findByEmail(email);
 
             if (user != null) {
                 List<Post> posts = postService.getPostOnly(user.getId());
