@@ -25,6 +25,7 @@
 }
 .text{
   text-align: center;
+  font-size: small;
   font-weight: bold;
 }
 .map_my_position {

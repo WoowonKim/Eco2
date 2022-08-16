@@ -69,7 +69,7 @@ public class UserInformationController {
     public ResponseEntity<?> getUser(@PathVariable("email") String email, @PathVariable("requestUserId") Long requestUserId) {
         try {
             log.info("회원 조회 API 호출");
-            if (email == null || email.equals("")) {
+            if (email == null) {
                 return ResponseHandler.generateResponse("이메일을 입력해주세요.", HttpStatus.ACCEPTED);
             }
             User user = userService.findByEmail(email);

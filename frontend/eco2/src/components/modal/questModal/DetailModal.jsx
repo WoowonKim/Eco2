@@ -51,17 +51,25 @@ const DetailModal = (props) => {
           </main>
           <footer>
             {questDetail.achieveFlag ? (
-              <button type="button" className={styles.already} onClick={close}>
+              <>              
+              <button type="button" className={styles.already}>
                 이미 완료된 퀘스트입니다.
               </button>
+              <button className={styles.close} onClick={close}>
+                  닫기
+                </button>
+              </>
+
             ) : questDetail.participated ? (
               <>
                 <button
                   type="button"
                   className={styles.already}
-                  onClick={close}
                 >
                   이미 참여한 퀘스트입니다.
+                </button>
+                <button className={styles.close} onClick={close}>
+                  닫기
                 </button>
               </>
             ) : (

@@ -55,7 +55,7 @@
   margin-top: 10px;
 }
 .greenTrash {
-  color: #adc178;
+  color:rgb(182, 182, 182);
 }
 .whiteTrash {
   color: white;
@@ -89,6 +89,8 @@
   padding-top: 10px;
   padding-bottom: 2px;
   padding-left: 2px;
+  color:rgb(172, 172, 172);
+  
 }
 .trashType {
   padding-top: 10px;

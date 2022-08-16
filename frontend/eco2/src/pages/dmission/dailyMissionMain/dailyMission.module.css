@@ -1,6 +1,6 @@
 /* 상단 START */
 .headerMain {
-  padding-top: 30px;
+  padding-top: 10px;
 }
 .mainHeader {
   margin-top: 20px;
@@ -70,6 +70,7 @@
 }
 
 .greenTrash {
+  
   color: rgba(87, 214, 150, 1);
 }
 .whiteTrash {

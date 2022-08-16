@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./ChattingMessage.module.css";
 import ChattingMessageItem from "../chattingMessageItem/ChattingMessageItem";
 
-const ChattingMessage = ({ chattingMessages }) => {
+const ChattingMessage = ({ chattingMessages,toUser }) => {
   return (
     <div>
       {chattingMessages &&
@@ -13,6 +13,7 @@ const ChattingMessage = ({ chattingMessages }) => {
             message={chattingMessage.message}
             user={chattingMessage.user.name}
             sendDate={chattingMessage.sendDate}
+            toUser={toUser}
           />
         ))}
     </div>

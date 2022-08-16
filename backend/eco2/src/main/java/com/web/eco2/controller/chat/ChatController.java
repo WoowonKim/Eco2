@@ -120,5 +120,17 @@ public class ChatController {
         }
     }
 
+    @GetMapping(value = "/findName/{name}")
+    @ApiOperation(value = "채팅 상대 정보 조회", response = Object.class)
+    public ResponseEntity<Object> findName(@PathVariable("name") String name) {
+        try {
+            log.info("채팅 상대 정보 조회");
+            User user = userService.findByName(name);
+            return ResponseHandler.generateResponse("채팅 상대 정보가 조회되었습니다.", HttpStatus.OK, "toUser", user);
+        } catch (Exception e) {
+            log.error("채팅 상대 정보 조회 API 에러", e);
+            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
 
+        }
+    }
 }
