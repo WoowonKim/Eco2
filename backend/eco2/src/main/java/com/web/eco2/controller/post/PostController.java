@@ -392,7 +392,7 @@ public class PostController {
 //                        item = Item.builder().category(6+quest.getMission().getCategory()).user(questUser).left(200).top(50).build();
                         itemService.save(item);
                         alarmService.insertAlarm(FirebaseAlarm.builder().userId(questUser.getId())
-                                .content(quest.getContent()+" 퀘스트가 완료되었습니다.").dType("questAchieve")
+                                .content(quest.getContent()+" 퀘스트가 완료되었습니다. 메인화면에서 보상을 확인하세요.").dType("questAchieve")
                                 .url("/mainTree").senderId(item.getId()).build());
                     }
                 }

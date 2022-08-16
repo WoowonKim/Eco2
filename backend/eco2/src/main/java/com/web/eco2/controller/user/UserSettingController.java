@@ -124,7 +124,7 @@ public class UserSettingController {
             User sender = userService.findUserInfoById(fromId);
             alarmService.insertAlarm(FirebaseAlarm.builder()
                     .userId(toId).senderId(fromId)
-                    .content(sender.getName() + " 유저가 친구 신청 했습니다.")
+                    .content(sender.getName() + "님이 친구 신청 했습니다.")
                     .dType("friendRequest")
                     .url("/profile/"+fromId)
                     .build(), fromId.toString(), "friendRequest");

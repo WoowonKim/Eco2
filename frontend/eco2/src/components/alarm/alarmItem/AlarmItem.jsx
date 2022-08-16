@@ -7,12 +7,15 @@ import {
 } from "../../../store/alarm/alarmSlice";
 import { getUserId } from "../../../store/user/common";
 import { useNavigate } from "react-router-dom";
+import FriendRequestModal from "../../modal/friendResponseModal/FriendRequestModal";
 
 const AlarmItem = ({ alarm, isFriendRequest }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [image, setImage] = useState("");
   const [isDelete, setIsDelete] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [acceptArgs, setAcceptArgs] = useState({});
+  const [msg, setMsg] = useState("");
 
   const getTime = (time) => {
     const now = new Date();
@@ -77,18 +80,22 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
   };
 
   const onClickFriendResponse = (friendId, response) => {
-    if (window.confirm(`정말 ${response ? "수락" : "거절"}하시겠습니까?`)) {
-      setIsDelete(true);
-      setTimeout(() =>
-        dispatch(
-          responseFriendRequest({
-            id: parseInt(getUserId()),
-            friendId: friendId,
-            response: response,
-          })
-        )
-      );
-    }
+    setMsg(`정말 ${response ? "수락" : "거절"}하시겠습니까?`);
+    setAcceptArgs({ friendId, response });
+    setVisible(true);
+
+    // if (window.confirm(`정말 ${response ? "수락" : "거절"}하시겠습니까?`)) {
+    //   setIsDelete(true);
+    //   setTimeout(() =>
+    //     dispatch(
+    //       responseFriendRequest({
+    //         id: parseInt(getUserId()),
+    //         friendId: friendId,
+    //         response: response,
+    //       })
+    //     )
+    //   );
+    // }
   };
 
   const onClickNavigate = (id, type, senderId) => {
@@ -109,70 +116,92 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
   };
 
   return (
-    <div
-      className={`${styles.container} ${
-        isDelete && styles["container-delete"]
-      }`}
-    >
-      <div className={styles.head}>
-        <div className={styles.title}>
-          <i className={"fa-solid fa-circle-dot icon"}></i>
-          <p>
-            <b>{getType(alarm.dtype)}</b>
-          </p>
-          <p>{getTime(alarm.sendTime)}</p>
-        </div>
-        <div className={styles.close}>
-          {alarm.dtype === "friendRequest" || (
-            <i
-              className={`fa-solid fa-x icon`}
-              onClick={() => {
-                onClickDelete(alarm.id, alarm.userId);
-              }}
-            ></i>
-          )}
-        </div>
-      </div>
+    <>
       <div
-        className={styles.content}
-        onClick={() => {
-          onClickNavigate(alarm.id, alarm.dtype, alarm.senderId);
-        }}
+        className={`${styles.container} ${
+          isDelete && styles["container-delete"]
+        }`}
       >
-        <img
-          className={styles.profileImg}
-          src={getImage(alarm)}
-          alt="profileImg"
-        />
-        <p>{alarm.content}</p>
-      </div>
-      <>
-        <div className={styles.buttons}>
-          {isFriendRequest && (
-            <>
-              <button
-                className={`${styles.button} ${styles.accept}`}
+        <div className={styles.head}>
+          <div className={styles.title}>
+            <i className={"fa-solid fa-circle-dot icon"}></i>
+            <p>
+              <b>{getType(alarm.dtype)}</b>
+            </p>
+            <p>{getTime(alarm.sendTime)}</p>
+          </div>
+          <div className={styles.close}>
+            {alarm.dtype === "friendRequest" || (
+              <i
+                className={`fa-solid fa-x icon`}
                 onClick={() => {
-                  onClickFriendResponse(alarm.senderId, true);
+                  onClickDelete(alarm.id, alarm.userId);
                 }}
-                type="button"
-              >
-                수락
-              </button>
-              <button
-                className={`${styles.button} ${styles.refuse}`}
-                onClick={() => {
-                  onClickFriendResponse(alarm.senderId, false);
-                }}
-                type="button"
-              >
-                거절
-              </button>
-            </>
-          )}
+              ></i>
+            )}
+          </div>
         </div>
-      </>
-    </div>
+        <div
+          className={styles.content}
+          onClick={() => {
+            onClickNavigate(alarm.id, alarm.dtype, alarm.senderId);
+          }}
+        >
+          <img
+            className={styles.profileImg}
+            src={getImage(alarm)}
+            alt="profileImg"
+          />
+          <p>{alarm.content}</p>
+        </div>
+        <>
+          <div className={styles.buttons}>
+            {isFriendRequest && (
+              <>
+                <button
+                  className={`${styles.button} ${styles.accept}`}
+                  onClick={() => {
+                    onClickFriendResponse(alarm.senderId, true);
+                  }}
+                  type="button"
+                >
+                  수락
+                </button>
+                <button
+                  className={`${styles.button} ${styles.refuse}`}
+                  onClick={() => {
+                    onClickFriendResponse(alarm.senderId, false);
+                  }}
+                  type="button"
+                >
+                  거절
+                </button>
+              </>
+            )}
+          </div>
+        </>
+      </div>
+      {visible && alarm.dtype === "friendRequest" && (
+        <FriendRequestModal
+          title={"친구 요청"}
+          content={msg}
+          accept={({ friendId, response }) => {
+            setIsDelete(true);
+            setTimeout(() =>
+              dispatch(
+                responseFriendRequest({
+                  id: parseInt(getUserId()),
+                  friendId: friendId,
+                  response: response,
+                })
+              )
+            );
+          }}
+          acceptArgs={acceptArgs}
+          closeModal={() => setVisible(false)}
+        />
+      )}
+    </>
   );
 };
 
