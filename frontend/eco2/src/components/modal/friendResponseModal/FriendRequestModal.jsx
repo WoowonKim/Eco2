@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from "react";
-import styles from "./ConfirmModal.module.css";
-const ConfirmModal = ({ type, title, content, closeModal }) => {
-  const [hidden, setHidden] = useState(false);
-  const displayType = hidden ? styles.hidden : null;
+import React, { useEffect } from "react";
+import styles from "./friendRequestModal.module.css";
 
+const FriendRequestModal = ({
+  type,
+  title,
+  content,
+  accept,
+  acceptArgs,
+  closeModal,
+}) => {
   useEffect(() => {
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
   }, []);
   return (
-    <div className={`${displayType} ${styles.modal}`} onClick={closeModal}>
+    <div className={`${styles.modal}`} onClick={closeModal}>
       <div onClick={(e) => e.stopPropagation()} className={styles.modalBody}>
         <div className={styles.modalTitle}>
           <i
@@ -22,11 +27,21 @@ const ConfirmModal = ({ type, title, content, closeModal }) => {
           <button
             onClick={() => {
               closeModal();
+              accept(acceptArgs);
               document.body.style = `overflow: auto`;
             }}
-            className={`${styles.cancleButton}`}
+            className={`${styles.button} ${styles.acceptButton}`}
           >
-            닫기
+            확인
+          </button>
+          <button
+            onClick={() => {
+              document.body.style = `overflow: auto`;
+              closeModal();
+            }}
+            className={`${styles.button} ${styles.cancleButton}`}
+          >
+            취소
           </button>
         </div>
       </div>
@@ -34,4 +49,4 @@ const ConfirmModal = ({ type, title, content, closeModal }) => {
   );
 };
 
-export default ConfirmModal;
+export default FriendRequestModal;
