@@ -199,7 +199,7 @@ export const myEcoMissionSlice = createSlice({
     },
     [postTodayMission.fulfilled]: (state, action) => {
       console.log("postTodayMission Fulfilled===>", action.payload);
-      state.data = action.payload.recommendedMission;
+      state.data = action.payload;
       state.isPending = false;
       state.open = false;
     },
