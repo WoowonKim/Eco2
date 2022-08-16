@@ -148,7 +148,7 @@ public class PostController {
                         }
                     }
                 } else {
-                    if (post.isPublicFlag() == true) {
+                    if (post.isPublicFlag() == true || postUser.getId() == userId) {
                         Mission mission = null;
                         CustomMission customMission = null;
                         QuestDto quest = null;
@@ -264,7 +264,7 @@ public class PostController {
                     return ResponseHandler.generateResponse("비공개 계정입니다.", HttpStatus.OK);
                 }
             } else {
-                if (post.isPublicFlag() == true) {
+                if (post.isPublicFlag() == true || postUser.getId() == userId) {
                     Mission mission = null;
                     CustomMission customMission = null;
                     QuestDto quest = null;
