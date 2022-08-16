@@ -51,7 +51,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
    * ==> 추가시 새로고침으로 임시적으로 해결 상태
    */
   useEffect(() => {
-    dispatch(getFavorite({ id: id })).then(res => {
+    dispatch(getFavorite({ id: id })).then((res) => {
       if (res.payload.status === 200) {
         setFavoriteArr(res.payload.missionList);
       }
@@ -59,7 +59,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   }, [faDelete, faAdd, famiAdd]);
 
   useEffect(() => {
-    axiosService.get("/daily/trending").then(res => {
+    axiosService.get("/daily/trending").then((res) => {
       ////console.log(res.data);
       setTrendingMission(res.data.trendingList);
     });
@@ -118,7 +118,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
    */
   const favoMissionSub = (id, faId) => {
     faIdArr.push(faId);
-    dispatch(postMission({ id, dailyMissionList: faIdArr })).then(res => {
+    dispatch(postMission({ id, dailyMissionList: faIdArr })).then((res) => {
       if (res.payload?.status === 200) {
         setFamiAdd(!famiAdd);
       }
@@ -136,7 +136,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
         missionType: favoriteTrue,
         missionId: faId,
       })
-    ).then(res => {
+    ).then((res) => {
       if (res.payload.status === 200) {
         setFaDelete(!faDelete);
       }
@@ -147,7 +147,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
     if (id === 0) {
       return;
     }
-    dispatch(trending()).then(res => {
+    dispatch(trending()).then((res) => {
       if (res.payload.status === 200) {
         // console.log("트렌딩 리스트 ===>", res.payload.trendingList);
         setTrend(res.payload.trendingList);
@@ -162,11 +162,11 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
   const [cateFour, setCateFour] = useState([]);
   const [cateFive, setCateFive] = useState([]);
 
-  const categoryOne = ecomissionList.filter(it => it.category === 1);
-  const categoryTwo = ecomissionList.filter(it => it.category === 2);
-  const categoryThree = ecomissionList.filter(it => it.category === 3);
-  const categoryFour = ecomissionList.filter(it => it.category === 4);
-  const categoryFive = ecomissionList.filter(it => it.category === 5);
+  const categoryOne = ecomissionList.filter((it) => it.category === 1);
+  const categoryTwo = ecomissionList.filter((it) => it.category === 2);
+  const categoryThree = ecomissionList.filter((it) => it.category === 3);
+  const categoryFour = ecomissionList.filter((it) => it.category === 4);
+  const categoryFive = ecomissionList.filter((it) => it.category === 5);
 
   useEffect(() => {
     setCateOne(categoryOne);
@@ -183,7 +183,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
 
   const [cateNum, setCateNum] = useState(0);
 
-  const testNum = number => {
+  const testNum = (number) => {
     setCateNum(number);
   };
 
@@ -256,7 +256,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
 
       <div className={styles.headCheck}>
         <ul className={styles.headType}>
-          <li className={styles.liType}>
+          <li className={`${styles.liType} ${list ? styles.active : null}`}>
             {" "}
             <span
               className={styles.listType}
@@ -269,7 +269,7 @@ const DailyEcoMissionList = ({ id, ecomissionList, customMake }) => {
               기본{" "}
             </span>
           </li>
-          <li className={styles.liType}>
+          <li className={`${styles.liType} ${!list ? styles.active : null}`}>
             {" "}
             <span
               className={styles.listType}

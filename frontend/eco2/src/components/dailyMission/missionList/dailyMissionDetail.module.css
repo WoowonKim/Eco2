@@ -62,7 +62,7 @@ li {
 }
 .favoritetrash {
   cursor: pointer;
-  color: #adc178;
+  color: rgb(182, 182, 182);
 }
 
 .itemFont {
@@ -99,7 +99,7 @@ li {
   padding: 5px;
   background-color: #ffffff;
   border-bottom: 1px solid #dadada;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   cursor: pointer;
 }
 
@@ -452,4 +452,9 @@ fieldset {
 
 .btnAdd {
   margin-bottom: 20px;
+}
+
+.active {
+  color: white;
+  background-color: rgb(166, 228, 166);
 }

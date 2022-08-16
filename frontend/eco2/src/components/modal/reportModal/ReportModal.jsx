@@ -54,30 +54,6 @@ const ReportModal = ({
             <p className={styles.content}>{content}</p>
             <p className={styles.content}>신고 유형과 내용을 입력해주세요</p>
             <div className={styles.selectBox2}>
-              {/* <select
-                name="category"
-                className={styles.select}
-                onChange={(e) => setSelected(e.target.value)}
-              >
-                <option className={styles.option} value="5">
-                  신고 유형 선택
-                </option>
-                <option className={styles.option} value="1">
-                  욕설
-                </option>
-                <option className={styles.option} value="2">
-                  음란물
-                </option>
-                <option className={styles.option} value="3">
-                  허위인증
-                </option>
-                <option className={styles.option} value="4">
-                  광고
-                </option>
-                <option className={styles.option} value="5">
-                  기타
-                </option>
-              </select> */}
               <button
                 className={styles.label}
                 onClick={() => setClicked(!clicked)}
