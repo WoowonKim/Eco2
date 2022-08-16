@@ -66,6 +66,7 @@ const PostDetail = () => {
   useEffect(() => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
+        console.log(res.payload);
         if (res.payload?.msg === "비공개 계정입니다.") {
           navigate("/mainFeed");
         }
