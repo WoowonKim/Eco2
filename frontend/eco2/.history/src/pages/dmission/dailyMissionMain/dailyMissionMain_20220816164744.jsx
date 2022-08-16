@@ -208,7 +208,6 @@ const DailyMissionMain = () => {
                 onClick={() => {
                   setVisible(!visible);
                   setModalType("미션등록");
-                  setModalVisible(true);
                 }}
                 // onClick={onSucsses}
               >

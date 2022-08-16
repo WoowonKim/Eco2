@@ -208,7 +208,6 @@ const DailyMissionMain = () => {
                 onClick={() => {
                   setVisible(!visible);
                   setModalType("미션등록");
-                  setModalVisible(true);
                 }}
                 // onClick={onSucsses}
               >
@@ -229,12 +228,12 @@ const DailyMissionMain = () => {
             setCalUR={setCalUR}
           />
         )}
-        {calUR > 0 && modalVisible && (
+        {calUR > 0 && (
           <CalendarModal
             calendarId={calUR}
             month={month}
             day={days}
-            closeModal={() => setModalVisible(!modalVisible)}
+            // closeModal={()=>setModalVisible(!modalVisible)}
           />
         )}
       </div>

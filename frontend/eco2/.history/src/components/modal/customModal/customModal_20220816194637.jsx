@@ -14,7 +14,6 @@ const CustomModal = ({ open, close, setcusModal }) => {
   const [cate, setCate] = useState(1);
   const [tit, setTit] = useState("");
   const [cont, setCont] = useState("");
-  const [disabled, setDisabled] = useState(false);
 
   const selectList = [
     {
@@ -43,25 +42,6 @@ const CustomModal = ({ open, close, setcusModal }) => {
     setSelected(e.target.value);
   };
 
-
-  useEffect(() => {
-    dispatch(userInformation({ email: getUserEmail() })).then(res => {
-      if (res.payload.status === 200) {
-        setId(res.payload.user.id);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if(cont != ""){
-      setDisabled(true);
-    }else{
-      setDisabled(false);
-    }
- 
-  }, [cont]);
-
-
   const subMit = () => {
     setId(getUserId());
     dispatch(
@@ -71,6 +51,7 @@ const CustomModal = ({ open, close, setcusModal }) => {
         if (res.payload.status === 200) {
           naviGate("/dailymissiondetail", { state: { list: 0 } });
           setcusModal();
+          console.log("이거보여요?");
         }
       })
       .catch(err => {
@@ -86,38 +67,35 @@ const CustomModal = ({ open, close, setcusModal }) => {
         <section>
           <header>나만의 미션 생성하기</header>
           <main className={styles.main}>
-          <div className={styles.selectBox}>
-            <i className={`${"fa-solid fa-calendar-check"} ${styles.icon}`}></i>카테고리
-            <select onChange={handleSelect} value={selected} className={styles.categoryInput}>
+            <i className={`${"fa-solid fa-calendar-check"} ${styles.icon}`}></i>
+            <select onChange={handleSelect} value={selected}>
               {selectList.map((item, idx) => (
                 <option value={item.id} key={idx}>
                   {item.title}
                 </option>
               ))}
             </select>
-          </div>
-          <div className={styles.contentBox}>
-          <div className={styles.contentTitle}>
+            <fieldset className={styles.fieldset}>
+              <legend style={{ textAlign: "start" }}>
                 <i
                   className={`${"fa-solid fa-pen-to-square"} ${styles.icon}`}
                 ></i>
                 미션 주제를 작성해주세요
-                </div>
+              </legend>
               <textarea
                 id="content"
-                className={styles.contentText}
+                className={styles.contentBox}
                 placeholder="수행할 미션 주제를 작성해주세요!!&#13;&#10;(ex_달리기 하면서 쓰레기줍기)"
                 onChange={e => {
                   setTit(e.target.value);
                   setCont(e.target.value);
                 }}
               />
-              </div>
+            </fieldset>
           </main>
           <footer>
             <button
               className={styles.create}
-              disabled={!disabled}
               onClick={() => {
                 subMit();
                 close();

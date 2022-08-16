@@ -83,26 +83,26 @@ const PostModal = ({
       console.log("커스텀 미션에서 온 userId ===> ", userID);
       if (postId) {
         if (commentId) {
-          dispatch(commentDelete({ postId, commentId })).then((res) => {
+          dispatch(commentDelete({ postId, commentId })).then(res => {
             if (res.payload?.status === 200) {
               navigate(`/post/${postId}`, { replace: true });
               closeModal();
-              setTest((curr) => curr + 1);
+              setTest(curr => curr + 1);
             }
           });
         } else {
-          dispatch(postDelete({ postId })).then((res) => {
+          dispatch(postDelete({ postId })).then(res => {
             closeModal();
             navigate("/mainFeed");
           });
         }
       } else if (noticeId) {
-        dispatch(noticeDelete({ noticeId })).then((res) => {
+        dispatch(noticeDelete({ noticeId })).then(res => {
           closeModal();
           navigate("/user/settings/");
         });
       } else if (cosId) {
-        dispatch(customDeleteMission({ id: cosId })).then((res) => {
+        dispatch(customDeleteMission({ id: cosId })).then(res => {
           setCusDelete(!cusDelete);
           console.log("삭제 ===>", cosId);
         });
@@ -116,27 +116,25 @@ const PostModal = ({
           comId: commentId,
           message: message,
         })
-      ).then((res) => {
+      ).then(res => {
         if (res.payload?.status === 200) {
           setHidden(true);
         }
       });
     } else if (type === "로그아웃") {
-      dispatch(logout()).then((res) => {
-        if (res.payload.status === 200) {
-          removeUserSession();
-          closeModal();
-          navigate("/");
-          // window.location.replace("/");
-        }
+      dispatch(logout()).then(res => {
+        removeUserSession();
+        closeModal();
+        // navigate("/");
+        window.location.replace("/");
       });
     } else if (type === "탈퇴") {
-      dispatch(deleteUser({ email })).then((res) => {
+      dispatch(deleteUser({ email })).then(res => {
         if (res.payload.status === 200) {
           removeUserSession();
           closeModal();
-          navigate("/");
-          // window.location.replace("/");
+          // navigate("/");
+          window.location.replace("/");
         }
       });
     } else if (type === "친구") {
@@ -148,12 +146,12 @@ const PostModal = ({
     } else if (type === "옮기기") {
       cusMi.push(cosId);
       dispatch(postMission({ id: userID, customMissionList: cusMi })).then(
-        (res) => {
+        res => {
           setCusSubmit(!cusSubmit);
         }
       );
     } else if (type === "등록") {
-      dispatch(postMission({ id, dailyMissionList: ecoId })).then((res) => {
+      dispatch(postMission({ id, dailyMissionList: ecoId })).then(res => {
         if (res.payload?.status === 200) {
           navigate("/dailymissionMain");
         }
@@ -165,13 +163,12 @@ const PostModal = ({
     } else if (type === "미션삭제") {
       dispatch(
         deleteMission({ id: idTest, missionId: missiondeleteIdTest })
-      ).then((res) => {
+      ).then(res => {
         if (res.payload.status === 200) {
           setMissionDelete(!missionDelete);
         }
       });
     } else if (type === "미션등록") {
-
       dispatch(missionPost({ id: successId })).then(res => {
         // console.log("캘린더 아이디 ===>", res);
         const calendarId = res.payload.calendarId;
@@ -183,9 +180,6 @@ const PostModal = ({
         });
 
         closeModal();
-
-      dispatch(missionPost({ id: successId })).then((res) => {
-        dispatch(missionItem({ id: successId, date: toDayGet }));
       });
       // navigate("/mainTree");
     } else if (type === "내목록이동") {
@@ -194,7 +188,7 @@ const PostModal = ({
           id: customidTest,
           missionId: custommissiondeleteIdTest,
         })
-      ).then((res) => {
+      ).then(res => {
         setCusMissionDelete(!cusMissionDelete);
       });
 
@@ -224,7 +218,7 @@ const PostModal = ({
   }, []);
   return (
     <div className={`${displayType} ${styles.modal}`} onClick={closeModal}>
-      <div onClick={(e) => e.stopPropagation()} className={styles.modalBody}>
+      <div onClick={e => e.stopPropagation()} className={styles.modalBody}>
         <div className={styles.modalTitle}>
           {type === "수정" ? (
             <i className={`fa-regular fa-circle-check ${styles.editIcon}`}></i>
