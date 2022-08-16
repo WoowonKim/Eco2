@@ -15,8 +15,8 @@ const FeedList = ({ category, display, feeds, setLikeCount }) => {
             (feed) =>
               (category === feed.mission?.category ||
                 category === feed.customMission?.category ||
-                category === feed.quest?.mission.category) &&
-              feed.postPublicFlag && (
+                category === feed.quest?.mission.category) && (
+                // feed.postPublicFlag &&
                 <FeedItem
                   key={feed.id}
                   id={feed.id}
