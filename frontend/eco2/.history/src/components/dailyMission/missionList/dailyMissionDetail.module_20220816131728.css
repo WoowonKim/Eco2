@@ -1,6 +1,6 @@
 /* 상단 위치 조정 */
 .topRoot {
-  margin-top: 20px;
+  margin-top: 70px;
 }
 /* 오늘은 어떤 도전을 해볼까 */
 .Font {
@@ -16,8 +16,7 @@ li {
 }
 
 .rolling {
-  padding-bottom: 30px;
-  height: 20px;
+  height: 34px;
   overflow: hidden;
 }
 .li {
@@ -148,7 +147,7 @@ li {
 
 /* 미션리스트 START */
 .scrollMission {
-  height: 250px;
+  height: 300px;
   width: 360px;
   overflow-x: auto;
   overflow-y: scroll;
@@ -159,7 +158,7 @@ li {
 }
 
 .scrollMission::-webkit-scrollbar-thumb {
-  background-color: rgb(87, 214, 150); /*스크롤바의 색상*/
+  background-color: #adc178; /*스크롤바의 색상*/
   border-radius: 8px;
 }
 
@@ -448,8 +447,4 @@ fieldset {
   text-align: center;
   font-size: small;
   padding-top: 5px;
-}
-
-.btnAdd {
-  margin-bottom: 20px;
 }
