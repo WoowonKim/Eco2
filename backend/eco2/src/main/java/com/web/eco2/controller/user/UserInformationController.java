@@ -1,10 +1,14 @@
 package com.web.eco2.controller.user;
 
+import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.dto.user.UserDto;
+import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.repository.user.UserSettingRepository;
+import com.web.eco2.model.service.FriendService;
 import com.web.eco2.model.service.chat.ChatService;
 import com.web.eco2.model.service.item.CalendarService;
 import com.web.eco2.model.service.post.PostService;
@@ -25,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +57,13 @@ public class UserInformationController {
     @Autowired
     private CalendarService calendarService;
 
+    @Autowired
+    private FriendService friendService;
+
+
+    @Autowired
+    private UserSettingRepository userSettingRepository;
+
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 조회", response = Object.class)
     public ResponseEntity<?> getUser(@PathVariable("email") String email) {
@@ -60,13 +72,42 @@ public class UserInformationController {
             if (email == null || email.equals("")) {
                 return ResponseHandler.generateResponse("이메일을 입력해주세요.", HttpStatus.ACCEPTED);
             }
-            User user = userService.findByEmail(email);
-
-            if (user != null) {
-                List<Post> posts = postService.getPostOnly(user.getId());
-                List<QuestPost> questPosts = postService.getQuestPostOnly(user.getId());
+            User requestUser = userService.findByEmail(email);
+            ArrayList<Post> postList = new ArrayList<>();
+            ArrayList<QuestPost> questPostList = new ArrayList<>();
+            if (requestUser != null) {
+                List<Post> posts = postService.getPostOnly(requestUser.getId());
+                for (Post post : posts) {
+                    UserSetting userSetting = userSettingRepository.getById(post.getUser().getId());
+                    if (userSetting.isPublicFlag() == false) {
+                        if (friendService.getFriends(requestUser.getId()).contains(post.getUser()) || post.getUser().getId() == requestUser.getId()) {
+                            if (post.isPublicFlag() == true) {
+                                postList.add(post);
+                            }
+                        }
+                    } else {
+                        if (post.isPublicFlag() == true || post.getUser().getId() == requestUser.getId()) {
+                            postList.add(post);
+                        }
+                    }
+                }
+                List<QuestPost> questPosts = postService.getQuestPostOnly(requestUser.getId());
+                for (QuestPost questPost : questPosts) {
+                    UserSetting userSetting = userSettingRepository.getById(questPost.getUser().getId());
+                    if (userSetting.isPublicFlag() == false) {
+                        if (friendService.getFriends(requestUser.getId()).contains(questPost.getUser()) || questPost.getUser().getId() == requestUser.getId()) {
+                            if (questPost.isPublicFlag() == true) {
+                                questPostList.add(questPost);
+                            }
+                        }
+                    } else {
+                        if (questPost.isPublicFlag() == true || questPost.getUser().getId() == requestUser.getId()) {
+                            questPostList.add(questPost);
+                        }
+                    }
+                }
                 return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
-                        Map.of("user", user.toDto(), "postList", posts, "questPostList", questPosts));
+                        Map.of("user", requestUser.toDto(), "postList", postList, "questPostList", questPostList));
             } else {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.ACCEPTED);
             }
