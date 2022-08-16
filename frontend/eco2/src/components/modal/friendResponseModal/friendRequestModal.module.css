@@ -1,0 +1,87 @@
+.modal {
+  position: fixed;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modalBody {
+  position: absolute;
+  display: block;
+  width: 280px;
+  background-color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteIcon {
+  border-radius: 5px;
+  color: rgb(87, 214, 150);
+  font-size: large;
+}
+
+.title {
+  margin: 5px;
+  text-align: center;
+}
+
+.content {
+  font-size: small;
+  text-align: start;
+  margin: 10px 5px 20px 5px;
+  text-align: center;
+}
+
+.buttonGroup {
+  display: block;
+}
+
+.button {
+  display: block;
+  padding: 3px 5px;
+  border-radius: 10px;
+  font-size: smaller;
+  text-align: center;
+  width: 100%;
+  transition: all 200ms ease-in;
+  font-weight: 700;
+  margin-top: 5%;
+}
+
+.acceptButton {
+  background-color: rgb(87, 214, 150);
+  color: white;
+  border: 2px solid rgb(87, 214, 150);
+}
+
+.cancleButton {
+  background-color: white;
+  color: #6e6e6e;
+  border: 2px solid #6e6e6e;
+}
+
+.button:hover {
+  transform: scale(1.02);
+}
+
+.hidden {
+  display: none;
+}
