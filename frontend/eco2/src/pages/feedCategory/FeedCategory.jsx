@@ -17,13 +17,14 @@ const FeedCategory = () => {
       console.log(res);
       if (res.payload?.status === 200) {
         setFeeds(res.payload.postListDtos);
+        console.log(res.payload.postListDtos);
       }
     });
   }, [likeCount]);
 
   return (
     <div className={styles.container}>
-      {!feeds ? (
+      {!!feeds ? (
         <FeedList
           category={location.state?.category}
           display={"grid"}
