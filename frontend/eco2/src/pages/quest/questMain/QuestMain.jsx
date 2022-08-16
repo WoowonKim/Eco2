@@ -35,6 +35,7 @@ const QuestMain = () => {
         console.log(res.data.quest);
         setQuestDetail(res.data.quest);
         axiosService.get(`quest/${res.data.quest.id}`).then((r) => {
+          console.log(r.data.questPosts);
           setQuestDetailFeeds(r.data.questPosts);
         });
       })
@@ -59,7 +60,6 @@ const QuestMain = () => {
         openCreateModal={openCreateModal}
         openDeatailModal={openDetailModal}
         setMakeFlag={setMakeFlag}
-        makeFlag={makeFlag}
         payload={payload}
         setCount={setCount}
         name={name}

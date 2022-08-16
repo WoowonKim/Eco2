@@ -20,7 +20,7 @@ const DetailModal = (props) => {
       {open ? (
         <section>
           <main className={styles.main}>
-          {currUser == questDetail.user.id && !questDetail.participated ? (
+            {currUser == questDetail.user.id && !questDetail.participated ? (
               <div
                 onClick={() => {
                   dispatch(deleteQuest(questDetail.id));
@@ -28,12 +28,16 @@ const DetailModal = (props) => {
                 }}
                 className={styles.deleteButton}
               >
-             <i className={`fa-solid fa-trash-can-arrow-up ${styles.deleteIcon}`}></i>  
+                <i
+                  className={`fa-solid fa-trash-can-arrow-up ${styles.deleteIcon}`}
+                ></i>
               </div>
-          ) : null}
+            ) : null}
 
             <div className={styles.info}>
-            <div className={styles.title}>미션! {questDetail.mission.title}</div>
+              <div className={styles.title}>
+                미션! {questDetail.mission.title}
+              </div>
               <div className={styles.content}>{questDetail.content}</div>
               <div className={styles.endTime}>
                 {finishDate} {finishTime}에 종료됩니다! 놓치지말고 참여하세요!
@@ -46,12 +50,16 @@ const DetailModal = (props) => {
           </main>
           <footer>
             {questDetail.achieveFlag ? (
-              <button type="button" className={styles.already}  onClick={close}>
+              <button type="button" className={styles.already} onClick={close}>
                 이미 완료된 퀘스트입니다.
               </button>
             ) : questDetail.participated ? (
               <>
-                <button type="button" className={styles.already}  onClick={close}>
+                <button
+                  type="button"
+                  className={styles.already}
+                  onClick={close}
+                >
                   이미 참여한 퀘스트입니다.
                 </button>
               </>
