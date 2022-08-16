@@ -26,7 +26,7 @@ const DailyMissionDetail = () => {
     dispatch(dMission({ id: getUserId() })).then(res =>
       setMissionList(res.payload.missionList)
     );
-  }, [famissionList]);
+  }, []);
 
   // if (!location.state?.list) {
   //   setTest(false);
