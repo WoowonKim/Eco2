@@ -15,7 +15,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 
     Post getById(Long id);
-
+    QuestPost getQuestById(Long id);
     List<QuestPost> findByQuest(Quest quest);
 
     List<QuestPost> findByUserAndQuestNotNull(User user);

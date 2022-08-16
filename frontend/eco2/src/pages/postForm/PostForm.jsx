@@ -179,11 +179,6 @@ const PostForm = () => {
   }, []);
   return (
     <div>
-      {/* <div className={styles.titleGroup}>
-        <i className={`fa-brands fa-pagelines ${styles.titleIcon}`}></i>
-        <h2 className={styles.title}>인증하기</h2>
-      </div>
-      <hr className={styles.line} /> */}
       <form onSubmit={(e) => onSubmit(e)}>
         <div className={styles.fileInputGroup}>
           {fileImage ? (
@@ -197,7 +192,7 @@ const PostForm = () => {
           ) : null}
           {!fileImage && !imageCheck ? (
             <label htmlFor="file" className={styles.imgLabel}>
-              파일찾기
+              인증 사진을 업로드 해주세요!
             </label>
           ) : (
             <label htmlFor="file" className={styles.imgLabelUpdate}>

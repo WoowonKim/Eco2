@@ -64,50 +64,50 @@ public class UserInformationController {
     @Autowired
     private UserSettingRepository userSettingRepository;
 
-    @GetMapping("/{email}")
+    @GetMapping("/{email}/{requestUserId}")
     @ApiOperation(value = "회원 조회", response = Object.class)
-    public ResponseEntity<?> getUser(@PathVariable("email") String email) {
+    public ResponseEntity<?> getUser(@PathVariable("email") String email, @PathVariable("requestUserId") Long requestUserId) {
         try {
             log.info("회원 조회 API 호출");
-            if (email == null || email.equals("")) {
+            if (email == null) {
                 return ResponseHandler.generateResponse("이메일을 입력해주세요.", HttpStatus.ACCEPTED);
             }
-            User requestUser = userService.findByEmail(email);
+            User user = userService.findByEmail(email);
             ArrayList<Post> postList = new ArrayList<>();
             ArrayList<QuestPost> questPostList = new ArrayList<>();
-            if (requestUser != null) {
-                List<Post> posts = postService.getPostOnly(requestUser.getId());
+            if (user != null) {
+                List<Post> posts = postService.getPostOnly(user.getId());
                 for (Post post : posts) {
-                    UserSetting userSetting = userSettingRepository.getById(post.getUser().getId());
+                    UserSetting userSetting = userSettingRepository.getById(user.getId());
                     if (userSetting.isPublicFlag() == false) {
-                        if (friendService.getFriends(requestUser.getId()).contains(post.getUser()) || post.getUser().getId() == requestUser.getId()) {
+                        if (friendService.getFriends(user.getId()).contains(requestUserId) || user.getId() == requestUserId) {
                             if (post.isPublicFlag() == true) {
                                 postList.add(post);
                             }
                         }
                     } else {
-                        if (post.isPublicFlag() == true || post.getUser().getId() == requestUser.getId()) {
+                        if (post.isPublicFlag() == true || user.getId() == requestUserId) {
                             postList.add(post);
                         }
                     }
                 }
-                List<QuestPost> questPosts = postService.getQuestPostOnly(requestUser.getId());
+                List<QuestPost> questPosts = postService.getQuestPostOnly(user.getId());
                 for (QuestPost questPost : questPosts) {
-                    UserSetting userSetting = userSettingRepository.getById(questPost.getUser().getId());
+                    UserSetting userSetting = userSettingRepository.getById(user.getId());
                     if (userSetting.isPublicFlag() == false) {
-                        if (friendService.getFriends(requestUser.getId()).contains(questPost.getUser()) || questPost.getUser().getId() == requestUser.getId()) {
+                        if (friendService.getFriends(user.getId()).contains(requestUserId) || user.getId() == requestUserId) {
                             if (questPost.isPublicFlag() == true) {
                                 questPostList.add(questPost);
                             }
                         }
                     } else {
-                        if (questPost.isPublicFlag() == true || questPost.getUser().getId() == requestUser.getId()) {
+                        if (questPost.isPublicFlag() == true || user.getId() == requestUserId) {
                             questPostList.add(questPost);
                         }
                     }
                 }
                 return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
-                        Map.of("user", requestUser.toDto(), "postList", postList, "questPostList", questPostList));
+                        Map.of("user", user.toDto(), "postList", postList, "questPostList", questPostList));
             } else {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.ACCEPTED);
             }

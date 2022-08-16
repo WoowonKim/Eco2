@@ -158,9 +158,9 @@ public class DailyMissionController {
             File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".png");
             ImageIO.write(img, "png", saveFile);
             calendarDto.setSaveName(calendarDto.getSaveName()+".png");
-            calendarService.save(calendarDto.toEntity());
-            return ImageController.getFileResponse(calendarDto.getSaveFolder(),  calendarDto.getSaveName());
-
+            Calendar calendar = calendarDto.toEntity();
+            calendarService.save(calendar);
+            return ResponseHandler.generateResponse("보상 받기 완료되었습니다.", HttpStatus.OK, "calendarId", calendar.getId());
         } catch (Exception e) {
             log.error("데일리미션 보상 받기 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);

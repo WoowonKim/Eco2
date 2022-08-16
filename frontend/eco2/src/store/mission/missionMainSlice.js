@@ -86,7 +86,6 @@ export const missionPost = createAsyncThunk(
   "missionMainSlice/missionPost",
   async (args, { rejectWithValue }) => {
     try {
-      console.log("missionPost ARGS===>", args);
       const response = await axiosService.post(`/daily/reward/${args.id}`);
       return response.data;
     } catch (err) {
@@ -99,13 +98,25 @@ export const missionItem = createAsyncThunk(
   "missionMainSlice/missionItem",
   async (args, { rejectWithValue }) => {
     try {
-      console.log("missionItem ARGS===>", args);
       const response = await axiosService.post(
         `/daily/reward/check/${args.id}`,
         {
           date: args.date,
         }
       );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+export const calendarImg = createAsyncThunk(
+  "missionMainSlice/calendarImg",
+  async (args, { rejectWithValue }) => {
+    // console.log("ARG=>", args);
+    try {
+      const response = await axiosService.get(`img/reward/${args.calendarId}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -195,6 +206,12 @@ export const myEcoMissionSlice = createSlice({
     [postTodayMission.rejected]: (state, action) => {
       console.log("postTodayMission Rejected===>", action.payload);
       state.isPending = false;
+    },
+    [calendarImg.fulfilled]: (state, action) => {
+      console.log("calendarImgFulfilled===>");
+    },
+    [calendarImg.rejected]: (state, action) => {
+      console.log("calendarImgRejected===>");
     },
   },
 });

@@ -4,16 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { customPostMission } from "../../../store/mission/customMissionSlice";
 import { userInformation } from "../../../store/user/userSettingSlice";
-import { getUserEmail } from "../../../store/user/common";
+import { getUserEmail, getUserId } from "../../../store/user/common";
 
 const CustomModal = ({ open, close, setcusModal }) => {
   // const { open, close } = props;
   const dispatch = useDispatch();
   const naviGate = useNavigate();
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(getUserId());
   const [cate, setCate] = useState(1);
   const [tit, setTit] = useState("");
   const [cont, setCont] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   const selectList = [
     {
@@ -42,6 +43,7 @@ const CustomModal = ({ open, close, setcusModal }) => {
     setSelected(e.target.value);
   };
 
+
   useEffect(() => {
     dispatch(userInformation({ email: getUserEmail() })).then(res => {
       if (res.payload.status === 200) {
@@ -50,7 +52,18 @@ const CustomModal = ({ open, close, setcusModal }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if(cont != ""){
+      setDisabled(true);
+    }else{
+      setDisabled(false);
+    }
+ 
+  }, [cont]);
+
+
   const subMit = () => {
+    setId(getUserId());
     dispatch(
       customPostMission({ id, category: selected, title: tit, content: cont })
     )
@@ -58,7 +71,6 @@ const CustomModal = ({ open, close, setcusModal }) => {
         if (res.payload.status === 200) {
           naviGate("/dailymissiondetail", { state: { list: 0 } });
           setcusModal();
-          console.log("이거보여요?");
         }
       })
       .catch(err => {
@@ -74,35 +86,38 @@ const CustomModal = ({ open, close, setcusModal }) => {
         <section>
           <header>나만의 미션 생성하기</header>
           <main className={styles.main}>
-            <i className={`${"fa-solid fa-calendar-check"} ${styles.icon}`}></i>
-            <select onChange={handleSelect} value={selected}>
+          <div className={styles.selectBox}>
+            <i className={`${"fa-solid fa-calendar-check"} ${styles.icon}`}></i>카테고리
+            <select onChange={handleSelect} value={selected} className={styles.categoryInput}>
               {selectList.map((item, idx) => (
                 <option value={item.id} key={idx}>
                   {item.title}
                 </option>
               ))}
             </select>
-            <fieldset className={styles.fieldset}>
-              <legend style={{ textAlign: "start" }}>
+          </div>
+          <div className={styles.contentBox}>
+          <div className={styles.contentTitle}>
                 <i
                   className={`${"fa-solid fa-pen-to-square"} ${styles.icon}`}
                 ></i>
                 미션 주제를 작성해주세요
-              </legend>
+                </div>
               <textarea
                 id="content"
-                className={styles.contentBox}
+                className={styles.contentText}
                 placeholder="수행할 미션 주제를 작성해주세요!!&#13;&#10;(ex_달리기 하면서 쓰레기줍기)"
                 onChange={e => {
                   setTit(e.target.value);
                   setCont(e.target.value);
                 }}
               />
-            </fieldset>
+              </div>
           </main>
           <footer>
             <button
               className={styles.create}
+              disabled={!disabled}
               onClick={() => {
                 subMit();
                 close();
