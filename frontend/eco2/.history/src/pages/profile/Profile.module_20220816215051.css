@@ -87,15 +87,27 @@
   font-size: 20px;
 }
 
-.profileImg {
+/* .profileImg {
   width: 150px;
   height: 150px;
   background-color: white;
-  /* //border: 1px solid black; */
+  //border: 1px solid black;
   border: none;
   border-radius: 50%;
   margin-top: 60px;
   margin-right: 5px;
+} */
+
+/* 영제 작업 */
+.profileImg {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  /* border: 1px solid black; */
+  border: none;
+  border-radius: 50%;
+  margin-top: 60px;
+  margin-right: 190px;
 }
 
 .imgLabel {
@@ -201,13 +213,11 @@
 }
 
 .selectedMenu1 {
-
   background: linear-gradient(
     45deg,
     rgba(255, 221, 179, 0.5) 50%,
     rgb(255, 202, 249)
   );
-
   font-weight: bold;
 }
 
@@ -279,4 +289,3 @@
 .dailyScroll::-webkit-scrollbar-track {
   background-color: #f4f9e5; /*스크롤바 트랙 색상*/
 }
-

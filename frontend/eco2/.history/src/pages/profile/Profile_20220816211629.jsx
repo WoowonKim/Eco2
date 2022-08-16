@@ -342,18 +342,16 @@ const Profile = () => {
               </div>
             )}
             {userSetting === 3 && (
-              <div className={styles.dailyScroll}>
-                <div className={`${styles.mission} ${displayType2}`}>
-                  {questList.map(mission => (
-                    <img
-                      key={mission.id}
-                      src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                      alt="profileImg"
-                      className={styles.missionImg}
-                      onClick={() => navigate(`/post/${mission.id}`)}
-                    />
-                  ))}
-                </div>
+              <div className={`${styles.mission} ${displayType2}`}>
+                {questList.map(mission => (
+                  <img
+                    key={mission.id}
+                    src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                    alt="profileImg"
+                    className={styles.missionImg}
+                    onClick={() => navigate(`/post/${mission.id}`)}
+                  />
+                ))}
               </div>
             )}
           </>
