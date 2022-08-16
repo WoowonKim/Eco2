@@ -17,17 +17,20 @@ const QuestMain = () => {
   const [payload, setPayload] = useState(null);
   const [questDetail, setQuestDetail] = useState(null);
   const [questDetailFeeds, setQuestDetailFeeds] = useState(null);
+  const [likeCount, setLikeCount] = useState(0);
+
   useEffect(() => {
     axiosService.get("/mission/quest").then((res) => {
       setQuestList(res.data.missions);
     });
-  }, []);
+  }, [likeCount]);
   const openCreateModal = () => {
     setCreateModal(true);
   };
   const closeCreateModal = () => {
     setCreateModal(false);
   };
+
   const openDetailModal = (id) => {
     axiosService
       .get(`/quest/detail/${id}/${getUserId()}`)
@@ -52,6 +55,17 @@ const QuestMain = () => {
   const closePostModal = () => {
     setPostModal(false);
   };
+
+  useEffect(
+    (id) => {
+      if (!id) {
+        return;
+      }
+      openDetailModal(id);
+    },
+
+    [likeCount]
+  );
   return (
     <div>
       <Map
@@ -80,6 +94,7 @@ const QuestMain = () => {
           openPost={openPostModal}
           questDetail={questDetail}
           questDetailFeeds={questDetailFeeds}
+          setLikeCount={setLikeCount}
         ></DetailModal>
       )}
       {questDetail && (

@@ -7,7 +7,8 @@ import { useDispatch } from "react-redux";
 import { deleteQuest, getQuestList } from "../../../store/quest/questSlice";
 const DetailModal = (props) => {
   // 열기, 닫기
-  const { open, close, questDetail, openPost, questDetailFeeds } = props;
+  const { open, close, questDetail, openPost, questDetailFeeds, setLikeCount } =
+    props;
   let finishDate = questDetail ? questDetail.finishTime.slice(0, 10) : null;
   let finishTime = questDetail ? questDetail.finishTime.slice(11, 16) : null;
   let currUser = getUserId();
@@ -81,6 +82,7 @@ const DetailModal = (props) => {
                 display={"list"}
                 feeds={questDetailFeeds}
                 category={questDetail.mission.category}
+                setLikeCount={setLikeCount}
               ></FeedList>
             </>
           )}
