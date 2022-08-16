@@ -245,11 +245,12 @@ const DailyMissionMain = () => {
       >
         열려라
       </button> */}
-      {recommendedMission && (
+      {recommendedMission?.weather && (
         <PopupModal
           open={open}
           setOpen={setOpen}
-          recommendedMission={recommendedMission}
+          weather={recommendedMission.weather}
+          recommendedMission={recommendedMission.recommendedMission}
         ></PopupModal>
       )}
     </div>
