@@ -267,14 +267,18 @@ const Profile = () => {
         <div className={styles.missionList}>
           <div
             onClick={() => setUserSetting(1)}
-            className={`${styles.missionTitle} ${userSetting === 1 ? styles.selectedMenu1 : null}`}
+            className={`${styles.missionTitle} ${
+              userSetting === 1 ? styles.selectedMenu1 : null
+            }`}
           >
             <p className={`${styles.calendarText} ${displayType}`}>달력</p>
             {userSetting === 1}
           </div>
           <div
             onClick={() => setUserSetting(2)}
-            className={`${styles.missionTitle} ${userSetting === 2 ? styles.selectedMenu2 : null}`}
+            className={`${styles.missionTitle} ${
+              userSetting === 2 ? styles.selectedMenu2 : null
+            }`}
           >
             <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
             {userSetting === 2}
@@ -282,7 +286,9 @@ const Profile = () => {
           </div>
           <div
             onClick={() => setUserSetting(3)}
-            className={`${styles.missionTitle} ${userSetting === 3 ? styles.selectedMenu3 : null}`}
+            className={`${styles.missionTitle} ${
+              userSetting === 3 ? styles.selectedMenu3 : null
+            }`}
           >
             <p className={`${styles.questText} ${displayType2}`}>퀘스트</p>
             {userSetting === 3}
@@ -291,15 +297,27 @@ const Profile = () => {
         {userSetting === 1 && <Calendar id={userId} />}
         {userSetting === 2 && (
           <div className={`${styles.mission}`}>
-            {missionList.map((mission) => (
-              <img
-                key={mission.id}
-                src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                alt="missionImg"
-                className={styles.missionImg}
-                onClick={() => navigate(`/post/${mission.id}`)}
-              />
-            ))}
+            {missionList.map((mission) =>
+              getUserId() !== params.userId ? (
+                !!mission.publicFlag && (
+                  <img
+                    key={mission.id}
+                    src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                    alt="missionImg"
+                    className={styles.missionImg}
+                    onClick={() => navigate(`/post/${mission.id}`)}
+                  />
+                )
+              ) : (
+                <img
+                  key={mission.id}
+                  src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                  alt="missionImg"
+                  className={styles.missionImg}
+                  onClick={() => navigate(`/post/${mission.id}`)}
+                />
+              )
+            )}
           </div>
         )}
         {userSetting === 3 && (
