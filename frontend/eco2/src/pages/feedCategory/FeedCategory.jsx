@@ -17,6 +17,7 @@ const FeedCategory = () => {
       console.log(res);
       if (res.payload?.status === 200) {
         setFeeds(res.payload.postListDtos);
+        console.log(res.payload.postListDtos);
       }
     });
   }, [likeCount]);
