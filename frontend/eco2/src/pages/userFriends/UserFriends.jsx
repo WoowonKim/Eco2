@@ -11,8 +11,19 @@ import styles from "./UserFriends.module.css";
 const UserFriends = () => {
   const [friendList, setFriendList] = useState([]);
   const [friendDelete, setFriendDelete] = useState(0);
+  const [query, setQuery] = useState("");
+
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const onSearch = (query) => {
+    setQuery(query);
+    dispatch(friends({ id: getUserId(), query })).then((res) => {
+      if (res.payload?.status === 200) {
+        setFriendList(res.payload?.friendList);
+      }
+    });
+  };
 
   useEffect(() => {
     // 친구조회
@@ -25,8 +36,10 @@ const UserFriends = () => {
 
   return (
     <div className={styles.container}>
-      <SearchForm />
-      <FriendList friendList={friendList} setFriendDelete={setFriendDelete} />
+      <SearchForm type={"frined"} onSearch={onSearch} />
+      <div className={styles.friendContainer}>
+        <FriendList friendList={friendList} setFriendDelete={setFriendDelete} />
+      </div>
     </div>
   );
 };

@@ -6,8 +6,15 @@ import { getUserId } from "./common";
 export const friends = createAsyncThunk(
   "accountSlice/friends",
   async (args, { rejectWithValue }) => {
+    const query = args?.query ? args.query : "";
+    let path = "";
+    if (args?.query) {
+      path = `&name=${query}`;
+    }
     try {
-      const response = await axiosService.get(`/account/friend?id=${args.id}`);
+      const response = await axiosService.get(
+        `/account/friend?id=${args.id}${path}`
+      );
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
