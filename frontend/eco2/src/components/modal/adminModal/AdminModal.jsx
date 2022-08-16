@@ -21,8 +21,6 @@ const AdminModal = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const email = getUserEmail();
-
   const sendReportAccept = () => {
       dispatch(reportAccept({ id: id, type: postType })).then((res) => {
         if (res.payload.status === 200) {
@@ -31,7 +29,6 @@ const AdminModal = ({
       });
   }
   const sendReportCancle = () => {
-    console.log(id);
       dispatch(reportCancle({ id: id, type: postType })).then((res) => {
         if (res.payload.status === 200) {
           navigate("/report");          

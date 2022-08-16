@@ -17,15 +17,19 @@ const ChattingRoom = () => {
   const roomId = useLocation().state.roomId;
   const [chattingMessages, setChattingMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [name, setName] = useState("");
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(getUserId());
   const [users, setUserList] = useState([]);
+  const [toUser, setToUser] = useState({});
   const stompClient = getStompClient();
   const dispatch = useDispatch();
   const scrollRef = useRef();
   let navigate = useNavigate();
+  const [checkImg, setCheckImg] = useState(0);
 
   useEffect(() => {
+    // users.map((user) => (
+    //   user.id != userId && 
+    // ));
     if (stompClient === null) {
       return;
     }
@@ -39,8 +43,6 @@ const ChattingRoom = () => {
         setUserList(res.payload.userList);
       }
     });
-    setUserId(getUserId());
-    setName(getUserName());
   }, []);
   const connect = () => {
     stompClient.connect({}, () => {
@@ -90,16 +92,32 @@ const ChattingRoom = () => {
         {
           users.map((user) => (
             user.id != userId &&
-            <Link to={`/profile/${user.id}`} className={styles.link}>
-              <div>
-                <img
-                  src={`http://localhost:8002/img/profile/${user.id}`}
-                  alt="profile"
-                  className={styles.profileImg}
-                />
-                <div className={styles.toUserName}>{user.name}</div>
-              </div>
-            </Link>
+            // <Link to={`/profile/${commentUserId}`} className={styles.link}>
+            //   <div>
+            //     <img
+            //       src={`http://localhost:8002/img/profile/${user.id}`}
+            //       alt="profile"
+            //       className={styles.profileImg}
+            //     />
+            //     <div className={styles.toUserName}>{user.name}</div>
+            //   </div>
+            // </Link>
+        <button
+        className={styles.profileButton}
+        onClick={() => {
+          // navigate(`/profile/${commentUserId}`, {
+          //   state: { userEmail },
+          // })
+         }}
+      >
+        {/* <img
+          src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
+          alt="profileImg"
+          className={styles.profileImg}
+        />
+        <div className={styles.toUserName}>{user.name}</div> */}
+      </button>
+
           ))
         }
 
