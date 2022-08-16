@@ -21,6 +21,9 @@ const ConfirmModal = ({ type, title, content, closeModal }) => {
         <div className={styles.buttonGroup}>
           <button
             onClick={() => {
+              if (title === "비밀번호 변경") {
+                window.location.replace("/findpassword");
+              }
               closeModal();
               document.body.style = `overflow: auto`;
             }}
