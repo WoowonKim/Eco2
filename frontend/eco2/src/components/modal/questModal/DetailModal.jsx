@@ -7,7 +7,8 @@ import { useDispatch } from "react-redux";
 import { deleteQuest, getQuestList } from "../../../store/quest/questSlice";
 const DetailModal = (props) => {
   // 열기, 닫기
-  const { open, close, questDetail, openPost, questDetailFeeds } = props;
+  const { open, close, questDetail, openPost, questDetailFeeds, setLikeCount } =
+    props;
   let finishDate = questDetail ? questDetail.finishTime.slice(0, 10) : null;
   let finishTime = questDetail ? questDetail.finishTime.slice(11, 16) : null;
   let currUser = getUserId();
@@ -20,7 +21,7 @@ const DetailModal = (props) => {
       {open ? (
         <section>
           <main className={styles.main}>
-          {currUser == questDetail.user.id && !questDetail.participated ? (
+            {currUser == questDetail.user.id && !questDetail.participated ? (
               <div
                 onClick={() => {
                   dispatch(deleteQuest(questDetail.id));
@@ -28,12 +29,16 @@ const DetailModal = (props) => {
                 }}
                 className={styles.deleteButton}
               >
-             <i className={`fa-solid fa-trash-can-arrow-up ${styles.deleteIcon}`}></i>  
+                <i
+                  className={`fa-solid fa-trash-can-arrow-up ${styles.deleteIcon}`}
+                ></i>
               </div>
-          ) : null}
+            ) : null}
 
             <div className={styles.info}>
-            <div className={styles.title}>미션! {questDetail.mission.title}</div>
+              <div className={styles.title}>
+                미션! {questDetail.mission.title}
+              </div>
               <div className={styles.content}>{questDetail.content}</div>
               <div className={styles.endTime}>
                 {finishDate} {finishTime}에 종료됩니다! 놓치지말고 참여하세요!
@@ -46,12 +51,16 @@ const DetailModal = (props) => {
           </main>
           <footer>
             {questDetail.achieveFlag ? (
-              <button type="button" className={styles.already}  onClick={close}>
+              <button type="button" className={styles.already} onClick={close}>
                 이미 완료된 퀘스트입니다.
               </button>
             ) : questDetail.participated ? (
               <>
-                <button type="button" className={styles.already}  onClick={close}>
+                <button
+                  type="button"
+                  className={styles.already}
+                  onClick={close}
+                >
                   이미 참여한 퀘스트입니다.
                 </button>
               </>
@@ -73,6 +82,7 @@ const DetailModal = (props) => {
                 display={"list"}
                 feeds={questDetailFeeds}
                 category={questDetail.mission.category}
+                setLikeCount={setLikeCount}
               ></FeedList>
             </>
           )}
