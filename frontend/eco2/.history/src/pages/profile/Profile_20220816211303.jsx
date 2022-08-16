@@ -298,6 +298,9 @@ const Profile = () => {
             }`}
           >
             <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
+            <div>
+              <p>TEST</p>
+            </div>
             {userSetting === 2}
             {/* {userSetting === 2 && <hr className={styles.line} />} */}
           </div>
@@ -315,20 +318,10 @@ const Profile = () => {
           <>
             {userSetting === 1 && <Calendar id={userId} />}
             {userSetting === 2 && (
-              <div className={styles.dailyScroll}>
-                <div className={`${styles.mission}`}>
-                  {missionList.map(mission =>
-                    getUserId() !== params.userId ? (
-                      !!mission.publicFlag && (
-                        <img
-                          key={mission.id}
-                          src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                          alt="missionImg"
-                          className={styles.missionImg}
-                          onClick={() => navigate(`/post/${mission.id}`)}
-                        />
-                      )
-                    ) : (
+              <div className={`${styles.mission}`}>
+                {missionList.map(mission =>
+                  getUserId() !== params.userId ? (
+                    !!mission.publicFlag && (
                       <img
                         key={mission.id}
                         src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
@@ -337,23 +330,29 @@ const Profile = () => {
                         onClick={() => navigate(`/post/${mission.id}`)}
                       />
                     )
-                  )}
-                </div>
-              </div>
-            )}
-            {userSetting === 3 && (
-              <div className={styles.dailyScroll}>
-                <div className={`${styles.mission} ${displayType2}`}>
-                  {questList.map(mission => (
+                  ) : (
                     <img
                       key={mission.id}
                       src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
-                      alt="profileImg"
+                      alt="missionImg"
                       className={styles.missionImg}
                       onClick={() => navigate(`/post/${mission.id}`)}
                     />
-                  ))}
-                </div>
+                  )
+                )}
+              </div>
+            )}
+            {userSetting === 3 && (
+              <div className={`${styles.mission} ${displayType2}`}>
+                {questList.map(mission => (
+                  <img
+                    key={mission.id}
+                    src={`${process.env.REACT_APP_BE_HOST}img/post/${mission.id}`}
+                    alt="profileImg"
+                    className={styles.missionImg}
+                    onClick={() => navigate(`/post/${mission.id}`)}
+                  />
+                ))}
               </div>
             )}
           </>

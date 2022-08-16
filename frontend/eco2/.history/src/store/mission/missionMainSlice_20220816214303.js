@@ -194,7 +194,7 @@ export const myEcoMissionSlice = createSlice({
       console.log("Trending Rejected ===>", action.payload);
     },
     [postTodayMission.pending]: (state, action) => {
-      //console.log("postTodayMission pending ===>", action.payload);
+      console.log("postTodayMission pending ===>", action.payload);
       state.isPending = true;
     },
     [postTodayMission.fulfilled]: (state, action) => {

@@ -342,7 +342,7 @@ const Profile = () => {
               </div>
             )}
             {userSetting === 3 && (
-              <div className={styles.dailyScroll}>
+              <div>
                 <div className={`${styles.mission} ${displayType2}`}>
                   {questList.map(mission => (
                     <img
