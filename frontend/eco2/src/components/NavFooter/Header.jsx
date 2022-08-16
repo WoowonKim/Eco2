@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAccessToken, getUserEmail, getUserId } from "../../store/user/common";
+import {
+  getAccessToken,
+  getUserEmail,
+  getUserId,
+} from "../../store/user/common";
 import { userInformation } from "../../store/user/userSettingSlice";
 import styles from "./Header.module.css";
 import { useDispatch } from "react-redux";
@@ -24,22 +28,6 @@ const Header = () => {
         setAdmin(true);
       }
     });
-    const headers = new Headers();
-    headers.append("Auth-accessToken", getAccessToken());
-    const options = {
-      method: "GET",
-      headers: headers,
-    };
-    fetch(`http://localhost:8002/img/profile/${userId}`, options)
-      .then((res) => {
-        res.arrayBuffer().then(function (buffer) {
-          const url = window.URL.createObjectURL(new Blob([buffer]));
-          setImgSrc(url);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }, [userId]);
   return (
     <header className={styles.Header}>
@@ -48,21 +36,28 @@ const Header = () => {
           navigate("/mainTree");
         }}
       >
-        <img src={`${process.env.PUBLIC_URL}/logo2.png`} className={styles.Img}></img>
-        <img src={`${process.env.PUBLIC_URL}/logoText2.png`} className={styles.Img}></img>
+        <img
+          src={`${process.env.PUBLIC_URL}/logo2.png`}
+          className={styles.Img}
+        ></img>
+        <img
+          src={`${process.env.PUBLIC_URL}/logoText2.png`}
+          className={styles.Img}
+        ></img>
       </div>
       <nav>
-       
         {admin && (
- <button
- className={styles.profileButton}
- onClick={() => {
-   navigate(`/report`);
- }}
->
- <i className={`fa-solid fa-circle-exclamation ${styles.headerIcon}`}></i></button>
-      )}
-
+          <button
+            className={styles.profileButton}
+            onClick={() => {
+              navigate(`/report`);
+            }}
+          >
+            <i
+              className={`fa-solid fa-circle-exclamation ${styles.headerIcon}`}
+            ></i>
+          </button>
+        )}
 
         <button
           className={styles.profileButton}
