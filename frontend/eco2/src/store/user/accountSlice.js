@@ -100,7 +100,7 @@ export const calendar = createAsyncThunk(
   "accountSlice/calendar",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await axiosService.get(`/daily/calendar/${getUserId()}`);
+      const response = await axiosService.get(`/daily/calendar/${args.id}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

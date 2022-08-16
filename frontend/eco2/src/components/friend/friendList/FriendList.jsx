@@ -3,7 +3,7 @@ import styles from "./FriendList.module.css";
 import FriendItem from "../friendItem/FriendItem";
 const FriendList = ({ friendList, setFriendDelete }) => {
   return (
-    <>
+    <div className={styles.friendContainer}>
       {friendList.length > 0 &&
         friendList.map((friend) => (
           <FriendItem
@@ -14,7 +14,7 @@ const FriendList = ({ friendList, setFriendDelete }) => {
             setFriendDelete={setFriendDelete}
           />
         ))}
-    </>
+    </div>
   );
 };
 

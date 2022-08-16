@@ -23,6 +23,7 @@ import Settings from "./settings/Settings";
 import Notice from "./notice/Notice";
 import PostModal from "../../components/modal/postModal/PostModal";
 import axiosService from "../../store/axiosService";
+import ConfirmModal from "../../components/modal/confirmModal/ConfirmModal";
 
 const UserSettings = () => {
   const [userSetting, setUserSetting] = useState(1);
@@ -177,7 +178,9 @@ const UserSettings = () => {
                     (res) => {
                       if (res.payload?.status === 200) {
                         setUserName(autoLogin, name.trim());
-                        setNameMessage("EcoName이 저장되었습니다");
+                        // setNameMessage("EcoName이 저장되었습니다");
+                        setVisible(!visible);
+                        setModalType("확인");
                       }
                     }
                   );
@@ -208,6 +211,13 @@ const UserSettings = () => {
               title={"회원탈퇴"}
               content={"회원탈퇴 하시겠습니까"}
               type={"탈퇴"}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
+          {visible && modalType === "확인" && (
+            <ConfirmModal
+              title={"EcoName 변경"}
+              content={"EcoName 변경이 완료되었습니다."}
               closeModal={() => setVisible(!visible)}
             />
           )}

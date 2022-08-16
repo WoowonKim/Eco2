@@ -112,7 +112,7 @@ const Regist = () => {
   return (
     <div className={styles.signup}>
       <img
-        src={process.env.PUBLIC_URL + "logo.png"}
+        src={process.env.PUBLIC_URL + "logo2.png"}
         alt="earth"
         className={styles.img}
       />

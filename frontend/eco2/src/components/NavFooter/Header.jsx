@@ -70,7 +70,7 @@ const Header = () => {
         <button
           className={styles.profileButton}
           onClick={() => {
-            navigate(`/profile/${getUserId()}`, { state: { setCheckImg } });
+            navigate(`/profile/${getUserId()}`);
           }}
         >
           <img
