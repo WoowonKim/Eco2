@@ -205,18 +205,21 @@
 
 
 .selectedMenu1 {
-  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249));
+  /* background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249)); */
+  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(228, 255, 202));
   font-weight: bold;
 
 }
 
 .selectedMenu2 {
-  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249));
+  /* background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249)); */
+  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(228, 255, 202));
   font-weight: bold;
 }
 
 .selectedMenu3 {
-  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249));
+  /* background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249)); */
+  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(228, 255, 202));
   font-weight: bold;
 }
 
@@ -241,5 +244,6 @@
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
   font-weight: bold;
-  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249));
+  /* background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(255, 202, 249)); */
+  background: linear-gradient(45deg, rgba(255, 221, 179, 0.5) 50%, rgb(228, 255, 202));
 }
