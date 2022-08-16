@@ -221,6 +221,20 @@ const UserSettings = () => {
               closeModal={() => setVisible(!visible)}
             />
           )}
+          {visible && modalType === "비밀번호" && (
+            <ConfirmModal
+              title={"비밀번호"}
+              content={"비밀번호 변경이 완료되었습니다."}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
+          {visible && modalType === "동일" && (
+            <ConfirmModal
+              title={"비밀번호"}
+              content={"이전과 동일한 비밀번호 입니다."}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
           {!!socialType && (
             <div>
               <hr className={styles.line} />
@@ -305,7 +319,15 @@ const UserSettings = () => {
                     onClick={() =>
                       dispatch(
                         passwordChange({ email, password: newpassword.trim() })
-                      )
+                      ).then((res) => {
+                        if (res.payload.status === 200) {
+                          setVisible(!visible);
+                          setModalType("비밀번호");
+                        } else if (res.payload.status === 202) {
+                          setVisible(!visible);
+                          setModalType("동일");
+                        }
+                      })
                     }
                     type="button"
                     disabled={!(isPassword && isPasswordConfirm)}
