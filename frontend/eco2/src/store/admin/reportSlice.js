@@ -7,6 +7,7 @@ export const reportList = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.get(`/admin/report`);
+      console.log(response.data);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);

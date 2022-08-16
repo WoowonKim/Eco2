@@ -24,7 +24,7 @@ const CustomPlus = () => {
     dispatch(customPostMission({ id, category: cate, title: tit, content: cont }))
       .then((res) => {
         if (res.payload.status === 200) {
-          if (window.confirm("미션 목록에 추가하시겠어요>")) {
+          if (window.confirm("미션 목록에 추가하시겠어요?")) {
             naviGate("/dailymissiondetail", { state: { list: 0 } });
           }
         }
