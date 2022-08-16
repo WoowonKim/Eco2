@@ -57,6 +57,9 @@ public class PostService {
     public Post getById(Long id) {
         return postRepository.getById(id);
     }
+    public QuestPost getQuestById(Long id) {
+        return postRepository.getQuestById(id);
+    }
 
 
     //post image 저장 경로
