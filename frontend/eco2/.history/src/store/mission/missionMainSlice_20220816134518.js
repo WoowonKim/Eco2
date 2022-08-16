@@ -206,12 +206,6 @@ export const myEcoMissionSlice = createSlice({
       console.log("postTodayMission Rejected===>", action.payload);
       state.isPending = false;
     },
-    [calendarImg.fulfilled]: (state, action) => {
-      console.log("calendarImgFulfilled===>");
-    },
-    [calendarImg.rejected]: (state, action) => {
-      console.log("calendarImgRejected===>");
-    },
   },
 });
 

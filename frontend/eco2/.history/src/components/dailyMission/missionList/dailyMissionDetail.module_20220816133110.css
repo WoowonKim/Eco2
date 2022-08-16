@@ -148,7 +148,7 @@ li {
 
 /* 미션리스트 START */
 .scrollMission {
-  height: 250px;
+  height: 300px;
   width: 360px;
   overflow-x: auto;
   overflow-y: scroll;
