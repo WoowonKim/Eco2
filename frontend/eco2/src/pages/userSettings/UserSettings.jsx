@@ -177,6 +177,7 @@ const UserSettings = () => {
                     (res) => {
                       if (res.payload?.status === 200) {
                         setUserName(autoLogin, name.trim());
+                        setNameMessage("EcoName이 저장되었습니다");
                       }
                     }
                   );
@@ -195,6 +196,7 @@ const UserSettings = () => {
             <PostModal
               // className={`${displayType} ${scrollType}`}
               title={"로그아웃"}
+              className={`${modalDisplayType}`}
               content={"로그아웃 하시겠습니까"}
               type={"로그아웃"}
               closeModal={() => setVisible(!visible)}
@@ -260,15 +262,6 @@ const UserSettings = () => {
                   </button>
                   <p></p>
                   <hr className={styles.line} />
-                  <button
-                    onClick={() => {
-                      setVisible(!visible);
-                      setModalType("로그아웃");
-                    }}
-                    className={styles.userButton}
-                  >
-                    로그아웃
-                  </button>
                 </div>
               ) : (
                 <form>
@@ -323,27 +316,41 @@ const UserSettings = () => {
                   )}
 
                   <hr className={styles.line} />
-                  <div className={styles.userButtonGroup}>
-                    <button
-                      onClick={() => {
-                        setVisible(!visible);
-                        setModalType("로그아웃");
-                      }}
-                      className={styles.userButton}
-                    >
-                      로그아웃
-                    </button>
-                    <button
-                      onClick={() => {
-                        setVisible(!visible);
-                        setModalType("탈퇴");
-                      }}
-                      className={styles.userButton}
-                    >
-                      회원탈퇴
-                    </button>
-                  </div>
                 </form>
+              )}
+              {!passwordForm ? (
+                <div className={styles.userButtonGroup}>
+                  <button
+                    onClick={() => {
+                      setVisible(!visible);
+                      setModalType("로그아웃");
+                    }}
+                    className={styles.userButton}
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.userButtonGroup}>
+                  <button
+                    onClick={() => {
+                      setVisible(!visible);
+                      setModalType("로그아웃");
+                    }}
+                    className={styles.userButton}
+                  >
+                    로그아웃
+                  </button>
+                  <button
+                    onClick={() => {
+                      setVisible(!visible);
+                      setModalType("탈퇴");
+                    }}
+                    className={styles.userButton}
+                  >
+                    회원탈퇴
+                  </button>
+                </div>
               )}
             </div>
           )}
