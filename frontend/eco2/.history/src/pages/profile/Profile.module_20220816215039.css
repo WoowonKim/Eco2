@@ -87,15 +87,27 @@
   font-size: 20px;
 }
 
-.profileImg {
+/* .profileImg {
   width: 150px;
   height: 150px;
   background-color: white;
-  /* //border: 1px solid black; */
+  //border: 1px solid black;
   border: none;
   border-radius: 50%;
   margin-top: 60px;
   margin-right: 5px;
+} */
+
+/* 영제 작업 */
+.profileImg {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  /* border: 1px solid black; */
+  border: none;
+  border-radius: 50%;
+  margin-top: 60px;
+  margin-right: 150px;
 }
 
 .imgLabel {

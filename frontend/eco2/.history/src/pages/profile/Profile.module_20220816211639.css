@@ -91,7 +91,7 @@
   width: 150px;
   height: 150px;
   background-color: white;
-  /* //border: 1px solid black; */
+  /* border: 1px solid black; */
   border: none;
   border-radius: 50%;
   margin-top: 60px;
@@ -259,14 +259,14 @@
 
 /* 데일리 미션 스크롤 */
 .dailyScroll {
-  height: 400px;
+  height: 250px;
   width: 360px;
   overflow-x: auto;
   overflow-y: scroll;
 }
 
 .dailyScroll::-webkit-scrollbar {
-  width: 3px; /*스크롤바의 너비*/
+  width: 5px; /*스크롤바의 너비*/
 }
 
 .dailyScroll::-webkit-scrollbar-thumb {

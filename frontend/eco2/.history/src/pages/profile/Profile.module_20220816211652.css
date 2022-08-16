@@ -91,7 +91,7 @@
   width: 150px;
   height: 150px;
   background-color: white;
-  /* //border: 1px solid black; */
+  /* border: 1px solid black; */
   border: none;
   border-radius: 50%;
   margin-top: 60px;
@@ -266,7 +266,7 @@
 }
 
 .dailyScroll::-webkit-scrollbar {
-  width: 3px; /*스크롤바의 너비*/
+  width: 5px; /*스크롤바의 너비*/
 }
 
 .dailyScroll::-webkit-scrollbar-thumb {
