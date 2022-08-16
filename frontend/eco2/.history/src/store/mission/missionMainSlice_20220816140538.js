@@ -174,7 +174,7 @@ export const myEcoMissionSlice = createSlice({
       console.log("clearMission Rejected", action.payload);
     },
     [missionPost.fulfilled]: (state, action) => {
-      console.log("missionPost Fulfilled ===>");
+      console.log("missionPost Fulfilled ===>", action.payload);
     },
     [missionPost.rejected]: (state, action) => {
       console.log("missionPost Rejected ===>", action.payload);

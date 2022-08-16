@@ -171,7 +171,7 @@ const PostModal = ({
       dispatch(missionPost({ id: successId })).then(res => {
         dispatch(missionItem({ id: successId, date: toDayGet }));
       });
-      navigate("/mainTree");
+      // navigate("/mainTree");
     } else if (type === "내목록이동") {
       dispatch(
         deleteMission({
