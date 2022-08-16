@@ -11,6 +11,7 @@ export const friends = createAsyncThunk(
     if (args?.query) {
       path = `&name=${query}`;
     }
+    console.log(path);
     try {
       const response = await axiosService.get(
         `/account/friend?id=${args.id}${path}`

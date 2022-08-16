@@ -4,7 +4,11 @@ import SearchForm from "../../../components/searchForm/SearchForm";
 import NoticeList from "../../../components/notice/noticeList/NoticeList";
 import { useDispatch } from "react-redux";
 import { noticeList } from "../../../store/admin/noticeSlice";
-import { getUserName, getUserEmail } from "../../../store/user/common";
+import {
+  getUserName,
+  getUserEmail,
+  getUserId,
+} from "../../../store/user/common";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userInformation } from "../../../store/user/userSettingSlice";
 import { useRef } from "react";
@@ -69,7 +73,9 @@ const Notice = () => {
 
   useEffect(() => {
     // 유저 객체 받아오기
-    dispatch(userInformation({ email: getUserEmail() })).then((res) => {
+    dispatch(
+      userInformation({ email: getUserEmail(), userId: getUserId() })
+    ).then((res) => {
       if (res.payload.user.role === "[ROLE_ADMIN]") {
         setAdmin(true);
       }
@@ -106,8 +112,6 @@ const Notice = () => {
             </th>
           </tr>
         </thead>
-        {/* <div className={styles.leftHeader}> */}
-        {/* </div> */}
         <tbody>
           <NoticeList notices={notices} admin={admin} />
         </tbody>

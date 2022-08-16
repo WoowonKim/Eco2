@@ -34,6 +34,7 @@
   width: 100px;
   padding: 10px 10px;
   border: none;
+  font-family: "NanumBarunGothicLight";
 }
 
 .dropdownItem:hover {
@@ -77,6 +78,7 @@
   display: flex;
   border: none;
   background-color: white;
+  font-family: "NanumBarunGothicLight";
 }
 
 .button:hover {
@@ -105,7 +107,6 @@
 
 .heart {
   color: red;
-
   margin-right: 5px;
 }
 
@@ -116,6 +117,7 @@
   font-size: 15px;
   word-break: break-all;
   white-space: pre-wrap;
+  font-family: "NanumBarunGothicLight";
 }
 
 .line {

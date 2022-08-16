@@ -85,7 +85,7 @@ const Econame = () => {
           className={styles.input}
           onChange={ecoNameValidation}
         />
-        <WarningText>{nameMessage}</WarningText>
+        <p className={isName ? styles.success : styles.fail}>{nameMessage}</p>
         <button onClick={onClick} className={styles.button} disabled={!isName}>
           시작하기
         </button>

@@ -17,7 +17,7 @@ const UserFriends = () => {
   const dispatch = useDispatch();
 
   const onSearch = (query) => {
-    setQuery(query);
+    console.log(query);
     dispatch(friends({ id: getUserId(), query })).then((res) => {
       if (res.payload?.status === 200) {
         setFriendList(res.payload?.friendList);
