@@ -21,7 +21,7 @@ const ConfirmModal = ({ type, title, content, closeModal }) => {
         <div className={styles.buttonGroup}>
           <button
             onClick={() => {
-              setHidden(true);
+              closeModal();
               document.body.style = `overflow: auto`;
             }}
             className={`${styles.cancleButton}`}

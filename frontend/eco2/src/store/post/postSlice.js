@@ -135,7 +135,21 @@ export const reportCancle = createAsyncThunk(
     }
   }
 );
-
+export const createPost = createAsyncThunk(
+  "questSlice/createPost",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.post("/post", args.formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 export const postSlice = createSlice({
   name: "post",
   initialState: {
@@ -176,17 +190,19 @@ export const postSlice = createSlice({
       console.log("postCreate fulfilled", action.payload);
       console.log(action.payload.postCreateDto.itemId);
       state.createdItem = action.payload.postCreateDto.itemId;
-      if (action.payload.status === 200) {
-      }
     },
     [postCreate.rejected]: (state, action) => {
       console.log("postCreate rejected", action.payload);
     },
+    [createPost.fulfilled]: (state, payload) => {
+      console.log("createPost fullfilled", payload);
+      state.createdItem = payload.payload.postCreateDto.itemId;
+    },
+    [createPost.rejected]: (state, payload) => {
+      console.log("createPost rejected", payload);
+    },
     [postUpdate.fulfilled]: (state, action) => {
       console.log("postUpdate fulfilled", action.payload);
-
-      if (action.payload.status === 200) {
-      }
     },
     [postUpdate.rejected]: (state, action) => {
       console.log("postUpdate rejected", action.payload);

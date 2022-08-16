@@ -1,6 +1,11 @@
 /* global kakao */
 import React, { useEffect, useRef, useState } from "react";
-import { createQuest, getQuestList } from "../../store/quest/questSlice";
+import {
+  createQuest,
+  getQuestList,
+  getStatus,
+  setStatus,
+} from "../../store/quest/questSlice";
 import { getLocation } from "../../utils";
 import styles from "./Map.module.css";
 import { useDispatch } from "react-redux";
@@ -14,6 +19,8 @@ const Map = ({
   setMakeFlag,
   count,
   name,
+  setConfirm,
+  setContent,
 }) => {
   let dispatch = useDispatch();
   const [counter, setCounter] = useState(0);
@@ -117,14 +124,14 @@ const Map = ({
             Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
               Math.sin(lat1) * Math.sin(lat2)
           );
-        console.log(dist);
         if (dist < 500) {
           kakao.maps.event.addListener(marker, "click", function () {
             openDeatailModal(quest.id);
           });
         } else {
           kakao.maps.event.addListener(marker, "click", function () {
-            alert("너무 멀어요!");
+            setContent("너무 멀어요!");
+            setConfirm(true);
           });
         }
         if (dist < 500) {
@@ -148,10 +155,23 @@ const Map = ({
       quest.lat = event.latLng.La.toString();
       quest.lng = event.latLng.Ma.toString();
       console.log(quest);
-      dispatch(createQuest(quest));
+      dispatch(createQuest(quest)).then((res) => {
+        console.log(res);
+        if (res.payload.status === 202) {
+          setConfirm(true);
+          setContent("3개 이상 등록할 수 없어요!");
+        } else {
+          setConfirm(true);
+          setContent("퀘스트가 생성되었습니다!");
+        }
+      });
       setMakeFlag(false);
     };
-    console.log(payload);
+    // if (makeFlag && questMarkers.status === 202) {
+    //   setConfirm(true);
+    //   setMakeFlag(false);
+    //   setContent("3개 이상 등록할 수 없어요!");
+    // }
     if (makeFlag) {
       kakao.maps.event.addListener(mapCircle, "click", clickHandler);
     }
@@ -179,17 +199,19 @@ const Map = ({
             <i className="fa-solid fa-location-arrow"></i>
           </div>
         </div>
+        {makeFlag && (
+          <div className={styles.postAlert}>원하는 위치에 마커를 찍으세요!</div>
+        )}
         <div className={styles.createQuest}>
           오늘의 퀘스트를 생성하고 함께 참여해보세요!
           <div
             className={styles.createButton}
             onClick={() => {
-              openCreateModal();
+              if (!makeFlag) openCreateModal();
+              else setMakeFlag(!makeFlag);
             }}
           >
-            {/* <div className={styles.createButton}>
-            {makeFlag ? "취소하기" : "생성하기"} */}
-            생성하기{" "}
+            {makeFlag ? "취소하기" : "생성하기"}{" "}
             <i
               className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
             ></i>
