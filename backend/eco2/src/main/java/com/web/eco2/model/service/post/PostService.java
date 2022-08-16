@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -189,11 +188,11 @@ public class PostService {
 
 
     public List<QuestPost> findByQuest(Quest quest) {
-        return postRepository.findByQuest(quest);
+        return postRepository.findByQuestOrderByRegistTimeDesc(quest);
     }
 
     public List<QuestPost> findByUserAndQuestNotNull(User user) {
-        return postRepository.findByUserAndQuestNotNull(user);
+        return postRepository.findByUserAndQuestNotNullOrderByRegistTimeDesc(user);
     }
 
     public void deletePostImage(Long userId) {

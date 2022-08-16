@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<QuestPost> findByQuestOrderByRegistTimeDesc(Quest quest);
 
-    List<QuestPost> findByUserAndQuestNotNull(User user);
+    List<QuestPost> findByUserAndQuestNotNullOrderByRegistTimeDesc(User user);
 
     @Query(value = "select * from tb_post p where p.usr_id=:usrId and p.que_id is null", nativeQuery = true)
     List<Post> findOnlyPostById(Long usrId);
