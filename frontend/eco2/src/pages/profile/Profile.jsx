@@ -57,7 +57,7 @@ const Profile = () => {
 
   useEffect(() => {
     // 유저 객체 받아오기
-    dispatch(userInformation({ email, userId })).then((res) => {
+    dispatch(userInformation({ email, userId: getUserId() })).then((res) => {
       setUserId(res.payload.user.id);
       setUserName(res.payload.user.name);
       setMissionList(res.payload.postList);
