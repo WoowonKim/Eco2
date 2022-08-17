@@ -19,7 +19,7 @@ public class Alarm {
     private Long id;
 
     @Column(name = "ala_send_time", nullable = false)
-    private LocalDateTime sendTime =LocalDateTime.now();
+    private LocalDateTime sendTime = LocalDateTime.now();
 
     @Column(name = "ala_content", length = 100, nullable = false)
     private String content;
@@ -29,14 +29,4 @@ public class Alarm {
 
     @Column(name = "ala_dtype", length = 31)
     private String dType;
-
-    //user 2개
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "usr_id", nullable = false)
-//    private User user;
-//
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "usr_id", nullable = false)
-//    private User user1;
-
 }

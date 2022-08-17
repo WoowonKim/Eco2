@@ -42,6 +42,6 @@ public class ChatService {
     }
 
     public void deleteByToUserOrFromUser(String usrName) {
-        chatRoomRepository.deleteByToUserOrFromUser(usrName,usrName);
+        chatRoomRepository.deleteByToUserOrFromUser(usrName, usrName);
     }
 }

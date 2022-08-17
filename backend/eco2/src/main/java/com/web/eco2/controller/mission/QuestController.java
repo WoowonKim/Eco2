@@ -2,12 +2,8 @@ package com.web.eco2.controller.mission;
 
 import com.web.eco2.domain.dto.mission.QuestDto;
 import com.web.eco2.domain.dto.mission.QuestRequest;
-import com.web.eco2.domain.dto.post.PostDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.entity.mission.Quest;
-import com.web.eco2.domain.entity.post.Post;
-import com.web.eco2.domain.entity.post.PostImg;
-import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.service.mission.QuestService;
@@ -29,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/quest")
@@ -40,6 +35,7 @@ public class QuestController {
      * 퀘스트 생성 시 확인하는 범위 (m)
      */
     private static final int RANGE = 20;
+
     // 퀘스트 생성 시 확인하는 퀘스트 개수
     private static final int LIMIT_NUM = 3;
 
@@ -54,6 +50,7 @@ public class QuestController {
 
     @Autowired
     private PostImgRepository postImgRepository;
+
     @Autowired
     private PostLikeService postLikeService;
 
@@ -68,7 +65,7 @@ public class QuestController {
             log.info("퀘스트 조회 API 호출");
             List<QuestDto> quests = new ArrayList<>();
             questService.findAll().forEach(q -> {
-                if(q.getFinishTime().isBefore(LocalDateTime.now())) {
+                if (q.getFinishTime().isBefore(LocalDateTime.now())) {
                     q.setFinishFlag(true);
                     questService.save(q);
                 }
@@ -86,7 +83,7 @@ public class QuestController {
     public ResponseEntity<?> createQuest(@RequestBody QuestRequest quest) {
         try {
             log.info("퀘스트 등록 API 호출");
-            if(quest.getContent() == null) {
+            if (quest.getContent() == null) {
                 return ResponseHandler.generateResponse("내용을 입력해주세요.", HttpStatus.ACCEPTED);
             }
             // 해당 지역 주변(20m 이내)에 퀘스트 있는지 확인

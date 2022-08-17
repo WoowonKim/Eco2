@@ -37,6 +37,7 @@ public class MissionController {
 
     @Autowired
     private CustomMissionService customMissionService;
+
     @Autowired
     private MissionService missionService;
 
@@ -69,7 +70,7 @@ public class MissionController {
         try {
             log.info("퀘스트 가능 미션 리스트 조회 API 호출");
             List<MissionDto> missionList = missionService.findQuestMission()
-                .stream().map(m->m.toDto()).collect(Collectors.toList());
+                    .stream().map(m -> m.toDto()).collect(Collectors.toList());
             return ResponseHandler.generateResponse("미션리스트 조회에 성공하였습니다.", HttpStatus.OK, "missions", missionList);
         } catch (Exception e) {
             log.error("퀘스트 가능 미션 리스트 조회 API 에러", e);
@@ -131,14 +132,14 @@ public class MissionController {
 
             if (favoriteMissionRequest.isMissionType()) {//기본미션
                 FavoriteMission favoriteMission = favoriteMissionService.findByUser_IdAndMission_Id(usrId, favoriteMissionRequest.getMissionId());
-                if(favoriteMissionRequest.isLikeFlag()){//추가
-                    if(favoriteMission != null){
+                if (favoriteMissionRequest.isLikeFlag()) {//추가
+                    if (favoriteMission != null) {
                         return ResponseHandler.generateResponse("이미 추가된 항목입니다.", HttpStatus.ACCEPTED);
                     }
                     Mission mission = missionService.findByMisId(favoriteMissionRequest.getMissionId());
                     favoriteMissionRequest.setMission(mission);
-                }else{
-                    if(favoriteMission == null){
+                } else {
+                    if (favoriteMission == null) {
                         return ResponseHandler.generateResponse("이미 삭제된 항목입니다.", HttpStatus.ACCEPTED);
                     }
                     favoriteMissionService.delete(favoriteMission);
@@ -146,14 +147,14 @@ public class MissionController {
                 }
             } else {//사용자 미션
                 FavoriteMission favoriteMission = favoriteMissionService.findByUser_IdAndCustomMission_Id(usrId, favoriteMissionRequest.getMissionId());
-                if(favoriteMissionRequest.isLikeFlag()){//추가
-                    if(favoriteMission != null){
+                if (favoriteMissionRequest.isLikeFlag()) {//추가
+                    if (favoriteMission != null) {
                         return ResponseHandler.generateResponse("이미 추가된 항목입니다.", HttpStatus.ACCEPTED);
                     }
                     CustomMission customMission = customMissionService.findByCumId(favoriteMissionRequest.getMissionId());
                     favoriteMissionRequest.setCustomMission(customMission);
-                }else{
-                    if(favoriteMission == null){
+                } else {
+                    if (favoriteMission == null) {
                         return ResponseHandler.generateResponse("이미 삭제된 항목입니다.", HttpStatus.ACCEPTED);
                     }
                     favoriteMissionService.delete(favoriteMission);

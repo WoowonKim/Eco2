@@ -2,14 +2,16 @@ package com.web.eco2.domain.entity.mission;
 
 import com.web.eco2.domain.dto.mission.QuestDto;
 import com.web.eco2.domain.entity.user.User;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -61,13 +63,13 @@ public class Quest {
     private Mission mission;
 
     @Builder
-    public Quest(Long id, String lat, String lng,Integer achieveCount , User user, Mission mission, String content){
+    public Quest(Long id, String lat, String lng, Integer achieveCount, User user, Mission mission, String content) {
         this.lat = lat;
         this.lng = lng;
         this.achieveCount = achieveCount;
         this.user = user;
         this.mission = mission;
-        this.finishTime= LocalDateTime.now().plusHours(24L);
+        this.finishTime = LocalDateTime.now().plusHours(24L);
         this.participantCount = 0;
         this.content = content;
     }

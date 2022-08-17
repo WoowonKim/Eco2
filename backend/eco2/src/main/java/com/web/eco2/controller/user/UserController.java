@@ -7,41 +7,27 @@ import com.web.eco2.domain.dto.user.MailRequest;
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.entity.Item.Statistic;
 import com.web.eco2.domain.entity.UserSetting;
-
-
-import com.web.eco2.model.service.oauth.KakaoOAuth;
-import com.web.eco2.model.service.user.MailService;
-import com.web.eco2.model.service.user.OAuth2Service;
-import com.web.eco2.model.service.user.UserService;
-import com.web.eco2.model.service.user.UserSettingService;
-
 import com.web.eco2.domain.entity.user.ProfileImg;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.item.StatisticService;
+import com.web.eco2.model.service.oauth.KakaoOAuth;
 import com.web.eco2.model.service.user.*;
-
 import com.web.eco2.util.JwtTokenUtil;
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -90,7 +76,6 @@ public class UserController {
             userService.save(dbUser);
 
             // 계정 설정 insert
-//            User dbUser = userService.findByEmail(user.getEmail());
             UserSetting userSetting = UserSetting.builder()
                     .id(null).user(dbUser)
                     .chatAlarmFlag(true).commentAlarmFlag(true)
@@ -152,7 +137,6 @@ public class UserController {
             log.error("이메일 인증 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @ApiOperation(value = "이메일 중복 확인", response = Object.class)
@@ -186,7 +170,6 @@ public class UserController {
             log.error("이름 중복 확인 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @ApiOperation(value = "이름 설정", response = Object.class)
@@ -213,11 +196,9 @@ public class UserController {
     public ResponseEntity<Object> newAccessToken(HttpServletResponse response, @RequestBody SignUpRequest user, @CookieValue(name = "Auth-refreshToken", required = false) String refreshToken) {
         try {
             log.info("access 토큰 재발급 API 호출");
-            if(refreshToken == null){
+            if (refreshToken == null) {
                 return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
             }
-//            String refreshToken = jwtTokenUtil.getRefreshToken(request);
-//            System.out.println(refreshToken);
             String accessToken = jwtTokenUtil.newAccessToken(user, refreshToken);
 
             if (accessToken != null) {
@@ -235,31 +216,6 @@ public class UserController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-//
-//    @ApiOperation(value = "refresh 토큰 재발급(앱 접속시에도 발급)", response = Object.class)
-//    @PostMapping("/newrefreshtoken")
-//    public ResponseEntity<Object> newRefreshToken( HttpServletResponse response, @RequestBody SignUpRequest user, @CookieValue(name = "Auth-refreshToken", required = false) String refreshToken) {
-//        try {
-//            log.info("refresh 토큰 재발급 API 호출");
-////            String refreshToken = jwtTokenUtil.getRefreshToken(request);
-//            if (jwtTokenUtil.validateToken(refreshToken)) { //refreshtoken 유효
-//                User selectUser = userService.findByEmail(user.getEmail());
-//                if (refreshToken.equals(selectUser.getRefreshToken())) {
-//                    refreshToken = jwtTokenUtil.createRefreshToken();
-//                    selectUser.setRefreshToken(refreshToken);
-//                    response.addCookie(jwtTokenUtil.getCookie(refreshToken));// 쿠키 생성
-//
-//                    return ResponseHandler.generateResponse("RefreshToken이 재발급 되었습니다.", HttpStatus.OK);
-//                }
-//                return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
-//            } else {
-//                return ResponseHandler.generateResponse("재로그인 해주세요.", HttpStatus.UNAUTHORIZED);
-//            }
-//        } catch (Exception e) {
-//            log.error("refresh 토큰 재발급 API 에러", e);
-//            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-//        }
-//    }
 
     @ApiOperation(value = "로그인", response = Object.class)
     @PostMapping("/login")
@@ -287,6 +243,7 @@ public class UserController {
     static class SocialRequest {
         private String idToken;
     }
+
     @ApiOperation(value = "소셜 로그인", response = Object.class)
     @PostMapping("/auth/{socialType}")
     public ResponseEntity<?> socialLoginCallback(@PathVariable("socialType") int socialType,
@@ -295,15 +252,15 @@ public class UserController {
             log.info("소셜 로그인 API 호출");
             String email;
             String idToken = socialRequest.getIdToken();
-            if(socialType == 1) {
+            if (socialType == 1) {
                 FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
                 email = decodedToken.getEmail();
-            } else if(socialType == 2) {
+            } else if (socialType == 2) {
                 // 카카오 인가코드 확인하기
                 OAuthToken token = kakaoOAuth.getAccessToken(idToken);
                 User kakaoUser = kakaoOAuth.getUserInfo(token);
                 email = kakaoUser.getEmail();
-                if(email == null) {
+                if (email == null) {
                     return ResponseHandler.generateResponse("이메일 허용이 필요합니다.", HttpStatus.NON_AUTHORITATIVE_INFORMATION);
                 }
             } else {

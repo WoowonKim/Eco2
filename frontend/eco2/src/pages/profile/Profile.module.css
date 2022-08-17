@@ -171,7 +171,6 @@
 .mission {
   display: flex;
   justify-content: start;
-  /* grid-template-columns: 1fr 1fr 1fr; */
   flex-wrap: wrap;
 }
 
@@ -188,36 +187,23 @@
 }
 
 .selectedMenu1 {
-  background: linear-gradient(
-    45deg,
-    rgba(255, 221, 179, 0.5) 50%,
-    rgb(255, 202, 249)
-  );
-
+  border-bottom: 1px solid black;
   font-weight: bold;
 }
 
 .selectedMenu2 {
-  background: linear-gradient(
-    45deg,
-    rgba(255, 221, 179, 0.5) 50%,
-    rgb(255, 202, 249)
-  );
+  border-bottom: 1px solid black;
   font-weight: bold;
 }
 
 .selectedMenu3 {
-  background: linear-gradient(
-    45deg,
-    rgba(255, 221, 179, 0.5) 50%,
-    rgb(255, 202, 249)
-  );
+  border-bottom: 1px solid black;
   font-weight: bold;
 }
 
 .missionTitle {
   margin-bottom: 10px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   width: 80%;
   font-size: 15px;
   display: inline-block;
@@ -234,15 +220,9 @@
 .missionTitle:hover,
 .hvr-grow-shadow:focus,
 .hvr-grow-shadow:active {
-  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
   font-weight: bold;
-  background: linear-gradient(
-    45deg,
-    rgba(255, 221, 179, 0.5) 50%,
-    rgb(255, 202, 249)
-  );
 }
 
 /* 데일리 미션 스크롤 */

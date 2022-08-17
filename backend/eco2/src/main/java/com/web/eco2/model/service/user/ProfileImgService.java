@@ -1,6 +1,5 @@
 package com.web.eco2.model.service.user;
 
-
 import com.web.eco2.domain.entity.user.ProfileImg;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.ProfileImgRepository;
@@ -27,13 +26,11 @@ public class ProfileImgService {
     @Autowired
     private UserRepository userRepository;
 
-
     @Value("${profileImg.path}")
     private String uploadPath;
 
     @Transactional
     public void uploadProfileImg(MultipartFile file, User updateUser) throws IOException {
-//        String uploadFolder = "src/main/resources/images";
         Long updateUserId = updateUser.getId();
         String originalName = file.getOriginalFilename();
         UUID uuid = UUID.randomUUID();
@@ -48,10 +45,9 @@ public class ProfileImgService {
             // 수정
             // 이전 파일에 덮어쓰기
             ProfileImg oldImg = oldImgOptional.get();
-            if(oldImg.getSaveName() != null) {
+            if (oldImg.getSaveName() != null) {
                 profileImg.setSaveName(oldImg.getSaveName());
             }
-
             profileImg.setId(updateUserId);
         } else {
             // 생성
@@ -59,7 +55,7 @@ public class ProfileImgService {
         }
         Path profileImgPath = Paths.get(uploadPath);
         File saveFile = new File(profileImgPath.toAbsolutePath().toString(), profileImg.getSaveName());
-        if(!saveFile.getParentFile().exists() && !saveFile.getParentFile().mkdirs()) {
+        if (!saveFile.getParentFile().exists() && !saveFile.getParentFile().mkdirs()) {
             throw new IOException("폴더 생성 실패");
         }
 
@@ -72,7 +68,6 @@ public class ProfileImgService {
         profileImgRepository.save(profileImg);
     }
 
-
     //프로필 이미지 경로 찾기
     public String getProfileImgPath(Long userId) {
         ProfileImg profileImg = profileImgRepository.getByUser_Id(userId);
@@ -82,8 +77,8 @@ public class ProfileImgService {
 
     public void deleteImage(Long userId) {
         ProfileImg img = profileImgRepository.getByUser_Id(userId);
-        System.out.println("img=====    "+img);
-        if(img.getSaveFolder() != null) {
+        System.out.println("img=====    " + img);
+        if (img.getSaveFolder() != null) {
             Path path = Paths.get(img.getSaveFolder());
             File realFile = new File(path.toAbsolutePath().toString(), img.getSaveName());
             realFile.delete();

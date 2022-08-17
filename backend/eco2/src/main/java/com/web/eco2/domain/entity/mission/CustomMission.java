@@ -34,14 +34,4 @@ public class CustomMission {
     @JoinColumn(name = "usr_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-
-
-
-//    @Builder
-//    public CustomMission(User user, Integer category, String title, String content) {
-//        this.user = user;
-//        this.category = category;
-//        this.title = title;
-//        this.content = content;
-//    }
 }

@@ -5,7 +5,6 @@ import com.web.eco2.domain.entity.user.User;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

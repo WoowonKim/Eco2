@@ -18,7 +18,6 @@ public class AlarmService {
     public static final String COLLECTION_NAME = "alarm";
     public static final String SUB_COLLECTION_NAME = "common";
 
-
     public String insertAlarm(FirebaseAlarm alarm) {
         String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd-HHmmss"));
 

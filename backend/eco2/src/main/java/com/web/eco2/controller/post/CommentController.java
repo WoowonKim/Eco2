@@ -1,19 +1,14 @@
 package com.web.eco2.controller.post;
 
-
 import com.web.eco2.domain.dto.post.CommentCreateDto;
-
 import com.web.eco2.domain.dto.post.CommentDto;
 import com.web.eco2.domain.dto.post.CommentUpdateDto;
-import com.web.eco2.domain.dto.post.PostListDto;
-import com.web.eco2.model.repository.post.CommentRepository;
-import com.web.eco2.model.repository.post.PostRepository;
-import com.web.eco2.model.repository.user.UserRepository;
 import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.repository.post.CommentRepository;
 import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
@@ -29,11 +24,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/post")
@@ -61,20 +55,19 @@ public class CommentController {
     @Autowired
     private UserSettingService userSettingService;
 
-
     //댓글 등록
     @ApiOperation(value = "댓글 등록", response = Object.class)
     @PostMapping("/{postId}/comment")
     public ResponseEntity<Object> createComment(@PathVariable("postId") Long postId,
-                                                    @RequestBody CommentCreateDto commentCreateDto) {
+                                                @RequestBody CommentCreateDto commentCreateDto) {
         try {
             Post post = postService.getById(postId);
             User user = userService.getById(commentCreateDto.getUserId());
 
-            if(post == null) {
+            if (post == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 인증글입니다.", HttpStatus.ACCEPTED);
             }
-            if(user == null) {
+            if (user == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 유저입니다.", HttpStatus.ACCEPTED);
             }
 
@@ -93,14 +86,11 @@ public class CommentController {
                     // 대댓글 알림
                     Comment baseComment = commentService.getById(commentId);
                     UserSetting userSetting = userSettingService.findById(baseComment.getUser().getId());
-                    System.out.println("commentAlarmFlag::"+userSetting.isCommentAlarmFlag());
-                    System.out.println(user.getId()+" "+baseComment.getUser().getId());
-                    System.out.println(comment.getId());
-                    if(userSetting.isCommentAlarmFlag() && !user.getId().equals(baseComment.getUser().getId())) {
+                    if (userSetting.isCommentAlarmFlag() && !user.getId().equals(baseComment.getUser().getId())) {
                         alarmService.insertAlarm(FirebaseAlarm.builder()
                                 .userId(baseComment.getUser().getId()).dType("comment")
-                                .senderId(user.getId()).content(user.getName()+"님이 회원님의 댓글에 대댓글을 남겼습니다.")
-                                .url("/post/"+postId+"?comment="+comment.getId()).build());
+                                .senderId(user.getId()).content(user.getName() + "님이 회원님의 댓글에 대댓글을 남겼습니다.")
+                                .url("/post/" + postId + "?comment=" + comment.getId()).build());
                     }
                 } else {
                     Comment comment = Comment.builder()
@@ -113,31 +103,26 @@ public class CommentController {
 
                     // 댓글 알림
                     UserSetting userSetting = userSettingService.findById(user.getId());
-                    System.out.println("commentAlarmFlag::"+userSetting.isCommentAlarmFlag());
-                    System.out.println(user.getId()+" "+commentCreateDto.getUserId());
-                    System.out.println(comment.getId());
-                    if(userSetting.isCommentAlarmFlag() && !user.getId().equals(post.getUser().getId())) {
+                    if (userSetting.isCommentAlarmFlag() && !user.getId().equals(post.getUser().getId())) {
                         alarmService.insertAlarm(FirebaseAlarm.builder()
                                 .userId(post.getUser().getId()).dType("comment")
-                                .senderId(user.getId()).content(user.getName()+"님이 회원님의 인증글에 댓글을 남겼습니다.")
-                                .url("/post/"+postId+"?comment="+comment.getId()).build());
+                                .senderId(user.getId()).content(user.getName() + "님이 회원님의 인증글에 댓글을 남겼습니다.")
+                                .url("/post/" + postId + "?comment=" + comment.getId()).build());
                     }
                 }
                 return ResponseHandler.generateResponse("댓글이 등록되었습니다.", HttpStatus.OK);
             } else {
                 return ResponseHandler.generateResponse("댓글을 등록할 수 없는 게시물입니다.", HttpStatus.OK);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-
     }
-
 
     //댓글 조회
     @ApiOperation(value = "댓글 조회", response = Object.class)
     @GetMapping("/{post_id}/comment")
-    public ResponseEntity<Object> getComments (@RequestParam("postId") Long postId) {
+    public ResponseEntity<Object> getComments(@RequestParam("postId") Long postId) {
         try {
             List<Comment> comments = commentService.getComments(postId);
             ArrayList<CommentDto> commentDtos = new ArrayList<>();
@@ -165,8 +150,6 @@ public class CommentController {
         }
     }
 
-
-
     //댓글 수정
     @ApiOperation(value = "댓글 수정", response = Object.class)
     @PutMapping("/{post_id}/comment/{comment_id}")
@@ -189,7 +172,7 @@ public class CommentController {
                 commentDto.setCommentId(null);
             }
             return ResponseHandler.generateResponse("댓글이 수정되었습니다.", HttpStatus.OK, "commentDto", commentDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -204,7 +187,7 @@ public class CommentController {
             Comment comment = commentService.getById(commentId);
             commentService.delete(comment);
             return ResponseHandler.generateResponse("댓글이 삭제되었습니다.", HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -216,13 +199,9 @@ public class CommentController {
         try {
             Comment comment = commentService.getById(commentId);
             return ResponseHandler.generateResponse("댓글이 조회되었습니다.", HttpStatus.OK, "comment", comment);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
-
 }

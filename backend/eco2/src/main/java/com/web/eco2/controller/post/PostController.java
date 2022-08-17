@@ -13,11 +13,10 @@ import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.post.Comment;
+import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
-import com.web.eco2.domain.entity.post.Post;
-import com.web.eco2.model.repository.FriendRepository;
 import com.web.eco2.model.repository.post.PostImgRepository;
 import com.web.eco2.model.repository.user.UserSettingRepository;
 import com.web.eco2.model.service.FriendService;
@@ -69,7 +68,6 @@ public class PostController {
     @Autowired
     private UserSettingRepository userSettingRepository;
 
-
     @Autowired
     private StatisticService statisticService;
 
@@ -94,10 +92,8 @@ public class PostController {
     @Autowired
     private AlarmService alarmService;
 
-
     @Autowired
     private ItemService itemService;
-
 
     //게시물 전체 조회
     @ApiOperation(value = "게시물 전체 조회", response = Object.class)
@@ -107,7 +103,6 @@ public class PostController {
             log.info("게시물 전체 조회 API 호출");
             ArrayList<PostListDto> postListDtos = new ArrayList<>();
             List<Post> postList = postService.getPostList();
-            System.out.println("postList:" + postList);
 
             for (Post post : postList) {
                 PostListDto postListDto = new PostListDto();
@@ -186,7 +181,6 @@ public class PostController {
         }
     }
 
-
     @ApiOperation(value = "특정 게시물 조회", response = Object.class)
     @GetMapping("/{postId}/{userId}")
     public ResponseEntity<Object> getSpecificPost(@PathVariable("postId") Long postId, @PathVariable("userId") Long userId) {
@@ -198,10 +192,6 @@ public class PostController {
             PostImg postImg = postImgRepository.getById(postId);
             String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
             UserSetting userSetting = userSettingRepository.getById(post.getUser().getId());
-//            System.out.println(userSetting.isPublicFlag());
-            System.out.println(post.isPublicFlag());
-            System.out.println(post.isCommentFlag());
-
 
             if (!userSetting.isPublicFlag()) {
                 // API 요청을 보낸 user의 친구 중 postUser가 포함되어있거나, 게시물 작성자와 요청 user가 같은 경우 게시물 공개!
@@ -318,12 +308,11 @@ public class PostController {
                     return ResponseHandler.generateResponse("비공개 게시물입니다.", HttpStatus.OK);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("특정 게시물 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-
 
     @ApiOperation(value = "게시물 등록", response = Object.class)
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -331,30 +320,29 @@ public class PostController {
                                              @RequestPart(value = "postCreateDto") PostCreateDto postCreateDto) throws IOException {
         try {
             log.info("게시물 등록 API 호출"); //TODO fe: 나뭇잎 추가, 조회 //be: 통계 수 증가
-            System.out.println(postCreateDto);
             Long userId = postCreateDto.getUser().getId();
             User user = userService.getById(userId);
-            if(user == null) {
+            if (user == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 유저입니다.", HttpStatus.ACCEPTED);
             }
 
             Integer category = null;
             boolean isQuest = false;
 
-            if(postCreateDto.getMission() != null) {
-                Mission mission =missionService.findByMisId(postCreateDto.getMission().getId());
+            if (postCreateDto.getMission() != null) {
+                Mission mission = missionService.findByMisId(postCreateDto.getMission().getId());
                 postCreateDto.getMission().setCategory(mission.getCategory());
                 category = mission.getCategory();
-            } else if(postCreateDto.getCustomMission() != null) {
+            } else if (postCreateDto.getCustomMission() != null) {
                 CustomMission mission = customMissionService.findByCumId(postCreateDto.getCustomMission().getId());
-                if(mission == null) {
+                if (mission == null) {
                     return ResponseHandler.generateResponse("존재하지 않는 커스텀미션입니다.", HttpStatus.ACCEPTED);
                 }
                 postCreateDto.setCustomMission(mission);
                 category = mission.getCategory();
-            } else if(postCreateDto.getQuest() != null) {
+            } else if (postCreateDto.getQuest() != null) {
                 Optional<Quest> questOpt = questService.findById(postCreateDto.getQuest().getId());
-                if(questOpt.isEmpty()) {
+                if (questOpt.isEmpty()) {
                     return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
 
@@ -362,37 +350,36 @@ public class PostController {
                 category = quest.getMission().getCategory();
                 isQuest = true;
 
-                if(postService.existsByUserIdAndQuestId(userId, quest.getId())) {
+                if (postService.existsByUserIdAndQuestId(userId, quest.getId())) {
                     return ResponseHandler.generateResponse("이미 참여한 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
-                if(quest.isFinishFlag()) {
+                if (quest.isFinishFlag()) {
                     return ResponseHandler.generateResponse("종료된 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
-                if(quest.getFinishTime().isBefore(LocalDateTime.now())) {
+                if (quest.getFinishTime().isBefore(LocalDateTime.now())) {
                     quest.setFinishFlag(true);
                     questService.save(quest);
                     return ResponseHandler.generateResponse("종료된 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
 
-                if(quest.isAchieveFlag()) {
+                if (quest.isAchieveFlag()) {
                     return ResponseHandler.generateResponse("완료된 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
-                int participantCount = quest.getParticipantCount()+1;
-                if(participantCount == quest.getAchieveCount()) {
+                int participantCount = quest.getParticipantCount() + 1;
+                if (participantCount == quest.getAchieveCount()) {
                     quest.setAchieveFlag(true);
                     Item item = Item.builder().category(7).user(user).left(100).top(50).build();
                     itemService.save(item);
                     alarmService.insertAlarm(FirebaseAlarm.builder().userId(userId)
-                            .content(quest.getContent()+" 퀘스트가 완료되었습니다.").dType("questAchieve")
+                            .content(quest.getContent() + " 퀘스트가 완료되었습니다.").dType("questAchieve")
                             .url("/mainTree").build());
 
-                    for(QuestPost questPost : postService.findByQuest(quest)) {
+                    for (QuestPost questPost : postService.findByQuest(quest)) {
                         User questUser = questPost.getUser();
                         item = Item.builder().category(7).user(questUser).left(200).top(50).build();
-//                        item = Item.builder().category(6+quest.getMission().getCategory()).user(questUser).left(200).top(50).build();
                         itemService.save(item);
                         alarmService.insertAlarm(FirebaseAlarm.builder().userId(questUser.getId())
-                                .content(quest.getContent()+" 퀘스트가 완료되었습니다. 메인화면에서 보상을 확인하세요.").dType("questAchieve")
+                                .content(quest.getContent() + " 퀘스트가 완료되었습니다. 메인화면에서 보상을 확인하세요.").dType("questAchieve")
                                 .url("/mainTree").senderId(item.getId()).build());
                     }
                 }
@@ -411,16 +398,6 @@ public class PostController {
             itemService.save(item);
             postCreateDto.setItemId(item.getId());
 
-            // 친구 인증글 알림 시 사용
-//            Post post = postService.savePost(postImage, postCreateDto);
-
-            // 친구 인증글 알림
-//            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {
-//                alarmService.insertAlarm(FirebaseAlarm.builder()
-//                        .userId(friend.getId()).senderId(userId)
-//                        .dType("friendPost").content("친구 "+user.getName()+"님이 인증글을 올렸습니다.")
-//                        .url("/post/"+post.getId()).build());
-//            });
             return ResponseHandler.generateResponse("게시물이 등록되었습니다.", HttpStatus.OK, "postCreateDto", postCreateDto);
         } catch (Exception e) {
             log.error("게시물 등록 API 에러", e);
@@ -428,17 +405,13 @@ public class PostController {
         }
     }
 
-
     @ApiOperation(value = "게시물 수정", response = Object.class)
     @PutMapping(value = "/{postId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
                                              @RequestPart(value = "postImage") MultipartFile postImage,
                                              @RequestPart(value = "postUpdateDto") PostUpdateDto postUpdateDto) {
         try {
-            log.info("게시물 수정 API 호출"); //TODO : 이미지 선택 안됐을 때 처리 필요하지 않을까
-//            if (postImage.getName() == null){
-//                return ResponseHandler.generateResponse("이미지를 선택해주세요.", HttpStatus.ACCEPTED);
-//            }
+            log.info("게시물 수정 API 호출");
             postService.updatePost(postId, postImage, postUpdateDto);
             return ResponseHandler.generateResponse("게시물이 수정되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
@@ -446,7 +419,6 @@ public class PostController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-
 
     @ApiOperation(value = "게시물 삭제", response = Object.class)
     @DeleteMapping("/{postId}")
@@ -464,5 +436,4 @@ public class PostController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-
 }

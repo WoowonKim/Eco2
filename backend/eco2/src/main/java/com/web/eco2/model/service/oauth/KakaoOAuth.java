@@ -94,7 +94,6 @@ public class KakaoOAuth implements OAuth {
 
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(response.getBody());
         User user = User.builder().email((String) ((JSONObject) jsonObject.get("kakao_account")).get("email")).build();
-//        User user = new User((String) ((JSONObject) jsonObject.get("kakao_account")).get("email"), null, 2, null);
 
         return user;
     }

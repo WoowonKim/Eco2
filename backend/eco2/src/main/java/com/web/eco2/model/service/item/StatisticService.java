@@ -11,7 +11,6 @@ public class StatisticService {
     @Autowired
     private StatisticRepository statisticRepository;
 
-
     public void save(Statistic statistic) {
         statisticRepository.save(statistic);
     }
@@ -20,9 +19,8 @@ public class StatisticService {
         return statisticRepository.findByUsrId(usrId);
     }
 
-
     public void updateCount(Long usrId, Integer category, boolean questFlag) {
-        if(questFlag){
+        if (questFlag) {
             statisticRepository.updateQuestCount(usrId);
         } else {
             if (category == 1) {
@@ -39,6 +37,5 @@ public class StatisticService {
                 statisticRepository.updateCategory6Count(usrId);
             }
         }
-//        statisticRepository.updateCount(usrId, "t.sta_category_"+category);
     }
 }

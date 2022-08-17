@@ -5,13 +5,15 @@ import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.security.UserDetail;
 import com.web.eco2.security.UserDetailService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -19,11 +21,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
 import java.security.Key;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @Component
@@ -31,10 +34,13 @@ import java.util.*;
 public class JwtTokenUtil {
     @Value("${jwt.secret}")
     private String secretKey;
+
     @Value("${jwt.accesstokenValidTime}")
     private Long accesstokenValidTime;
+
     @Value("${jwt.refreshtokenValidTime}")
     private Long refreshtokenValidTime;
+
     @Autowired
     private UserService userService;
 
@@ -136,7 +142,6 @@ public class JwtTokenUtil {
         return Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(token).getBody();
     }
 
-
     public Cookie getCookie(String refreshToken) {
         Cookie cookie = new Cookie("Auth-refreshToken", refreshToken);
         cookie.setMaxAge(60 * 1000);
@@ -146,15 +151,13 @@ public class JwtTokenUtil {
         return cookie;
     }
 
-    public boolean socketValidateToken( String token) {
+    public boolean socketValidateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).build().parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
-//            ResponseBodyWriteUtil.sendSocketError(response, "토큰이 유효하지 않습니다.");
-//            return false;
         }
     }
 

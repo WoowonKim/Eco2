@@ -19,14 +19,13 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private JwtTokenUtil jwtTokenUtil;
 
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil ) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
         super(authenticationManager);
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-//        super.doFilterInternal(request, response, chain);
         log.info("=======Filter=======");
         try {
             String accessToken = jwtTokenUtil.getAccessToken((HttpServletRequest) request);
@@ -50,7 +49,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             }
         } catch (Exception e) {
             log.error("token error", e);
-            ResponseBodyWriteUtil.sendError( response, "오류가 발생했습니다.", HttpStatus.BAD_REQUEST);
+            ResponseBodyWriteUtil.sendError(response, "오류가 발생했습니다.", HttpStatus.BAD_REQUEST);
             return;
         }
         chain.doFilter(request, response);

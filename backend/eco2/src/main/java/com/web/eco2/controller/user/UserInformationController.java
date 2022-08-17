@@ -1,8 +1,6 @@
 package com.web.eco2.controller.user;
 
-import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.user.SignUpRequest;
-import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.post.QuestPost;
@@ -14,7 +12,6 @@ import com.web.eco2.model.service.item.CalendarService;
 import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.ProfileImgService;
 import com.web.eco2.model.service.user.UserService;
-
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +36,7 @@ import java.util.Map;
 @Slf4j
 @Api(tags = {"UserInformation API"})
 public class UserInformationController {
+
     @Autowired
     private UserService userService;
 
@@ -60,7 +58,6 @@ public class UserInformationController {
     @Autowired
     private FriendService friendService;
 
-
     @Autowired
     private UserSettingRepository userSettingRepository;
 
@@ -78,7 +75,6 @@ public class UserInformationController {
             if (user != null) {
                 List<Post> posts = postService.getPostOnly(user.getId());
                 for (Post post : posts) {
-                    System.out.println("post:"+ post);
                     UserSetting userSetting = userSettingRepository.getById(user.getId());
 
                     if (!userSetting.isPublicFlag()) {
@@ -108,7 +104,6 @@ public class UserInformationController {
                         }
                     }
                 }
-                System.out.println("postList:" + postList);
                 return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
                         Map.of("user", user.toDto(), "postList", postList, "questPostList", questPostList));
             } else {
@@ -150,7 +145,6 @@ public class UserInformationController {
                 return ResponseHandler.generateResponse("이메일을 확인해주세요.", HttpStatus.BAD_REQUEST);
             }
             User dbUser = userService.findByEmail(user.getEmail());
-            System.out.println(dbUser);
             if (dbUser == null) {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST);
             }
@@ -178,7 +172,6 @@ public class UserInformationController {
             if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
                 return ResponseHandler.generateResponse("비밀번호가 일치하지 않습니다.", HttpStatus.ACCEPTED);
             }
-
             return ResponseHandler.generateResponse("새로운 비밀번호를 등록해주세요.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("현재 비밀번호 확인 API 에러", e);
@@ -217,11 +210,10 @@ public class UserInformationController {
             log.info("로그아웃 API 호출");
             Cookie cookie = new Cookie("Auth-refreshToken", null);
             if (cookie != null) {
-                System.out.println(cookie);
                 cookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
                 cookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
                 response.addCookie(cookie);
-            }else {
+            } else {
                 return ResponseHandler.generateResponse("잘못된 요청입니다.", HttpStatus.ACCEPTED);
             }
             return ResponseHandler.generateResponse("로그아웃 되었습니다.", HttpStatus.OK);

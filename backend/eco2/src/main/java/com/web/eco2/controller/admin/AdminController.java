@@ -107,10 +107,8 @@ public class AdminController {
     @GetMapping("/report")
     public ResponseEntity<Object> selectReport() {
         try {
-            //TODO : 페이징 구현 필요..
             log.info("신고글 조회 API 호출");
             List<ReportInformation> reportListInformation = reportService.findAllReport();
-            System.out.println(reportListInformation);
             List<ReportDto> reportList = new ArrayList<>();
             for (ReportInformation report : reportListInformation) {
                 Post post = null;
@@ -120,9 +118,8 @@ public class AdminController {
                     post = comment.getPost();
                 } else {
                     post = postService.getById(report.getPosId());
-                    if(post.getMission() == null){
+                    if (post.getMission() == null) {
                         QuestPost questPost = postService.getQuestById(report.getPosId());
-                        System.out.println(questPost);
                         post.setMission(questPost.getQuest().getMission());
                     }
                 }
@@ -130,10 +127,8 @@ public class AdminController {
                 if (report.getComId() != null) {
                     user = comment.getUser();
                 }
-
                 reportList.add(new ReportDto(report.getRepId(), report.getCount(), post, report.getComId(), user, post.getCategory()));
             }
-            System.out.println(reportList);
             return ResponseHandler.generateResponse("신고글 조회에 성공하였습니다.", HttpStatus.OK, "reportList", reportList);
         } catch (Exception e) {
             log.error("신고글 조회 API 에러", e);
@@ -205,7 +200,6 @@ public class AdminController {
                 reportService.deleteByPosId(reportId);
                 return ResponseHandler.generateResponse("신고 게시물 반려에 성공하였습니다.", HttpStatus.OK);
             } else {//댓글 반려
-                //TODO : 댓글 구현 후에 다시 확인
                 reportService.deleteByComId(reportId);
                 return ResponseHandler.generateResponse("신고 댓글 반려에 성공하였습니다.", HttpStatus.OK);
             }

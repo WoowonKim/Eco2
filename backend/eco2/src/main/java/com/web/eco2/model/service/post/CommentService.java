@@ -1,7 +1,6 @@
 package com.web.eco2.model.service.post;
 
 import com.web.eco2.domain.entity.post.Comment;
-import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.model.repository.post.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -38,5 +37,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public void delete(Comment comment) { commentRepository.delete(comment); }
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
+    }
 }

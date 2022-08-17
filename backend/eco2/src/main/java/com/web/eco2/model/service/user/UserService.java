@@ -42,7 +42,7 @@ public class UserService {
         UserInformation userInformation = userRepository.findUserInfoByEmail(email);
         User user = null;
 
-        if(userInformation != null) {
+        if (userInformation != null) {
             user = User.builder()
                     .id(userInformation.getId())
                     .email(userInformation.getEmail())
