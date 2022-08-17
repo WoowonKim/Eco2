@@ -20,15 +20,12 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
       const link = document.createElement("a");
       link.href = url;
       setImgUrl(new Blob([res.data]));
-      link.setAttribute("download", "image.jpg");
+      link.setAttribute("download", `${month}_${day}_rewardImage.jpg`);
       document.body.appendChild(link);
       link.click();
     });
   };
 
-  // useEffect(() => {
-  //   shareKakao()
-  // }, []);
   const shareKakao = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
@@ -44,8 +41,10 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
           description: "오늘의 미션 완료를 축하드립니다 :D",
           imageUrl: `${process.env.REACT_APP_BE_HOST}img/reward/${calendarId}`,
           link: {
-            mobileWebUrl: `http://localhost:3000/profile/${getUserId()}`,
-            webUrl: `http://localhost:3000/profile/${getUserId()}`,
+            mobileWebUrl: `${
+              process.env.REACT_APP_BE_HOST
+            }profile/${getUserId()}`,
+            webUrl: `${process.env.REACT_APP_BE_HOST}profile/${getUserId()}`,
           },
         },
       });
