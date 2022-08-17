@@ -22,20 +22,19 @@ public class StatisticService {
     public void updateCount(Long usrId, Integer category, boolean questFlag) {
         if (questFlag) {
             statisticRepository.updateQuestCount(usrId);
-        } else {
-            if (category == 1) {
-                statisticRepository.updateCategory1Count(usrId);
-            } else if (category == 2) {
-                statisticRepository.updateCategory2Count(usrId);
-            } else if (category == 3) {
-                statisticRepository.updateCategory3Count(usrId);
-            } else if (category == 4) {
-                statisticRepository.updateCategory4Count(usrId);
-            } else if (category == 5) {
-                statisticRepository.updateCategory5Count(usrId);
-            } else if (category == 6) {
-                statisticRepository.updateCategory6Count(usrId);
-            }
+        }
+        if (category == 1) {
+            statisticRepository.updateCategory1Count(usrId);
+        } else if (category == 2) {
+            statisticRepository.updateCategory2Count(usrId);
+        } else if (category == 3) {
+            statisticRepository.updateCategory3Count(usrId);
+        } else if (category == 4) {
+            statisticRepository.updateCategory4Count(usrId);
+        } else if (category == 5) {
+            statisticRepository.updateCategory5Count(usrId);
+        } else if (category == 6) {
+            statisticRepository.updateCategory6Count(usrId);
         }
     }
 }
