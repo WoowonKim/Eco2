@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import * as firestore from "firebase/firestore";
@@ -12,11 +11,10 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
-// Initialize Firebase
+
 firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
-// export const database = firebase.database();
 
 export const signInGoogle = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -27,9 +25,7 @@ export const signOutGoogle = () => {
   const getAuth = auth.getAuth();
   auth
     .signOut(getAuth)
-    .then(() => {
-      console.log("sign out");
-    })
+    .then(() => {})
     .catch((error) => {
       console.log("sign out failed");
       console.log(error);
