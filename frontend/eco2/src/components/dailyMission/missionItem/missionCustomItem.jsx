@@ -4,7 +4,16 @@ import React, { useState } from "react";
 import styles from "./dailyMission.module.css";
 import PostModal from "../../modal/postModal/PostModal";
 
-const MissionCustomItem = ({ idTest, content, missionIdTest, missionFlag, category, cusMissionDelete, setCusMissionDelete, customMissionId }) => {
+const MissionCustomItem = ({
+  idTest,
+  content,
+  missionIdTest,
+  missionFlag,
+  category,
+  cusMissionDelete,
+  setCusMissionDelete,
+  customMissionId,
+}) => {
   const realTrashType = missionFlag ? styles.whiteTrash : styles.greenTrash; // 미션 여부에 따른 쓰레기통
 
   const [visible, setVisible] = useState(false);
@@ -15,7 +24,10 @@ const MissionCustomItem = ({ idTest, content, missionIdTest, missionFlag, catego
     <div>
       <div className={styles.mainList}>
         {missionFlag ? (
-          <img src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`} className={styles.leafSize}></img>
+          <img
+            src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`}
+            className={styles.leafSize}
+          ></img>
         ) : (
           <i
             className={`${"fa-regular fa-circle"} ${styles.circleType}`}
@@ -27,7 +39,9 @@ const MissionCustomItem = ({ idTest, content, missionIdTest, missionFlag, catego
         )}
         <span className={styles.itemContent}>{content}</span>
         <i
-          className={`${"fa-solid fa-trash-can"} ${realTrashType} ${styles.trashType}`}
+          className={`${"fa-solid fa-trash-can"} ${realTrashType} ${
+            styles.trashType
+          }`}
           onClick={() => {
             setVisible(!visible);
             setModalType("내목록이동");
@@ -41,6 +55,7 @@ const MissionCustomItem = ({ idTest, content, missionIdTest, missionFlag, catego
           content={"게시글 미 작성시 나뭇잎 획득이 불가합니다!"}
           type={"커스텀 미션완료"}
           customMissionId={customMissionId}
+          missionIdTest={missionIdTest}
         />
       )}
       {visible && modalType === "내목록이동" && (
