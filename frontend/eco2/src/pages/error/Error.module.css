@@ -1,0 +1,14 @@
+.text{
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+.icon{
+    color: rgb(87, 214, 150);
+    font-size: 20px;
+}
+.home{
+    color: rgb(87, 214, 150);
+    font-size: 12px;
+    font-weight: bold;
+    margin: 5px;
+}

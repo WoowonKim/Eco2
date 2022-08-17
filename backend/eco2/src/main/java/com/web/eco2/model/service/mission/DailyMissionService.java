@@ -65,9 +65,11 @@ public class DailyMissionService {
     public BufferedImage getRewardImage(User user, CalendarDto calendarDto) throws IOException {
         List<DailyMission> dailyMissionList = findRewardList(user.getId());
 
-        BufferedImage img = ImageIO.read(new File(uploadFolder + "/rewardImage.jpg"));
+        BufferedImage img = ImageIO.read(new File(uploadFolder + "/rewardImage.png"));
         Graphics2D graphics = img.createGraphics();
         String rewardFontName = "한컴 울주 반구대 암각화체";
+//        String rewardFontName = "아임크리수진 보통";
+
         String rewardDate = calendarDto.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
         String rewardName = user.getName() + "님";
         String rewardContent1 = "오늘의 데일리미션 완료!!";
@@ -85,33 +87,23 @@ public class DailyMissionService {
         FontMetrics metrics = graphics.getFontMetrics(font);
 
         int width = metrics.stringWidth(rewardDate);
-        graphics.drawString(rewardDate, 500 / 2 - width / 2, 65);
+        graphics.drawString(rewardDate, 500 / 2 - width / 2, 90);
 
-        width = metrics.stringWidth(rewardFooter);
-        graphics.drawString(rewardFooter, 500 / 2 - width / 2, 870);
-
+        font = new Font(rewardFontName, Font.BOLD, 20);
+        graphics.setFont(font);
+        metrics = graphics.getFontMetrics(font);
         width = metrics.stringWidth(rewardMission1);
-        graphics.drawString(rewardMission1, 125, 645);
+        graphics.drawString(rewardMission1, 140, 605);
         width = metrics.stringWidth(rewardMission2);
-        graphics.drawString(rewardMission2, 125, 720);
+        graphics.drawString(rewardMission2, 140, 677);
         width = metrics.stringWidth(rewardMission3);
-        graphics.drawString(rewardMission3, 125, 798);
+        graphics.drawString(rewardMission3, 140, 747);
 
         font = new Font(rewardFontName, Font.BOLD, 32);
         graphics.setFont(font);
         metrics = graphics.getFontMetrics(font);
         width = metrics.stringWidth(rewardContent1);
-        graphics.drawString(rewardContent1, 500 / 2 - width / 2, 110);
-
-        font = new Font(rewardFontName, Font.BOLD, 60);
-        graphics.setFont(font);
-        metrics = graphics.getFontMetrics(font);
-        width = metrics.stringWidth(rewardName);
-        graphics.drawString(rewardName, 500 / 2 - width / 2, 235);
-
-        width = metrics.stringWidth(rewardContent2);
-        graphics.drawString(rewardContent2, 500 / 2 - width / 2, 320);
-
+        graphics.drawString(rewardContent1, 500 / 2 - width / 2, 140);
         return img;
     }
 
@@ -127,35 +119,45 @@ public class DailyMissionService {
     public void deleteByUsrId(Long usrId) {
         dailyMissionRepository.deleteByUsrId(usrId);
     }
+
     // TODO: 알고리즘 고치기
     // 에어컨/난방 미션의 경우의 처리가 미흡. 플래그 추가 생각 중
-    public Map<String, List<?>> getRecommendMission(String lat, String lng, String time) throws IOException {
+    public Map<String, Object> getRecommendMission(String lat, String lng, String time) throws IOException {
         List<Long> recommendMissionsNum = new ArrayList<>();
         List<Mission> recommendMission = new ArrayList<>();
 
+        int sunnyFlag = 3;
+        int outsideFlag = 3;
+        int temperatureFlag = 4;
         UltraShortNowcast ultraShortNowcast = weatherService.getUltraSrtNcst(lat, lng, time);
-        if(ultraShortNowcast == null) {
+        if(ultraShortNowcast != null) {
+            if(ultraShortNowcast.getRainAmount() <= 0) {
+                sunnyFlag = 1;
+            } else if (ultraShortNowcast.getRainAmount() >= 3) {
+                sunnyFlag = 2;
+            }
+
+            // TODO: 외부활동: 미세먼지 추가, 습도
+            if(ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
+                outsideFlag = 1;
+            } else if(ultraShortNowcast.getRainAmount() >= 3 || ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28) {
+                outsideFlag = 2;
+            }
+
+            if(ultraShortNowcast.getTemperature() <= 10) {
+                temperatureFlag = 1;
+            } else if(ultraShortNowcast.getTemperature() < 26) {
+                temperatureFlag = 2;
+            }
+        } else {
             return null;
         }
 
-        Boolean isClear = null;
-        if(ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
-            isClear = true;
-        } else if (ultraShortNowcast.getRainAmount() >= 3 || ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28) {
-            isClear = false;
-        }
-
-        List<Mission> missions = new ArrayList<>();
+        List<Mission> missions = missionRepository.findForRecommendation(sunnyFlag, outsideFlag, temperatureFlag);
         Random random = new Random();
-        int num = random.nextInt(3) + 1;
-        num = (4 + num) % 5; // 카테고리 4(구매하기) 제외하고 제외할 카테고리 하나 더 선택
-        if(num == 0) num = 5;
-
-        if(isClear != null) missions.addAll(missionRepository.findWithoutCategoryAndClearFlag(4, num, isClear));
-        else missions.addAll(missionRepository.findWithoutCategory(4, num));
 
         while (recommendMissionsNum.size() < 3) {
-            num = random.nextInt(missions.size() - 1) + 1;
+            int num = random.nextInt(missions.size() - 1) + 1;
             if (!recommendMissionsNum.contains(missions.get(num).getId())) {
                 recommendMissionsNum.add(missions.get(num).getId());
                 recommendMission.add(missions.get(num));
@@ -163,9 +165,10 @@ public class DailyMissionService {
             missions.remove(num);
         }
 
-        Map<String, List<?>> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("missions", recommendMission);
         map.put("missionsNum", recommendMissionsNum);
+        map.put("weather", Map.of("sunny", sunnyFlag, "outside", outsideFlag, "temperature", temperatureFlag));
         return map;
     }
 

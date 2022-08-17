@@ -1,0 +1,279 @@
+.userInfo {
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* background-image: url(../../../public/ocean.PNG); */
+
+  /* background-color: beige; */
+
+  width: 390px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.user {
+  /* background: linear-gradient(beige 30%, white); */
+  border-radius: 10px;
+  background: linear-gradient(rgb(247, 241, 227) 30%, white);
+  /* display: flex; */
+  justify-content: start;
+  align-items: center;
+}
+
+.profileImgGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editIcon {
+  font-size: 10px;
+  color: black;
+  margin: 3px;
+  background-color: transparent;
+}
+
+.fileInputGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* .imgLabel {
+  display: flex;
+  justify-content: center;
+} */
+
+.fileInput {
+  height: 30px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  width: 50%;
+  color: #999999;
+  display: none;
+}
+
+.baseFileInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.label {
+  display: flex;
+  justify-content: start;
+  font-size: large;
+  margin: 20px 0 5px 5px;
+}
+
+.button {
+  border: none;
+  background-color: white;
+}
+
+.userSettingAndFriends {
+  display: flex;
+  justify-content: center;
+}
+
+.userName {
+  margin: 5px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.profileImg {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  //border: 1px solid black;
+  border: none;
+  border-radius: 50%;
+  margin-top: 60px;
+  margin-right: 5px;
+}
+
+.imgLabel {
+  margin-top: 5px;
+  border: none;
+  background-color: transparent;
+  transition: all 2s ease-in;
+}
+
+.imgLabel :hover {
+  cursor: pointer;
+  transform: scale(1.5);
+}
+
+.editIcon {
+  cursor: pointer;
+  /* border: none;
+  background-color: transparent;
+  transition: all 2s ease-in;
+  margin-right: 3px;
+  margin-left: 3px; */
+}
+
+.editIcon :hover {
+  cursor: pointer;
+  /* transform: scale(1.5); */
+}
+
+.icon {
+  font-size: 10px;
+  color: black;
+  margin: 3px;
+  background-color: transparent;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: end;
+  background-color: transparent;
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+  transition: all 2s ease-in;
+  padding: 0 0 5px 3px;
+  /* margin: 0px; */
+  margin-right: 3px;
+  margin-left: 3px;
+}
+
+.button :hover {
+  cursor: pointer;
+  transform: scale(1.5);
+}
+
+.settingIcon {
+  color: black;
+  font-size: x-small;
+}
+
+.friendIcon {
+  color: black;
+  font-size: smaller;
+  margin: 5px;
+}
+
+.missionList {
+  display: grid;
+  margin-top: 10px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* .missionTitle {
+  padding: 0 30px;
+}
+
+.line {
+  width: 100%;
+} */
+
+.selectedMenu {
+  font-weight: bold;
+}
+
+.mission {
+  display: flex;
+  justify-content: start;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  flex-wrap: wrap;
+}
+
+.missionImg {
+  width: 30%;
+  margin: 5px;
+  border: 1px solid #dadada;
+  border-radius: 5px;
+  height: 110px;
+}
+
+.line {
+  margin: 0px;
+}
+
+.selectedMenu1 {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 221, 179, 0.5) 50%,
+    rgb(255, 202, 249)
+  );
+  font-weight: bold;
+}
+
+.selectedMenu2 {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 221, 179, 0.5) 50%,
+    rgb(255, 202, 249)
+  );
+  font-weight: bold;
+}
+
+.selectedMenu3 {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 221, 179, 0.5) 50%,
+    rgb(255, 202, 249)
+  );
+  font-weight: bold;
+}
+
+.missionTitle {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  width: 80%;
+  font-size: 15px;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+}
+
+.missionTitle:hover,
+.hvr-grow-shadow:focus,
+.hvr-grow-shadow:active {
+  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  font-weight: bold;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 221, 179, 0.5) 50%,
+    rgb(255, 202, 249)
+  );
+}
+
+/* 데일리 미션 스크롤 */
+.dailyScroll {
+  height: 400px;
+  width: 360px;
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+.dailyScroll::-webkit-scrollbar {
+  width: 3px; /*스크롤바의 너비*/
+}
+
+.dailyScroll::-webkit-scrollbar-thumb {
+  background-color: rgb(87, 214, 150); /*스크롤바의 색상*/
+  border-radius: 8px;
+}
+
+.dailyScroll::-webkit-scrollbar-track {
+  background-color: #f4f9e5; /*스크롤바 트랙 색상*/
+}

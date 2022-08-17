@@ -4,24 +4,31 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { customPostMission } from "../../../store/mission/customMissionSlice";
 import { userInformation } from "../../../store/user/userSettingSlice";
-import { getUserEmail } from "../../../store/user/common";
+import { getUserEmail, getUserId } from "../../../store/user/common";
 const CustomPlus = () => {
   const dispatch = useDispatch();
   const naviGate = useNavigate();
-  const [id, setId] = useState(0);
+  // const [id, setId] = useState(0);
   const [cate, setCate] = useState(0);
   const [tit, setTit] = useState("");
   const [cont, setCont] = useState("");
   useEffect(() => {
-    dispatch(userInformation({ email: getUserEmail() })).then((res) => {
-      if (res.payload.status === 200) {
-        setId(res.payload.user.id);
-      }
-    });
+    // dispatch(userInformation({ email: getUserEmail() })).then(res => {
+    //   if (res.payload.status === 200) {
+    //     setId(res.payload.user.id);
+    //   }
+    // });
   }, []);
 
   const subMit = () => {
-    dispatch(customPostMission({ id, category: cate, title: tit, content: cont }))
+    dispatch(
+      customPostMission({
+        id: getUserId(),
+        category: cate,
+        title: tit,
+        content: cont,
+      })
+    )
       .then((res) => {
         if (res.payload.status === 200) {
           if (window.confirm("미션 목록에 추가하시겠어요>")) {
@@ -36,6 +43,8 @@ const CustomPlus = () => {
 
   return (
     <div className={styles.customHeader}>
+      <p>나만의 미션 추가하기</p>
+      <hr />
       <input
         type="text"
         onChange={(e) => {

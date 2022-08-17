@@ -5,8 +5,9 @@ export const createQuest = createAsyncThunk(
   "questSlice/createQuest",
   async (args, { rejectWithValue }) => {
     try {
-      await axiosService.post("/quest", args);
+      const post = await axiosService.post("/quest", args);
       const response = await axiosService.get("/quest");
+      response.data.status = post.data.status;
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -24,20 +25,57 @@ export const getQuestList = createAsyncThunk(
     }
   }
 );
+export const deleteQuest = createAsyncThunk(
+  "questSlice/deleteQuest",
+  async (args, { rejectWithValue }) => {
+    try {
+      await axiosService.delete(`/quest/${args}`);
+      const response = await axiosService.get("/quest");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+// export const createPost = createAsyncThunk(
+//   "questSlice/createPost",
+//   async (args, { rejectWithValue }) => {
+//     try {
+//       const response = await axiosService.post("/post", args.formData, {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       });
+//       return response.data;
+//     } catch (err) {
+//       return rejectWithValue(err.response);
+//     }
+//   }
+// );
 export const questSlice = createSlice({
   name: "quest",
   initialState: {
     loading: false,
     data: [],
+    status: null,
   },
-  reducers: {},
+  reducers: {
+    setStatus(state, args) {
+      console.log("바뀌어라");
+      state.status = args;
+    },
+  },
   extraReducers: {
     [createQuest.pending]: (state, action) => {
       state.loading = true;
     },
     [createQuest.fulfilled]: (state, action) => {
-      console.log(action.payload);
+      console.log(action);
       state.data = action.payload.questList;
+      state.status = action.payload.status;
+      if (action.payload.status === 202) {
+        state.status = 202;
+      }
       state.loading = false;
     },
     [createQuest.rejected]: (state, action) => {
@@ -57,7 +95,17 @@ export const questSlice = createSlice({
       console.log("createQuest rejected");
       state.loading = false;
     },
+    // [createPost.fulfilled]: (state, payload) => {
+    //   console.log("createPost fullfilled", payload);
+    // },
+    // [createPost.rejected]: (state, payload) => {
+    //   console.log("createPost rejected", payload);
+    // },
+    [deleteQuest.fulfilled]: (state, action) => {
+      state.data = action.payload.questList;
+      state.status = 200;
+    },
   },
 });
 
-export const {} = questSlice.actions;
+export const { setStatus } = questSlice.actions;

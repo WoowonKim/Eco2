@@ -6,12 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createRoom } from "../../../store/chat/chattingSlice";
 import { getUserId } from "../../../store/user/common";
 
-const ChattModalItem = ({
-  key,
-  id,
-  email,
-  name,
-}) => {
+const ChattModalItem = ({ key, id, email, name }) => {
   const [userId, setUserId] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,17 +24,21 @@ const ChattModalItem = ({
         <div className={`${styles.text}`}>{name}</div>
       </div>
       <div className={styles.rightContent}>
-        <button
+        <div
           onClick={() => {
             dispatch(createRoom({ userId, id })).then((res) => {
               if (res.payload?.status === 200) {
+                navigate(`/chatting/room`, { state: { roomId: res.payload.roomId, userId: id } });
                 window.location.reload(`/chatting/room`);
-                // navigate(`/chatting/room`, { state: { roomId: res.payload.roomId } });
               }
             });
-          }} className={`${styles.cancleButton}`}> 채팅</button>
+          }}
+          className={`${styles.createButton}`}
+        >
+          {" "}
+          채팅
+        </div>
       </div>
-
     </div>
   );
 };

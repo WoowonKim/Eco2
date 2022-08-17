@@ -16,14 +16,21 @@
 }
 
 .input {
-  border: solid 2px #dadada;
-  border-radius: 8px;
-  margin: 5px 0;
-  height: 40px;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #dadada;
   width: 100%;
-  background-color: #f7f8f9;
-  padding: 10px 20px;
-  font-size: small;
+  height: 35px;
+  padding-left: 10px;
+  font-family: "NanumBarunGothicLight";
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input::placeholder {
+  color: #dadada;
 }
 
 .button {
@@ -33,9 +40,30 @@
   border: none;
   border-radius: 8px;
   padding: 10px;
-  background-color: #d2eaba;
+  color: white;
+  background-color: rgb(87, 214, 150);
+  font-family: "NanumBarunGothicLight";
+}
+
+.button:disabled {
+  background-color: #dadada;
+  border: none;
 }
 
 .link {
   text-decoration: none;
+}
+
+.success {
+  color: #949191;
+  margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}
+
+.fail {
+  color: red;
+  margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
 }

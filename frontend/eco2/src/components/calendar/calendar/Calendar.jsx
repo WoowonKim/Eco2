@@ -1,7 +1,9 @@
 import { addMonths, format, subMonths } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { calendar } from "../../../store/user/accountSlice";
+import { getUserId } from "../../../store/user/common";
 import CalendarBody from "../calendarBody/CalendarBody";
 import CalendarDays from "../calendarDays/CalendarDays";
 import CalendarHeader from "../calendarHeader/CalendarHeader";
@@ -14,6 +16,7 @@ const Calendar = ({ id }) => {
   // const []
 
   const dispatch = useDispatch();
+  const params = useParams();
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -28,14 +31,13 @@ const Calendar = ({ id }) => {
   };
 
   useEffect(() => {
-    dispatch(calendar({ id })).then((res) => {
+    console.log(params.userId);
+    dispatch(calendar({ id: params.userId })).then((res) => {
       if (res.payload.status === 200) {
-        // res.payload.calendarList.map((cal) => setRewardDate([...rewardDate, ]));
         setRewardDate(res.payload.calendarList);
       }
-      console.log(res);
     });
-  }, []);
+  }, [id, params?.userId]);
   return (
     <div className={styles.container}>
       <CalendarHeader

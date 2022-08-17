@@ -14,7 +14,6 @@ import {
   setUserName,
 } from "../../store/user/common";
 import { emailValidationCheck } from "../../utils";
-import axiosService from "../../store/axiosService";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -52,9 +51,6 @@ function Login() {
     dispatch(login({ email: email, password: password, socialType: 0 }))
       .then((res) => {
         if (res.payload?.status === 200) {
-          axiosService.defaults.headers.common[
-            "Auth-accessToken"
-          ] = `${res.payload.user.name}`;
           setLoginFailMsg(false);
           setUserEmail(autoLogin, email);
           setUserName(autoLogin, res.payload.user.name);
@@ -84,10 +80,6 @@ function Login() {
         ).then((res) => {
           if (res.payload?.status === 200) {
             setLoginFailMsg(false);
-            axiosService.defaults.headers.common[
-              "Auth-accessToken"
-            ] = `${res.payload.user.accessToken}`;
-
             if (!res.payload.user.name) {
               setUserEmail(false, data.additionalUserInfo.profile.email);
               setUserId(false, res.payload.user.id);
@@ -112,7 +104,7 @@ function Login() {
   };
 
   const onKakaoLogin = async () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT}&scope=account_email`;
   };
 
   useEffect(() => {
@@ -124,7 +116,7 @@ function Login() {
   return (
     <div className={styles.login}>
       <img
-        src={`${process.env.PUBLIC_URL}/logo.png`}
+        src={`${process.env.PUBLIC_URL}/logo2.png`}
         alt="earth"
         className={styles.img}
       />
@@ -151,14 +143,22 @@ function Login() {
           placeholder="비밀번호"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <div className={styles.radio}>
+        {loginFailMsg ? <WarningText>{message}</WarningText> : null}
+        <div className={styles.wrapper}>
           <input
+            className={styles.checkbox1}
             type="checkbox"
+            id="autoLogin"
             onChange={(e) => setAutoLogin(e.target.checked)}
           />
-          <span className={styles.radioText}>자동 로그인</span>
+          <label
+            htmlFor="autoLogin"
+            className={`${styles.label1} ${styles.label}`}
+          >
+            <div className={styles.dot}></div>
+            <span className={styles.labelText}>자동로그인</span>
+          </label>
         </div>
-        {loginFailMsg ? <WarningText>{message}</WarningText> : null}
         <GreenBtn
           type="submit"
           disabled={!(isEmail && password)}
@@ -173,18 +173,19 @@ function Login() {
         <hr className={styles.longLine} />
       </div>
       <div className={styles.socialGroup}>
-        <button onClick={onGoogleLogin} className={styles.socialButton}>
+        <button onClick={onGoogleLogin} className={styles.googleButton}>
           <img
             src="google_logo.png"
             alt="social_logo"
-            className={styles.socialLogo}
+            className={styles.googleLogo}
           />
+          <p className={styles.google}>구글 로그인</p>
         </button>
-        <button onClick={onKakaoLogin} className={styles.socialButton}>
+        <button onClick={onKakaoLogin} className={styles.kakaoButton}>
           <img
-            src="kakao_logo.png"
-            alt="social_logo"
-            className={styles.socialLogo}
+            src="kakao_login_medium_wide.png"
+            alt="kakaoLogin"
+            className={styles.kakaoLogo}
           />
         </button>
       </div>

@@ -16,6 +16,7 @@ const ReplyItem = ({
   commentUserId,
   setTest,
   userEmail,
+  registTime,
 }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
@@ -25,109 +26,96 @@ const ReplyItem = ({
   const name = getUserName();
   const navigate = useNavigate();
   const displayType = modalType ? styles.visible : styles.hidden;
-
-  // const handleDelete = () => {
-  //   dispatch(commentDelete({ id }));
-  // };
-  console.log(userEmail);
   return (
     <div>
       {!visible && (
-        <li className={styles.list}>
-          <div className={styles.commentContainer}>
-            <div className={styles.comment}>
-              <div
-                className={styles.userInfo}
-                onClick={() =>
-                  navigate(`/profile/${commentUserId}`, {
-                    state: { userEmail },
-                  })
-                }
-              >
-                <img
-                  src={`http://localhost:8002/img/profile/${commentUserId}`}
-                  alt="profileImg"
-                  className={styles.profileImg}
-                />
-                <p className={styles.user}>{user}</p>
-              </div>{" "}
-              <p className={styles.content}>{content}</p>
+        <div className={styles.commentContainer}>
+          <div className={styles.comment}>
+            <div
+              className={styles.userInfo}
+              onClick={() =>
+                navigate(`/profile/${commentUserId}`, {
+                  state: { userEmail },
+                })
+              }
+            >
+              <img
+                src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
+                alt="profileImg"
+                className={styles.profileImg}
+              />
+              <p className={styles.user}>{user}</p>
             </div>
+            <div>
+              <p className={styles.content}>{content}</p>
+              <p className={styles.registTime}>{registTime.split("T")[0]}</p>
+            </div>
+          </div>
+          {name === user && (
             <div className={styles.dropdown}>
               <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
               <div className={styles.dropdownContent}>
-                {name === user && (
-                  <div>
-                    <button
-                      onClick={() => {
-                        setVisible(!visible);
-                      }}
-                      className={styles.dropdownItem}
-                    >
-                      수정
-                      <i
-                        className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
-                      ></i>
-                    </button>
-                    <button
-                      // onClick={() => handleDelete()}
-                      onClick={() => {
-                        setModalVisible(!modalVisible);
-                        setModalType("삭제");
-                      }}
-                      className={styles.dropdownItem}
-                    >
-                      삭제
-                      <i
-                        className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-                      ></i>
-                    </button>
-                  </div>
-                )}
-                {name !== user && (
+                <div>
                   <button
                     onClick={() => {
-                      setModalType(!modalType);
-                      setModalType("신고");
+                      setVisible(!visible);
                     }}
                     className={styles.dropdownItem}
                   >
-                    신고
+                    수정
                     <i
-                      className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
+                      className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
                     ></i>
                   </button>
-                )}
+                  <button
+                    // onClick={() => handleDelete()}
+                    onClick={() => {
+                      setModalVisible(!modalVisible);
+                      setModalType("삭제");
+                    }}
+                    className={styles.dropdownItem}
+                  >
+                    삭제
+                    <i
+                      className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
+                    ></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          {modalVisible && modalType === "삭제" && (
-            <PostModal
-              className={`${displayType}`}
-              title={"댓글 삭제"}
-              content={"댓글을 삭제하시겠습니까"}
-              type={"삭제"}
-              postId={postId}
-              commentId={id}
-              setTest={setTest}
-              closeModal={() => setModalVisible(!modalVisible)}
-            />
           )}
-          {modalVisible && modalType === "신고" && (
-            <ReportModal
-              className={`${displayType}`}
-              title={"댓글 신고"}
-              content={"해당 댓글을 신고하시겠습니까?"}
-              id={postId}
-              type="댓글"
-              closeModal={() => setVisible(!visible)}
-            />
-          )}
-        </li>
+        </div>
       )}
+      {modalVisible && modalType === "삭제" && (
+        <PostModal
+          className={`${displayType}`}
+          title={"댓글 삭제"}
+          content={"댓글을 삭제하시겠습니까"}
+          type={"삭제"}
+          postId={postId}
+          commentId={id}
+          setTest={setTest}
+          closeModal={() => setModalVisible(!modalVisible)}
+        />
+      )}
+
       {visible && (
         <div className={styles.editFormGroup}>
-          <span className={styles.editFormUser}>{user}</span>
+          <div
+            className={styles.userInfo}
+            onClick={() =>
+              navigate(`/profile/${commentUserId}`, {
+                state: { userEmail },
+              })
+            }
+          >
+            <img
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
+            <p className={styles.user}>{user}</p>
+          </div>
           <div className={styles.editForm}>
             <CommentForm
               id={id}

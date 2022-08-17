@@ -3,15 +3,13 @@ import styles from "./ChattingMessageItem.module.css";
 import { Link } from "react-router-dom";
 import { getUserName } from "../../../store/user/common";
 
-const ChattingMessageItem = ({
-  key,
-  id,
+const ChattingMessageItem = ({  
   user,
   message,
-  sendDate
+  sendDate,
+  toUser
 }) => {
   const name = getUserName();
-
   return (
     <div className={styles.list}>
       {user === name ? (
@@ -24,8 +22,8 @@ const ChattingMessageItem = ({
           <div className={styles.content}>
             <div className={styles.profileImg}>
               <img
-                src={`${process.env.PUBLIC_URL}/logo.png`}
-                // src={`http://localhost:8002/img/profile/${user.id}`}
+                // src={`${process.env.PUBLIC_URL}/logo.png`}
+                src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUser.id}`}
                 alt="profileImg"
                 className={styles.img}
               />

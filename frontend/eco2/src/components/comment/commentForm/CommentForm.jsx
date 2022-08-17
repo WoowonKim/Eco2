@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { commentCreate, commentUpdate } from "../../../store/post/commentSlice";
+import { getUserId } from "../../../store/user/common";
 import styles from "./CommentForm.module.css";
 
 const CommentForm = ({
@@ -13,9 +14,12 @@ const CommentForm = ({
   closeModal,
   userId,
   setTest,
+  type,
 }) => {
   const [value, setValue] = useState("");
   const [editValue, setEditValue] = useState(content);
+
+  const buttonType = type ? styles.largeButton : styles.smallButton;
   const dispatch = useDispatch();
 
   const onSubmit = (e) => {
@@ -32,7 +36,12 @@ const CommentForm = ({
       closeModal();
     } else if (replyVisible) {
       dispatch(
-        commentCreate({ postId, content: value, userId, commentId: id })
+        commentCreate({
+          postId,
+          content: value,
+          userId: getUserId(),
+          commentId: id,
+        })
       ).then((res) => {
         if (res.payload?.status === 200) {
           setTest((curr) => curr + 1);
@@ -63,12 +72,25 @@ const CommentForm = ({
         value={content ? editValue : value}
         type="text"
         onChange={onChange}
-        className={styles.input}
+        className={`${buttonType} ${styles.input}`}
         placeholder="댓글을 작성해주세요"
       />
-      <button className={styles.button} type="submit">
+      <button
+        className={styles.button}
+        type="submit"
+        disabled={value.trim().length == 0 || editValue.trim().length == 0}
+      >
         작성
       </button>
+      {!type && (
+        <button
+          type="button"
+          onClick={closeModal}
+          className={styles.closeButton}
+        >
+          닫기
+        </button>
+      )}
     </form>
   );
 };

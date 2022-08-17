@@ -26,19 +26,22 @@ const Econame = () => {
 
   const ecoNameValidation = (e) => {
     setEconame(e.target.value);
-    if (nameLengthValidation(e.target.value)) {
+    if (nameLengthValidation(e.target.value.trim())) {
       setNameMessage("3글자 이상 8글자 이하로 입력해주세요.");
       setIsName(false);
     } else {
-      dispatch(ecoNameVerify({ econame: e.target.value })).then((res) => {
-        if (res.payload.status === 200) {
-          setNameMessage("올바른 이름 형식입니다 :)");
-          setIsName(true);
-        } else {
-          setIsName(false);
-          setNameMessage(`${res.payload.msg}`);
+      dispatch(ecoNameVerify({ econame: e.target.value.trimStart() })).then(
+        (res) => {
+          if (res.payload.status === 200) {
+            console.log(e.target.value.trim());
+            setNameMessage("올바른 이름 형식입니다 :)");
+            setIsName(true);
+          } else {
+            setIsName(false);
+            setNameMessage(`${res.payload.msg}`);
+          }
         }
-      });
+      );
     }
   };
 
@@ -47,8 +50,8 @@ const Econame = () => {
       .then((res) => {
         if (res.payload.status === 200) {
           setUserName(autoLogin, econame);
-          console.log(res.payload);
-          navigate(redirectPath, { replace: true });
+          // navigate(redirectPath, { replace: true });
+          window.location.replace("/mainTree");
         }
       })
       .catch((err) => {
@@ -67,7 +70,7 @@ const Econame = () => {
   return (
     <div className={styles.login}>
       <img
-        src={process.env.PUBLIC_URL + "logo.png"}
+        src={process.env.PUBLIC_URL + "logo2.png"}
         alt="earth"
         className={styles.img}
       />
@@ -82,7 +85,7 @@ const Econame = () => {
           className={styles.input}
           onChange={ecoNameValidation}
         />
-        <WarningText>{nameMessage}</WarningText>
+        <p className={isName ? styles.success : styles.fail}>{nameMessage}</p>
         <button onClick={onClick} className={styles.button} disabled={!isName}>
           시작하기
         </button>

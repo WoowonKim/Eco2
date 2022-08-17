@@ -1,10 +1,19 @@
 import React from "react";
 import styles from "./FriendList.module.css";
 import FriendItem from "../friendItem/FriendItem";
-const FriendList = ({ friendList }) => {
+const FriendList = ({ friendList, setFriendDelete }) => {
   return (
-    <div>
-      {friendList.length > 0 && friendList.map((friend) => <FriendItem />)}
+    <div className={styles.list}>
+      {friendList.length > 0 &&
+        friendList.map((friend) => (
+          <FriendItem
+            key={friend.id}
+            friendEmail={friend.email}
+            friendId={friend.id}
+            friendName={friend.name}
+            setFriendDelete={setFriendDelete}
+          />
+        ))}
     </div>
   );
 };

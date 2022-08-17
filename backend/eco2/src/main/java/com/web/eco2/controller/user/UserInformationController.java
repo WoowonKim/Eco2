@@ -1,10 +1,14 @@
 package com.web.eco2.controller.user;
 
+import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.user.SignUpRequest;
 import com.web.eco2.domain.dto.user.UserDto;
+import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
+import com.web.eco2.model.repository.user.UserSettingRepository;
+import com.web.eco2.model.service.FriendService;
 import com.web.eco2.model.service.chat.ChatService;
 import com.web.eco2.model.service.item.CalendarService;
 import com.web.eco2.model.service.post.PostService;
@@ -25,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,21 +57,60 @@ public class UserInformationController {
     @Autowired
     private CalendarService calendarService;
 
-    @GetMapping("/{email}")
+    @Autowired
+    private FriendService friendService;
+
+
+    @Autowired
+    private UserSettingRepository userSettingRepository;
+
+    @GetMapping("/{email}/{requestUserId}")
     @ApiOperation(value = "회원 조회", response = Object.class)
-    public ResponseEntity<?> getUser(@PathVariable("email") String email) {
+    public ResponseEntity<?> getUser(@PathVariable("email") String email, @PathVariable("requestUserId") Long requestUserId) {
         try {
             log.info("회원 조회 API 호출");
-            if (email == null || email.equals("")) {
+            if (email == null) {
                 return ResponseHandler.generateResponse("이메일을 입력해주세요.", HttpStatus.ACCEPTED);
             }
             User user = userService.findByEmail(email);
-
+            ArrayList<Post> postList = new ArrayList<>();
+            ArrayList<QuestPost> questPostList = new ArrayList<>();
             if (user != null) {
                 List<Post> posts = postService.getPostOnly(user.getId());
+                for (Post post : posts) {
+                    System.out.println("post:"+ post);
+                    UserSetting userSetting = userSettingRepository.getById(user.getId());
+
+                    if (!userSetting.isPublicFlag()) {
+                        if (friendService.getFriends(user.getId()).contains(userService.getById(requestUserId)) || user.getId().equals(requestUserId)) {
+                            if (post.isPublicFlag()) {
+                                postList.add(post);
+                            }
+                        }
+                    } else {
+                        if (post.isPublicFlag() || user.getId().equals(requestUserId)) {
+                            postList.add(post);
+                        }
+                    }
+                }
                 List<QuestPost> questPosts = postService.getQuestPostOnly(user.getId());
+                for (QuestPost questPost : questPosts) {
+                    UserSetting userSetting = userSettingRepository.getById(user.getId());
+                    if (!userSetting.isPublicFlag()) {
+                        if (friendService.getFriends(user.getId()).contains(userService.getById(requestUserId)) || user.getId().equals(requestUserId)) {
+                            if (questPost.isPublicFlag()) {
+                                questPostList.add(questPost);
+                            }
+                        }
+                    } else {
+                        if (questPost.isPublicFlag() || user.getId().equals(requestUserId)) {
+                            questPostList.add(questPost);
+                        }
+                    }
+                }
+                System.out.println("postList:" + postList);
                 return ResponseHandler.generateResponse("회원정보가 조회되었습니다.", HttpStatus.OK,
-                        Map.of("user", user.toDto(), "postList", posts, "questPostList", questPosts));
+                        Map.of("user", user.toDto(), "postList", postList, "questPostList", questPostList));
             } else {
                 return ResponseHandler.generateResponse("존재하지 않는 회원입니다.", HttpStatus.ACCEPTED);
             }

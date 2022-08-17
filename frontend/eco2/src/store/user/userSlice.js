@@ -193,6 +193,8 @@ const userState = {
   isPasswordValid: false,
   email: "",
   user: {},
+  isPending: false,
+  isRejected: false,
 };
 
 export const userSlice = createSlice({
@@ -219,13 +221,19 @@ export const userSlice = createSlice({
       console.log("signup rejected", action.payload);
       removeUserSession();
     },
+    [emailVerify.pending]: (state, action) => {
+      console.log("emailVerify pending", action.payload);
+      state.isPending = true;
+    },
     [emailVerify.fulfilled]: (state, action) => {
       console.log("emailVerify fulfilled", action.payload);
+      state.isPending = false;
       if (action.payload.status === 200) {
       }
     },
     [emailVerify.rejected]: (state, action) => {
       console.log("emailVerify rejected", action.payload);
+      state.isPending = false;
     },
     [emailVerifyCode.fulfilled]: (state, action) => {
       console.log("emailVerifyCode fulfilled", action.payload);
@@ -261,11 +269,11 @@ export const userSlice = createSlice({
     },
     [newPassword.fulfilled]: (state, action) => {
       console.log("newPassword fulfilled", action.payload);
-      if (action.payload.status === 200) {
-      }
+      state.isRejected = false;
     },
     [newPassword.rejected]: (state, action) => {
       console.log("newPassword rejected", action.payload);
+      state.isRejected = true;
     },
     [googleLogin.fulfilled]: (state, action) => {
       console.log("googleLogin fulfilled", action.payload);

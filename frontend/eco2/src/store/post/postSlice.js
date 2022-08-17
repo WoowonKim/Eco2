@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosService from "../axiosService";
+import { getUserId } from "../user/common";
 
 // 전체 게시물 조회
 export const postList = createAsyncThunk(
   "postSlice/postList",
   async (args, rejectWithValue) => {
     try {
-      const response = await axiosService.get("/post");
+      const response = await axiosService.get(`/post/${getUserId()}`);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -19,7 +20,9 @@ export const post = createAsyncThunk(
   "postSlice/post",
   async (args, rejectWithValue) => {
     try {
-      const response = await axiosService.get(`/post/${args.postId}`);
+      const response = await axiosService.get(
+        `/post/${args.postId}/${getUserId()}`
+      );
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -103,11 +106,12 @@ export const report = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       console.log(args.userId, args.retId);
+      console.log(args);
       const response = await axiosService.post(`/report/${args.userId}`, {
         retId: args.retId,
         posId: args.posId,
         comId: args.comId,
-        message: args.message
+        message: args.message,
       });
       return response.data;
     } catch (err) {
@@ -131,11 +135,32 @@ export const reportCancle = createAsyncThunk(
     }
   }
 );
-
+export const createPost = createAsyncThunk(
+  "questSlice/createPost",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosService.post("/post", args.formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 export const postSlice = createSlice({
   name: "post",
-  initialState: [],
-  reducers: {},
+  initialState: {
+    createdItem: null,
+  },
+  reducers: {
+    setCreatedToNull(state, action) {
+      console.log("초기화");
+      state.createdItem = null;
+    },
+  },
   extraReducers: {
     [postList.fulfilled]: (state, action) => {
       console.log("postList fulfilled", action.payload);
@@ -163,16 +188,21 @@ export const postSlice = createSlice({
     },
     [postCreate.fulfilled]: (state, action) => {
       console.log("postCreate fulfilled", action.payload);
-      if (action.payload.status === 200) {
-      }
+      console.log(action.payload.postCreateDto.itemId);
+      state.createdItem = action.payload.postCreateDto.itemId;
     },
     [postCreate.rejected]: (state, action) => {
       console.log("postCreate rejected", action.payload);
     },
+    [createPost.fulfilled]: (state, payload) => {
+      console.log("createPost fullfilled", payload);
+      state.createdItem = payload.payload.postCreateDto.itemId;
+    },
+    [createPost.rejected]: (state, payload) => {
+      console.log("createPost rejected", payload);
+    },
     [postUpdate.fulfilled]: (state, action) => {
       console.log("postUpdate fulfilled", action.payload);
-      if (action.payload.status === 200) {
-      }
     },
     [postUpdate.rejected]: (state, action) => {
       console.log("postUpdate rejected", action.payload);
@@ -204,4 +234,4 @@ export const postSlice = createSlice({
   },
 });
 
-export const postActions = postSlice.actions;
+export const { setCreatedToNull } = postSlice.actions;

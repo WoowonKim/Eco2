@@ -19,100 +19,119 @@
   position: absolute;
   display: block;
   width: 280px;
-  height: 350px;
+  height: 360px;
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
   border: none;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .modalTitle {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .reportIcon {
-  background-color: #dadada;
-  opacity: 0.7;
-  padding: 8px;
   border-radius: 5px;
-  color: red;
+  color: rgb(87, 214, 150);
+  font-size: large;
 }
 
 .title {
   margin: 5px;
-  text-align: start;
+  text-align: center;
 }
 
 .content {
   font-size: small;
   text-align: start;
-  margin: 5px 0 5px 50px;
+  margin: 10px 5px 10px 5px;
+  text-align: center;
 }
 
 .selectBox {
-  display: flex;
-  justify-content: center;
-  margin: 20px 50px;
+  width: 100%;
 }
 
 .select {
-  width: 170px;
+  width: 230px;
   padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;
   font-size: small;
+  margin: 10px 0;
 }
 
 .textarea {
-  width: 200px;
-  height: 80px;
-  border: 1px solid #dadada;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin: 0 0 0 23px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: start;
+  width: 90%;
+  height: 100px;
+  border: none;
+  padding-left: 10px;
+  resize: none;
+  font-family: "NanumBarunGothicLight";
+}
+
+.textarea::placeholder {
+  color: #dadada;
+  font-size: small;
+  font-family: "NanumBarunGothicLight";
+}
+
+.textarea:focus {
+  outline: none;
 }
 
 .buttonGroup {
   margin-top: 10px;
+  display: block;
 }
 
 .reportButton {
-  position: relative;
+  display: block;
+  background-color: rgb(87, 214, 150);
   padding: 3px 5px;
   border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid red;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
-  margin-right: 30px;
+  border: 2px solid rgb(87, 214, 150);
+  width: 100%;
+  color: white;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+  transition: all 200ms ease-in;
 }
 
-.reportButton:hover {
-  background-color: red;
-  color: #e1eef6;
+.reportButton:hover:enabled {
+  transform: scale(1.02);
+}
+
+.reportButton:disabled {
+  background-color: #dadada;
+  border: 2px solid #dadada;
+  /* color: black; */
 }
 
 .cancleButton {
-  position: relative;
+  display: block;
+  background-color: white;
   padding: 3px 5px;
   border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid #dadada;
   color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
+  font-size: smaller;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid #dadada;
+  width: 100%;
+  transition: all 200ms ease-in;
 }
 
 .cancleButton:hover {
-  background-color: #dadada;
-  color: #000000;
+  transform: scale(1.02);
 }
 
 .visible {
@@ -121,4 +140,86 @@
 
 .hidden {
   display: none;
+}
+
+.selectBox2 {
+  position: relative;
+  width: 100%;
+  height: 35px;
+  border-radius: 4px;
+  border: 2px solid #dadada;
+  background-size: 20px;
+  cursor: pointer;
+}
+/* 
+.selectBox2:after {
+  content: "";
+  display: block;
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 35px;
+  background: lightcoral;
+} */
+
+.selectBox2 .label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: inherit;
+  height: inherit;
+  border: 0 none;
+  outline: 0 none;
+  padding: 0 15px;
+  background: transparent;
+  cursor: pointer;
+  font-family: "NanumBarunGothicLight";
+}
+
+.optionList {
+  list-style-type: none;
+  transition: 0.3s ease-in;
+  position: relative;
+  display: inline-block;
+  background-color: #f1f1f1;
+  right: 0;
+  width: 100%;
+  padding: 0;
+  border-radius: 6px;
+  max-height: 0;
+  margin: 0;
+}
+
+.selectBox2 .optionItem {
+  transition: 0.1s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 5px 10px;
+  background-color: #6e6e6eb9;
+  color: white;
+}
+
+.selectBox2 .optionItem:hover {
+  background: rgb(87, 214, 150);
+}
+
+.selectBox2 .optionItem:last-child {
+  border-bottom: 0 none;
+}
+
+.selectBox2 .optionList::-webkit-scrollbar {
+  width: 6px;
+}
+.selectBox2 .optionList::-webkit-scrollbar-track {
+  background: transparent;
+}
+.selectBox2 .optionList::-webkit-scrollbar-thumb {
+  background: #303030;
+  border-radius: 45px;
+}
+.selectBox2 .optionList::-webkit-scrollbar-thumb:hover {
+  background: #303030;
 }

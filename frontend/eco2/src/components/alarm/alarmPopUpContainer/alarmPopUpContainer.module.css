@@ -1,9 +1,19 @@
 .container {
-  position: fixed;
-  margin: 0 auto;
-  width: auto;
-  left: 0px;
-  right: 10px;
-  bottom: 48px;
-  z-index: 2;
+  position: absolute;
+  /* background-color: blue; */
+}
+
+.toastify-toast {
+  word-break: keep-all;
+  width: 70%;
+  left: 20%;
+  font-size: small;
+  font-family: "NanumBarunGothicLight";
+  /* background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18); */
+  /* backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); */
+  background-color: #eee;
+  color: #333;
+  margin-bottom: 10px;
 }

@@ -22,6 +22,8 @@ import { nameLengthValidation, passwordValidationCheck } from "../../utils";
 import Settings from "./settings/Settings";
 import Notice from "./notice/Notice";
 import PostModal from "../../components/modal/postModal/PostModal";
+import axiosService from "../../store/axiosService";
+import ConfirmModal from "../../components/modal/confirmModal/ConfirmModal";
 
 const UserSettings = () => {
   const [userSetting, setUserSetting] = useState(1);
@@ -36,11 +38,11 @@ const UserSettings = () => {
   const [isName, setIsName] = useState(false);
   const [nameMessage, setNameMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordMessage2, setPasswordMessage2] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
-  const [profileEdit, setProfileEdit] = useState(false);
-  const [fileImage, setFileImage] = useState("");
   const [file, setFile] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
+  const [originalImg, setOriginalImg] = useState("");
 
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
@@ -57,10 +59,12 @@ const UserSettings = () => {
   const displayType3 = userSetting === 3 ? styles.selectedMenu : null;
 
   const handlePassword = () => {
-    dispatch(passwordCheck({ email, password }))
+    dispatch(passwordCheck({ email, password: password.trim() }))
       .then((res) => {
         if (res.payload?.status === 200) {
           setPasswordForm(true);
+        } else {
+          setPasswordMessage2(res.payload?.msg);
         }
       })
       .catch((err) => console.log(err, email, password));
@@ -68,19 +72,22 @@ const UserSettings = () => {
 
   const ecoNameValidation = (e) => {
     setName(e.target.value);
-    if (nameLengthValidation(e.target.value)) {
+    if (nameLengthValidation(e.target.value.trim())) {
       setNameMessage("3글자 이상 8글자 이하로 입력해주세요.");
       setIsName(false);
     } else {
-      dispatch(ecoNameVerify({ econame: e.target.value })).then((res) => {
-        if (res.payload.status === 200) {
-          setNameMessage("올바른 이름 형식입니다 :)");
-          setIsName(true);
-        } else {
-          setIsName(false);
-          setNameMessage(`${res.payload.msg}`);
+      dispatch(ecoNameVerify({ econame: e.target.value.trimStart() })).then(
+        (res) => {
+          if (res.payload.status === 200) {
+            console.log(e.target.value.trim());
+            setNameMessage("올바른 이름 형식입니다 :)");
+            setIsName(true);
+          } else {
+            setIsName(false);
+            setNameMessage(`${res.payload.msg}`);
+          }
         }
-      });
+      );
     }
   };
 
@@ -98,7 +105,7 @@ const UserSettings = () => {
   };
 
   const passwordConfirmValidation = (e) => {
-    const passwordConfirmCurrent = e.target.value;
+    const passwordConfirmCurrent = e.target.value.trim();
     setPassword2(passwordConfirmCurrent);
 
     if (newpassword === passwordConfirmCurrent) {
@@ -110,22 +117,9 @@ const UserSettings = () => {
     }
   };
 
-  const saveFileImage = (e) => {
-    setFile(e.target.files[0]);
-    setFileImage(URL.createObjectURL(e.target.files[0]));
-  };
-
-  const profileImg = () => {
-    dispatch(profileImgChange({ email, img: file })).then((res) => {
-      if (res.payload.status === 200) {
-        // window.location.reload("/user/settings");
-        setProfileEdit(false);
-      }
-    });
-  };
-
   useEffect(() => {
     setName(getUserName());
+    setUserSetting(location.state?.notice === 3 ? 3 : 1);
     setAutoLogin(localStorage.getItem("email") ? true : false);
   }, []);
 
@@ -147,51 +141,6 @@ const UserSettings = () => {
       </div>
       {userSetting === 1 ? (
         <div>
-          <div className={styles.profileImg}>
-            <div>
-              {fileImage ? (
-                <img className={styles.img} alt="profileImg" src={fileImage} />
-              ) : (
-                <img
-                  className={styles.img}
-                  alt="profileImg"
-                  src={`http://localhost:8002/img/profile/${getUserId()}`}
-                />
-              )}
-            </div>
-            {!profileEdit ? (
-              <div className={styles.profileImgGroup}>
-                <p className={styles.profileImgText}>프로필 사진</p>
-                <i
-                  className={`fa-solid fa-pencil ${styles.editIcon}`}
-                  onClick={() => setProfileEdit(true)}
-                ></i>
-              </div>
-            ) : (
-              <div>
-                <div className={styles.fileInputGroup}>
-                  <input className={styles.fileInput} placeholder="첨부파일" />
-                  <label htmlFor="file" className={styles.imgLabel}>
-                    파일찾기
-                  </label>
-                  <input
-                    encType="multipart/form-data"
-                    type="file"
-                    id="file"
-                    name="post_file"
-                    onChange={saveFileImage}
-                    className={`${styles.fileInput} ${styles.baseFileInput}`}
-                  />
-                  <button onClick={profileImg} className={styles.button}>
-                    수정완료
-                  </button>
-                  {/* <button onClick={() => deleteFileImage()} className={styles.button}>
-            삭제
-          </button> */}
-                </div>
-              </div>
-            )}
-          </div>
           <div className={styles.emailGroup}>
             <div className={styles.emailTitleGroup}>
               <p className={styles.emailTitle}>이메일</p>
@@ -228,11 +177,16 @@ const UserSettings = () => {
               />
               <button
                 onClick={() => {
-                  dispatch(ecoName({ email, econame: name })).then((res) => {
-                    if (res.payload?.status === 200) {
-                      setUserName(autoLogin, name);
+                  dispatch(ecoName({ email, econame: name.trim() })).then(
+                    (res) => {
+                      if (res.payload?.status === 200) {
+                        setUserName(autoLogin, name.trim());
+                        // setNameMessage("EcoName이 저장되었습니다");
+                        setVisible(!visible);
+                        setModalType("확인");
+                      }
                     }
-                  });
+                  );
                 }}
                 disabled={!isName}
                 className={styles.passwordFormButton}
@@ -248,6 +202,7 @@ const UserSettings = () => {
             <PostModal
               // className={`${displayType} ${scrollType}`}
               title={"로그아웃"}
+              className={`${modalDisplayType}`}
               content={"로그아웃 하시겠습니까"}
               type={"로그아웃"}
               closeModal={() => setVisible(!visible)}
@@ -262,13 +217,32 @@ const UserSettings = () => {
               closeModal={() => setVisible(!visible)}
             />
           )}
+          {visible && modalType === "확인" && (
+            <ConfirmModal
+              title={"EcoName 변경"}
+              content={"EcoName 변경이 완료되었습니다."}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
+          {visible && modalType === "비밀번호" && (
+            <ConfirmModal
+              title={"비밀번호"}
+              content={"비밀번호 변경이 완료되었습니다."}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
+          {visible && modalType === "동일" && (
+            <ConfirmModal
+              title={"비밀번호"}
+              content={"이전과 동일한 비밀번호 입니다."}
+              closeModal={() => setVisible(!visible)}
+            />
+          )}
           {!!socialType && (
             <div>
               <hr className={styles.line} />
               <button
                 onClick={() => {
-                  // dispatch(userActions.logout());
-                  // navigate("/");
                   setVisible(!visible);
                   setModalType("로그아웃");
                 }}
@@ -303,7 +277,7 @@ const UserSettings = () => {
                     id="passwordCheck"
                     type="password"
                     placeholder="비밀번호"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value.trimStart())}
                     className={styles.passwordFormInput}
                   />
                   <button
@@ -313,28 +287,19 @@ const UserSettings = () => {
                   >
                     확인
                   </button>
-                  <p></p>
+                  <p className={passwordForm ? styles.success : styles.fail}>
+                    {passwordMessage2}
+                  </p>
                   <hr className={styles.line} />
-                  <button
-                    onClick={() => {
-                      // dispatch(userActions.logout());
-                      // navigate("/");
-
-                      setVisible(!visible);
-                      setModalType("로그아웃");
-                    }}
-                    className={styles.userButton}
-                  >
-                    로그아웃
-                  </button>
                 </div>
               ) : (
-                <div>
+                <form>
                   <label htmlFor="newPassword"></label>
                   <input
                     id="newPassword"
                     type="password"
                     onChange={passwordValidation}
+                    // value={"" || newPassword}
                     placeholder="새 비밀번호"
                     className={styles.passwordFormInput}
                   />
@@ -357,7 +322,17 @@ const UserSettings = () => {
                   <button
                     className={styles.passwordFormButton}
                     onClick={() =>
-                      dispatch(passwordChange({ email, password }))
+                      dispatch(
+                        passwordChange({ email, password: newpassword.trim() })
+                      ).then((res) => {
+                        if (res.payload.status === 200) {
+                          setVisible(!visible);
+                          setModalType("비밀번호");
+                        } else if (res.payload.status === 202) {
+                          setVisible(!visible);
+                          setModalType("동일");
+                        }
+                      })
                     }
                     type="button"
                     disabled={!(isPassword && isPasswordConfirm)}
@@ -378,26 +353,40 @@ const UserSettings = () => {
                   )}
 
                   <hr className={styles.line} />
-                  <div className={styles.userButtonGroup}>
-                    <button
-                      onClick={() => {
-                        setVisible(!visible);
-                        setModalType("로그아웃");
-                      }}
-                      className={styles.userButton}
-                    >
-                      로그아웃
-                    </button>
-                    <button
-                      onClick={() => {
-                        setVisible(!visible);
-                        setModalType("탈퇴");
-                      }}
-                      className={styles.userButton}
-                    >
-                      회원탈퇴
-                    </button>
-                  </div>
+                </form>
+              )}
+              {!passwordForm ? (
+                <div className={styles.userButtonGroup}>
+                  <button
+                    onClick={() => {
+                      setVisible(!visible);
+                      setModalType("로그아웃");
+                    }}
+                    className={styles.userButton}
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.userButtonGroup}>
+                  <button
+                    onClick={() => {
+                      setVisible(!visible);
+                      setModalType("로그아웃");
+                    }}
+                    className={styles.userButton}
+                  >
+                    로그아웃
+                  </button>
+                  <button
+                    onClick={() => {
+                      setVisible(!visible);
+                      setModalType("탈퇴");
+                    }}
+                    className={styles.userButton}
+                  >
+                    회원탈퇴
+                  </button>
                 </div>
               )}
             </div>
@@ -406,7 +395,9 @@ const UserSettings = () => {
       ) : userSetting === 2 ? (
         <Settings email={email} />
       ) : (
-        <Notice />
+        <Notice
+        // admin={location.state?.admin}
+        />
       )}
     </div>
   );

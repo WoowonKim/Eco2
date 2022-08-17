@@ -1,5 +1,5 @@
 .container {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .titleGroup {
@@ -32,116 +32,129 @@
   outline: none;
 }
 
+.titleInput::placeholder {
+  color: #dadada;
+  font-size: small;
+  font-family: "NanumBarunGothicLight";
+}
+
 .line {
   border: 1px solid #adc178;
   width: 50%;
   margin: 5px 0 15px 0;
 }
 
-.imgLabel {
-  display: inline-block;
-  color: #999;
-  padding: 3px 5px;
-  border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-  background-color: #fdfdfd;
-  cursor: pointer;
-  border-radius: 10px;
-  border: 2px solid #dadada;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
-  margin-right: 30px;
-  font-size: smaller;
-}
-
-.imgLabel:hover {
-  background-color: #dadada;
-  color: black;
-}
-
-.fileInputGroup {
+.wrapper {
   display: flex;
-  margin: 20px 0;
+  background: #fff;
+  /* border-radius: 5px; */
+  padding: 5px 0;
 }
 
-.fileInput {
+.wrapper .label {
+  background: #fff;
   height: 30px;
-  padding: 0 10px;
-  vertical-align: middle;
-  border: 1px solid #dddddd;
-  width: 50%;
-  color: #999999;
-}
-
-.imgLabel {
-  /* padding: 10px 20px; */
-  color: #fff;
-  vertical-align: middle;
-  background-color: #999999;
-  cursor: pointer;
-  height: 30px;
-  width: 80px;
-  margin-left: 10px;
-  margin-right: 10px;
-  font-size: small;
-}
-
-.baseFileInput {
-  position: absolute;
-  width: 0;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-}
-
-.img {
-  width: 180px;
-  margin: 10px;
-}
-
-.selectBox {
+  width: 70px;
   display: flex;
-  justify-content: start;
-  margin: 20px 0;
-}
-
-.select {
-  width: 200px;
-  padding: 5px 10px;
-  border: 1px solid black;
+  align-items: center;
+  margin: 10px 5px 0 0;
   border-radius: 5px;
+  cursor: pointer;
+  /* padding: 0 10px; */
+  transition: all 0.3s ease;
 }
 
-.missionTitle {
-  text-align: start;
+.wrapper .label .dot {
+  height: 15px;
+  width: 15px;
+  background: #dadada9f;
+  border-radius: 50%;
+  position: relative;
+}
+
+.wrapper .label .dot::before {
+  position: absolute;
+  content: "";
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background: rgb(87, 214, 150);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+
+.radioInput1 {
+  display: none;
+}
+.radioInput2 {
+  display: none;
 }
 
 .content {
+  margin-top: 10px;
   display: flex;
   justify-content: start;
-  width: 300px;
+  width: 100%;
   height: 200px;
-  border: 1px solid #dadada;
-  border-radius: 10px;
-  padding: 0.5rem;
+  border: none;
+  padding-left: 10px;
+
+  resize: none;
+  font-family: "NanumBarunGothicLight";
+}
+
+.content::placeholder {
+  color: #dadada;
+  font-size: small;
+  font-family: "NanumBarunGothicLight";
+}
+
+.content:focus {
+  outline: none;
+}
+
+.content:focus {
+  outline: none;
 }
 
 .button {
-  position: relative;
-  padding: 3px 5px;
-  border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid red;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
+  background: rgb(87, 214, 150);
+  border-radius: 30px;
+  width: 100%;
+  height: 25px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  border: none;
 }
 
-.button:hover {
-  background-color: red;
-  color: #e1eef6;
+.radioInput1:checked:checked ~ .label1 .radioInput2:checked:checked ~ .label2 {
+  border-color: rgb(87, 214, 150);
+  background: rgb(87, 214, 150);
+}
+
+.radioInput1:checked:checked ~ .label1 .dot,
+.radioInput2:checked:checked ~ .label2 .dot {
+  background: #dadada9f;
+}
+
+.radioInput1:checked:checked ~ .label1 .dot::before,
+.radioInput2:checked:checked ~ .label2 .dot::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.wrapper .label .labelText {
+  font-size: small;
+  color: #808080;
+  margin-left: 5px;
+}
+
+.radioInput1:checked:checked ~ .label1 labelText,
+.radioInput2:checked:checked ~ .label2 labelText {
+  color: #dadada9f;
 }
