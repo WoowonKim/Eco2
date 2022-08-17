@@ -3,7 +3,6 @@ package com.web.eco2.model.service.user;
 import com.web.eco2.domain.dto.oauth.OAuthToken;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.user.UserRepository;
-import com.web.eco2.model.service.oauth.GoogleOAuth;
 import com.web.eco2.model.service.oauth.KakaoOAuth;
 import com.web.eco2.model.service.oauth.OAuth;
 import org.json.simple.parser.ParseException;
@@ -19,9 +18,6 @@ import java.util.Map;
 public class OAuth2Service {
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    private GoogleOAuth googleOAuth;
 
     @Autowired
     private KakaoOAuth kakaoOAuth;
@@ -81,9 +77,6 @@ public class OAuth2Service {
 
     private OAuth getSocialOAuth(int socialType) {
         switch (socialType) {
-            case 1:
-                // Google
-                return googleOAuth;
             case 2:
                 // Kakao
                 return kakaoOAuth;
