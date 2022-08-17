@@ -35,18 +35,17 @@ public class QuestService {
 
     /**
      * 현재 <code>lat</code>, <code>lng</code> 주변 <code>range</code>km 안에 다른 퀘스트 있는지 확인
+     *
      * @param lat
      * @param lng
      * @param range m
      * @return 존재하면 true, 존재하지 않으면 false
      */
     public boolean hasQuestInRange(String lat, String lng, int range) {
-        // TODO: 효율적으로 만들기
-        for(Quest quest : questRepository.findByFinishFlag(false)) {
-            if(isIn(Double.parseDouble(lat), Double.parseDouble(lng),
+        for (Quest quest : questRepository.findByFinishFlag(false)) {
+            if (isIn(Double.parseDouble(lat), Double.parseDouble(lng),
                     Double.parseDouble(quest.getLat()), Double.parseDouble(quest.getLng()), range)) return true;
         }
-
         return false;
     }
 
@@ -54,7 +53,7 @@ public class QuestService {
      * 유저가 오늘 <code>num</code>개 이상 퀘스트를 생성했는지 확인
      *
      * @param userId 확인할 유저
-     * @param num 확인할 퀘스트 개수
+     * @param num    확인할 퀘스트 개수
      * @return <code>num</code>개 이상 생성했다면 true, 그렇지 않다면 false
      */
     public boolean isOverNumDaily(Long userId, int num) {
@@ -65,7 +64,7 @@ public class QuestService {
         questRepository.save(quest);
     }
 
-    private float lngToM(String lat){
+    private float lngToM(String lat) {
         return 1f;
     }
 
@@ -76,6 +75,6 @@ public class QuestService {
 
     private double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
         return EARTH_RADIUS * Math.acos((Math.cos(lat1)) * Math.cos(lat2)
-            * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2));
+                * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2));
     }
 }

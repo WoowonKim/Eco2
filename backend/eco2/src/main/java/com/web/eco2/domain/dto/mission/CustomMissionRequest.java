@@ -11,13 +11,9 @@ import javax.validation.Valid;
 @ToString
 @Data
 public class CustomMissionRequest {
-
     private User user;
-
     private Integer category;
-
     private String title;
-
     private String content;
 
     public CustomMission toEntity() {

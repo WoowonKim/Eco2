@@ -1,7 +1,6 @@
 package com.web.eco2.model.repository.mission;
 
 import com.web.eco2.domain.dto.MissionInformation;
-import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.FavoriteMission;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,12 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FavoriteMissionRepository extends JpaRepository<FavoriteMission, Long> {
-//    @Query(value = "select * from tb_Custom_Mission c where c.usr_id=:usrId", nativeQuery = true)
-//    List<CustomMission> findListByUsrId(@Param("usrId") Long usrId);
-//
-//    @Query(value = "select * from tb_Custom_Mission c where c.cum_id=:missionId", nativeQuery = true)
-//    CustomMission findByCumId(@Param("missionId") Long missionId);
-
     @Modifying
     @Query(value = "delete from tb_favorite_mission f where f.usr_id=:usrId and f.mis_id=:missionId", nativeQuery = true)
     void deleteByMisId(@Param("usrId") Long usrId, @Param("missionId") Long missionId);

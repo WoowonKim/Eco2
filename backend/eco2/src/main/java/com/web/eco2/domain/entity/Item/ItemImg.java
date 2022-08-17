@@ -17,7 +17,7 @@ public class ItemImg {
     @Column(name = "ite_id", nullable = false)
     private Long id;
 
-    @Column(name = "iti_url", length =200, nullable = false)
+    @Column(name = "iti_url", length = 200, nullable = false)
     private String url;
 
     @Column(name = "iti_save_folder", length = 100, nullable = false)

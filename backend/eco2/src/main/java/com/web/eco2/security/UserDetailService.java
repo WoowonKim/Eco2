@@ -16,9 +16,9 @@ public class UserDetailService implements UserDetailsService {
     public UserDetail loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("인증을 받습니다.");
         User user = userService.findByEmail(email);
-        System.out.println("loadUserByUsername"+user);
+        System.out.println("loadUserByUsername" + user);
         UserDetail userDetail = new UserDetail(user);
-        System.out.println("loadUserByUsername, userDetail ::::::"+user);
+        System.out.println("loadUserByUsername, userDetail ::::::" + user);
         return userDetail;
     }
 }

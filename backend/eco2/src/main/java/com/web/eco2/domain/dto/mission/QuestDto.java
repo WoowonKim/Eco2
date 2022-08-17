@@ -1,7 +1,6 @@
 package com.web.eco2.domain.dto.mission;
 
 import com.web.eco2.domain.dto.user.UserDto;
-import com.web.eco2.domain.entity.mission.Quest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

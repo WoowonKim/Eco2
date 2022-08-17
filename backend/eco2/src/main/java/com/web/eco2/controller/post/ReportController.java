@@ -4,7 +4,6 @@ import com.web.eco2.domain.dto.Report.ReportRequest;
 import com.web.eco2.domain.dto.Report.ReportTypeInformation;
 import com.web.eco2.domain.entity.admin.Report;
 import com.web.eco2.domain.entity.admin.ReportType;
-import com.web.eco2.domain.entity.post.Comment;
 import com.web.eco2.model.service.admin.ReportService;
 import com.web.eco2.model.service.post.CommentService;
 import com.web.eco2.model.service.post.PostService;
@@ -13,7 +12,6 @@ import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,18 +49,9 @@ public class ReportController {
             reportType.setType(reportTypeInformation.getType());
 
             if (reportRequest.getPosId() != null) {//게시물 신고
-//                Report report = reportService.findByUsrIdAndPosId(usrId, reportRequest.getPosId());
-//                if (report != null) {
-//                    return ResponseHandler.generateResponse("이미 신고한 게시물입니다.", HttpStatus.ACCEPTED);
-//                }
                 reportService.postSave(reportRequest.toPostEntity(userService.getById(usrId),
                         reportType, postService.getById(reportRequest.getPosId())));
             } else {
-//                Report report = reportService.findByUsrIdAndComId(usrId, reportRequest.getComId());
-//                if (report != null) {
-//                    return ResponseHandler.generateResponse("이미 신고한 댓글입니다.", HttpStatus.ACCEPTED);
-//                }
-//                Comment comment = postCommentService.getById(reportRequest.getComId());
                 reportService.commentSave(reportRequest.toCommentEntity(userService.getById(usrId),
                         reportType, postCommentService.getById(reportRequest.getComId()), null));
             }

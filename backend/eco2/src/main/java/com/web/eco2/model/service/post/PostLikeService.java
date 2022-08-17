@@ -1,6 +1,5 @@
 package com.web.eco2.model.service.post;
 
-
 import com.web.eco2.domain.entity.post.FavoritePost;
 import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.user.User;
@@ -45,17 +44,14 @@ public class PostLikeService {
         return likeCount;
     }
 
-
     public List<Long> specificPostLikeUserIdList(Long postId) {
         List<FavoritePost> specificPostLikeList = postLikeRepository.findByPost_Id(postId);
         ArrayList<Long> userIdList = new ArrayList<>();
-        for(FavoritePost specificPostLike : specificPostLikeList) {
+        for (FavoritePost specificPostLike : specificPostLikeList) {
             userIdList.add(specificPostLike.getUser().getId());
         }
         return userIdList;
     }
-
-
 
     public int saveOrDeleteLike(Long userId, Long postId) {
         Optional<FavoritePost> findLike = postLikeRepository.findByUser_IdAndPost_Id(userId, postId);

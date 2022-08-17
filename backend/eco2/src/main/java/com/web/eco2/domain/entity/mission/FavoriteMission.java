@@ -34,9 +34,6 @@ public class FavoriteMission {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomMission customMission;
 
-//    @Column(name = "fam_favorite_flag", nullable = true)
-//    private boolean favoriteFlag;
-
     @Builder
     public FavoriteMission(User user, Mission mission, CustomMission customMission) {
         this.user = user;

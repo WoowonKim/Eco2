@@ -1,11 +1,8 @@
 package com.web.eco2.controller.mission;
 
-import com.web.eco2.controller.ImageController;
 import com.web.eco2.domain.dto.item.CalendarDto;
-import com.web.eco2.domain.dto.mission.CustomMissionDto;
 import com.web.eco2.domain.dto.mission.DailyMissionRecommendRequest;
 import com.web.eco2.domain.dto.mission.DailyMissionRequest;
-import com.web.eco2.domain.dto.mission.MissionDto;
 import com.web.eco2.domain.entity.calender.Calendar;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.DailyMission;
@@ -34,7 +31,6 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -43,21 +39,28 @@ import java.util.stream.Collectors;
 @Api(tags = {"DailyMission API"})
 @Slf4j
 public class DailyMissionController {
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private MissionService missionService;
+
     @Autowired
     private CustomMissionService customMissionService;
+
     @Autowired
     private DailyMissionService dailyMissionService;
+
     @Autowired
     private TrendingService trendingService;
+
     @Autowired
     private CalendarService calendarService;
+
     @Autowired
     private RedisService redisService;
+
     @Autowired
     private WeatherService weatherService;
 
@@ -157,7 +160,7 @@ public class DailyMissionController {
             //디비, 로컬에 파일 저장
             File saveFile = new File(calendarDto.getSaveFolder() + "/" + calendarDto.getSaveName() + ".png");
             ImageIO.write(img, "png", saveFile);
-            calendarDto.setSaveName(calendarDto.getSaveName()+".png");
+            calendarDto.setSaveName(calendarDto.getSaveName() + ".png");
             Calendar calendar = calendarDto.toEntity();
             calendarService.save(calendar);
             return ResponseHandler.generateResponse("보상 받기 완료되었습니다.", HttpStatus.OK, "calendarId", calendar.getId());
@@ -166,19 +169,6 @@ public class DailyMissionController {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-
-//    @ApiOperation(value = "보상 이미지 조회", response = Object.class)
-//    @GetMapping("/reward/{calId}")
-//    public ResponseEntity<Object> selectRewardImage(@PathVariable("calId") Long calId) {
-//        try {
-//            log.info("보상 이미지 조회 API 호출");
-//            Optional<Calendar> calendar = calendarService.getById(calId);
-//            return ResponseHandler.generateResponse("미션 보상이미지가 조회되었습니다.", HttpStatus.OK, "calendar", calendar);
-//        } catch (Exception e) {
-//            log.error("보상 이미지 조회 API 에러", e);
-//            return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-//        }
-//    }
 
     @ApiOperation(value = "특정일자 미션 보상 여부 조회", response = Object.class)
     @PostMapping("/reward/check/{usrId}")
@@ -190,7 +180,6 @@ public class DailyMissionController {
             if (calendar == null) {
                 rewardFlag = false;
             }
-            System.out.println("calendar=>>>>>>>>>" +calendar);
             return ResponseHandler.generateResponse("특정일자 미션 보상 여부가 조회되었습니다.", HttpStatus.OK, "rewardFlag", rewardFlag);
 
         } catch (Exception e) {
@@ -239,18 +228,19 @@ public class DailyMissionController {
             return ResponseHandler.generateResponse("데일리 미션 추천이 완료되었습니다.", HttpStatus.OK, "recommendedMission", missions, "weather", missionData.get("weather"));
         } catch (Exception e) {
             log.error("데일리미션 추천 API 에러", e);
-            if (oldRecommendMission == null) redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
+            if (oldRecommendMission == null)
+                redisService.setListDataExpire(usrId.toString(), new ArrayList<>(), getDuration());
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
     private static Long getDuration() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expireTime = LocalDateTime.parse(now.plusHours(18L).toString().substring(0, 11)+"06:00");
+        LocalDateTime expireTime = LocalDateTime.parse(now.plusHours(18L).toString().substring(0, 11) + "06:00");
 
         // 6시에 새로고침
         Long duration = expireTime.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
-        if(duration <= 0) duration = 1L;
+        if (duration <= 0) duration = 1L;
 
         return duration;
     }
