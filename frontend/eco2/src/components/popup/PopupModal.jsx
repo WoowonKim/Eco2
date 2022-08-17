@@ -5,14 +5,7 @@ const PopupModal = ({ recommendedMission, open, setOpen, weather }) => {
   let modal = useRef();
   useEffect(() => {}, []);
   return (
-    <div
-      ref={modal}
-      className={
-        weather !== null && open
-          ? `${styles.popup} ${styles.center} ${styles.active}`
-          : `${styles.popup} ${styles.center}`
-      }
-    >
+    <div ref={modal} className={weather !== null && open ? `${styles.popup} ${styles.center} ${styles.active}` : `${styles.popup} ${styles.center}`}>
       <div className={styles.icon}>
         <i className={`fa fa-check ${styles.fa}`}></i>
       </div>

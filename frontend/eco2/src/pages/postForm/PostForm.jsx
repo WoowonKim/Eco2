@@ -22,6 +22,7 @@ const PostForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  console.log("영제 확인 ===> ", location.state.customId);
   useEffect(() => {
     if (location.state?.content) {
       setEditText(location.state?.content);
@@ -43,21 +44,13 @@ const PostForm = () => {
   }, []);
   const saveFileImage = (e) => {
     setFile(e.target.files[0]);
-    console.log(e.target.files);
     setFileImage(URL.createObjectURL(e.target.files[0]));
     setImageCheck(true);
   };
 
-  // const deleteFileImage = (e) => {
-  //   URL.revokeObjectURL(fileImage);
-  //   setFileImage("");
-  // };
-
   const dispatch = useDispatch();
-  const missionClear = () => {
-    dispatch(
-      clearMission({ id, missionId: location.state.missionIdTest })
-    ).then((res) => {
+  const missionClear = (missionId) => {
+    dispatch(clearMission({ id, missionId: missionId })).then((res) => {
       if (res.payload?.status === 200) {
         navigate("/mainTree");
       }
@@ -84,9 +77,7 @@ const PostForm = () => {
       formDataUpdate.append("postImage", file ? file : originalImg);
       formDataUpdate.append("postUpdateDto", blob);
 
-      dispatch(
-        postUpdate({ postId: location.state?.postId, formData: formDataUpdate })
-      ).then((res) => {
+      dispatch(postUpdate({ postId: location.state?.postId, formData: formDataUpdate })).then((res) => {
         if (res.payload?.status === 200) {
           navigate(`/post/${location.state?.postId}`);
         }
@@ -113,7 +104,7 @@ const PostForm = () => {
         dispatch(postCreate({ formData: formDataCreate }))
           .then((res) => {
             if (res.payload?.status === 200) {
-              missionClear();
+              missionClear(location.state.missionId);
             }
           })
 
@@ -139,7 +130,7 @@ const PostForm = () => {
         dispatch(postCreate({ formData: formDataCreate }))
           .then((res) => {
             if (res.payload?.status === 200) {
-              missionClear();
+              missionClear(location.state.customId);
             }
           })
 
@@ -165,7 +156,7 @@ const PostForm = () => {
         dispatch(postCreate({ formData: formDataCreate }))
           .then((res) => {
             if (res.payload?.status === 200) {
-              missionClear();
+              missionClear(location.state?.questId);
             }
           })
           .catch((err) => console.log(err));
@@ -184,11 +175,7 @@ const PostForm = () => {
           {fileImage ? (
             <img className={styles.img} alt="sample" src={fileImage} />
           ) : location.state?.postId ? (
-            <img
-              className={styles.img}
-              alt="originalImg"
-              src={`${process.env.REACT_APP_BE_HOST}img/post/${location.state.postId}`}
-            />
+            <img className={styles.img} alt="originalImg" src={`${process.env.REACT_APP_BE_HOST}img/post/${location.state.postId}`} />
           ) : null}
           {!fileImage && !imageCheck ? (
             <label htmlFor="file" className={styles.imgLabel}>
@@ -229,15 +216,11 @@ const PostForm = () => {
               setCommentFlag(e.target.checked);
             }}
           />
-          <label
-            htmlFor="comment"
-            className={`${styles.label2} ${styles.label}`}
-          >
+          <label htmlFor="comment" className={`${styles.label2} ${styles.label}`}>
             <div className={styles.dot}></div>
             <span className={styles.labelText}>댓글 비공개</span>
           </label>
         </div>
-        {/* <p className={styles.missionTitle}>미션 제목</p> */}
         <textarea
           required
           placeholder="미션 인증글을 작성해주세요!"

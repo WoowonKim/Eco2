@@ -19,7 +19,6 @@
   position: absolute;
   display: block;
   width: 280px;
-  /* height: 170px; */
   background-color: white;
   padding: 1rem;
   border: none;
@@ -41,7 +40,6 @@
   margin: 5px;
   text-align: center;
   font-size: 22px;
-
 }
 .content {
   font-size: small;
@@ -70,7 +68,7 @@
   transform: scale(1.02);
 }
 
-.friends{
+.friends {
   overflow-y: scroll;
   height: 200px;
 }
@@ -89,30 +87,29 @@
   border-radius: 100px;
 }
 
-.leftContent{
+.leftContent {
   display: inline-block;
   width: 70%;
   float: left;
   text-align: left;
 }
-.profileImg{
+.profileImg {
   width: 40px;
   height: 40px;
-  border: #EAEAEA solid 1px;
+  border: #eaeaea solid 1px;
   border-radius: 30px;
   margin: 5px;
   float: left;
-
 }
-.text{
-margin-top: 18px;
-font-size: small;
+.text {
+  margin-top: 18px;
+  font-size: small;
 }
-.rightContent{
+.rightContent {
   float: right;
 }
 
-.chatStartButton{
+.chatStartButton {
   margin-top: 20px;
 }
 
@@ -128,7 +125,7 @@ font-size: small;
 }
 
 .createButton:hover {
-  background-color:rgb(166, 228, 166);
+  background-color: rgb(166, 228, 166);
 }
 
 .cancleButton {
@@ -152,10 +149,10 @@ font-size: small;
 .hidden {
   display: none;
 }
-.noFriendList{
+.noFriendList {
   padding-top: 30px;
 }
-.noFriendMessage{
+.noFriendMessage {
   font-size: small;
   font-weight: bold;
   color: grey;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./PostModal.module.css";
 import { getUserId } from "../../../store/user/common";
 import { useDispatch } from "react-redux";
@@ -57,9 +57,7 @@ const PostModal = (props) => {
   };
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
-    <div
-      className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}
-    >
+    <div className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}>
       {open ? (
         <section>
           <header>참여하기</header>
@@ -82,9 +80,7 @@ const PostModal = (props) => {
                     setImageCheck(true);
                   }}
                 />
-                {imageSrc && (
-                  <img src={imageSrc} className={styles.previewImg}></img>
-                )}
+                {imageSrc && <img src={imageSrc} className={styles.previewImg}></img>}
               </div>
               <textarea
                 id="content"
@@ -97,11 +93,7 @@ const PostModal = (props) => {
                   setPayload(copy);
                 }}
               ></textarea>
-              <button
-                type="submit"
-                disabled={!imageCheck}
-                className={styles.create}
-              >
+              <button type="submit" disabled={!imageCheck} className={styles.create}>
                 인증하기
               </button>
               <button className={styles.close} onClick={close}>

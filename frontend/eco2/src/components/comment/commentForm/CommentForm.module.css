@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   display: flex;
-  aligh-contents: center;
+  align-content: center;
 }
 
 .input {
@@ -19,7 +19,6 @@
 
 .input:focus {
   outline: none;
-  /* border-bottom: 1.5px solid #d5e3b0; */
 }
 
 .button {

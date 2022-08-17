@@ -14,7 +14,6 @@ const ReportDetailList = ({ reportType, content, name }) => {
         <div className={styles.rightContent}>
           <div className={styles.text}>{name}</div>
         </div>
-        {/* <hr className={styles.line}></hr> */}
       </div>
     </div>
   );

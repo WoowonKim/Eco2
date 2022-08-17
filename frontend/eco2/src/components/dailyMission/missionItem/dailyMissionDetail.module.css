@@ -75,11 +75,6 @@
   color: #000000;
 }
 
-/* i {
-  color: #adc178;
-  cursor: pointer;
-} */
-
 .btn {
   margin-bottom: 0px;
   background-color: #7dd6fc;
@@ -91,12 +86,9 @@
   margin: 0 auto;
   font-size: 12px;
   vertical-align: middle;
-
   position: relative;
   left: 150px;
   top: 20px;
-
-  /* line-height: 150px; */
 }
 
 .word {
@@ -135,9 +127,6 @@ fieldset {
 .content {
   display: flex;
   justify-content: space-between;
-  /* margin: auto;
-  padding: 8px; */
-  /* border: none #dddddd; */
   border-bottom: 3px solid #dadada;
   border-radius: 5px;
   cursor: pointer;

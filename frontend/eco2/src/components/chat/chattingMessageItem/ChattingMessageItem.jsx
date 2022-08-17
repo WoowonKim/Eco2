@@ -3,12 +3,7 @@ import styles from "./ChattingMessageItem.module.css";
 import { Link } from "react-router-dom";
 import { getUserName } from "../../../store/user/common";
 
-const ChattingMessageItem = ({  
-  user,
-  message,
-  sendDate,
-  toUser
-}) => {
+const ChattingMessageItem = ({ user, message, sendDate, toUser }) => {
   const name = getUserName();
   return (
     <div className={styles.list}>
@@ -16,17 +11,12 @@ const ChattingMessageItem = ({
         <div className={styles.userContent}>
           <span className={`${styles.userSendDate}`}>{sendDate}</span>
           <span className={`${styles.userMessage}`}>{message}</span>
-        </div> 
+        </div>
       ) : (
         <div className={styles.friendContent}>
           <div className={styles.content}>
             <div className={styles.profileImg}>
-              <img
-                // src={`${process.env.PUBLIC_URL}/logo.png`}
-                src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUser.id}`}
-                alt="profileImg"
-                className={styles.img}
-              />
+              <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUser.id}`} alt="profileImg" className={styles.img} />
             </div>
             <span className={`${styles.userName}`}>{user}</span>
             <span className={`${styles.message}`}>{message}</span>
@@ -34,7 +24,6 @@ const ChattingMessageItem = ({
           </div>
         </div>
       )}
-
     </div>
   );
 };

@@ -10,10 +10,6 @@
   z-index: 1;
 }
 
-/* .container:hover {
-  box-shadow: 1px 1px 1px 1px rgba(218, 218, 218, 10);
-} */
-
 .friendProfile {
   display: flex;
   align-items: center;

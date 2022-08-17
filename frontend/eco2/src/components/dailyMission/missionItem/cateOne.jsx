@@ -2,17 +2,7 @@ import React, { useState } from "react";
 import styles from "./dailyMissionDetail.module.css";
 import { useDispatch } from "react-redux";
 import { putFavorite } from "../../../store/mission/favoriteSlice";
-const CateOne = ({
-  content,
-  ecoId,
-  onCreate,
-  id,
-  cnt,
-  setCnt,
-  faAdd,
-  setFaAdd,
-  category,
-}) => {
+const CateOne = ({ content, ecoId, onCreate, id, cnt, setCnt, faAdd, setFaAdd, category }) => {
   const dispatch = useDispatch();
   const [color, setColor] = useState(true);
   const colorType = color ? styles.gray : styles.skyblue;
@@ -27,7 +17,7 @@ const CateOne = ({
         missionType: favoriteTrue,
         missionId: ecoId,
       })
-    ).then(res => {
+    ).then((res) => {
       if (res.payload?.status === 200) {
         setFaAdd(!faAdd);
       }
@@ -38,10 +28,7 @@ const CateOne = ({
     <div>
       <div>
         <div className={`${styles.content} ${colorType}`}>
-          <img
-            src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`}
-            className={styles.leafSize}
-          ></img>
+          <img src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`} className={styles.leafSize}></img>
           <span
             onClick={() => {
               setColor(!color);

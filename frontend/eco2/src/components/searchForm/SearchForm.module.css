@@ -15,17 +15,9 @@
 }
 
 .input::placeholder {
-  /* color: #dadada; */
   font-size: small;
   font-family: "NanumBarunGothicLight";
 }
-
-/* .button {
-  border: none;
-  background-color: #3c3c43;
-  opacity: 0.1;
-  border-radius: 10px;
-} */
 
 .searchIcon {
   color: black;

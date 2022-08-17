@@ -1,6 +1,5 @@
 .titleGroup {
   display: flex;
-  /* margin-top: 65px; */
   justify-content: space-between;
   align-items: center;
 }
@@ -25,7 +24,7 @@
   color: #6a707c;
   font-weight: bold;
   margin-top: 3px;
-}           
+}
 
 .plusIcon {
   color: #adc178;

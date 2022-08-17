@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./ReportDetail.module.css";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { reportDetailList } from "../../../store/admin/reportSlice";
 import ReportDetailItem from "../../../components/admin/reportDetailItem/ReportDetailItem";
 import AdminModal from "../../../components/modal/adminModal/AdminModal";
@@ -51,18 +51,17 @@ const ReportDetail = () => {
   const sendReportAccept = () => {
     setAcceptModalVisible(!acceptModalVisible);
     setModalType("신고승인");
-  }
+  };
   const sendReportCancle = () => {
     setCancleModalVisible(!cancleModalVisible);
     setModalType("신고반려");
-  }
+  };
 
   return (
     <div className={styles.reportDetail}>
       <div className={styles.reportDetailTitle}>신고 내역 상세</div>
       <Link to={`/post/${post.id}`} className={styles.link}>
         <div className={styles.post}>
-
           <div className={styles.postTitle}>
             <img
               src={`${process.env.REACT_APP_BE_HOST}img/profile/${post.user.id}`}
@@ -76,10 +75,14 @@ const ReportDetail = () => {
             <div className={styles.postCategory}>
               {post.mission === null ? (
                 //커스텀 미션
-                <span className={styles.category}>[{category}] {post.customMission.content}</span>
+                <span className={styles.category}>
+                  [{category}] {post.customMission.content}
+                </span>
               ) : (
                 //기본 미션
-                <span className={styles.category}>[{category}] {post.mission.title}</span>
+                <span className={styles.category}>
+                  [{category}] {post.mission.title}
+                </span>
               )}
             </div>
             <img
@@ -124,52 +127,40 @@ const ReportDetail = () => {
           <div>없음</div>
         ) : (
           reportDetails.map((reportDetail, i) => {
-            return (
-              <ReportDetailItem
-                key={i}
-                reportType={reportDetail.reportType}
-                content={reportDetail.content}
-                name={reportDetail.user.name}
-              />
-            );
+            return <ReportDetailItem key={i} reportType={reportDetail.reportType} content={reportDetail.content} name={reportDetail.user.name} />;
           })
         )}
         </div>
       </div>
       <div className={styles.reportButton}>
-      <button
-        onClick={sendReportAccept}
-        className={`${styles.acceptButton}`}
-      >승인</button>
-      <button
-        onClick={sendReportCancle}
-        className={`${styles.cancleButton}`}
-      >
-        반려
-      </button>
+        <button onClick={sendReportAccept} className={`${styles.acceptButton}`}>
+          승인
+        </button>
+        <button onClick={sendReportCancle} className={`${styles.cancleButton}`}>
+          반려
+        </button>
       </div>
       {acceptModalVisible && modalType === "신고승인" && (
         <AdminModal
           title={"신고 승인"}
           content={"신고 승인하시겠습니까?"}
           type="승인"
-          id= {id} 
+          id={id}
           postType={type}
           closeModal={() => setAcceptModalVisible(!acceptModalVisible)}
         />
       )}
 
-{cancleModalVisible && modalType === "신고반려" && (
+      {cancleModalVisible && modalType === "신고반려" && (
         <AdminModal
           title={"신고 반려"}
           content={"신고 반려하시겠습니까?"}
           type="반려"
-          id= {id} 
+          id={id}
           postType={type}
           closeModal={() => setCancleModalVisible(!cancleModalVisible)}
         />
       )}
-
     </div>
   );
 };

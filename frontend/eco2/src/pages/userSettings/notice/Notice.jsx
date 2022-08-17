@@ -4,12 +4,8 @@ import SearchForm from "../../../components/searchForm/SearchForm";
 import NoticeList from "../../../components/notice/noticeList/NoticeList";
 import { useDispatch } from "react-redux";
 import { noticeList } from "../../../store/admin/noticeSlice";
-import {
-  getUserName,
-  getUserEmail,
-  getUserId,
-} from "../../../store/user/common";
-import { useLocation, useNavigate } from "react-router-dom";
+import { getUserEmail, getUserId } from "../../../store/user/common";
+import { useNavigate } from "react-router-dom";
 import { userInformation } from "../../../store/user/userSettingSlice";
 import { useRef } from "react";
 
@@ -20,10 +16,7 @@ const Notice = () => {
   const [admin, setAdmin] = useState(false);
   const [isSelected, setIsSelected] = useState(0);
 
-  // const [pageNumber, setPageNumber] = useState(0);
-
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
   const pageRef = useRef();
 
@@ -43,9 +36,7 @@ const Notice = () => {
           });
         }}
         ref={pageRef}
-        className={`${styles.pageNumber} ${
-          isSelected === i ? styles.active : null
-        }`}
+        className={`${styles.pageNumber} ${isSelected === i ? styles.active : null}`}
       >
         {i + 1}
       </span>
@@ -73,23 +64,18 @@ const Notice = () => {
 
   useEffect(() => {
     // 유저 객체 받아오기
-    dispatch(
-      userInformation({ email: getUserEmail(), userId: getUserId() })
-    ).then((res) => {
+    dispatch(userInformation({ email: getUserEmail(), userId: getUserId() })).then((res) => {
       if (res.payload.user.role === "[ROLE_ADMIN]") {
         setAdmin(true);
       }
     });
   }, []);
-  // console.log(pageRef.current.innerText, pages);
+
   return (
     <div>
       {admin && (
         <div className={styles.button}>
-          <button
-            className={styles.noticePost}
-            onClick={() => navigate("/notice")}
-          >
+          <button className={styles.noticePost} onClick={() => navigate("/notice")}>
             작성
           </button>
         </div>

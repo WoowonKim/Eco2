@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../components/map/Map";
 import { getUserName, getUserId } from "../../../store/user/common";
-import styles from "./QuestMain.module.css";
 import QuestModal from "../../../components/modal/questModal/QuestModal";
 import DetailModal from "../../../components/modal/questModal/DetailModal";
 import PostModal from "../../../components/modal/questModal/PostModal";
@@ -101,14 +100,7 @@ const QuestMain = () => {
           setLikeCount={setLikeCount}
         ></DetailModal>
       )}
-      {questDetail && (
-        <PostModal
-          open={postModal}
-          questDetail={questDetail}
-          close={closePostModal}
-          closeDetail={closeDetailModal}
-        ></PostModal>
-      )}
+      {questDetail && <PostModal open={postModal} questDetail={questDetail} close={closePostModal} closeDetail={closeDetailModal}></PostModal>}
       {confirm && (
         <ConfirmModal
           closeModal={() => {

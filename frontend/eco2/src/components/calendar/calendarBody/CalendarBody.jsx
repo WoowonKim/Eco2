@@ -1,23 +1,9 @@
-import {
-  isSameMonth,
-  startOfMonth,
-  endOfMonth,
-  endOfWeek,
-  startOfWeek,
-  isSameDay,
-  addDays,
-  format,
-} from "date-fns";
+import { isSameMonth, startOfMonth, endOfMonth, endOfWeek, startOfWeek, isSameDay, addDays, format } from "date-fns";
 import { parse } from "date-fns/fp";
 import React, { useRef, useState } from "react";
 import CalendarModal from "../calendarModal/CalendarModal";
 import styles from "./CalendarBody.module.css";
-const CalendarBody = ({
-  currentMonth,
-  selectedDate,
-  onDateClick,
-  rewardDate,
-}) => {
+const CalendarBody = ({ currentMonth, selectedDate, onDateClick, rewardDate }) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -32,18 +18,11 @@ const CalendarBody = ({
   let formattedDate = "";
 
   const rewardList = rewardDate.filter((it) => {
-    return (
-      it?.date.split("-")[0] === format(currentMonth, "yyyy") &&
-      it?.date.split("-")[1] === format(currentMonth, "MM")
-    );
+    return it?.date.split("-")[0] === format(currentMonth, "yyyy") && it?.date.split("-")[1] === format(currentMonth, "MM");
   });
 
   let rewardDays = [];
-  for (
-    let d = 0;
-    d <= format(monthEnd, "dd") - format(monthStart, "dd") + 1;
-    d++
-  ) {
+  for (let d = 0; d <= format(monthEnd, "dd") - format(monthStart, "dd") + 1; d++) {
     rewardDays.push(0);
   }
   for (let j = 0; j < rewardList.length; j++) {
@@ -73,27 +52,13 @@ const CalendarBody = ({
           key={day}
         >
           <span
-            className={
-              `${styles.text} ${
-              format(currentMonth, "M") !== format(day, "M")
-                ? styles.not_valid
-                : ""} ${i === 0 ? styles.red:null}
+            className={`${styles.text} ${format(currentMonth, "M") !== format(day, "M") ? styles.not_valid : ""} ${i === 0 ? styles.red : null}
                 `}
-          > 
+          >
             {formattedDate}
           </span>
           {!!rewardDays[formattedDate] && (
-            <img
-              src={
-                process.env.PUBLIC_URL +
-                "/tree_leaves/" +
-                "Leaf" +
-                ((rewardDays[formattedDate] % 6) + 1) +
-                ".png"
-              }
-              alt=""
-              className={styles.img}
-            />
+            <img src={process.env.PUBLIC_URL + "/tree_leaves/" + "Leaf" + ((rewardDays[formattedDate] % 6) + 1) + ".png"} alt="" className={styles.img} />
           )}
         </div>
       );

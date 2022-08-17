@@ -3,7 +3,6 @@
 }
 
 .Img {
-  /* margin-top: 20%; */
   width: 390px;
   height: 82vh;
 }
@@ -54,7 +53,6 @@
   bottom: 30px;
   left: 30px;
   width: 100px;
-  /* height: 150px; */
   font-size: small;
   background-color: transparent;
   display: flex;

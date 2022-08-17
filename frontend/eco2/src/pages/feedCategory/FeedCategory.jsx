@@ -24,14 +24,7 @@ const FeedCategory = () => {
 
   return (
     <div className={styles.container}>
-      {!!feeds && (
-        <FeedList
-          category={location.state?.category}
-          display={"grid"}
-          feeds={feeds}
-          setLikeCount={setLikeCount}
-        />
-      )}
+      {!!feeds && <FeedList category={location.state?.category} display={"grid"} feeds={feeds} setLikeCount={setLikeCount} />}
     </div>
   );
 };

@@ -2,14 +2,7 @@ import React, { useEffect, useState } from "react";
 import PostModal from "../postModal/PostModal";
 import styles from "./ReportModal.module.css";
 
-const ReportModal = ({
-  title,
-  content,
-  closeModal,
-  postId,
-  commentId,
-  type,
-}) => {
+const ReportModal = ({ title, content, closeModal, postId, commentId, type }) => {
   const [hidden, setHidden] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(5);
@@ -41,78 +34,43 @@ const ReportModal = ({
     <>
       {!visible && (
         <div className={`${displayType} ${styles.modal}`} onClick={closeModal}>
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className={styles.modalBody}
-          >
+          <div onClick={(e) => e.stopPropagation()} className={styles.modalBody}>
             <div className={styles.modalTitle}>
-              <i
-                className={`fa-solid fa-circle-exclamation ${styles.reportIcon}`}
-              ></i>
+              <i className={`fa-solid fa-circle-exclamation ${styles.reportIcon}`}></i>
               <h2 className={styles.title}>{title}</h2>
             </div>
             <p className={styles.content}>{content}</p>
             <p className={styles.content}>신고 유형과 내용을 입력해주세요</p>
             <div className={styles.selectBox2}>
-              <button
-                className={styles.label}
-                onClick={() => setClicked(!clicked)}
-                id="label"
-              >
+              <button className={styles.label} onClick={() => setClicked(!clicked)} id="label">
                 {ttype}
                 <i className="fa-solid fa-angle-down"></i>
               </button>
               {clicked && (
                 <ul className={styles.optionList}>
-                  <li
-                    className={styles.optionItem}
-                    id="optionItem"
-                    onClick={(e) => handleSelect(e.target.innerText)}
-                  >
+                  <li className={styles.optionItem} id="optionItem" onClick={(e) => handleSelect(e.target.innerText)}>
                     욕설
                   </li>
-                  <li
-                    className={styles.optionItem}
-                    id="optionItem"
-                    onClick={(e) => handleSelect(e.target.innerText)}
-                  >
+                  <li className={styles.optionItem} id="optionItem" onClick={(e) => handleSelect(e.target.innerText)}>
                     음란물
                   </li>
-                  <li
-                    className={styles.optionItem}
-                    id="optionItem"
-                    onClick={(e) => handleSelect(e.target.innerText)}
-                  >
+                  <li className={styles.optionItem} id="optionItem" onClick={(e) => handleSelect(e.target.innerText)}>
                     허위인증
                   </li>
-                  <li
-                    className={styles.optionItem}
-                    id="optionItem"
-                    onClick={(e) => handleSelect(e.target.innerText)}
-                  >
+                  <li className={styles.optionItem} id="optionItem" onClick={(e) => handleSelect(e.target.innerText)}>
                     광고
                   </li>
-                  <li
-                    className={styles.optionItem}
-                    id="optionItem"
-                    onClick={(e) => handleSelect(e.target.innerText)}
-                  >
+                  <li className={styles.optionItem} id="optionItem" onClick={(e) => handleSelect(e.target.innerText)}>
                     기타
                   </li>
                 </ul>
               )}
             </div>
-            <textarea
-              className={styles.textarea}
-              value={message}
-              placeholder="메시지를 입력하세요"
-              onChange={(e) => setMessage(e.target.value)}
-            ></textarea>
+            <textarea className={styles.textarea} value={message} placeholder="메시지를 입력하세요" onChange={(e) => setMessage(e.target.value)}></textarea>
             <div className={styles.buttonGroup}>
               <button
                 onClick={() => {
                   setVisible(!visible);
-                  // setHidden(true);
                 }}
                 className={styles.reportButton}
                 disabled={message.trim().length == 0}

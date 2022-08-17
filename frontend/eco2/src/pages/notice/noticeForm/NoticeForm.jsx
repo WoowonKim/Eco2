@@ -34,13 +34,11 @@ const NoticeForm = () => {
       });
     } else {
       console.log(getUserId());
-      dispatch(noticeCreate({ userId, title, content: text, urgentFlag })).then(
-        (res) => {
-          if (res.payload?.status === 200) {
-            navigate("/user/settings", { state: { notice: 3 } });
-          }
+      dispatch(noticeCreate({ userId, title, content: text, urgentFlag })).then((res) => {
+        if (res.payload?.status === 200) {
+          navigate("/user/settings", { state: { notice: 3 } });
         }
-      );
+      });
     }
   };
 
@@ -53,11 +51,6 @@ const NoticeForm = () => {
   }, []);
   return (
     <div className={styles.container}>
-      {/* <div className={styles.titleGroup}>
-        <i className={`fa-brands fa-pagelines ${styles.titleIcon}`}></i>
-        <h2 className={styles.title}>공지 작성</h2>
-      </div>
-      <hr className={styles.line} /> */}
       <form onSubmit={(e) => onSubmit(e)}>
         <div className={styles.wrapper}>
           <input
@@ -82,17 +75,11 @@ const NoticeForm = () => {
               }
             }}
           />
-          <label
-            htmlFor="urgent"
-            className={`${styles.label1} ${styles.label}`}
-          >
+          <label htmlFor="urgent" className={`${styles.label1} ${styles.label}`}>
             <div className={styles.dot}></div>
             <span className={styles.labelText}>긴급</span>
           </label>
-          <label
-            htmlFor="normal"
-            className={`${styles.label2} ${styles.label}`}
-          >
+          <label htmlFor="normal" className={`${styles.label2} ${styles.label}`}>
             <div className={styles.dot}></div>
             <span className={styles.labelText}>일반</span>
           </label>
