@@ -7,9 +7,16 @@ import { getUserName } from "../../../store/user/common";
 import ChatModal from "../../../components/modal/chatModal/ChatModal";
 import { findByName } from "../../../store/chat/chattingSlice";
 
-const ChattingItem = ({ id, toUser, fromUser, lastSendTime, lastSendMessage, setDeleteFlag }) => {
-  const [toUserName, setToUserName] = useState("");
-  const [toUserId, setToUserId] = useState("");
+const ChattingItem = ({
+  id,
+  toUser,
+  fromUser,
+  lastSendTime,
+  lastSendMessage,
+  setDeleteFlag,
+}) => {
+  const [toUserName, setToUserName] = useState(toUser);
+  const [toUserId, setToUserId] = useState(0);
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
   const displayType = modalType ? styles.visible : styles.hidden;
@@ -43,10 +50,22 @@ const ChattingItem = ({ id, toUser, fromUser, lastSendTime, lastSendMessage, set
     <div className={styles.list}>
       <div onClick={room} className={styles.link}>
         <div className={styles.leftContent}>
-          <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUserId}`} alt="profileImg" className={styles.profileImg} />
+          <img
+            src={`${process.env.REACT_APP_BE_HOST}img/profile/${toUserId}`}
+            alt="profileImg"
+            className={styles.profileImg}
+          />
           <div className={`${styles.toUserName}`}>{toUserName}</div>
           <div className={`${styles.lastSendMessage}`}>
-            {lastSendMessage !== null ? lastSendMessage.length < 15 ? lastSendMessage : lastSendMessage.slice(0, 15) + "..." : <div></div>}
+            {lastSendMessage !== null ? (
+              lastSendMessage.length < 15 ? (
+                lastSendMessage
+              ) : (
+                lastSendMessage.slice(0, 15) + "..."
+              )
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
         <div className={styles.rightContent}>

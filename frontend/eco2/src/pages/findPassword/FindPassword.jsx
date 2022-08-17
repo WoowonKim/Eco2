@@ -4,9 +4,21 @@ import styles from "./FindPassword.module.css";
 import { useNavigate } from "react-router-dom";
 import { GreenBtn, LoginInput, WarningText } from "../../components/styled";
 import { useDispatch, useSelector } from "react-redux";
-import { emailCheck, emailVerify, emailVerifyCode, login, newPassword } from "../../store/user/userSlice";
+import {
+  emailCheck,
+  emailVerify,
+  emailVerifyCode,
+  login,
+  newPassword,
+} from "../../store/user/userSlice";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
-import { getUserId, setAccessToken, setUserEmail, setUserId, setUserName } from "../../store/user/common";
+import {
+  getUserId,
+  setAccessToken,
+  setUserEmail,
+  setUserId,
+  setUserName,
+} from "../../store/user/common";
 import ConfirmModal from "../../components/modal/confirmModal/ConfirmModal";
 import { useEffect } from "react";
 
@@ -45,6 +57,9 @@ const FindPassword = () => {
   // 이메일 발송 요청에 성공 시 코드 입력 칸 생성
   const onclick = () => {
     setVisibility(true);
+    setIsCode(false);
+    setMessage("");
+    setCode("");
     dispatch(emailVerify({ email })).then((res) => {
       setMessage(`${res.payload.msg}`);
     });
@@ -66,7 +81,9 @@ const FindPassword = () => {
   const passwordValidation = (e) => {
     setPassword(e.target.value);
     if (passwordValidationCheck(e.target.value)) {
-      setPasswordMessage("숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!");
+      setPasswordMessage(
+        "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!"
+      );
       setIsPassword(false);
     } else {
       setPasswordMessage("안전한 비밀번호에요 : )");
@@ -100,16 +117,30 @@ const FindPassword = () => {
     <div>
       <h2 className={styles.title}>비밀번호 재설정</h2>
       <form onSubmit={handleSubmit}>
-        <input onChange={emailValidation} type="email" placeholder="이메일" className={styles.input} />
+        <input
+          onChange={emailValidation}
+          type="email"
+          placeholder="이메일"
+          className={styles.input}
+        />
         <button onClick={onclick} className={styles.button}>
           {buttonText}
         </button>
-        {email.length > 0 && <p className={isEmail ? styles.success : styles.fail}>{emailMessage}</p>}
+        {email.length > 0 && (
+          <p className={isEmail ? styles.success : styles.fail}>
+            {emailMessage}
+          </p>
+        )}
         {email.length === 0 && <div className={styles.test}></div>}
         {visibility && isEmail && !isCode && (
           <div>
             <div className={`${styles.EmailInput}, ${displayType}`}>
-              <input type="text" className={styles.input} onChange={(e) => setCode(e.target.value)} placeholder="인증 번호" />
+              <input
+                type="text"
+                className={styles.input}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="인증 번호"
+              />
               <button
                 disabled={isCode || code.trim().length == 0}
                 className={styles.buttonEmail}
@@ -133,12 +164,30 @@ const FindPassword = () => {
         )}
       </form>
       <form onSubmit={handleSubmit}>
-        <input onChange={passwordValidation} type="password" className={styles.passwordInput} placeholder="새 비밀번호" />
-        {password.length > 0 && <p className={isPassword ? styles.success : styles.fail}>{passwordMessage}</p>}
+        <input
+          onChange={passwordValidation}
+          type="password"
+          className={styles.passwordInput}
+          placeholder="새 비밀번호"
+        />
+        {password.length > 0 && (
+          <p className={isPassword ? styles.success : styles.fail}>
+            {passwordMessage}
+          </p>
+        )}
         {password.length === 0 && <div className={styles.test}></div>}
 
-        <input onChange={passwordConfirmValidation} type="password" className={styles.passwordInput} placeholder="새 비밀번호 확인" />
-        {password2.length > 0 && <p className={isPasswordConfirm ? styles.success : styles.fail}>{passwordConfirmMessage}</p>}
+        <input
+          onChange={passwordConfirmValidation}
+          type="password"
+          className={styles.passwordInput}
+          placeholder="새 비밀번호 확인"
+        />
+        {password2.length > 0 && (
+          <p className={isPasswordConfirm ? styles.success : styles.fail}>
+            {passwordConfirmMessage}
+          </p>
+        )}
         {password2.length === 0 && <div className={styles.test}></div>}
         <GreenBtn
           className={styles.changeButton}
@@ -152,7 +201,9 @@ const FindPassword = () => {
             )
               .then((res) => {
                 if (res.payload.status === 200) {
-                  dispatch(login({ email: email, password: password, socialType: 0 }))
+                  dispatch(
+                    login({ email: email, password: password, socialType: 0 })
+                  )
                     .then((res) => {
                       if (res.payload?.status === 200) {
                         setLoginFailMsg(false);
@@ -163,7 +214,9 @@ const FindPassword = () => {
                         window.location.replace("/");
                       }
                       setLoginFailMsg(true);
-                      setMessage("등록된 이메일이 없거나 비밀번호가 일치하지 않습니다.");
+                      setMessage(
+                        "등록된 이메일이 없거나 비밀번호가 일치하지 않습니다."
+                      );
                     })
                     .catch((err) => {
                       setVisible(!visible);
