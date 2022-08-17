@@ -10,7 +10,12 @@ import MissionCustomItem from "../../../components/dailyMission/missionItem/miss
 import CalendarModal from "../../../components/calendar/calendarModal/CalendarModal";
 
 // Store
-import { getMission, missionPost, postTodayMission, missionItem } from "../../../store/mission/missionMainSlice";
+import {
+  getMission,
+  missionPost,
+  postTodayMission,
+  missionItem,
+} from "../../../store/mission/missionMainSlice";
 import { getUserId } from "../../../store/user/common";
 import { getLocation } from "../../../utils";
 
@@ -83,17 +88,20 @@ const DailyMissionMain = () => {
    */
   useEffect(() => {
     if (id !== 0) {
-      dispatch(postTodayMission({ id: id, lat, lng, date: nowTime })).then((res) => {
-        if (res.payload?.status === 200) {
-          if (id !== 0) {
-            dispatch(getMission({ id: getUserId() })).then((res) => {
-              setMain(res.payload.dailyMissionList);
-              setcusMain(res.payload.dailyCustomMissionList);
-            });
+      dispatch(postTodayMission({ id: id, lat, lng, date: nowTime })).then(
+        (res) => {
+          if (res.payload?.status === 200) {
+            if (id !== 0) {
+              dispatch(getMission({ id: getUserId() })).then((res) => {
+                console.log(res.payload);
+                setMain(res.payload.dailyMissionList);
+                setcusMain(res.payload.dailyCustomMissionList);
+              });
+            }
+            setOpen(modalOpen);
           }
-          setOpen(modalOpen);
         }
-      });
+      );
     }
   }, [id, missionDelete, cusMissionDelete]);
 
@@ -113,7 +121,9 @@ const DailyMissionMain = () => {
           <span className={styles.mainHeaderLeft}>오늘의 도전과제</span>
           <span className={styles.mainHeaderRight}>
             추가하기
-            <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
+            ></i>
           </span>
         </div>
       ) : (
@@ -122,7 +132,9 @@ const DailyMissionMain = () => {
           <Link to="/dailymissionDetail" className={styles.mainHeaderRight}>
             <span>
               추가하기
-              <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
+              <i
+                className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
+              ></i>
             </span>
           </Link>
         </div>
@@ -190,10 +202,22 @@ const DailyMissionMain = () => {
             setCalUR={setCalUR}
           />
         )}
-        {calUR > 0 && modalVisible && <CalendarModal calendarId={calUR} month={month} day={days} closeModal={() => setModalVisible(!modalVisible)} />}
+        {calUR > 0 && modalVisible && (
+          <CalendarModal
+            calendarId={calUR}
+            month={month}
+            day={days}
+            closeModal={() => setModalVisible(!modalVisible)}
+          />
+        )}
       </div>
       {recommendedMission?.weather && (
-        <PopupModal open={open} setOpen={setOpen} weather={recommendedMission.weather} recommendedMission={recommendedMission.recommendedMission}></PopupModal>
+        <PopupModal
+          open={open}
+          setOpen={setOpen}
+          weather={recommendedMission.weather}
+          recommendedMission={recommendedMission.recommendedMission}
+        ></PopupModal>
       )}
     </div>
   );
