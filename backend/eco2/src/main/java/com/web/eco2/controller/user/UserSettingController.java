@@ -3,14 +3,13 @@ package com.web.eco2.controller.user;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.web.eco2.domain.dto.user.UserSettingDto;
 import com.web.eco2.domain.entity.Friend;
+import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.user.User;
-import com.web.eco2.domain.entity.UserSetting;
 import com.web.eco2.model.service.FriendService;
 import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.model.service.user.UserSettingService;
-
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +28,7 @@ import java.util.stream.Collectors;
 @Api(tags = {"UserSetting API"})
 @Slf4j
 public class UserSettingController {
+
     @Autowired
     private UserSettingService userSettingService;
 
@@ -84,10 +84,8 @@ public class UserSettingController {
         } catch (Exception e) {
             log.error("계정 설정 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-
         }
     }
-
 
     @ApiOperation(value = "친구 조회", response = Object.class)
     @GetMapping("/friend")
@@ -95,8 +93,8 @@ public class UserSettingController {
         try {
             log.info("친구 조회 API 호출");
             List<User> friends = friendService.getFriends(id);
-            if(name != null) {
-                friends = friends.stream().filter(f->f.getName().contains(name)).collect(Collectors.toList());
+            if (name != null) {
+                friends = friends.stream().filter(f -> f.getName().contains(name)).collect(Collectors.toList());
             }
             return ResponseHandler.generateResponse("친구 조회에 성공하였습니다.", HttpStatus.OK, "friendList", friends);
         } catch (Exception e) {
@@ -110,14 +108,14 @@ public class UserSettingController {
     public ResponseEntity<?> requestFriend(@RequestParam("fromId") Long fromId, @RequestParam("toId") Long toId) {
         try {
             log.info("친구 신청 API 호출");
-            if(alarmService.isRequested(fromId, toId)) {
+            if (alarmService.isRequested(fromId, toId)) {
                 return ResponseHandler.generateResponse("이미 신청한 유저입니다.", HttpStatus.ACCEPTED);
             }
-            if(alarmService.isRequested(toId, fromId)) {
+            if (alarmService.isRequested(toId, fromId)) {
                 return ResponseHandler.generateResponse("이미 친구 신청 받은 유저입니다.", HttpStatus.ACCEPTED);
             }
-            for(User friend : friendService.getFriends(fromId)) {
-                if(friend.getId().equals(toId)) {
+            for (User friend : friendService.getFriends(fromId)) {
+                if (friend.getId().equals(toId)) {
                     return ResponseHandler.generateResponse("이미 친구인 유저입니다.", HttpStatus.ACCEPTED);
                 }
             }
@@ -126,7 +124,7 @@ public class UserSettingController {
                     .userId(toId).senderId(fromId)
                     .content(sender.getName() + "님이 친구 신청 했습니다.")
                     .dType("friendRequest")
-                    .url("/profile/"+fromId)
+                    .url("/profile/" + fromId)
                     .build(), fromId.toString(), "friendRequest");
             return ResponseHandler.generateResponse(fromId + " 유저가 " + toId + " 유저에게 친구신청을 보냈습니다.", HttpStatus.OK);
         } catch (Exception e) {
@@ -138,10 +136,9 @@ public class UserSettingController {
     /**
      * 친구 수락
      *
-     * @param friendRequestDto
-     * <br> id       수락/거절한 user id
-     * <br> friendId  수락/거절을 누른 alarm ID
-     * <br> response 수락: true / 거절: false
+     * @param friendRequestDto <br> id       수락/거절한 user id
+     *                         <br> friendId  수락/거절을 누른 alarm ID
+     *                         <br> response 수락: true / 거절: false
      * @return
      */
     @ApiOperation(value = "친구 수락", response = Object.class)
@@ -150,13 +147,11 @@ public class UserSettingController {
         try {
             log.info("친구 수락 API 호출");
             String msg;
-            Long id = friendRequestDto.getId(); // 9
-            Long friendId = friendRequestDto.getFriendId(); // 11
-            System.out.println(id+" "+friendId);
+            Long id = friendRequestDto.getId();
+            Long friendId = friendRequestDto.getFriendId();
             boolean response = friendRequestDto.isResponse();
 
             DocumentSnapshot documentSnapshot = alarmService.findAlarmByUserIdAndAlarmId(id, friendId.toString());
-//            Long friendId = documentSnapshot.get("senderId", Long.class); // 친구 신청 보낸 사람
             Long toId = id; // 친구 신청 받은 사람
 
             if (friendId == null) {
@@ -177,7 +172,7 @@ public class UserSettingController {
                 alarmService.insertAlarm(FirebaseAlarm.builder()
                         .userId(friendId).senderId(id)
                         .content(user.getName() + "님이 친구신청을 수락하였습니다.")
-                        .dType("friendAccept").url("/profile/"+id).build());
+                        .dType("friendAccept").url("/profile/" + id).build());
                 msg = "친구 신청 수락 성공하였습니다.";
             } else {
                 // 친구 신청 거절
@@ -200,7 +195,6 @@ public class UserSettingController {
     @ApiOperation(value = "친구 삭제", response = Object.class)
     @DeleteMapping("/friend")
     public ResponseEntity<?> deleteFriend(@RequestBody FriendRequestDto friendRequestDto) {
-//    public ResponseEntity<?> deleteFriend(@RequestParam("id") Long id, @RequestParam("friendId") Long friendId) {
         try {
             log.info("친구 삭제 API 호출");
             friendService.deleteFriend(friendRequestDto.getId(), friendRequestDto.getFriendId());

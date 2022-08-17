@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface TrendingRepository extends JpaRepository<Trending, Long> {
 
-
     @Modifying
     @Query(value = "update tb_trending t set t.tre_count=t.tre_count+1 where t.mis_id=:missionId", nativeQuery = true)
     void updateCount(Long missionId);

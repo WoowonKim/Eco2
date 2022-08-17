@@ -1,7 +1,6 @@
 package com.web.eco2.domain.entity.admin;
 
 import com.web.eco2.domain.entity.post.Comment;
-import com.web.eco2.domain.entity.post.Post;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @SuperBuilder
-public class CommentReport extends Report{
+public class CommentReport extends Report {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "com_id")

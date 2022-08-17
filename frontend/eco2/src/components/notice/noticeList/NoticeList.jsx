@@ -1,6 +1,5 @@
 import React from "react";
 import NoticeItem from "../noticeItem/NoticeItem";
-import styles from "./NoticeList.module.css";
 
 const NoticeList = ({ notices, admin }) => {
   return (

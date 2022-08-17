@@ -22,6 +22,7 @@ const PostForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  console.log("영제 확인 ===> ", location.state.customId);
   useEffect(() => {
     if (location.state?.content) {
       setEditText(location.state?.content);
@@ -43,20 +44,14 @@ const PostForm = () => {
   }, []);
   const saveFileImage = (e) => {
     setFile(e.target.files[0]);
-    console.log(e.target.files);
     setFileImage(URL.createObjectURL(e.target.files[0]));
     setImageCheck(true);
   };
 
-  // const deleteFileImage = (e) => {
-  //   URL.revokeObjectURL(fileImage);
-  //   setFileImage("");
-  // };
-
   const dispatch = useDispatch();
   const missionClear = () => {
     dispatch(
-      clearMission({ id, missionId: location.state.missionIdTest })
+      clearMission({ id, missionId: location.state?.missionIdTest })
     ).then((res) => {
       if (res.payload?.status === 200) {
         navigate("/mainTree");
@@ -237,7 +232,6 @@ const PostForm = () => {
             <span className={styles.labelText}>댓글 비공개</span>
           </label>
         </div>
-        {/* <p className={styles.missionTitle}>미션 제목</p> */}
         <textarea
           required
           placeholder="미션 인증글을 작성해주세요!"

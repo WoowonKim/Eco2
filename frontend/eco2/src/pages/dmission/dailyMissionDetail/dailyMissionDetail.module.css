@@ -88,11 +88,6 @@
   color: #000000;
 }
 
-/* i {
-  color: #adc178;
-  cursor: pointer;
-} */
-
 .itemFont {
   font-weight: bold;
   text-align: center;
@@ -115,8 +110,6 @@
   position: relative;
   left: 150px;
   top: 20px;
-
-  /* line-height: 150px; */
 }
 
 .word {

@@ -15,7 +15,6 @@
 
 .col {
   display: flex;
-  /* grid-template-columns: 1fr 1fr; */
   flex-direction: row;
   justify-content: start;
   align-items: baseline;
@@ -27,10 +26,7 @@
 
 .text {
   margin: 0 0 0 5px;
-  /* float: inline-start; */
   display: flex;
-  /* margin: auto;
-  padding: auto; */
   justify-self: start;
   align-self: baseline;
 }

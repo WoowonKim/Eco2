@@ -1,6 +1,5 @@
 package com.web.eco2.domain.entity.admin;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,6 +17,6 @@ public class ReportType {
     @Column(name = "ret_id")
     private Long id;
 
-    @Column(name = "ret_type", length = 30, nullable = false )
+    @Column(name = "ret_type", length = 30, nullable = false)
     private String type;
 }

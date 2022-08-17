@@ -16,8 +16,6 @@ public class FirebaseService {
 
     @PostConstruct
     public void initialize() {
-        // TODO: 클래스 패스로 변환
-//        System.out.println(System.class.getResource(""));
         try {
             FileInputStream serviceAccount = new FileInputStream("path/to/serviceAccountKey.json");
             FirebaseOptions options = FirebaseOptions.builder()
@@ -27,18 +25,10 @@ public class FirebaseService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        try {
-//            FirebaseOptions options = FirebaseOptions.builder()
-//                    .setCredentials(GoogleCredentials.fromStream(System.class.getResourceAsStream("fb_key.json")))
-//                    .build();
-//            FirebaseApp.initializeApp(options);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Bean
-    public FirebaseAuth getFirebaseAuth(){
+    public FirebaseAuth getFirebaseAuth() {
         return FirebaseAuth.getInstance(app);
     }
 }

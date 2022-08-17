@@ -26,7 +26,6 @@ public class DailyMissionService {
     private WeatherService weatherService;
     @Autowired
     private MissionRepository missionRepository;
-
     @Autowired
     private DailyMissionRepository dailyMissionRepository;
     @Value("${reward.path}")
@@ -46,7 +45,6 @@ public class DailyMissionService {
 
     public DailyMission findListByUsrIdAndMisId(Long usrId, Long missionId) {
         return dailyMissionRepository.findListByUsrIdAndMisId(usrId, missionId);
-
     }
 
     public DailyMission findListByUsrIdAndCumId(Long usrId, Long missionId) {
@@ -56,7 +54,6 @@ public class DailyMissionService {
     public void delete(DailyMission dailyMission) {
         dailyMissionRepository.delete(dailyMission);
     }
-
 
     public List<DailyMission> findRewardList(Long usrId) {
         return dailyMissionRepository.findRewardList(usrId);
@@ -68,7 +65,6 @@ public class DailyMissionService {
         BufferedImage img = ImageIO.read(new File(uploadFolder + "/rewardImage.png"));
         Graphics2D graphics = img.createGraphics();
         String rewardFontName = "한컴 울주 반구대 암각화체";
-//        String rewardFontName = "아임크리수진 보통";
 
         String rewardDate = calendarDto.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
         String rewardName = user.getName() + "님";
@@ -79,7 +75,6 @@ public class DailyMissionService {
         String rewardMission1 = dailyMissionList.get(0).getMission().getTitle();
         String rewardMission2 = dailyMissionList.get(1).getMission().getTitle();
         String rewardMission3 = dailyMissionList.get(2).getMission().getTitle();
-
 
         Font font = new Font(rewardFontName, Font.BOLD, 25);
         graphics.setFont(font);
@@ -120,8 +115,6 @@ public class DailyMissionService {
         dailyMissionRepository.deleteByUsrId(usrId);
     }
 
-    // TODO: 알고리즘 고치기
-    // 에어컨/난방 미션의 경우의 처리가 미흡. 플래그 추가 생각 중
     public Map<String, Object> getRecommendMission(String lat, String lng, String time) throws IOException {
         List<Long> recommendMissionsNum = new ArrayList<>();
         List<Mission> recommendMission = new ArrayList<>();
@@ -130,23 +123,22 @@ public class DailyMissionService {
         int outsideFlag = 3;
         int temperatureFlag = 4;
         UltraShortNowcast ultraShortNowcast = weatherService.getUltraSrtNcst(lat, lng, time);
-        if(ultraShortNowcast != null) {
-            if(ultraShortNowcast.getRainAmount() <= 0) {
+        if (ultraShortNowcast != null) {
+            if (ultraShortNowcast.getRainAmount() <= 0) {
                 sunnyFlag = 1;
             } else if (ultraShortNowcast.getRainAmount() >= 3) {
                 sunnyFlag = 2;
             }
 
-            // TODO: 외부활동: 미세먼지 추가, 습도
-            if(ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
+            if (ultraShortNowcast.getRainAmount() <= 0 && ultraShortNowcast.getTemperature() >= 18 && ultraShortNowcast.getTemperature() <= 26) {
                 outsideFlag = 1;
-            } else if(ultraShortNowcast.getRainAmount() >= 3 || ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28) {
+            } else if (ultraShortNowcast.getRainAmount() >= 3 || ultraShortNowcast.getTemperature() <= 15 || ultraShortNowcast.getTemperature() >= 28) {
                 outsideFlag = 2;
             }
 
-            if(ultraShortNowcast.getTemperature() <= 10) {
+            if (ultraShortNowcast.getTemperature() <= 10) {
                 temperatureFlag = 1;
-            } else if(ultraShortNowcast.getTemperature() < 26) {
+            } else if (ultraShortNowcast.getTemperature() < 26) {
                 temperatureFlag = 2;
             }
         } else {

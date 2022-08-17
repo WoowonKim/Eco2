@@ -43,14 +43,10 @@ p {
   padding: 10px;
   color: #fafafa;
   background-color: rgb(87, 214, 150);
-  /* border-top-left-radius: 10px;
-  border-top-right-radius: 10px; */
 }
 
 .title {
   float: left;
-  /* line-height: 100%; */
-  /* height: 100%; */
 }
 
 .title p {
@@ -58,11 +54,6 @@ p {
   margin: 0 5px;
   font-size: 90%;
 }
-
-/* .title p:nth-child(2),
-.head i {
-  color: rgb(87, 214, 150);
-} */
 
 .close {
   float: right;
@@ -100,7 +91,6 @@ p {
 }
 
 .button {
-  /* display: inline; */
   padding: 5px 5px;
   border-radius: 10px;
   width: 20%;
@@ -120,7 +110,6 @@ p {
 }
 
 .accept {
-  /* background-color: rgb(87, 214, 150); */
   border: 2px solid rgb(87, 214, 150);
   color: rgb(87, 214, 150);
 }
@@ -131,7 +120,6 @@ p {
 }
 
 .refuse {
-  /* background-color: #888; */
   border: 2px solid #888;
   color: #888;
 }

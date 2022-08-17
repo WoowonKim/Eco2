@@ -1,7 +1,6 @@
 .Footer {
   height: 65px;
   padding: 1.5rem;
-  /* color: white; */
   background-color: rgba(255, 255, 255);
   font-weight: bold;
   display: flex;
@@ -43,7 +42,6 @@
 
 .newbadge {
   margin-bottom: 0px;
-  /* background-color: #7dd6fc; */
   background-color: #f77;
   width: 10px;
   height: 10px;
@@ -57,7 +55,6 @@
   position: absolute;
   left: 80%;
   bottom: 80%;
-  /* line-height: 150px; */
   transition: all 200ms ease-in-out;
 }
 

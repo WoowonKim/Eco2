@@ -11,7 +11,6 @@ public class StatisticService {
     @Autowired
     private StatisticRepository statisticRepository;
 
-
     public void save(Statistic statistic) {
         statisticRepository.save(statistic);
     }
@@ -20,25 +19,22 @@ public class StatisticService {
         return statisticRepository.findByUsrId(usrId);
     }
 
-
     public void updateCount(Long usrId, Integer category, boolean questFlag) {
-        if(questFlag){
+        if (questFlag) {
             statisticRepository.updateQuestCount(usrId);
-        } else {
-            if (category == 1) {
-                statisticRepository.updateCategory1Count(usrId);
-            } else if (category == 2) {
-                statisticRepository.updateCategory2Count(usrId);
-            } else if (category == 3) {
-                statisticRepository.updateCategory3Count(usrId);
-            } else if (category == 4) {
-                statisticRepository.updateCategory4Count(usrId);
-            } else if (category == 5) {
-                statisticRepository.updateCategory5Count(usrId);
-            } else if (category == 6) {
-                statisticRepository.updateCategory6Count(usrId);
-            }
         }
-//        statisticRepository.updateCount(usrId, "t.sta_category_"+category);
+        if (category == 1) {
+            statisticRepository.updateCategory1Count(usrId);
+        } else if (category == 2) {
+            statisticRepository.updateCategory2Count(usrId);
+        } else if (category == 3) {
+            statisticRepository.updateCategory3Count(usrId);
+        } else if (category == 4) {
+            statisticRepository.updateCategory4Count(usrId);
+        } else if (category == 5) {
+            statisticRepository.updateCategory5Count(usrId);
+        } else if (category == 6) {
+            statisticRepository.updateCategory6Count(usrId);
+        }
     }
 }

@@ -35,11 +35,6 @@
 }
 
 .email {
-  /* margin: 10px 5px;
-  font-size: large;
-  font-weight: 400;
-  text-decoration: underline;
-  text-underline-offset: 2px; */
   margin: 10px 0;
   border-bottom: 1px solid #dadada;
   padding: 10px 5px;
@@ -124,7 +119,6 @@
   border: none;
   background-color: white;
   cursor: pointer;
-  /* margin: 10px; */
   color: #949191;
   font-family: "NanumBarunGothicLight";
   margin-bottom: 8px;

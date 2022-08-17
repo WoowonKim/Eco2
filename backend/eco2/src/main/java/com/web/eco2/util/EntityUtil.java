@@ -20,9 +20,9 @@ public class EntityUtil {
         PropertyDescriptor[] propertyDescriptors = beanWrapper.getPropertyDescriptors();
 
         Set<String> emptyNames = new HashSet<>();
-        for(PropertyDescriptor pd : propertyDescriptors) {
+        for (PropertyDescriptor pd : propertyDescriptors) {
             Object sourceValue = beanWrapper.getPropertyValue(pd.getName());
-            if(sourceValue == null) emptyNames.add(pd.getName());
+            if (sourceValue == null) emptyNames.add(pd.getName());
         }
 
         String[] result = new String[emptyNames.size()];

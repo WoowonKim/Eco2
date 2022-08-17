@@ -65,6 +65,7 @@ public class MailService {
     public String verifyMail(String code) {
         return redisService.getData(code);
     }
+
     public void verifyMailSuccess(String code) {
         redisService.deleteData(code);
     }

@@ -1,8 +1,6 @@
 package com.web.eco2.model.service.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -55,20 +53,20 @@ public class RedisService {
     }
 
     private String convertListToString(List<Long> list) {
-        if(list == null) return null;
-        if(list.size() == 0) return "";
+        if (list == null) return null;
+        if (list.size() == 0) return "";
 
         StringBuffer stringBuffer = new StringBuffer();
         for (Long item : list) {
             stringBuffer.append(item).append(",");
         }
-        stringBuffer.setLength(stringBuffer.length()-1);
+        stringBuffer.setLength(stringBuffer.length() - 1);
         return stringBuffer.toString();
     }
 
     private List<Long> convertStringToList(String str) {
-        if(str == null) return null;
-        if(str.equals("")) return new ArrayList<>();
+        if (str == null) return null;
+        if (str.equals("")) return new ArrayList<>();
         return Arrays.stream(str.split(",")).map(Long::parseLong).collect(Collectors.toList());
     }
 }

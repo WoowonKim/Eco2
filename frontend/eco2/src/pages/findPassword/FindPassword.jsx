@@ -57,6 +57,9 @@ const FindPassword = () => {
   // 이메일 발송 요청에 성공 시 코드 입력 칸 생성
   const onclick = () => {
     setVisibility(true);
+    setIsCode(false);
+    setMessage("");
+    setCode("");
     dispatch(emailVerify({ email })).then((res) => {
       setMessage(`${res.payload.msg}`);
     });

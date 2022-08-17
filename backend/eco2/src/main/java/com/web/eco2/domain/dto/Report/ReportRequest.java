@@ -29,7 +29,7 @@ public class ReportRequest {
                 .build();
     }
 
-    public CommentReport toCommentEntity(User user, ReportType reportType, Comment comment, Post post ) {
+    public CommentReport toCommentEntity(User user, ReportType reportType, Comment comment, Post post) {
         return CommentReport.builder()
                 .user(user)
                 .reportType(reportType)

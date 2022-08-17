@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +27,16 @@ import java.util.List;
 @Api(tags = {"Chat API"})
 @Slf4j
 public class ChatController {
+
     @Autowired
     private ChatService chatService;
 
     @Autowired
     private UserService userService;
 
-
     @PostMapping(value = "/room")
     @ApiOperation(value = "채팅방 생성", response = Object.class)
     public ResponseEntity<Object> createChatRoom(@RequestBody ChatRoomDto chatRoomDto) {
-        System.out.println("chatRoomDto" + chatRoomDto);
         try {
             log.info("채팅방 생성 API 호출");
             User toUser = userService.getById(chatRoomDto.getToUserId());
@@ -53,14 +51,12 @@ public class ChatController {
                 chatRoomDto.setToUser(toUser.getName());
                 chatRoomDto.setFromUser(fromUser.getName());
                 chatService.save(chatRoomDto.toEntity());
-                System.out.println("chatRoomDto===>>" + chatRoomDto);
                 ChatRoom createRoom = chatService.findByToUserAndFromUser(toUser.getName(), fromUser.getName());
                 return ResponseHandler.generateResponse("채팅방이 생성되었습니다.", HttpStatus.OK, "roomId", createRoom.getId());
             }
         } catch (Exception e) {
             log.error("채팅방 생성 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-
         }
     }
 
@@ -70,15 +66,11 @@ public class ChatController {
         try {
             log.info("채팅방 삭제 delete API 호출");
             ChatRoom chatRoom = chatService.getById(roomId);
-//            if (chatRoom == null) {
-//                return ResponseHandler.generateResponse("채팅방이 존재하지 않습니다.", HttpStatus.ACCEPTED);
-//            }
             chatService.delete(chatRoom);
             return ResponseHandler.generateResponse("채팅방이 삭제되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             log.error("채팅방 삭제 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-
         }
     }
 
@@ -89,12 +81,10 @@ public class ChatController {
             log.info("채팅방 목록 조회 API 호출");
             User user = userService.getById(usrId);
             List<ChatRoom> chatRoomList = chatService.findByToUserOrFromUser(user.getName(), user.getName());
-            //TODO : 본인이 from인지 to인지 ?
             return ResponseHandler.generateResponse("채팅방 목록이 조회되었습니다.", HttpStatus.OK, "chatRoomList", chatRoomList);
         } catch (Exception e) {
             log.error("채팅방 목록 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-
         }
     }
 
@@ -104,8 +94,6 @@ public class ChatController {
         try {
             log.info("채팅 메시지 조회 API 호출");
             ChatRoom chatRoom = chatService.getById(roomId);
-            System.out.println(chatRoom.getChatMessageList());
-
             User toUser = userService.findByName(chatRoom.getToUser());
             User fromUser = userService.findByName(chatRoom.getFromUser());
             List<User> userList = new ArrayList<>();
@@ -130,7 +118,6 @@ public class ChatController {
         } catch (Exception e) {
             log.error("채팅 상대 정보 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-
         }
     }
 }

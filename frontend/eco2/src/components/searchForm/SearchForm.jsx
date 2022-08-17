@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useRef } from "react";
+
 import styles from "./SearchForm.module.css";
 
 const SearchForm = ({ type, onSearch }) => {
@@ -23,13 +23,7 @@ const SearchForm = ({ type, onSearch }) => {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.form}>
-        <input
-          ref={inputRef}
-          onKeyPress={onKeyPress}
-          type="text"
-          className={styles.input}
-          placeholder="검색어를 입력해주세요"
-        />
+        <input ref={inputRef} onKeyPress={onKeyPress} type="text" className={styles.input} placeholder="검색어를 입력해주세요" />
       </form>
     </div>
   );

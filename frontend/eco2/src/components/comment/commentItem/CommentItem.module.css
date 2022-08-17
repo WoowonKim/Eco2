@@ -51,22 +51,9 @@
   color: #c6c4c4;
 }
 
-/* .replyButton {
-  border: 1px solid #adc178;
-  border-radius: 20px;
-  background-color: white;
-  cursor: pointer;
-} */
-
-/* .buttonGroup {
-  display: flex;
-  align-items: flex-start;
-} */
-
 .dropdown {
   position: relative;
   display: inline-block;
-  /* padding: 5px 10px; */
 }
 
 .dropdownContent {
@@ -135,7 +122,6 @@
 
 .editFormGroup {
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
 }
 
@@ -147,21 +133,3 @@
 .editForm {
   width: 100%;
 }
-
-/* .deleteButton {
-  position: relative;
-  padding: 3px 5px;
-  border-radius: 15px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  border: 2px solid #F14336;
-  color: #6e6e6e;
-  background-color: white;
-  transition: all 300ms ease-in-out;
-}
-
-.deleteButton:hover {
-  background-color: #F14336;
-  color: #e1eef6;
-} */

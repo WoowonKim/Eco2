@@ -56,15 +56,14 @@ public class PostService {
     public Post getById(Long id) {
         return postRepository.getById(id);
     }
+
     public QuestPost getQuestById(Long id) {
         return postRepository.getQuestById(id);
     }
 
-
     //post image 저장 경로
     @Value("${postImg.path}")
     private String uploadPath;
-
 
     //post 저장하기 (post + postImage)
     @Transactional
@@ -86,20 +85,9 @@ public class PostService {
             post = postCreateDto.toEntity();
         }
         postRepository.save(post);
-
-//        Post post;
-//        if(postCreateDto.getQuest() != null) {
-//            postRepository.save()
-//        } else {
-//            post = postCreateDto.toEntity();
-//        }
-
-
         postImgRepository.save(PostImg.builder().saveFolder(uploadPath).saveName(saveName).originalName(originalName).post(post).build());
-
         return post;
     }
-
 
     //post 목록 가져오기
     public List<Post> getPostList() {
@@ -117,20 +105,17 @@ public class PostService {
         return postRepository.findOnlyQuestPostById(userId);
     }
 
-
     // 특정 게시물 조회
     public Post getSpecificPost(Long postId) {
         Post post = postRepository.getById(postId);
         return post;
     }
 
-
     //게시물 이미지 찾기
     public PostImg getPostImg(Long postId) {
         PostImg postImg = postImgRepository.getById(postId);
         return postImg;
     }
-
 
     //postImg byte로 변환
     public byte[] getImageByte(Long postId) throws IOException {
@@ -144,7 +129,6 @@ public class PostService {
         }
         return new byte[0];
     }
-
 
     //post 수정하기
     public void updatePost(Long postId, MultipartFile postImage, PostUpdateDto postUpdateDto) throws IOException {
@@ -167,9 +151,7 @@ public class PostService {
         postImgRepository.save(newPostImg);
     }
 
-
     //post 삭제하기
-
     public void deletePost(Long postId) {
         Post post = postRepository.getById(postId); //삭제하고자 하는 게시물 찾기
         PostImg postImg = postImgRepository.findById(postId).get();  //삭제하고자 하는 게시물의 이미지 찾기
@@ -180,12 +162,8 @@ public class PostService {
 
         File existFile = new File(existSaveFolder + File.separator + existFileName);
         boolean result = existFile.delete();
-
-
         postRepository.delete(post); //게시글 삭제
-
     }
-
 
     public List<QuestPost> findByQuest(Quest quest) {
         return postRepository.findByQuestOrderByRegistTimeDesc(quest);
@@ -200,8 +178,6 @@ public class PostService {
             PostImg postImg = postImgRepository.getById(post.getId());
             Path path = Paths.get(postImg.getSaveFolder());
             File file = new File(path.toAbsolutePath().toString(), postImg.getSaveName());
-//            System.out.println(path.toAbsolutePath());
-//            System.out.println(calendar);
             file.delete();
             postImgRepository.delete(postImg);
         });
@@ -249,25 +225,4 @@ public class PostService {
 
         return canView(post, user, userSetting, friends);
     }
-
-//    @Transactional()
-//    public List<Post> getPostList() {
-//        List<Post> postLists = postRepository.findAll();
-//        List<PostListDto> postListDto = new ArrayList<>();
-//
-//        for ( Post postList : postLists ) {
-//            PostListDto postDto = PostListDto.builder()
-//                    .id(postList.getId())
-//
-//        }
-//
-////        postList.forEach(post -> {
-////             TODO: 좋아요 실시간 업데이트
-////            post.updateLikesCount(post.getLikesList().size());
-////            post.getLikesList().forEach(likes -> {
-////                if(likes.getUser().getId() == sessionId) post.updateLikesState(true);
-////            })
-////        });'
-//        return postList;
-//    }
 }

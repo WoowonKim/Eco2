@@ -38,33 +38,9 @@ public class StompChatController {
     @Autowired
     private UserSettingService userSettingService;
 
-//    @MessageMapping(value = "/enter")
-//    public void enter(@Payload ChatMessageDto message) {
-////        message.setMessage(message.getWriter() + "님이 채팅방에 참여하였습니다.");
-//        System.out.println("insert enter");
-//
-//        ChatRoom chatRoom = chatService.getById(message.getChatRoom().getId());
-//
-////        List<ChatMessage> chatList = chatService.findAllChatByRoomId(message.getChatRoom().getId());
-//        if(chatRoom.getChatMessageList() != null){
-//            for(ChatMessage c : chatRoom.getChatMessageList() ){
-//                message.setUser(c.getUser());
-//                message.setMessage(c.getMessage());
-//            }
-//        }
-//
-//        template.convertAndSend("/sub/chat/room/" + message.getChatRoom().getId(), message);
-////        ChatRoomEntity chatRoomEntity= crr.findByRoomId(message.getRoomId());
-////        ChatMessageSaveDTO chatMessageSaveDTO = new ChatMessageSaveDTO(message.getRoomId(),message.getWriter(), message.getMessage());
-////        cr.save(ChatMessageEntity.toChatEntity(chatMessageSaveDTO,chatRoomEntity));
-//    }
-
     @MessageMapping(value = "/message")
     @SendTo("/message")
     public void message(@Payload ChatMessageDto message) {
-        System.out.println("=====insert chat=====");
-        System.out.println(message);
-
         ChatRoom chatRoom = chatService.getById(message.getChatRoom().getId());
         User user = userService.getById(message.getUser().getId());
         message.setChatRoom(chatRoom);
@@ -80,11 +56,11 @@ public class StompChatController {
                 : userService.findByName(chatRoom.getToUser());
 
         UserSetting userSetting = userSettingService.findById(receiver.getId());
-        if(userSetting.isChatAlarmFlag()) {
+        if (userSetting.isChatAlarmFlag()) {
             alarmService.insertAlarm(FirebaseAlarm.builder()
                     .senderId(user.getId()).dType("newChat")
-                    .content(user.getName()+"님으로부터 새로운 메시지가 도착했습니다.")
-                    .userId(receiver.getId()).url("/chatting/room?roomId="+chatRoom.getId())
+                    .content(user.getName() + "님으로부터 새로운 메시지가 도착했습니다.")
+                    .userId(receiver.getId()).url("/chatting/room?roomId=" + chatRoom.getId())
                     .senderName(user.getName()).build());
         }
 
@@ -94,5 +70,4 @@ public class StompChatController {
 
         template.convertAndSend("/sub/chat/room/" + message.getChatRoom().getId(), chatMessage);
     }
-
 }

@@ -1,5 +1,4 @@
 .map_wrap {
-  /* position: absolute; */
   padding: auto;
   width: 389px;
   height: 82vh;
@@ -36,7 +35,6 @@
   z-index: 1;
   border: none;
   border-radius: 50%;
-  /* box-shadow: 0px 1px 10px 1px grey; */
 }
 
 .btn_my_position {
