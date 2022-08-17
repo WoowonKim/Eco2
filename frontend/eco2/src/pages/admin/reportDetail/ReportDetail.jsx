@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./ReportDetail.module.css";
 import { useLocation } from "react-router-dom";
 import { reportDetailList } from "../../../store/admin/reportSlice";
-import { reportCancle } from "../../../store/admin/reportSlice";
 import ReportDetailItem from "../../../components/admin/reportDetailItem/ReportDetailItem";
 import AdminModal from "../../../components/modal/adminModal/AdminModal";
 
@@ -17,7 +16,6 @@ const ReportDetail = () => {
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
   const [registTime, setRegistTime] = useState("");
-  const navigate = useNavigate();
   const [acceptModalVisible, setAcceptModalVisible] = useState(false);
   const [cancleModalVisible, setCancleModalVisible] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -65,7 +63,11 @@ const ReportDetail = () => {
       <Link to={`/post/${post.id}`} className={styles.link}>
         <div className={styles.post}>
           <div className={styles.postTitle}>
-            <img src={`http://localhost:8002/img/profile/${post.user.id}`} alt="profileImg" className={styles.profileImg} />
+            <img
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${post.user.id}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
             <div className={styles.postUser}>{post.user.name}</div>
           </div>
           <hr className={styles.line}></hr>
@@ -83,7 +85,12 @@ const ReportDetail = () => {
                 </span>
               )}
             </div>
-            <img src={`http://localhost:8002/img/post/${post.id}`} alt="postImg" className={styles.postImg} />
+            <img
+
+              src={`${process.env.REACT_APP_BE_HOST}img/post/${post.id}`}
+              alt="postImg"
+              className={styles.postImg}
+            />
             <div className={styles.postContent}>{post.content}</div>
             <div className={styles.postRegistTime}>작성일: {registTime}</div>
           </div>
@@ -92,7 +99,11 @@ const ReportDetail = () => {
       {comment && (
         <div className={styles.comment}>
           <div className={styles.commentBody}>
-            <img src={`http://localhost:8002/img/profile/${comment.user.id}`} alt="profileImg" className={styles.profileImg} />
+            <img
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${comment.user.id}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
             <div className={styles.commentUser}>{comment.user.name}님이 작성한 댓글입니다.</div>
             <div className={styles.commentContent}>{comment.content}</div>
           </div>
@@ -111,6 +122,7 @@ const ReportDetail = () => {
             </tbody>
           </table>
         </div>
+      <div className={styles.listBox}>
         {reportDetails.length === 0 ? (
           <div>없음</div>
         ) : (
@@ -118,6 +130,7 @@ const ReportDetail = () => {
             return <ReportDetailItem key={i} reportType={reportDetail.reportType} content={reportDetail.content} name={reportDetail.user.name} />;
           })
         )}
+        </div>
       </div>
       <div className={styles.reportButton}>
         <button onClick={sendReportAccept} className={`${styles.acceptButton}`}>
