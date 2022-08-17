@@ -21,7 +21,7 @@
 .modal > section > header {
   padding: 16px 16px;
   background-color: rgb(87, 214, 150);
-  color: #FFF;
+  color: #fff;
   font-weight: 700;
 }
 
@@ -38,7 +38,7 @@
   /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-bg-show 0.3s;
 }
- .main {
+.main {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -77,10 +77,10 @@
   z-index: 1;
   width: 35px;
   height: inherit;
-    display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  color:  rgb(87, 214, 150);
+  color: rgb(87, 214, 150);
 }
 
 .selectBox .icoArrow i {
@@ -92,13 +92,13 @@
   transform: rotate(180deg);
 }
 
-.countBox{
+.countBox {
   width: 100%;
   margin-top: 20px;
   font-size: 13px;
   display: flex;
 }
-.numInput{
+.numInput {
   font-family: "NanumBarunGothicLight";
   border: none;
   margin-left: 10px;
@@ -109,23 +109,24 @@
   outline: none;
 }
 
-.contentBox{
+.contentBox {
   display: block;
   margin-top: 17px;
   font-size: 13px;
   width: 100%;
   text-align: left;
 }
-.contentTitle{
+.contentTitle {
   padding-bottom: 6px;
   border-bottom: rgb(87, 214, 150) solid 2px;
   width: 100%;
 }
-.contentText{
+.contentText {
   width: 100%;
   margin-top: 8px;
   height: 60px;
   border: rgb(185, 185, 185) solid 1px;
+  font-family: "NanumBarunGothicLight";
 }
 
 .contentText:focus {
@@ -135,35 +136,35 @@
   padding: 12px 16px;
   text-align: center;
 }
-.create{
+.create {
   border: none;
-  background-color: rgb(87, 214, 150) ;
-  color:#FFF;
-  padding:10px 17px;
+  background-color: rgb(87, 214, 150);
+  color: #fff;
+  padding: 10px 17px;
   margin-right: 10px;
   font-family: "NanumBarunGothicLight";
   border-radius: 10px;
   box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
 }
-.create:hover{
-  background-color:rgb(166, 228, 166);;
+.create:hover {
+  background-color: rgb(166, 228, 166);
 }
 .create:disabled {
   background-color: #b3b3b3;
 }
-.close{
+.close {
   border: none;
-  background-color: #FFF ;
-  color:rgb(122, 122, 122);
-  padding:10px 17px;
+  background-color: #fff;
+  color: rgb(122, 122, 122);
+  padding: 10px 17px;
   font-family: "NanumBarunGothicLight";
   border-radius: 10px;
   box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
 }
-.close:hover{
-  background-color:rgb(221, 221, 221);;
+.close:hover {
+  background-color: rgb(221, 221, 221);
 }
-.p{
+.p {
   margin: 5px;
   font-size: x-small;
 }

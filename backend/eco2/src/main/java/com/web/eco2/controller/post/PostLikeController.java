@@ -2,7 +2,6 @@ package com.web.eco2.controller.post;
 
 
 import com.web.eco2.domain.dto.post.PostLikeDto;
-import com.web.eco2.domain.entity.post.FavoritePost;
 import com.web.eco2.model.repository.post.PostLikeRepository;
 import com.web.eco2.model.repository.post.PostRepository;
 import com.web.eco2.model.repository.user.UserRepository;
@@ -16,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/post/like")
@@ -43,14 +45,12 @@ public class PostLikeController {
     @Autowired
     private PostLikeService postLikeService;
 
-
-
     @PostMapping()
     public ResponseEntity<Object> postLike(@RequestBody PostLikeDto postLikeDto) {
         try {
             Long userId = postLikeDto.getUserId();
             Long postId = postLikeDto.getPostId();
-            if ( postLikeService.findLike(userId, postId) == 0 ) {
+            if (postLikeService.findLike(userId, postId) == 0) {
                 Integer like = postLikeService.saveOrDeleteLike(userId, postId);
                 return ResponseHandler.generateResponse("좋아요에 성공하였습니다.", HttpStatus.OK, "like", like);
             } else {
@@ -60,6 +60,5 @@ public class PostLikeController {
         } catch (Exception e) {
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
-
     }
 }

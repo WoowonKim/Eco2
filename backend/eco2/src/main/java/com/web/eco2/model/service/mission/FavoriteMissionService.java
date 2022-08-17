@@ -29,7 +29,6 @@ public class FavoriteMissionService {
         favoriteMissionRepository.deleteByCumId(usrId, missionId);
     }
 
-
     public List<Mission> findMissionByUsrId(Long usrId) {
         List<MissionInformation> missionInformationList = favoriteMissionRepository.findMissionByUsrId(usrId);
         List<Mission> missionList = new ArrayList<>();
@@ -62,7 +61,7 @@ public class FavoriteMissionService {
     }
 
     public FavoriteMission findByUser_IdAndMission_Id(Long usrId, Long missionId) {
-        return favoriteMissionRepository.findByUser_IdAndMission_Id(usrId,missionId);
+        return favoriteMissionRepository.findByUser_IdAndMission_Id(usrId, missionId);
     }
 
     public void delete(FavoriteMission favoriteMission) {
@@ -70,7 +69,7 @@ public class FavoriteMissionService {
     }
 
     public FavoriteMission findByUser_IdAndCustomMission_Id(Long usrId, Long missionId) {
-        return favoriteMissionRepository.findByUser_IdAndCustomMission_Id(usrId,missionId);
+        return favoriteMissionRepository.findByUser_IdAndCustomMission_Id(usrId, missionId);
     }
 
     public List<FavoriteMission> findByUser_Id(Long usrId) {

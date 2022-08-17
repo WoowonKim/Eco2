@@ -18,9 +18,7 @@ const FriendItem = ({ friendEmail, friendId, friendName, setFriendDelete }) => {
   return (
     <>
       <div
-        className={`${styles.container} ${
-          test ? styles.buttonVisible : styles.buttonHidden
-        }`}
+        className={`${styles.container} ${test ? styles.buttonVisible : styles.buttonHidden}`}
         onClick={() => {
           setTest(!test);
         }}
@@ -34,11 +32,7 @@ const FriendItem = ({ friendEmail, friendId, friendName, setFriendDelete }) => {
             setTest(!test);
           }}
         >
-          <img
-            src={`${process.env.REACT_APP_BE_HOST}img/profile/${friendId}`}
-            alt="profile"
-            className={styles.profileImg}
-          />
+          <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${friendId}`} alt="profile" className={styles.profileImg} />
           <span className={styles.friendName}>{friendName}</span>
         </div>
         <i className="fa-solid fa-angle-left"></i>
@@ -51,7 +45,6 @@ const FriendItem = ({ friendEmail, friendId, friendName, setFriendDelete }) => {
         >
           삭제
         </button>
-        {/* </div> */}
       </div>
       {modalVisible && modalType === "삭제" && (
         <PostModal

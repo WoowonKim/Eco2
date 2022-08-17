@@ -10,9 +10,7 @@ const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
           ◀︎
         </button>
         <span className={styles.text}>
-          <span className={`${styles.text} ${styles.month}`}>
-            {format(currentMonth, "M")}월
-          </span>
+          <span className={`${styles.text} ${styles.month}`}>{format(currentMonth, "M")}월</span>
           {format(currentMonth, "yyyy")}
         </span>
         <button className={styles.button} onClick={nextMonth}>

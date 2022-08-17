@@ -1,14 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./friendRequestModal.module.css";
 
-const FriendRequestModal = ({
-  type,
-  title,
-  content,
-  accept,
-  acceptArgs,
-  closeModal,
-}) => {
+const FriendRequestModal = ({ title, content, accept, acceptArgs, closeModal }) => {
   useEffect(() => {
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
@@ -17,9 +10,7 @@ const FriendRequestModal = ({
     <div className={`${styles.modal}`} onClick={closeModal}>
       <div onClick={(e) => e.stopPropagation()} className={styles.modalBody}>
         <div className={styles.modalTitle}>
-          <i
-            className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}
-          ></i>
+          <i className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}></i>
           <h2 className={styles.title}>{title}</h2>
         </div>
         <p className={styles.content}>{content}</p>

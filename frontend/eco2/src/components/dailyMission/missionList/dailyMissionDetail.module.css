@@ -36,7 +36,6 @@ li {
   display: flex;
   justify-content: start;
   background-color: #ffffff;
-  /* border-bottom: 1px solid #696969; */
   font-weight: bold;
   font-size: small;
   text-align: left;
@@ -99,7 +98,6 @@ li {
   padding: 5px;
   background-color: #ffffff;
   border-bottom: 1px solid #dadada;
-  /* border-radius: 5px; */
   cursor: pointer;
 }
 
@@ -133,15 +131,12 @@ li {
   font-weight: bold;
   color: #333;
   transition: all 0.3s ease-in-out;
-  /* background: rgb(166, 228, 166); */
 }
-/* rgb(166, 228, 166); */
-/* rgb(87, 214, 150) */
+
 .listType:hover {
   color: #fff;
   background-color: rgb(166, 228, 166);
   cursor: pointer;
-  /* border-bottom: 2px solid #333; */
 }
 
 /* 미션목록 END */
@@ -166,9 +161,7 @@ li {
 .scrollMission::-webkit-scrollbar-track {
   background-color: #f4f9e5; /*스크롤바 트랙 색상*/
 }
-/* .cateFlex {
-  display: flex;
-} */
+
 .cateListOne {
   width: 290px;
   margin-left: 30px;
@@ -351,11 +344,6 @@ li {
   font-size: small;
   color: #000000;
 }
-
-/* i {
-  color: #adc178;
-  cursor: pointer;
-} */
 
 .btn {
   margin-bottom: 0px;

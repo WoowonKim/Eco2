@@ -9,11 +9,9 @@ import javax.validation.Valid;
 @ToString
 @Data
 public class UpdateItemRequest {
-
     private Long id;
     private Integer left;
     private Integer top;
     private Integer category;
-
 }
 

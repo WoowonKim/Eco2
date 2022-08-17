@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-
     Post getById(Long id);
 
     QuestPost getQuestById(Long id);
@@ -33,6 +32,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = "select * from tb_post p where p.usr_id=:userId and p.que_id=:questId limit 1", nativeQuery = true)
     Post existsByUserIdAndQuestId(Long userId, Long questId);
-
-//    List<Post> findByUserIdOrderByIdDesc(Long userid);
 }

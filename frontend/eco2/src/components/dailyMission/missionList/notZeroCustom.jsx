@@ -2,30 +2,15 @@ import React, { useState } from "react";
 import styles from "./custom.module.css";
 import PostModal from "../../modal/postModal/PostModal";
 
-const NotZeroCustom = ({
-  content,
-  cosId,
-  onDelete,
-  onCusMission,
-  id,
-  category,
-  setCusDelete,
-  cusDelete,
-  setCusSubmit,
-  cusSubmit,
-}) => {
+const NotZeroCustom = ({ content, cosId, id, category, setCusDelete, cusDelete, setCusSubmit, cusSubmit }) => {
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
   const displayType = visible ? styles.visible : styles.hidden;
   return (
     <div>
       <div className={styles.content}>
-        <img
-          src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`}
-          className={styles.leafSize}
-        ></img>
+        <img src={process.env.PUBLIC_URL + `/tree_leaves/Leaf${category}.png`} className={styles.leafSize}></img>
         <span className={styles.itemFont}>{content}</span>
-        {/* 모달 */}
         <div className={styles.dropdown}>
           <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
           <div className={styles.dropdownContent}>
@@ -37,9 +22,7 @@ const NotZeroCustom = ({
               className={styles.dropdownItem}
             >
               옮기기
-              <i
-                className={`fa-solid fa-right-to-bracket ${styles.dropdownIcon}`}
-              ></i>
+              <i className={`fa-solid fa-right-to-bracket ${styles.dropdownIcon}`}></i>
             </button>
             <button
               onClick={() => {
@@ -78,20 +61,6 @@ const NotZeroCustom = ({
             cusSubmit={cusSubmit}
           />
         )}
-        {/* <div className={styles.itemIcon}>
-          <i
-            className={`${"fa-solid fa-plus"} ${styles.favoriteadd}`}
-            onClick={() => {
-              onCusMission(id, cosId);
-            }}
-          ></i>
-          <i
-            className={`${"fa-solid fa-trash-can"} ${styles.favoritetrash}`}
-            onClick={() => {
-              onDelete(cosId);
-            }}
-          ></i>
-        </div> */}
       </div>
     </div>
   );

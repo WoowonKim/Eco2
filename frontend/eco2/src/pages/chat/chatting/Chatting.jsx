@@ -39,22 +39,16 @@ const Chatting = () => {
           );
         })
       )}
-    <div className={styles.createRoomDiv}>
+      <div className={styles.createRoomDiv}>
         <i
           onClick={() => {
             setVisible(!visible);
             setModalType("친구목록");
           }}
-          className={`${"fa-solid fa-circle-plus"} ${styles.createRoomButton}`}></i>
+          className={`${"fa-solid fa-circle-plus"} ${styles.createRoomButton}`}
+        ></i>
       </div>
-      {visible && modalType === "친구목록" && (
-        <ChatModal
-          title={"친구 목록"}
-          type={"친구목록"}
-          userId={userId}
-          closeModal={() => setVisible(!visible)}
-        />
-      )}
+      {visible && modalType === "친구목록" && <ChatModal title={"친구 목록"} type={"친구목록"} userId={userId} closeModal={() => setVisible(!visible)} />}
     </div>
   );
 };

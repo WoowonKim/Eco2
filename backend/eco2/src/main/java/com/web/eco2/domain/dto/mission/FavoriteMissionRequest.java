@@ -13,18 +13,12 @@ import javax.validation.Valid;
 @ToString
 @Data
 public class FavoriteMissionRequest {
-
     private User user;
-
     private Mission mission;
-
     private CustomMission customMission;
-
     private Long missionId;
-
     private boolean missionType;
     private boolean likeFlag;
-
 
     public FavoriteMission toEntity() {
         return FavoriteMission.builder()

@@ -31,12 +31,11 @@ public class FriendService {
         friendRepository.save(friend);
     }
 
-
     public void deleteFriend(Long fromId, Long toId) {
         User fromUser = User.builder().id(fromId).build();
         User toUser = User.builder().id(toId).build();
         Friend friend = friendRepository.findByFromUserAndToUser(fromUser, toUser);
-        if(friend == null) {
+        if (friend == null) {
             friend = friendRepository.findByFromUserAndToUser(toUser, fromUser);
         }
         friendRepository.delete(friend);

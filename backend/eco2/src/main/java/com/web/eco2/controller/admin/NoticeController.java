@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"Notice API"})
 @Slf4j
 public class NoticeController {
+
     @Autowired
     private NoticeService noticeService;
 

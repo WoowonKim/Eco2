@@ -8,21 +8,14 @@ import {
   signUp,
 } from "../../store/user/userSlice";
 import styles from "./Regist.module.css";
-import {
-  GreenBtn,
-  LoginInput,
-  WarningText,
-  ShortGreenBtn,
-} from "../../components/styled";
+import { GreenBtn } from "../../components/styled";
 import {
   getUserId,
-  getUserName,
   setAccessToken,
   setUserEmail,
   setUserId,
 } from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
-import axiosService from "../../store/axiosService";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -52,6 +45,9 @@ const Regist = () => {
   // 이메일 발송 요청에 성공 시 코드 입력 칸 생성
   const onclick = () => {
     setVisibility(true);
+    setIsCode(false);
+    setMessage("");
+    setCode("");
     dispatch(emailVerify({ email })).then((res) => {
       setMessage(`${res.payload.msg}`);
     });
@@ -78,8 +74,8 @@ const Regist = () => {
 
   // 비밀번호 유효성 검사
   const passwordValidation = (e) => {
-    setPassword(e.target.value);
-    if (passwordValidationCheck(e.target.value)) {
+    setPassword(e.target.value ? e.target.value : password);
+    if (passwordValidationCheck(e.target.value ? e.target.value : password)) {
       setPasswordMessage(
         "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!"
       );
@@ -92,7 +88,7 @@ const Regist = () => {
 
   // 위의 비밀번호와 똑같은지 검증
   const passwordConfirmValidation = (e) => {
-    const passwordConfirmCurrent = e.target.value;
+    const passwordConfirmCurrent = e.target.value ? e.target.value : password2;
     setPassword2(passwordConfirmCurrent);
 
     if (password === passwordConfirmCurrent) {
@@ -140,7 +136,7 @@ const Regist = () => {
         <p className={isEmail ? styles.success : styles.fail}>{emailMessage}</p>
       )}
       {email.length === 0 && <div className={styles.test}></div>}
-      {visibility && isEmail && !isCode && (
+      {visibility && isEmail && (
         <div>
           <div className={`${styles.EmailInput}, ${displayType}`}>
             <input

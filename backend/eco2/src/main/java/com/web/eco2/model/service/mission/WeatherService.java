@@ -60,15 +60,13 @@ public class WeatherService {
         LocalDateTime localDateTime = stringToTime(time);
 
         Map<String, Object> items = getWeatherInformation(lat, lng, localDateTime, "Ncst");
-        if(items == null) {
+        if (items == null) {
             return null;
         }
 
-        for(Map<String, String> item : (List<Map<String, String>>) items.get("item")) {
+        for (Map<String, String> item : (List<Map<String, String>>) items.get("item")) {
             info.put(item.get("category"), Double.parseDouble(item.get("obsrValue")));
         }
-//        System.out.println("info: "+info);
-
         return UltraShortNowcast.builder()
                 .temperature(info.get("T1H")).rainAmount(info.get("RN1"))
                 .windAmount(info.get("WSD")).humidity(info.get("REH")).build();
@@ -105,20 +103,16 @@ public class WeatherService {
             // 1시간 전의 예보 가져오기
             url = new URL(weatherUtil.setUltraSrtUrl(lat, lng, time.minusHours(minusHour++), type));
             System.out.println(url);
-//            objectMapper.readValue(url, Map.class);
             jsonNode = objectMapper.readTree(url);
         } while (!jsonNode.get("response").get("header").get("resultCode").asText().equals("00"));
 
-//        System.out.println(jsonNode.toPrettyString());
         Map<String, Object> m = objectMapper.convertValue(jsonNode.get("response")
                 .get("body").get("items"), Map.class);
-//        System.out.println("m: "+m);
         return m;
     }
 
     public static void main(String[] args) {
         try {
-//            new WeatherService().getUltraSrtFcst("36.360584", "127.343837", LocalDateTime.now());
             new WeatherService().getAirInformation("대전", LocalDateTime.now());
         } catch (Exception e) {
             e.printStackTrace();

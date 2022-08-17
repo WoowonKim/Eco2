@@ -49,7 +49,6 @@ public class DailyMission {
         this.mission = mission;
         this.customMission = customMission;
     }
-
 }
 
 

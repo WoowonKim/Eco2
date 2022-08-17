@@ -37,8 +37,6 @@ public class CalendarService {
         findByUsrId(userId).forEach(calendar -> {
             Path path = Paths.get(calendar.getSaveFolder());
             File file = new File(path.toAbsolutePath().toString(), calendar.getSaveName());
-//            System.out.println(path.toAbsolutePath());
-//            System.out.println(calendar);
             file.delete();
             calendarRepository.delete(calendar);
         });

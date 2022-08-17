@@ -1,6 +1,5 @@
 package com.web.eco2.domain.entity.Item;
 
-import com.web.eco2.domain.entity.post.Post;
 import com.web.eco2.domain.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,6 @@ public class Item {
     @JoinColumn(name = "usr_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-
 
     @Builder
     public Item(Long id, Integer left, Integer top, Integer category, User user) {

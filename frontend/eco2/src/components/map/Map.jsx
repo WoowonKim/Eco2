@@ -1,27 +1,11 @@
 /* global kakao */
 import React, { useEffect, useRef, useState } from "react";
-import {
-  createQuest,
-  getQuestList,
-  getStatus,
-  setStatus,
-} from "../../store/quest/questSlice";
+import { createQuest, getQuestList, getStatus, setStatus } from "../../store/quest/questSlice";
 import { getLocation } from "../../utils";
 import styles from "./Map.module.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/";
-const Map = ({
-  openCreateModal,
-  makeFlag,
-  payload,
-  openDeatailModal,
-  setCount,
-  setMakeFlag,
-  count,
-  name,
-  setConfirm,
-  setContent,
-}) => {
+const Map = ({ openCreateModal, makeFlag, payload, openDeatailModal, setCount, setMakeFlag, count, name, setConfirm, setContent }) => {
   let dispatch = useDispatch();
   const [counter, setCounter] = useState(0);
   const [lat, setLat] = useState(33.450701);
@@ -49,7 +33,6 @@ const Map = ({
   //초기 맵 객체 생성 이펙트
   const container = useRef();
   useEffect(() => {
-    console.log("map 생성");
     const options = {
       center: new kakao.maps.LatLng(lat, lon),
       draggable: true,
@@ -67,10 +50,7 @@ const Map = ({
     }
     var locPosition = new kakao.maps.LatLng(lat, lon);
     const imageSrc = process.env.PUBLIC_URL + "/questImg/home.png";
-    var markerImage = new kakao.maps.MarkerImage(
-      imageSrc,
-      new kakao.maps.Size(35, 35)
-    );
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(35, 35));
     var marker = new kakao.maps.Marker({
       map: kakaoMap,
       image: markerImage,
@@ -103,10 +83,7 @@ const Map = ({
       })
       .map((quest) => {
         const imageSrc = process.env.PUBLIC_URL + "/questImg/gps.png";
-        var markerImage = new kakao.maps.MarkerImage(
-          imageSrc,
-          new kakao.maps.Size(35, 35)
-        );
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(35, 35));
         let position = new kakao.maps.LatLng(quest.lng * 1, quest.lat * 1);
         let marker = new kakao.maps.Marker({
           map: kakaoMap,
@@ -118,12 +95,7 @@ const Map = ({
         let lng1 = position.Ma * 0.017453;
         let lat2 = lon * 0.017453;
         let lng2 = lat * 0.017453;
-        let dist =
-          6378137 *
-          Math.acos(
-            Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
-              Math.sin(lat1) * Math.sin(lat2)
-          );
+        let dist = 6378137 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2));
         if (dist < 500) {
           kakao.maps.event.addListener(marker, "click", function () {
             openDeatailModal(quest.id);
@@ -154,9 +126,7 @@ const Map = ({
       let quest = payload;
       quest.lat = event.latLng.La.toString();
       quest.lng = event.latLng.Ma.toString();
-      console.log(quest);
       dispatch(createQuest(quest)).then((res) => {
-        console.log(res);
         if (res.payload.status === 202) {
           setConfirm(true);
           setContent("3개 이상 등록할 수 없어요!");
@@ -199,9 +169,7 @@ const Map = ({
             <i className="fa-solid fa-location-arrow"></i>
           </div>
         </div>
-        {makeFlag && (
-          <div className={styles.postAlert}>원하는 위치에 마커를 찍으세요!</div>
-        )}
+        {makeFlag && <div className={styles.postAlert}>원하는 위치에 마커를 찍으세요!</div>}
         <div className={styles.createQuest}>
           오늘의 퀘스트를 생성하고 함께 참여해보세요!
           <div
@@ -211,10 +179,7 @@ const Map = ({
               else setMakeFlag(!makeFlag);
             }}
           >
-            {makeFlag ? "취소하기" : "생성하기"}{" "}
-            <i
-              className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
-            ></i>
+            {makeFlag ? "취소하기" : "생성하기"} <i className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}></i>
             {/* </div> */}
           </div>
         </div>

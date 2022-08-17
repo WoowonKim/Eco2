@@ -3,7 +3,6 @@ package com.web.eco2.model.service.user;
 import com.web.eco2.domain.dto.oauth.OAuthToken;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.model.repository.user.UserRepository;
-import com.web.eco2.model.service.oauth.GoogleOAuth;
 import com.web.eco2.model.service.oauth.KakaoOAuth;
 import com.web.eco2.model.service.oauth.OAuth;
 import org.json.simple.parser.ParseException;
@@ -19,9 +18,6 @@ import java.util.Map;
 public class OAuth2Service {
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    private GoogleOAuth googleOAuth;
 
     @Autowired
     private KakaoOAuth kakaoOAuth;
@@ -50,7 +46,7 @@ public class OAuth2Service {
             } else {
                 User dbUser = userRepository.findByEmail(user.getEmail());
 
-                if(dbUser != null && dbUser.getSocialType() != socialType) {
+                if (dbUser != null && dbUser.getSocialType() != socialType) {
                     // 다른 소셜로 회원가입 되어있는 경우
                     // 에러
                     map.put("msg", "이미 존재하는 이메일입니다.");
@@ -58,7 +54,7 @@ public class OAuth2Service {
                     );
                     httpStatus = HttpStatus.CONFLICT;
                 } else {
-                    if(dbUser == null) {
+                    if (dbUser == null) {
                         // 해당 이메일로 가입한 유저가 존재하지 않을 경우
                         // 회원가입 후 로그인
                         userRepository.save(user);
@@ -81,9 +77,6 @@ public class OAuth2Service {
 
     private OAuth getSocialOAuth(int socialType) {
         switch (socialType) {
-            case 1:
-                // Google
-                return googleOAuth;
             case 2:
                 // Kakao
                 return kakaoOAuth;

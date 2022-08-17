@@ -7,22 +7,9 @@ import ReportModal from "../../modal/reportModal/ReportModal";
 import styles from "./CommentItem.module.css";
 import { getUserId, getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
-import ReplyItem from "../replyItem/ReplyItem";
 import { useNavigate } from "react-router-dom";
 
-const CommentItem = ({
-  id,
-  commentUserId,
-  content,
-  user,
-  postId,
-  commentId,
-  replys,
-  setTest,
-  userEmail,
-  registTime,
-}) => {
-  const dispatch = useDispatch();
+const CommentItem = ({ id, commentUserId, content, user, postId, commentId, replys, setTest, userEmail, registTime }) => {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [reportModalVisible, setReportModalVisible] = useState(false);
@@ -30,15 +17,12 @@ const CommentItem = ({
   const [modalType, setModalType] = useState("");
   const [name, setName] = useState("");
   const [userId, setUserId] = useState(0);
-  // const [registTime, setRegistTime] = useState("");
-
   const displayType = modalType ? styles.visible : styles.hidden;
   const navigate = useNavigate();
 
   useEffect(() => {
     setName(getUserName());
     setUserId(getUserId());
-    // setRegistTime(feedItem.registTime.split("T")[0]);
   }, []);
 
   return (
@@ -54,12 +38,7 @@ const CommentItem = ({
                 })
               }
             >
-              <img
-                src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
-                // src={`${imgSrc}`}
-                alt="profileImg"
-                className={styles.profileImg}
-              />
+              <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`} alt="profileImg" className={styles.profileImg} />
               <p className={styles.user}>{user}</p>
             </div>
             <div>
@@ -88,9 +67,7 @@ const CommentItem = ({
                       className={styles.dropdownItem}
                     >
                       수정
-                      <i
-                        className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
-                      ></i>
+                      <i className={`fa-solid fa-pencil ${styles.dropdownIcon}`}></i>
                     </button>
                     <button
                       onClick={() => {
@@ -100,9 +77,7 @@ const CommentItem = ({
                       className={styles.dropdownItem}
                     >
                       삭제
-                      <i
-                        className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-                      ></i>
+                      <i className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}></i>
                     </button>
                   </div>
                 ) : (
@@ -116,9 +91,7 @@ const CommentItem = ({
                     >
                       {" "}
                       신고
-                      <i
-                        className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
-                      ></i>
+                      <i className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}></i>
                     </button>
                   </div>
                 )}
@@ -160,44 +133,19 @@ const CommentItem = ({
               })
             }
           >
-            <img
-              src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
-              // src={`${imgSrc}`}
-              alt="profileImg"
-              className={styles.profileImg}
-            />
+            <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`} alt="profileImg" className={styles.profileImg} />
             <p className={styles.user}>{user}</p>
           </div>
           <div className={styles.editForm}>
-            <CommentForm
-              userId={userId}
-              postId={postId}
-              id={id}
-              content={content}
-              setTest={setTest}
-              closeModal={() => setVisible(!visible)}
-            />
+            <CommentForm userId={userId} postId={postId} id={id} content={content} setTest={setTest} closeModal={() => setVisible(!visible)} />
           </div>
         </div>
       )}
       {replyVisible && (
-        <CommentForm
-          userId={userId}
-          postId={postId}
-          id={id}
-          replyVisible={replyVisible}
-          setTest={setTest}
-          closeModal={() => setReplyVisible(!replyVisible)}
-        />
+        <CommentForm userId={userId} postId={postId} id={id} replyVisible={replyVisible} setTest={setTest} closeModal={() => setReplyVisible(!replyVisible)} />
       )}
 
-      <ReplyList
-        commentId={commentId}
-        id={id}
-        replys={replys}
-        commentUserId={commentUserId}
-        setTest={setTest}
-      />
+      <ReplyList commentId={commentId} id={id} replys={replys} commentUserId={commentUserId} setTest={setTest} />
     </div>
   );
 };

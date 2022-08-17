@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import AlarmList from "../../components/alarm/alarmList/AlarmList";
 import styles from "./alarm.module.css";
 import { useSelector } from "react-redux";
-import {
-  selectCommonAlarms,
-  selectFriendRequestAlarms,
-} from "../../store/alarm/alarmSlice";
+import { selectCommonAlarms, selectFriendRequestAlarms } from "../../store/alarm/alarmSlice";
 
 const Alarm = () => {
   const alarms = useSelector(selectCommonAlarms);

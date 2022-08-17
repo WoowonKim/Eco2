@@ -1,57 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosService from "../axiosService";
 
-export const createQuest = createAsyncThunk(
-  "questSlice/createQuest",
-  async (args, { rejectWithValue }) => {
-    try {
-      const post = await axiosService.post("/quest", args);
-      const response = await axiosService.get("/quest");
-      response.data.status = post.data.status;
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
+export const createQuest = createAsyncThunk("questSlice/createQuest", async (args, { rejectWithValue }) => {
+  try {
+    const post = await axiosService.post("/quest", args);
+    const response = await axiosService.get("/quest");
+    response.data.status = post.data.status;
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
   }
-);
-export const getQuestList = createAsyncThunk(
-  "questSlice/getQuestList",
-  async (args, { rejectWithValue }) => {
-    try {
-      const response = await axiosService.get("/quest");
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
+});
+export const getQuestList = createAsyncThunk("questSlice/getQuestList", async (args, { rejectWithValue }) => {
+  try {
+    const response = await axiosService.get("/quest");
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
   }
-);
-export const deleteQuest = createAsyncThunk(
-  "questSlice/deleteQuest",
-  async (args, { rejectWithValue }) => {
-    try {
-      await axiosService.delete(`/quest/${args}`);
-      const response = await axiosService.get("/quest");
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
+});
+export const deleteQuest = createAsyncThunk("questSlice/deleteQuest", async (args, { rejectWithValue }) => {
+  try {
+    await axiosService.delete(`/quest/${args}`);
+    const response = await axiosService.get("/quest");
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
   }
-);
-// export const createPost = createAsyncThunk(
-//   "questSlice/createPost",
-//   async (args, { rejectWithValue }) => {
-//     try {
-//       const response = await axiosService.post("/post", args.formData, {
-//         headers: {
-//           "Content-Type": "multipart/form-data",
-//         },
-//       });
-//       return response.data;
-//     } catch (err) {
-//       return rejectWithValue(err.response);
-//     }
-//   }
-// );
+});
+
 export const questSlice = createSlice({
   name: "quest",
   initialState: {
@@ -61,7 +38,6 @@ export const questSlice = createSlice({
   },
   reducers: {
     setStatus(state, args) {
-      console.log("바뀌어라");
       state.status = args;
     },
   },
@@ -70,7 +46,6 @@ export const questSlice = createSlice({
       state.loading = true;
     },
     [createQuest.fulfilled]: (state, action) => {
-      console.log(action);
       state.data = action.payload.questList;
       state.status = action.payload.status;
       if (action.payload.status === 202) {
@@ -87,7 +62,6 @@ export const questSlice = createSlice({
       state.loading = true;
     },
     [getQuestList.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.data = action.payload.questList;
     },
@@ -95,12 +69,6 @@ export const questSlice = createSlice({
       console.log("createQuest rejected");
       state.loading = false;
     },
-    // [createPost.fulfilled]: (state, payload) => {
-    //   console.log("createPost fullfilled", payload);
-    // },
-    // [createPost.rejected]: (state, payload) => {
-    //   console.log("createPost rejected", payload);
-    // },
     [deleteQuest.fulfilled]: (state, action) => {
       state.data = action.payload.questList;
       state.status = 200;

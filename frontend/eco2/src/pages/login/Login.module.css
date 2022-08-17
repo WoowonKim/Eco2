@@ -70,7 +70,6 @@
 .kakaoButton {
   border: none;
   background-color: white;
-  /* width: 100%; */
   margin-top: 10px;
 }
 
@@ -81,8 +80,6 @@
 .googleButton {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
-  /* border: 3px solid #dadada; */
   border: none;
   border-radius: 10px;
   width: 360px;
@@ -166,7 +163,6 @@
 .wrapper {
   display: flex;
   background: #fff;
-  /* border-radius: 5px; */
   padding: 5px 0;
   margin: 5px;
 }

@@ -41,9 +41,7 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
           description: "오늘의 미션 완료를 축하드립니다 :D",
           imageUrl: `${process.env.REACT_APP_BE_HOST}img/reward/${calendarId}`,
           link: {
-            mobileWebUrl: `${
-              process.env.REACT_APP_BE_HOST
-            }profile/${getUserId()}`,
+            mobileWebUrl: `${process.env.REACT_APP_BE_HOST}profile/${getUserId()}`,
             webUrl: `${process.env.REACT_APP_BE_HOST}profile/${getUserId()}`,
           },
         },
@@ -54,7 +52,6 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
   }, []);
-  console.log(day);
   return (
     <div className={`${displayType} ${styles.modal}`} onClick={closeModal}>
       <div onClick={(e) => e.stopPropagation()} className={styles.modalBody}>
@@ -68,29 +65,10 @@ const CalendarModal = ({ calendarId, month, day, closeModal }) => {
             <a onClick={download}>
               <i className={`fa-solid fa-cloud-arrow-down ${styles.icon}`}></i>
             </a>
-            <i
-              className={`fa-solid fa-share-nodes ${styles.icon}`}
-              onClick={shareKakao}
-            ></i>
+            <i className={`fa-solid fa-share-nodes ${styles.icon}`} onClick={shareKakao}></i>
           </div>
         </div>
-        <img
-          src={`${process.env.REACT_APP_BE_HOST}img/reward/${calendarId}`}
-          alt="rewardImg"
-          className={styles.img}
-        />
-        {/* <div className={styles.buttonGroup}>
-          <button
-            onClick={() => {
-              setHidden(true);
-              document.body.style = `overflow: auto`;
-              closeModal();
-            }}
-            className={`${styles.cancleButton}`}
-          >
-            닫기
-          </button>
-        </div> */}
+        <img src={`${process.env.REACT_APP_BE_HOST}img/reward/${calendarId}`} alt="rewardImg" className={styles.img} />
       </div>
     </div>
   );
