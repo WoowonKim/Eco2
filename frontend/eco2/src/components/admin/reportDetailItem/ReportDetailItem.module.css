@@ -1,0 +1,28 @@
+.list {
+  font-size: 10px;
+}
+.text{
+  padding: 8px;
+  float: left;
+  font-size: 10px;
+  color: grey;
+}
+.leftContent {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  width: 71%;
+}
+.rightContent {
+  display: inline-block;
+  width: 29%;
+}
+.type{
+  float: left;
+  width: 60px;
+}
+.line{
+  border-width: 0.5px 0px 0px 0px;
+  border-color: #EAEAEA;
+  clear: both;
+}

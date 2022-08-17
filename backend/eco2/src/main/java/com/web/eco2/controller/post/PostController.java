@@ -7,6 +7,8 @@ import com.web.eco2.domain.dto.post.PostCreateDto;
 import com.web.eco2.domain.dto.post.PostListDto;
 import com.web.eco2.domain.dto.post.PostUpdateDto;
 import com.web.eco2.domain.entity.Item.Item;
+import com.web.eco2.domain.entity.UserSetting;
+import com.web.eco2.domain.entity.alarm.FirebaseAlarm;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
@@ -15,7 +17,9 @@ import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.post.QuestPost;
 import com.web.eco2.domain.entity.user.User;
 import com.web.eco2.domain.entity.post.Post;
+import com.web.eco2.model.repository.FriendRepository;
 import com.web.eco2.model.repository.post.PostImgRepository;
+import com.web.eco2.model.repository.user.UserSettingRepository;
 import com.web.eco2.model.service.FriendService;
 import com.web.eco2.model.service.alarm.AlarmService;
 import com.web.eco2.model.service.item.ItemService;
@@ -63,6 +67,10 @@ public class PostController {
     private PostImgRepository postImgRepository;
 
     @Autowired
+    private UserSettingRepository userSettingRepository;
+
+
+    @Autowired
     private StatisticService statisticService;
 
     @Autowired
@@ -93,8 +101,8 @@ public class PostController {
 
     //게시물 전체 조회
     @ApiOperation(value = "게시물 전체 조회", response = Object.class)
-    @GetMapping()
-    public ResponseEntity<Object> getPostList() {
+    @GetMapping("/{userId}")
+    public ResponseEntity<Object> getPostList(@PathVariable("userId") Long userId) {
         try {
             log.info("게시물 전체 조회 API 호출");
             ArrayList<PostListDto> postListDtos = new ArrayList<>();
@@ -105,31 +113,71 @@ public class PostController {
                 PostListDto postListDto = new PostListDto();
                 PostImg postImg = postImgRepository.getById(post.getId());
                 String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
-                Mission mission = null;
-                CustomMission customMission = null;
-                QuestDto quest = null;
-                if (post.getMission() != null) {
-                    mission = post.getMission();
-                } else if (post.getCustomMission() != null) {
-                    customMission = post.getCustomMission();
-                } else if (post instanceof QuestPost) {
-                    quest = ((QuestPost) post).getQuest().toDto();
-                }
+                User postUser = post.getUser();
+                UserSetting userSetting = userSettingRepository.getById(post.getUser().getId());
+                if (!userSetting.isPublicFlag()) {
+                    if (friendService.getFriends(userId).contains(postUser) || postUser.getId().equals(userId)) {
+                        if (post.isPublicFlag()) {
+                            Mission mission = null;
+                            CustomMission customMission = null;
+                            QuestDto quest = null;
+                            if (post.getMission() != null) {
+                                mission = post.getMission();
+                            } else if (post.getCustomMission() != null) {
+                                customMission = post.getCustomMission();
+                            } else if (post instanceof QuestPost) {
+                                quest = ((QuestPost) post).getQuest().toDto();
+                            }
 
-                postListDto.setId(post.getId());
-                postListDto.setUserId(post.getUser().getId());
-                postListDto.setUserName(post.getUser().getName());
-                postListDto.setUserEmail(post.getUser().getEmail());
-                postListDto.setContent(post.getContent());
-                postListDto.setRegistTime(post.getRegistTime());
-                postListDto.setPostImgUrl(postImgPath);
-                postListDto.setPublicFlag(post.isPublicFlag());
-                postListDto.setCommentFlag(post.isCommentFlag());
-                postListDto.setMission(mission);
-                postListDto.setCustomMission(customMission);
-                postListDto.setQuest(quest);
-                postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
-                postListDtos.add(postListDto);
+                            postListDto.setId(post.getId());
+                            postListDto.setUserId(post.getUser().getId());
+                            postListDto.setUserName(post.getUser().getName());
+                            postListDto.setUserEmail(post.getUser().getEmail());
+                            postListDto.setContent(post.getContent());
+                            postListDto.setRegistTime(post.getRegistTime());
+                            postListDto.setPostImgUrl(postImgPath);
+                            postListDto.setUserPublicFlag(userSetting.isPublicFlag());
+                            postListDto.setPostPublicFlag(post.isPublicFlag());
+                            postListDto.setCommentFlag(post.isCommentFlag());
+                            postListDto.setMission(mission);
+                            postListDto.setCustomMission(customMission);
+                            postListDto.setQuest(quest);
+                            postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
+                            postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(post.getId()));
+                            postListDtos.add(postListDto);
+                        }
+                    }
+                } else {
+                    if (post.isPublicFlag() || postUser.getId().equals(userId)) {
+                        Mission mission = null;
+                        CustomMission customMission = null;
+                        QuestDto quest = null;
+                        if (post.getMission() != null) {
+                            mission = post.getMission();
+                        } else if (post.getCustomMission() != null) {
+                            customMission = post.getCustomMission();
+                        } else if (post instanceof QuestPost) {
+                            quest = ((QuestPost) post).getQuest().toDto();
+                        }
+
+                        postListDto.setId(post.getId());
+                        postListDto.setUserId(post.getUser().getId());
+                        postListDto.setUserName(post.getUser().getName());
+                        postListDto.setUserEmail(post.getUser().getEmail());
+                        postListDto.setContent(post.getContent());
+                        postListDto.setRegistTime(post.getRegistTime());
+                        postListDto.setPostImgUrl(postImgPath);
+                        postListDto.setUserPublicFlag(userSetting.isPublicFlag());
+                        postListDto.setPostPublicFlag(post.isPublicFlag());
+                        postListDto.setCommentFlag(post.isCommentFlag());
+                        postListDto.setMission(mission);
+                        postListDto.setCustomMission(customMission);
+                        postListDto.setQuest(quest);
+                        postListDto.setLikeCount(postLikeService.likeCount(post.getId()));
+                        postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(post.getId()));
+                        postListDtos.add(postListDto);
+                    }
+                }
             }
             return ResponseHandler.generateResponse("전체 게시물이 조회되었습니다.", HttpStatus.OK, "postListDtos", postListDtos);
         } catch (Exception e) {
@@ -140,65 +188,136 @@ public class PostController {
 
 
     @ApiOperation(value = "특정 게시물 조회", response = Object.class)
-    @GetMapping("/{postId}")
-    public ResponseEntity<Object> getSpecificPost(@PathVariable("postId") Long postId) {
+    @GetMapping("/{postId}/{userId}")
+    public ResponseEntity<Object> getSpecificPost(@PathVariable("postId") Long postId, @PathVariable("userId") Long userId) {
         try {
             log.info("특정 게시물 조회 API 호출");
             PostListDto postListDto = new PostListDto();
-
             Post post = postService.getSpecificPost(postId);
+            User postUser = post.getUser();
             PostImg postImg = postImgRepository.getById(postId);
             String postImgPath = postImg.getSaveFolder() + '/' + postImg.getSaveName();
-
-            Mission mission = null;
-            CustomMission customMission = null;
-            QuestDto quest = null;
-            if (post instanceof QuestPost) {
-                quest = ((QuestPost) post).getQuest().toDto();
-            } else if (post.getMission() != null) {
-                mission = post.getMission();
-            } else if (post.getCustomMission() != null) {
-                customMission = post.getCustomMission();
-            }
+            UserSetting userSetting = userSettingRepository.getById(post.getUser().getId());
+//            System.out.println(userSetting.isPublicFlag());
+            System.out.println(post.isPublicFlag());
+            System.out.println(post.isCommentFlag());
 
 
-            postListDto.setId(postId);
-            postListDto.setUserId(post.getUser().getId());
-            postListDto.setUserName(post.getUser().getName());
-            postListDto.setUserEmail(post.getUser().getEmail());
-            postListDto.setContent(post.getContent());
-            postListDto.setRegistTime(post.getRegistTime());
-            postListDto.setPostImgUrl(postImgPath);
-            postListDto.setPublicFlag(post.isPublicFlag());
-            postListDto.setCommentFlag(post.isCommentFlag());
-            postListDto.setMission(mission);
-            postListDto.setCustomMission(customMission);
-            postListDto.setQuest(quest);
-            postListDto.setLikeCount(postLikeService.likeCount(postId));
-            postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(postId));
-
-            if (post.isCommentFlag()) {
-                ArrayList<CommentDto> commentDtos = new ArrayList<>();
-                List<Comment> comments = commentService.getComments(postId);
-                if (comments != null) {
-                    for (Comment comment : comments) {
-                        CommentDto commentDto = new CommentDto();
-                        commentDto.setId(comment.getId());
-                        commentDto.setContent(comment.getContent());
-                        commentDto.setRegistTime(comment.getRegistTime());
-                        commentDto.setUserId(comment.getUser().getId());
-                        commentDto.setUserName(comment.getUser().getName());
-                        commentDto.setUserEmail(comment.getUser().getEmail());
-                        commentDto.setPostId(comment.getPost().getId());
-                        if (comment.getComment() != null) {
-                            commentDto.setCommentId(comment.getComment().getId());
+            if (!userSetting.isPublicFlag()) {
+                // API 요청을 보낸 user의 친구 중 postUser가 포함되어있거나, 게시물 작성자와 요청 user가 같은 경우 게시물 공개!
+                if (friendService.getFriends(userId).contains(postUser) || postUser.getId().equals(userId)) {
+                    // 특정 게시물 공개일 경우
+                    if (post.isPublicFlag()) {
+                        Mission mission = null;
+                        CustomMission customMission = null;
+                        QuestDto quest = null;
+                        if (post instanceof QuestPost) {
+                            quest = ((QuestPost) post).getQuest().toDto();
+                        } else if (post.getMission() != null) {
+                            mission = post.getMission();
+                        } else if (post.getCustomMission() != null) {
+                            customMission = post.getCustomMission();
                         }
-                        commentDtos.add(commentDto);
+
+                        postListDto.setId(postId);
+                        postListDto.setUserId(post.getUser().getId());
+                        postListDto.setUserName(post.getUser().getName());
+                        postListDto.setUserEmail(post.getUser().getEmail());
+                        postListDto.setContent(post.getContent());
+                        postListDto.setRegistTime(post.getRegistTime());
+                        postListDto.setPostImgUrl(postImgPath);
+                        postListDto.setUserPublicFlag(userSetting.isPublicFlag());
+                        postListDto.setPostPublicFlag(post.isPublicFlag());
+                        postListDto.setCommentFlag(post.isCommentFlag());
+                        postListDto.setMission(mission);
+                        postListDto.setCustomMission(customMission);
+                        postListDto.setQuest(quest);
+                        postListDto.setLikeCount(postLikeService.likeCount(postId));
+                        postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(postId));
+
+                        if (post.isCommentFlag()) {
+                            ArrayList<CommentDto> commentDtos = new ArrayList<>();
+                            List<Comment> comments = commentService.getComments(postId);
+                            if (comments != null) {
+                                for (Comment comment : comments) {
+                                    CommentDto commentDto = new CommentDto();
+                                    commentDto.setId(comment.getId());
+                                    commentDto.setContent(comment.getContent());
+                                    commentDto.setRegistTime(comment.getRegistTime());
+                                    commentDto.setUserId(comment.getUser().getId());
+                                    commentDto.setUserName(comment.getUser().getName());
+                                    commentDto.setUserEmail(comment.getUser().getEmail());
+                                    commentDto.setPostId(comment.getPost().getId());
+                                    if (comment.getComment() != null) {
+                                        commentDto.setCommentId(comment.getComment().getId());
+                                    }
+                                    commentDtos.add(commentDto);
+                                }
+                                postListDto.setComments(commentDtos);
+                            }
+                        }
+                        return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
+                    } else {
+                        return ResponseHandler.generateResponse("비공개 게시물입니다.", HttpStatus.OK);
                     }
-                    postListDto.setComments(commentDtos);
+                } else {
+                    return ResponseHandler.generateResponse("비공개 계정입니다.", HttpStatus.OK);
+                }
+            } else {
+                if (post.isPublicFlag() || postUser.getId().equals(userId)) {
+                    Mission mission = null;
+                    CustomMission customMission = null;
+                    QuestDto quest = null;
+                    if (post instanceof QuestPost) {
+                        quest = ((QuestPost) post).getQuest().toDto();
+                    } else if (post.getMission() != null) {
+                        mission = post.getMission();
+                    } else if (post.getCustomMission() != null) {
+                        customMission = post.getCustomMission();
+                    }
+
+                    postListDto.setId(postId);
+                    postListDto.setUserId(post.getUser().getId());
+                    postListDto.setUserName(post.getUser().getName());
+                    postListDto.setUserEmail(post.getUser().getEmail());
+                    postListDto.setContent(post.getContent());
+                    postListDto.setRegistTime(post.getRegistTime());
+                    postListDto.setPostImgUrl(postImgPath);
+                    postListDto.setUserPublicFlag(userSetting.isPublicFlag());
+                    postListDto.setPostPublicFlag(post.isPublicFlag());
+                    postListDto.setCommentFlag(post.isCommentFlag());
+                    postListDto.setMission(mission);
+                    postListDto.setCustomMission(customMission);
+                    postListDto.setQuest(quest);
+                    postListDto.setLikeCount(postLikeService.likeCount(postId));
+                    postListDto.setPostLikeUserIds(postLikeService.specificPostLikeUserIdList(postId));
+
+                    if (post.isCommentFlag()) {
+                        ArrayList<CommentDto> commentDtos = new ArrayList<>();
+                        List<Comment> comments = commentService.getComments(postId);
+                        if (comments != null) {
+                            for (Comment comment : comments) {
+                                CommentDto commentDto = new CommentDto();
+                                commentDto.setId(comment.getId());
+                                commentDto.setContent(comment.getContent());
+                                commentDto.setRegistTime(comment.getRegistTime());
+                                commentDto.setUserId(comment.getUser().getId());
+                                commentDto.setUserName(comment.getUser().getName());
+                                commentDto.setUserEmail(comment.getUser().getEmail());
+                                commentDto.setPostId(comment.getPost().getId());
+                                if (comment.getComment() != null) {
+                                    commentDto.setCommentId(comment.getComment().getId());
+                                }
+                                commentDtos.add(commentDto);
+                            }
+                            postListDto.setComments(commentDtos);
+                        }
+                    }
+                    return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
+                } else {
+                    return ResponseHandler.generateResponse("비공개 게시물입니다.", HttpStatus.OK);
                 }
             }
-            return ResponseHandler.generateResponse("특정 게시물이 조회되었습니다.", HttpStatus.OK, "post", postListDto);
         }catch (Exception e){
             log.error("특정 게시물 조회 API 에러", e);
             return ResponseHandler.generateResponse("요청에 실패하였습니다.", HttpStatus.BAD_REQUEST);
@@ -234,26 +353,66 @@ public class PostController {
                 postCreateDto.setCustomMission(mission);
                 category = mission.getCategory();
             } else if(postCreateDto.getQuest() != null) {
-                Optional<Quest> quest = questService.findById(postCreateDto.getQuest().getId());
-                if(quest.isEmpty()) {
+                Optional<Quest> questOpt = questService.findById(postCreateDto.getQuest().getId());
+                if(questOpt.isEmpty()) {
                     return ResponseHandler.generateResponse("존재하지 않는 퀘스트입니다.", HttpStatus.ACCEPTED);
                 }
-                postCreateDto.setQuest(quest.get());
-                category = quest.get().getMission().getCategory();
+
+                Quest quest = questOpt.get();
+                category = quest.getMission().getCategory();
                 isQuest = true;
+
+                if(postService.existsByUserIdAndQuestId(userId, quest.getId())) {
+                    return ResponseHandler.generateResponse("이미 참여한 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+                if(quest.isFinishFlag()) {
+                    return ResponseHandler.generateResponse("종료된 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+                if(quest.getFinishTime().isBefore(LocalDateTime.now())) {
+                    quest.setFinishFlag(true);
+                    questService.save(quest);
+                    return ResponseHandler.generateResponse("종료된 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+
+                if(quest.isAchieveFlag()) {
+                    return ResponseHandler.generateResponse("완료된 퀘스트입니다.", HttpStatus.ACCEPTED);
+                }
+                int participantCount = quest.getParticipantCount()+1;
+                if(participantCount == quest.getAchieveCount()) {
+                    quest.setAchieveFlag(true);
+                    Item item = Item.builder().category(7).user(user).left(100).top(50).build();
+                    itemService.save(item);
+                    alarmService.insertAlarm(FirebaseAlarm.builder().userId(userId)
+                            .content(quest.getContent()+" 퀘스트가 완료되었습니다.").dType("questAchieve")
+                            .url("/mainTree").build());
+
+                    for(QuestPost questPost : postService.findByQuest(quest)) {
+                        User questUser = questPost.getUser();
+                        item = Item.builder().category(7).user(questUser).left(200).top(50).build();
+//                        item = Item.builder().category(6+quest.getMission().getCategory()).user(questUser).left(200).top(50).build();
+                        itemService.save(item);
+                        alarmService.insertAlarm(FirebaseAlarm.builder().userId(questUser.getId())
+                                .content(quest.getContent()+" 퀘스트가 완료되었습니다. 메인화면에서 보상을 확인하세요.").dType("questAchieve")
+                                .url("/mainTree").senderId(item.getId()).build());
+                    }
+                }
+                quest.setParticipantCount(participantCount);
+                questService.save(quest);
+                postCreateDto.setQuest(quest);
             } else {
                 return ResponseHandler.generateResponse("요청값이 부족합니다.", HttpStatus.ACCEPTED);
             }
 
             postCreateDto.setUser(user);
-            
             postCreateDto.setRegistTime(LocalDateTime.now());
-            // 친구 인증글 알림 시 사용
-//            Post post = postService.savePost(postImage, postCreateDto);
             postService.savePost(postImage, postCreateDto);
             statisticService.updateCount(userId, category, isQuest);
-            itemService.save(Item.builder().left(50).top(50).category(category).user(user).build());
+            Item item = Item.builder().left(50).top(50).category(category).user(user).build();
+            itemService.save(item);
+            postCreateDto.setItemId(item.getId());
 
+            // 친구 인증글 알림 시 사용
+//            Post post = postService.savePost(postImage, postCreateDto);
 
             // 친구 인증글 알림
 //            friendService.getFriends(postCreateDto.getUser().getId()).forEach(friend -> {

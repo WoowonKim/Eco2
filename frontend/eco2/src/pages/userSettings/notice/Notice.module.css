@@ -1,11 +1,36 @@
+.table {
+  width: 330px;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  text-align: left;
   margin-top: 10px;
-  background-color: #eeeeee;
-  padding: 7px 10px;
+  /* background-color: #eeeeee; */
+  background-color: rgba(87, 214, 150, 1);
+  /* padding: 7px 10px;s */
   border-radius: 5px;
+  color: white;
+}
+
+.button {
+  display: flex;
+  justify-content: end;
+}
+
+.noticePost {
+  border: 2px solid #dadada;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+  padding: 3px 3px;
+  font-size: small;
+}
+
+.noticePost:hover {
+  background-color: #dadada;
+  color: black;
 }
 
 .title {
@@ -31,8 +56,19 @@
 
 .pageNumber {
   padding: 7px;
+  margin: 0 10px;
+  font-size: small;
+  color: #b6b4b4;
 }
 
 .pageNumber:hover {
   cursor: pointer;
+  color: black;
+}
+
+.active {
+  color: black;
+  background-color: #dadada5d;
+  border-radius: 10px;
+  padding: 5px 10px;
 }

@@ -5,7 +5,7 @@ import styles from "./ReplyList.module.css";
 
 const ReplyList = ({ id, commentId, replys, commentUserId, setTest }) => {
   return (
-    <ul className={styles.ul}>
+    <div className={styles.replyList}>
       {replys?.length > 0 &&
         replys.map(
           (reply) =>
@@ -19,10 +19,11 @@ const ReplyList = ({ id, commentId, replys, commentUserId, setTest }) => {
                 commentUserId={commentUserId}
                 setTest={setTest}
                 userEmail={reply.userEmail}
+                registTime={reply.registTime}
               />
             )
         )}
-    </ul>
+    </div>
   );
 };
 

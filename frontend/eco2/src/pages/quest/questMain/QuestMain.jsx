@@ -1,41 +1,52 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../components/map/Map";
-import { getUserName } from "../../../store/user/common";
+import { getUserName, getUserId } from "../../../store/user/common";
 import styles from "./QuestMain.module.css";
 import QuestModal from "../../../components/modal/questModal/QuestModal";
 import DetailModal from "../../../components/modal/questModal/DetailModal";
 import PostModal from "../../../components/modal/questModal/PostModal";
 import axiosService from "../../../store/axiosService";
+import ConfirmModal from "../../../components/modal/confirmModal/ConfirmModal";
 const QuestMain = () => {
+  const name = getUserName();
   const [count, setCount] = useState(0);
   const [makeFlag, setMakeFlag] = useState(false);
-  const name = getUserName();
   const [createModal, setCreateModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [postModal, setPostModal] = useState(false);
   const [questList, setQuestList] = useState(null);
   const [payload, setPayload] = useState(null);
+  const [questDetail, setQuestDetail] = useState(null);
+  const [questDetailFeeds, setQuestDetailFeeds] = useState(null);
+  const [likeCount, setLikeCount] = useState(0);
+  const [confirm, setConfirm] = useState(false);
+  const [content, setContent] = useState("");
   useEffect(() => {
     axiosService.get("/mission/quest").then((res) => {
       setQuestList(res.data.missions);
     });
-  }, []);
-  const [testDetail] = useState({
-    userId: 1,
-    missionId: 1,
-    title: "공원 청소를 합시다!",
-    content: "공원에 쓰레기가 너무 많아요 쓰레기를 치웁시다!",
-    imgURL: process.env.PUBLIC_URL + "test.jpg",
-  });
-
+  }, [likeCount]);
   const openCreateModal = () => {
     setCreateModal(true);
   };
   const closeCreateModal = () => {
     setCreateModal(false);
   };
+
   const openDetailModal = (id) => {
-    setDetailModal(true);
+    axiosService
+      .get(`/quest/detail/${id}/${getUserId()}`)
+      .then((res) => {
+        console.log(res.data.quest);
+        setQuestDetail(res.data.quest);
+        axiosService.get(`quest/${res.data.quest.id}`).then((r) => {
+          console.log(r.data.questPosts);
+          setQuestDetailFeeds(r.data.questPosts);
+        });
+      })
+      .finally(() => {
+        setDetailModal(true);
+      });
   };
   const closeDetailModal = () => {
     setDetailModal(false);
@@ -46,31 +57,32 @@ const QuestMain = () => {
   const closePostModal = () => {
     setPostModal(false);
   };
+
+  useEffect(
+    (id) => {
+      if (!id) {
+        return;
+      }
+      openDetailModal(id);
+    },
+
+    [likeCount]
+  );
   return (
     <div>
-      <div className={styles.titleGroup}>
-        <p className={styles.title}>퀘스트 조회하기</p>
-        <button
-          className={styles.button}
-          onClick={() => {
-            openCreateModal();
-          }}
-        >
-          {makeFlag ? "취소하기" : "생성하기"}
-        </button>
-      </div>
       <Map
         makeFlag={makeFlag}
+        setCreateModal={setCreateModal}
         openCreateModal={openCreateModal}
         openDeatailModal={openDetailModal}
         setMakeFlag={setMakeFlag}
         payload={payload}
+        setCount={setCount}
+        name={name}
+        count={count}
+        setConfirm={setConfirm}
+        setContent={setContent}
       />
-      <div>
-        <p className={styles.text}>
-          {name}님 주변에는 현재 {count}개의 퀘스트가 있습니다.
-        </p>
-      </div>
       <QuestModal
         open={createModal}
         close={closeCreateModal}
@@ -79,13 +91,33 @@ const QuestMain = () => {
         setPayload={setPayload}
         setMakeFlag={setMakeFlag}
       ></QuestModal>
-      <DetailModal
-        open={detailModal}
-        close={closeDetailModal}
-        openPost={openPostModal}
-        content={testDetail}
-      ></DetailModal>
-      <PostModal open={postModal} close={closePostModal}></PostModal>
+      {questDetail && (
+        <DetailModal
+          open={detailModal}
+          close={closeDetailModal}
+          openPost={openPostModal}
+          questDetail={questDetail}
+          questDetailFeeds={questDetailFeeds}
+          setLikeCount={setLikeCount}
+        ></DetailModal>
+      )}
+      {questDetail && (
+        <PostModal
+          open={postModal}
+          questDetail={questDetail}
+          close={closePostModal}
+          closeDetail={closeDetailModal}
+        ></PostModal>
+      )}
+      {confirm && (
+        <ConfirmModal
+          closeModal={() => {
+            setConfirm(!confirm);
+          }}
+          title={""}
+          content={content}
+        ></ConfirmModal>
+      )}
     </div>
   );
 };

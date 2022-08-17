@@ -10,11 +10,11 @@
 }
 
 .list::-webkit-scrollbar {
-  height: 13px;
+  height: 10px;
 }
 
 .list::-webkit-scrollbar-thumb {
-  background-color: #adc178;
+  background-color: lightgrey;
   background-clip: padding-box;
   border: 3px solid transparent;
   border-radius: 100px;
@@ -27,5 +27,5 @@
 }
 
 .box {
-  height: 100px;
+  /* height: 100px; */
 }

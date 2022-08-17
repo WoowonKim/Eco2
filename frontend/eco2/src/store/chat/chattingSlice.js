@@ -7,7 +7,6 @@ export const chattingList = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.get(`/chat/room/${args.userId}`);
-      console.log(response.data);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -21,7 +20,6 @@ export const chattingMessageList = createAsyncThunk(
   async (args, rejectWithValue) => {
     try {
       const response = await axiosService.get(`/chat/message/${args.roomId}`);
-      console.log(response.data);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -36,8 +34,6 @@ export const chattingFriendList = createAsyncThunk(
       const response = await axiosService.get(
         `/account/friend?id=${args.userId}`
       );
-      console.log("dddddddddddddddd");
-      console.log(response.data);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -76,14 +72,31 @@ export const deleteRoom = createAsyncThunk(
   }
 );
 
+// 이름으로 아이디 검색
+export const findByName = createAsyncThunk(
+  "chattingSlice/findByName",
+  async (args, rejectWithValue) => {
+    try {
+      const response = await axiosService.get(`/chat/findName/${args.toUser}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 export const chattingSlice = createSlice({
   name: "chatting",
-  initialState: [],
-  reducers: {},
+  initialState: {
+    data: [],
+    detail: [],
+  },
+  reducers: {
+  },
   extraReducers: {
     [chattingList.fulfilled]: (state, action) => {
       if (action.payload.status === 200) {
         console.log("chattingList fulfilled", action.payload);
+        state.data = action.payload.chatRoomList;
       }
     },
     [chattingList.rejected]: (state, action) => {

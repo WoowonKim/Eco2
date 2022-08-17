@@ -1,23 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styles from "./FeedCategory.module.css";
 import FeedList from "../../components/feed/feedList/FeedList";
+import { useDispatch } from "react-redux";
+import { postList } from "../../store/post/postSlice";
 
 const FeedCategory = () => {
+  const [likeCount, setLikeCount] = useState(0);
+  const [feeds, setFeeds] = useState([]);
+
   const location = useLocation();
-  const params = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(postList()).then((res) => {
+      console.log(res);
+      if (res.payload?.status === 200) {
+        setFeeds(res.payload.postListDtos);
+        console.log(res.payload.postListDtos);
+      }
+    });
+  }, [likeCount]);
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>카테고리 {params.feedCategory}</h1>
-      {!!location.state?.feeds ? (
+      {!!feeds && (
         <FeedList
           category={location.state?.category}
           display={"grid"}
-          feeds={location.state?.feeds}
+          feeds={feeds}
+          setLikeCount={setLikeCount}
         />
-      ) : (
-        <div className={styles.text}>게시물이 존재하지 않습니다.</div>
       )}
     </div>
   );

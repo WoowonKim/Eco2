@@ -10,19 +10,12 @@ import {
   updateLeaf,
 } from "../../store/mainTree/leavesSlice";
 import { getUserId } from "../../store/user/common";
+import { setCreatedToNull } from "../../store/post/postSlice";
 const MainTree = () => {
   let dispatch = useDispatch();
   const leaves = useSelector((state) => state.leaves);
-  let currUser = useSelector((state) => state.user.user);
-  let categoryCounts = useMemo(() => {
-    const categoryCounts = [0, 0, 0, 0, 0, 0];
-    for (let i in leaves.data) {
-      categoryCounts[leaves.data[i].category - 1]++;
-    }
-    return categoryCounts;
-  }, [leaves]);
+  let createdItem = useSelector((state) => state.post.createdItem);
   useEffect(() => {
-    console.log(currUser);
     dispatch(getLeaves(getUserId()));
   }, []);
   const moveLeaf = (id, left, top) => {
@@ -37,6 +30,7 @@ const MainTree = () => {
         const left = Math.round(item.left + delta.x);
         const top = Math.round(item.top + delta.y);
         moveLeaf(item.id, left, top);
+        dispatch(setCreatedToNull());
         return undefined;
       },
     }),
@@ -49,16 +43,39 @@ const MainTree = () => {
         setStatistic(res.payload.statistic);
       }
     });
+    return () => {
+      dispatch(setCreatedToNull());
+    };
   }, []);
   return (
     <div className={styles.Tree} ref={drop}>
       <img
-        src={process.env.PUBLIC_URL + "tree_leaves/mainTree.png"}
+        src={process.env.PUBLIC_URL + "tree_leaves/tree6.png"}
         className={styles.Img}
         draggable="false"
       ></img>
+      <img
+        className={styles.windImg}
+        src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
+      ></img>
+      <img
+        className={styles.windImg2}
+        src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
+      ></img>
+      <img
+        className={styles.windImg3}
+        src={process.env.PUBLIC_URL + "tree_leaves/wind.png"}
+      ></img>
       {leaves.data.map((leaf) => {
         const { id, left, top, category } = leaf;
+        let delay = Math.random() * 2;
+        delay *= 10;
+        delay = Math.floor(delay);
+        delay /= 10;
+        console.log(id, createdItem);
+        if (id === createdItem) {
+          delay = 0;
+        }
         return (
           <Leaf
             key={id}
@@ -66,32 +83,47 @@ const MainTree = () => {
             left={left}
             top={top}
             category={category}
+            delay={delay + "s"}
+            createdItem={createdItem}
           ></Leaf>
         );
       })}
       <div className={styles.Statis}>
-        <p>
-          <i className="fa-solid fa-person-walking"></i>실천{" "}
-          {statistic.category1}회
-        </p>
-        <p>
-          <i className="fa-solid fa-cookie-bite"></i>사용 {statistic.category2}
-          회
-        </p>
-        <p>
-          <i className="fa-solid fa-arrows-down-to-line"></i>절약{" "}
-          {statistic.category3}회
-        </p>
-        <p>
-          <i className="fa-solid fa-basket-shopping"></i>구매{" "}
-          {statistic.category4}회
-        </p>
-        <p>
-          <i className="fa-solid fa-recycle"></i>재활용 {statistic.category5}회
-        </p>
-        <p>
-          <i className="fa-solid fa-clover"></i>기타 {statistic.category6}회
-        </p>
+        <div>
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf1.png"}
+          ></img>
+          실천 {statistic.category1}회
+        </div>
+        <div>
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf2.png"}
+          ></img>
+          사용 {statistic.category2}회
+        </div>
+        <div>
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf3.png"}
+          ></img>
+          절약 {statistic.category3}회
+        </div>
+        <div>
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf4.png"}
+          ></img>
+          구매 {statistic.category4}회
+        </div>
+        <div>
+          <img
+            className={styles.leaf}
+            src={process.env.PUBLIC_URL + "/tree_leaves/Leaf5.png"}
+          ></img>
+          재활용 {statistic.category5}회
+        </div>
       </div>
     </div>
   );

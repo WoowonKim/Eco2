@@ -26,14 +26,10 @@ function KakaoLogin() {
     ).then((res) => {
       console.log(res);
       if (res.payload.status === 200) {
-        axiosService.defaults.headers.common[
-          "Auth-accessToken"
-        ] = `${res.payload.accessToken}`;
         if (!res.payload.user.name) {
           setUserEmail(false, res.payload.user.email);
           setUserId(false, res.payload.user.id);
           setAccessToken(false, res.payload.accessToken);
-
           navigate("/ecoName");
         } else {
           setUserEmail(false, res.payload.user.email);
@@ -48,7 +44,7 @@ function KakaoLogin() {
         navigate("/");
       } else if (res.payload.status === 203) {
         alert(res.payload.msg);
-        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=http://localhost:3000/kakao&scope=account_email`;
+        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT}&scope=account_email`;
       } else {
         removeUserSession();
         navigate("/");

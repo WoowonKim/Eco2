@@ -18,6 +18,7 @@ const PostDetail = () => {
   const [like, setLike] = useState(false);
   const [test, setTest] = useState(0);
   const [likeUsers, setLikeUsers] = useState(false);
+  const [registTime, setRegistTime] = useState("");
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -65,6 +66,10 @@ const PostDetail = () => {
   useEffect(() => {
     dispatch(post({ postId: params.postId })).then((res) => {
       if (res.payload?.status === 200) {
+        console.log(res.payload);
+        if (res.payload?.msg === "비공개 계정입니다.") {
+          navigate("/mainFeed");
+        }
         setFeedItem(res.payload.post);
         if (res.payload.post.comments !== null) {
           setComments(
@@ -90,10 +95,33 @@ const PostDetail = () => {
     // });
   }, [test, likeUsers]);
 
+  useEffect(() => {
+    if (!feedItem?.registTime) {
+      return;
+    }
+    setRegistTime(feedItem?.registTime.split("T")[0]);
+  }, [feedItem?.registTime]);
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         {/* <h1 className={styles.text}>{feedItem.category}</h1> */}
+        <div className={styles.info}>
+          <div
+            className={styles.userProfile}
+            onClick={() =>
+              navigate(`/profile/${feedItem.userId}`, {
+                state: { userEmail: feedItem.userEmail },
+              })
+            }
+          >
+            <img
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${feedItem.userId}`}
+              alt="profileImg"
+              className={styles.profileImg}
+            />
+            <p className={styles.user}>{feedItem.userName}</p>
+          </div>
+        </div>
         <div className={styles.dropdown}>
           <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
           <div className={styles.dropdownContent}>
@@ -123,10 +151,6 @@ const PostDetail = () => {
                     className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
                   ></i>
                 </button>
-                <button className={styles.dropdownItem}>
-                  비공개
-                  <i className={`fa-solid fa-lock ${styles.dropdownIcon}`}></i>
-                </button>
               </div>
             ) : (
               <button
@@ -148,7 +172,7 @@ const PostDetail = () => {
       {visible && modalType === "수정" && (
         <PostModal
           title={"게시물 수정"}
-          content={"게시물을 수정하시겠습니까"}
+          content={"게시물을 수정하시겠습니까?"}
           type={"수정"}
           postId={feedItem.id}
           img={feedItem.postImgUrl}
@@ -161,7 +185,7 @@ const PostDetail = () => {
         <PostModal
           className={`${displayType}`}
           title={"게시물 삭제"}
-          content={"게시물을 삭제하시겠습니까"}
+          content={"게시물을 삭제하시겠습니까?"}
           type={"삭제"}
           postId={feedItem.id}
           closeModal={() => setVisible(!visible)}
@@ -178,44 +202,31 @@ const PostDetail = () => {
         />
       )}
       <img
-        src={`http://localhost:8002/img/post/${feedItem.id}`}
+        src={`${process.env.REACT_APP_BE_HOST}img/post/${feedItem.id}`}
         alt="postImg"
         className={styles.postImg}
       />
-      <div className={styles.info}>
-        <div
-          className={styles.userProfile}
-          onClick={() =>
-            navigate(`/profile/${feedItem.userId}`, {
-              state: { userEmail: feedItem.userEmail },
-            })
-          }
-        >
-          <img
-            src={`http://localhost:8002/img/profile/${feedItem.userId}`}
-            alt="profileImg"
-            className={styles.profileImg}
-          />
-          <p className={styles.user}>{feedItem.userName}</p>
-        </div>
+      <div className={styles.heartAndRegistTime}>
         <button className={styles.button} onClick={handlePostLike}>
           {likeUsers ? (
-            <i className={`fa-solid fa-heart ${styles.heart}`}></i>
+            <i className={`fa-solid fa-heart fa-2x ${styles.heart}`}></i>
           ) : (
-            <i className={`fa-regular fa-heart ${styles.heart}`}></i>
+            <i className={`fa-regular fa-heart fa-2x ${styles.heart}`}></i>
           )}
           {feedItem.likeCount}
         </button>
+        <span className={styles.registTime}>{registTime}</span>
       </div>
-      <p className={styles.content}>{feedItem.content}</p>
+      <pre className={styles.content}>{feedItem.content}</pre>
       <hr className={styles.line} />
       {feedItem.commentFlag && (
-        <div>
+        <>
           <div className={styles.CommentForm}>
             <CommentForm
               postId={feedItem.id}
               userId={getUserId()}
               setTest={setTest}
+              type={true}
             />
           </div>
           <CommentList
@@ -224,7 +235,7 @@ const PostDetail = () => {
             replys={replys}
             setTest={setTest}
           />
-        </div>
+        </>
       )}
     </div>
   );

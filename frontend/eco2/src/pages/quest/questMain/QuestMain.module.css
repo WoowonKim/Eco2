@@ -1,6 +1,6 @@
 .titleGroup {
   display: flex;
-  margin-top: 20px;
+  /* margin-top: 65px; */
   justify-content: space-between;
   align-items: center;
 }
@@ -11,5 +11,23 @@
 }
 
 .text {
+  color: #6a707c;
   font-size: small;
+  font-weight: bold;
+}
+
+.title {
+  color: #6a707c;
+  font-weight: bold;
+}
+
+.createButton {
+  color: #6a707c;
+  font-weight: bold;
+  margin-top: 3px;
+}           
+
+.plusIcon {
+  color: #adc178;
+  margin-left: 3px;
 }

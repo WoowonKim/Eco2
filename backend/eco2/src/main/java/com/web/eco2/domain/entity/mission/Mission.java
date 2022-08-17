@@ -28,9 +28,18 @@ public class Mission {
     @Column(name = "mis_content", length = 200, nullable = false)
     private String content;
 
-    //추천 필드 추가
-    @Column(name = "mis_clear_flag")
-    private Boolean clearFlag;
+    //추천 필드
+    // 3: 맑음 여부 상관 x, 1: 맑을 때, 2: 비 올 때
+    @Column(name = "mis_sunny_flag")
+    private Integer sunnyFlag;
+
+    // 3: 아무곳이나, 1: 외부활동, 2: 내부활동
+    @Column(name = "mis_outside_flag")
+    private Integer outsideFlag;
+
+    // 7: 아무때나, 1: 추울 때, 2: 보통, 4: 더울때
+    @Column(name = "mis_temperature_flag")
+    private Integer temperatureFlag;
 
     @Column(name = "mis_quest_flag", nullable = false)
     private boolean questFlag;

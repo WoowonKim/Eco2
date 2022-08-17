@@ -3,7 +3,6 @@
   margin: 0;
   padding: 0;
   justify-content: center;
-  margin-top: 30px;
 }
 
 .img {
@@ -12,11 +11,16 @@
 }
 
 .createRoomButton {
-  font-size: 50px;
+  margin-left: 15px;
+  font-size: 60px;
+  display: block;
   position: fixed;
-  bottom: 70px;
+  bottom: 90px;
+  color: rgb(87, 214, 150);
 }
-
+.createRoomButton:hover {
+  color: rgb(166, 228, 166);
+}
 .noChattingList{
   padding-top: 30px;
 }

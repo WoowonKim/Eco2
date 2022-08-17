@@ -3,12 +3,12 @@
   margin: 0;
   padding: 0;
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 30px;
 }
 
 .img {
   height: 200px;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 }
 
 .emailCheckText {
@@ -46,31 +46,53 @@
   background: white;
   border: none;
   border-bottom: 1px solid #dadada;
-  width: 270px;
+  width: 83%;
   height: 35px;
   padding-left: 10px;
+  font-family: "NanumBarunGothicLight";
+}
+
+.input::placeholder {
+  color: #dadada;
 }
 
 .input:focus {
   outline: none;
 }
 
+.passwordInput {
+  background: white;
+  border: none;
+  border-bottom: 1px solid #dadada;
+  width: 100%;
+  height: 35px;
+  padding-left: 10px;
+  font-family: "NanumBarunGothicLight";
+}
+
+.passwordInput::placeholder {
+  color: #dadada;
+}
+
+.passwordInput:focus {
+  outline: none;
+}
+
 .button {
   width: 55px;
   height: 35px;
-  border: 1px solid #dadada;
+  border: 1px solid rgb(87, 214, 150);
   border-radius: 8px;
   margin-left: 5px;
   cursor: pointer;
-  background-color: #adc178;
+  background-color: rgb(87, 214, 150);
   color: white;
+  font-family: "NanumBarunGothicLight";
 }
 
 .buttonEmail:disabled {
   background-color: #dadada;
-}
-.signupButton:disabled {
-  background-color: #dadada;
+  border: none;
 }
 
 .inputEmail {
@@ -89,20 +111,24 @@
 }
 
 .buttonEmail {
-  width: 15%;
+  width: 55px;
   height: 35px;
-  border: 1px solid #dadada;
+  border: 1px solid rgb(87, 214, 150);
   border-radius: 8px;
+  margin-left: 5px;
   cursor: pointer;
-  background-color: #adc178;
+  background-color: rgb(87, 214, 150);
   color: white;
+  font-family: "NanumBarunGothicLight";
 }
 
-.timer {
-  font-size: small;
-  color: red;
-  margin: 0 8px;
-  text-align: center;
+.signupButton {
+  font-family: "NanumBarunGothicLight";
+}
+
+.signupButton:disabled {
+  background-color: #dadada;
+  border: none;
 }
 
 .lineGroup {
@@ -128,7 +154,7 @@
 }
 
 .longLine {
-  width: 45%;
+  width: 53%;
   height: 1px;
   padding: 0;
   margin: 0 0 0 5px;
@@ -151,6 +177,13 @@
 .success {
   color: #949191;
   margin: 5px 0 20px 0;
+  font-size: x-small;
+  text-align: start;
+}
+
+.codeMessage {
+  color: #949191;
+  margin: 5px 0 5px 0;
   font-size: x-small;
   text-align: start;
 }

@@ -8,32 +8,47 @@ import {
   emailCheck,
   emailVerify,
   emailVerifyCode,
+  login,
   newPassword,
 } from "../../store/user/userSlice";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
+import {
+  getUserId,
+  setAccessToken,
+  setUserEmail,
+  setUserId,
+  setUserName,
+} from "../../store/user/common";
+import ConfirmModal from "../../components/modal/confirmModal/ConfirmModal";
+import { useEffect } from "react";
 
 const FindPassword = () => {
   const [visibility, setVisibility] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState("");
 
   const [message, setMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  const [loginFailMsg, setLoginFailMsg] = useState(false);
 
   const [isEmail, setIsEmail] = useState(false);
   const [isCode, setIsCode] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+  const [reject, setReject] = useState(false);
 
-  const isEmailValid = useSelector((state) => state.user.isEmailValid);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const buttonText = visibility ? "재전송" : "인증";
+  const displayType = visibility ? styles.visible : styles.hidden;
+
+  const isRejected = useSelector((state) => state.user.isRejected);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -86,7 +101,15 @@ const FindPassword = () => {
       setIsPasswordConfirm(false);
     }
   };
+  useEffect(() => {
+    setReject(isRejected);
+  }, [isRejected]);
 
+  useEffect(() => {
+    if (!!getUserId() && getUserId() != null) {
+      navigate("/mainTree");
+    }
+  });
   return (
     <div>
       <h2 className={styles.title}>비밀번호 재설정</h2>
@@ -106,16 +129,19 @@ const FindPassword = () => {
           </p>
         )}
         {email.length === 0 && <div className={styles.test}></div>}
-        {visibility && isEmail && (
+        {visibility && isEmail && !isCode && (
           <div>
-            <div className={styles.EmailInput}>
+            <div className={`${styles.EmailInput}, ${displayType}`}>
               <input
                 type="text"
-                className={styles.inputEmail}
+                className={styles.input}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="인증 번호"
               />
               <button
+                disabled={isCode || code.trim().length == 0}
+                className={styles.buttonEmail}
+                type="button"
                 onClick={() =>
                   dispatch(emailVerifyCode({ email, code })).then((res) => {
                     if (res.payload.status === 200) {
@@ -125,21 +151,20 @@ const FindPassword = () => {
                     setMessage(`${res.payload.msg}`);
                   })
                 }
-                className={styles.buttonEmail}
               >
                 인증
               </button>
             </div>
-            <p className={isPassword ? styles.success : styles.fail}>
-              {message}
-            </p>
+            <p className={styles.codeMessage}>인증번호 유효시간은 5분입니다!</p>
+            <p className={isCode ? styles.success : styles.fail}>{message}</p>
           </div>
         )}
       </form>
       <form onSubmit={handleSubmit}>
-        <LoginInput
+        <input
           onChange={passwordValidation}
           type="password"
+          className={styles.passwordInput}
           placeholder="새 비밀번호"
         />
         {password.length > 0 && (
@@ -149,9 +174,10 @@ const FindPassword = () => {
         )}
         {password.length === 0 && <div className={styles.test}></div>}
 
-        <LoginInput
+        <input
           onChange={passwordConfirmValidation}
           type="password"
+          className={styles.passwordInput}
           placeholder="새 비밀번호 확인"
         />
         {password2.length > 0 && (
@@ -169,12 +195,62 @@ const FindPassword = () => {
                 email: email,
                 password: password,
               })
-            );
+            )
+              .then((res) => {
+                if (res.payload.status === 200) {
+                  dispatch(
+                    login({ email: email, password: password, socialType: 0 })
+                  )
+                    .then((res) => {
+                      if (res.payload?.status === 200) {
+                        setLoginFailMsg(false);
+                        setUserEmail(false, email);
+                        setUserName(false, res.payload.user.name);
+                        setUserId(false, res.payload.user.id);
+                        setAccessToken(false, res.payload.accessToken);
+                        window.location.replace("/");
+                      }
+                      setLoginFailMsg(true);
+                      setMessage(
+                        "등록된 이메일이 없거나 비밀번호가 일치하지 않습니다."
+                      );
+                    })
+                    .catch((err) => {
+                      setVisible(!visible);
+                      setReject(true);
+                    });
+                }
+              })
+              .catch((err) => {
+                setVisible(!visible);
+                setReject(true);
+              });
           }}
         >
           비밀번호 변경
         </GreenBtn>
       </form>
+      {(visible || reject) && (
+        <ConfirmModal
+          title={"비밀번호 변경"}
+          content={"비밀번호를 변경할 수 없습니다."}
+          closeModal={() => {
+            if (visible) {
+              setVisible(!visible);
+            } else {
+              setReject(!reject);
+            }
+          }}
+        />
+      )}
+      <div className={styles.lineGroup}>
+        <hr className={styles.shortLine} />
+        <span className={styles.lineText}>다시 로그인하시겠어요?</span>
+        <hr className={styles.longLine} />
+      </div>
+      <button onClick={() => navigate("/")} className={styles.toLogin}>
+        로그인 하기
+      </button>
     </div>
   );
 };

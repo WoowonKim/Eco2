@@ -6,12 +6,7 @@
   bottom: 0;
   left: 0;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-.modal button {
-  outline: none;
-  cursor: pointer;
-  border: 0;
+  background-color: rgba(148, 148, 148, 0.6);
 }
 .modal > section {
   width: 90%;
@@ -25,7 +20,8 @@
 }
 .modal > section > header {
   padding: 16px 16px;
-  background-color: #f1f1f1;
+  background-color: rgb(87, 214, 150);
+  color: #FFF;
   font-weight: 700;
 }
 
@@ -33,97 +29,143 @@
   padding: 16px;
   border-bottom: 1px solid #dee2e6;
   border-top: 1px solid #dee2e6;
+  position: relative;
 }
-.modal > section > footer {
-  padding: 12px 16px;
-  text-align: center;
-}
-.modal > section > footer .close {
-  padding: 6px 12px;
-  color: #fff;
-  background-color: #6c757d;
-  font-size: 13px;
-  border-radius: 8px;
-  width: 80%;
-  height: 35px;
 
-  text-align: center;
-  color: white;
-  cursor: pointer;
-  margin-top: 10px;
-}
 .modal.openModal {
   display: flex;
   align-items: center;
   /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-bg-show 0.3s;
 }
-.modal .imgBox {
-  background-color: #6c757d;
-  width: 100%;
-  height: 200px;
-  border-radius: 20px;
+ .main {
   display: flex;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.imgBtn {
-  align-self: center;
-  position: absolute;
-  top: 45%;
-}
-
-.imgInput {
-  display: none;
-}
-.previewImg {
+  flex-wrap: wrap;
   width: 100%;
-  object-fit: cover;
-  border-radius: 20px;
+  justify-content: start;
+}
+
+.selectBox {
+  position: relative;
+  width: 100%;
+  height: 35px;
+  border-bottom: rgb(87, 214, 150) solid 2px;
+  background-color: white;
   z-index: 1;
 }
+.selectBox .select {
+  width: inherit;
+  height: inherit;
+  background: transparent;
+  border: 0 none;
+  outline: 0 none;
+  font-family: "NanumBarunGothicLight";
+  padding: 0;
+  position: relative;
+  z-index: 3;
+  appearance: none;
+}
+.option {
+  color: rgb(44, 44, 44);
+  font-size: 12px;
+  border: 0 none;
+}
+.selectBox .icoArrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 35px;
+  height: inherit;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  color:  rgb(87, 214, 150);
+}
 
-.main {
+.selectBox .icoArrow i {
+  width: 50%;
+  transition: 0.3s;
+}
+
+.selectBox .select:focus + .icoArrow i {
+  transform: rotate(180deg);
+}
+
+.countBox{
+  width: 100%;
+  margin-top: 20px;
+  font-size: 13px;
   display: flex;
-  flex-direction: column;
 }
-.selectBox {
-  width: 80%;
-  margin: 10px auto;
+.numInput{
+  font-family: "NanumBarunGothicLight";
+  border: none;
+  margin-left: 10px;
+  padding-left: 10px;
+  border-bottom: rgb(87, 214, 150) solid 2px;
 }
-p {
-  font-size: small;
-  margin-top: 14px;
+.numInput:focus {
+  outline: none;
 }
-.fieldset {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 5px;
+
+.contentBox{
+  display: block;
+  margin-top: 17px;
+  font-size: 13px;
+  width: 100%;
+  text-align: left;
+}
+.contentTitle{
+  padding-bottom: 6px;
+  border-bottom: rgb(87, 214, 150) solid 2px;
   width: 100%;
 }
-.fieldset label {
-  margin: 3px;
-}
-.fieldset textarea {
+.contentText{
   width: 100%;
-  height: 6.25em;
-  resize: none;
+  margin-top: 8px;
+  height: 60px;
+  border: rgb(185, 185, 185) solid 1px;
 }
 
-.create {
-  background: #adc178;
-  border: 1px solid #dadada;
-  border-radius: 8px;
-  width: 80%;
-  height: 35px;
+.contentText:focus {
+  outline: none;
+}
+.modal > section > footer {
+  padding: 12px 16px;
   text-align: center;
-  color: white;
-  cursor: pointer;
-  margin-top: 10px;
+}
+.create{
+  border: none;
+  background-color: rgb(87, 214, 150) ;
+  color:#FFF;
+  padding:10px 17px;
+  margin-right: 10px;
+  font-family: "NanumBarunGothicLight";
+  border-radius: 10px;
+  box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
+}
+.create:hover{
+  background-color:rgb(166, 228, 166);;
+}
+.create:disabled {
+  background-color: #b3b3b3;
+}
+.close{
+  border: none;
+  background-color: #FFF ;
+  color:rgb(122, 122, 122);
+  padding:10px 17px;
+  font-family: "NanumBarunGothicLight";
+  border-radius: 10px;
+  box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
+}
+.close:hover{
+  background-color:rgb(221, 221, 221);;
+}
+.p{
+  margin: 5px;
+  font-size: x-small;
 }
 @keyframes modal-show {
   from {

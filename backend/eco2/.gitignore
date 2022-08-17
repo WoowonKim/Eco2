@@ -43,5 +43,5 @@ path/to/serviceAccountKey.json
 img/profile_img/**
 img/reward_img/**
 img/post_img/**
-!img/profile_img/default.jpg
+!img/profile_img/default.png
 !img/reward_img/rewardImage.jpg

@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers("/user/**")
                 .antMatchers("/socket/**")
+                .antMatchers("/img/**")
 
         ;
     }

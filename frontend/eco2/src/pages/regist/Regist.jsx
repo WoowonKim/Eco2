@@ -29,7 +29,7 @@ const Regist = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [socialType, setSocialType] = useState(0);
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState("");
 
   const [visibility, setVisibility] = useState(false);
 
@@ -112,7 +112,7 @@ const Regist = () => {
   return (
     <div className={styles.signup}>
       <img
-        src={process.env.PUBLIC_URL + "logo.png"}
+        src={process.env.PUBLIC_URL + "logo2.png"}
         alt="earth"
         className={styles.img}
       />
@@ -140,16 +140,17 @@ const Regist = () => {
         <p className={isEmail ? styles.success : styles.fail}>{emailMessage}</p>
       )}
       {email.length === 0 && <div className={styles.test}></div>}
-      {visibility && isEmail && (
+      {visibility && isEmail && !isCode && (
         <div>
           <div className={`${styles.EmailInput}, ${displayType}`}>
             <input
               type="text"
-              className={styles.inputEmail}
+              className={styles.input}
               onChange={(e) => setCode(e.target.value)}
               placeholder="인증 번호"
             />
             <button
+              disabled={isCode || code.trim().length == 0}
               className={styles.buttonEmail}
               type="button"
               onClick={() =>
@@ -165,17 +166,18 @@ const Regist = () => {
               인증
             </button>
           </div>
-          <p className={isPassword ? styles.success : styles.fail}>{message}</p>
+          <p className={styles.codeMessage}>인증번호 유효시간은 5분입니다!</p>
+          <p className={isCode ? styles.success : styles.fail}>{message}</p>
         </div>
       )}
       <div>
         <label htmlFor="passwordInput" className={styles.label}>
           비밀번호
         </label>
-        <LoginInput
+        <input
           type="password"
           onChange={passwordValidation}
-          className={styles.input}
+          className={styles.passwordInput}
           placeholder="비밀번호"
         />
         {password.length > 0 && (
@@ -187,10 +189,10 @@ const Regist = () => {
         <label htmlFor="passwordInput2" className={styles.label}>
           비밀번호 확인
         </label>
-        <LoginInput
+        <input
           type="password"
           onChange={passwordConfirmValidation}
-          className={styles.input}
+          className={styles.passwordInput}
           placeholder="비밀번호 확인"
         />
         {password2.length > 0 && (
@@ -214,9 +216,6 @@ const Regist = () => {
                 })
               )
                 .then((res) => {
-                  axiosService.defaults.headers.common[
-                    "Auth-accessToken"
-                  ] = `${res.payload.user.accessToken}`;
                   setUserEmail(false, email);
                   setUserId(false, res.payload.user.id);
                   setAccessToken(false, res.payload.accessToken);

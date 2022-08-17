@@ -1,12 +1,29 @@
 /* global kakao */
 import React, { useEffect, useRef, useState } from "react";
-import { createQuest, getQuestList } from "../../store/quest/questSlice";
+import {
+  createQuest,
+  getQuestList,
+  getStatus,
+  setStatus,
+} from "../../store/quest/questSlice";
 import { getLocation } from "../../utils";
 import styles from "./Map.module.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/";
-const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
+const Map = ({
+  openCreateModal,
+  makeFlag,
+  payload,
+  openDeatailModal,
+  setCount,
+  setMakeFlag,
+  count,
+  name,
+  setConfirm,
+  setContent,
+}) => {
   let dispatch = useDispatch();
+  const [counter, setCounter] = useState(0);
   const [lat, setLat] = useState(33.450701);
   const [lon, setLon] = useState(126.570667);
   const [kakaoMap, setKakaoMap] = useState(null);
@@ -25,7 +42,6 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
   const questMarkers = useSelector((state) => state.quest);
   function getMyLocation() {
     getLocation().then((res) => {
-      console.log("위치구했다.");
       setLat(res.latitude);
       setLon(res.longitude);
     });
@@ -44,17 +60,16 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
     getMyLocation();
     dispatch(getQuestList());
   }, [container]);
-
   // 내위치에 마크와 원을 입력하는 이펙트
   useEffect(() => {
     if (kakaoMap === null) {
       return;
     }
-    console.log("내위치 마커찍기");
     var locPosition = new kakao.maps.LatLng(lat, lon);
+    const imageSrc = process.env.PUBLIC_URL + "/questImg/home.png";
     var markerImage = new kakao.maps.MarkerImage(
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      new kakao.maps.Size(24, 35)
+      imageSrc,
+      new kakao.maps.Size(35, 35)
     );
     var marker = new kakao.maps.Marker({
       map: kakaoMap,
@@ -74,7 +89,6 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
     });
     setMapCircle(circle);
     kakaoMap.setCenter(locPosition);
-    console.log("영역 표시");
     circle.setMap(kakaoMap);
   }, [kakaoMap, lat]);
   let markers = [];
@@ -83,31 +97,81 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
     if (kakaoMap === null) {
       return;
     }
-    console.log("퀘스트마커를 찍자");
-    questMarkers.data.map((quest) => {
-      let position = new kakao.maps.LatLng(quest.lng * 1, quest.lat * 1);
-      let marker = new kakao.maps.Marker({ map: kakaoMap, position });
-      kakao.maps.event.addListener(marker, "click", function () {
-        openDeatailModal(quest.id);
+    questMarkers.data
+      .filter((quest) => {
+        return !quest.finishFlag;
+      })
+      .map((quest) => {
+        const imageSrc = process.env.PUBLIC_URL + "/questImg/gps.png";
+        var markerImage = new kakao.maps.MarkerImage(
+          imageSrc,
+          new kakao.maps.Size(35, 35)
+        );
+        let position = new kakao.maps.LatLng(quest.lng * 1, quest.lat * 1);
+        let marker = new kakao.maps.Marker({
+          map: kakaoMap,
+          image: markerImage,
+          position,
+        });
+        markers.push(marker);
+        let lat1 = position.La * 0.017453;
+        let lng1 = position.Ma * 0.017453;
+        let lat2 = lon * 0.017453;
+        let lng2 = lat * 0.017453;
+        let dist =
+          6378137 *
+          Math.acos(
+            Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
+              Math.sin(lat1) * Math.sin(lat2)
+          );
+        if (dist < 500) {
+          kakao.maps.event.addListener(marker, "click", function () {
+            openDeatailModal(quest.id);
+          });
+        } else {
+          kakao.maps.event.addListener(marker, "click", function () {
+            setContent("너무 멀어요!");
+            setConfirm(true);
+          });
+        }
+        if (dist < 500) {
+          setCounter((counter) => counter + 1);
+        }
       });
-      markers.push(marker);
-    });
     return () => {
       markers.map((marker) => {
         marker.setMap(null);
       });
+      setCounter(0);
     };
   }, [kakaoMap, questMarkers]);
-
   //핀을 찍을 수 있게 해주는 이펙트
+  useEffect(() => {
+    setCount(counter);
+  }, [counter]);
   useEffect(() => {
     let clickHandler = function (event) {
       let quest = payload;
       quest.lat = event.latLng.La.toString();
       quest.lng = event.latLng.Ma.toString();
-      dispatch(createQuest(quest));
+      console.log(quest);
+      dispatch(createQuest(quest)).then((res) => {
+        console.log(res);
+        if (res.payload.status === 202) {
+          setConfirm(true);
+          setContent("3개 이상 등록할 수 없어요!");
+        } else {
+          setConfirm(true);
+          setContent("퀘스트가 생성되었습니다!");
+        }
+      });
       setMakeFlag(false);
     };
+    // if (makeFlag && questMarkers.status === 202) {
+    //   setConfirm(true);
+    //   setMakeFlag(false);
+    //   setContent("3개 이상 등록할 수 없어요!");
+    // }
     if (makeFlag) {
       kakao.maps.event.addListener(mapCircle, "click", clickHandler);
     }
@@ -115,20 +179,45 @@ const Map = ({ makeFlag, payload, openDeatailModal, setMakeFlag }) => {
       kakao.maps.event.removeListener(mapCircle, "click", clickHandler);
     };
   }, [kakaoMap, makeFlag]);
-
   return (
     <div className={styles.map_wrap}>
       <div ref={container} id="map" className={styles.map}></div>
-      <div className={styles.map_my_position}>
-        <span
-          id="btnMyPosiotion"
-          className={styles.btn_my_position}
-          onClick={() => {
-            kakaoMap.setCenter(new kakao.maps.LatLng(lat, lon));
-          }}
-        >
-          내 위치
-        </span>
+      <div className={styles.title}>
+        <div className={styles.userCount}>
+          <p className={styles.text}>
+            {name}님 주변에는 현재 {count}개의 퀘스트가 있습니다.
+          </p>
+        </div>
+        <div className={styles.map_my_position}>
+          <div
+            id="btnMyPosiotion"
+            className={styles.btn_my_position}
+            onClick={() => {
+              kakaoMap.setCenter(new kakao.maps.LatLng(lat, lon));
+            }}
+          >
+            <i className="fa-solid fa-location-arrow"></i>
+          </div>
+        </div>
+        {makeFlag && (
+          <div className={styles.postAlert}>원하는 위치에 마커를 찍으세요!</div>
+        )}
+        <div className={styles.createQuest}>
+          오늘의 퀘스트를 생성하고 함께 참여해보세요!
+          <div
+            className={styles.createButton}
+            onClick={() => {
+              if (!makeFlag) openCreateModal();
+              else setMakeFlag(!makeFlag);
+            }}
+          >
+            {makeFlag ? "취소하기" : "생성하기"}{" "}
+            <i
+              className={`${"fa-solid fa-circle-plus"} ${styles.plusIcon}`}
+            ></i>
+            {/* </div> */}
+          </div>
+        </div>
       </div>
     </div>
   );
