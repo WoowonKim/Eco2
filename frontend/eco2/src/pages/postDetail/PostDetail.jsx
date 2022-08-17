@@ -15,7 +15,6 @@ const PostDetail = () => {
   const [feedItem, setFeedItem] = useState({});
   const [comments, setComments] = useState([]);
   const [replys, setReplys] = useState([]);
-  const [like, setLike] = useState(false);
   const [test, setTest] = useState(0);
   const [likeUsers, setLikeUsers] = useState(false);
   const [registTime, setRegistTime] = useState("");
@@ -28,39 +27,35 @@ const PostDetail = () => {
   const name = getUserName();
 
   const handlePostLike = () => {
-    dispatch(postLike({ postId: feedItem.id, userId: getUserId() })).then(
-      (res) => {
-        if (res.payload.status === 200) {
-          // setLike(!like);
-          dispatch(post({ postId: params.postId })).then((res) => {
-            if (res.payload?.status === 200) {
-              setFeedItem(res.payload.post);
-              if (res.payload.post.postLikeUserIds !== null) {
-                setLikeUsers(
-                  res.payload.post.postLikeUserIds.some((id) => {
-                    return id == getUserId();
-                  })
-                );
-              }
+    dispatch(postLike({ postId: feedItem.id, userId: getUserId() })).then((res) => {
+      if (res.payload.status === 200) {
+        dispatch(post({ postId: params.postId })).then((res) => {
+          if (res.payload?.status === 200) {
+            setFeedItem(res.payload.post);
+            if (res.payload.post.postLikeUserIds !== null) {
+              setLikeUsers(
+                res.payload.post.postLikeUserIds.some((id) => {
+                  return id == getUserId();
+                })
+              );
             }
-          });
-        } else {
-          // setLike(!like);
-          dispatch(post({ postId: params.postId })).then((res) => {
-            if (res.payload?.status === 200) {
-              setFeedItem(res.payload.post);
-              if (res.payload.post.postLikeUserIds !== null) {
-                setLikeUsers(
-                  res.payload.post.postLikeUserIds.some((id) => {
-                    return id == getUserId();
-                  })
-                );
-              }
+          }
+        });
+      } else {
+        dispatch(post({ postId: params.postId })).then((res) => {
+          if (res.payload?.status === 200) {
+            setFeedItem(res.payload.post);
+            if (res.payload.post.postLikeUserIds !== null) {
+              setLikeUsers(
+                res.payload.post.postLikeUserIds.some((id) => {
+                  return id == getUserId();
+                })
+              );
             }
-          });
-        }
+          }
+        });
       }
-    );
+    });
   };
 
   useEffect(() => {
@@ -72,12 +67,8 @@ const PostDetail = () => {
         }
         setFeedItem(res.payload.post);
         if (res.payload.post.comments !== null) {
-          setComments(
-            res.payload.post?.comments.filter((comment) => !comment.commentId)
-          );
-          setReplys(
-            res.payload.post?.comments.filter((comment) => !!comment.commentId)
-          );
+          setComments(res.payload.post?.comments.filter((comment) => !comment.commentId));
+          setReplys(res.payload.post?.comments.filter((comment) => !!comment.commentId));
         }
         if (res.payload.post.postLikeUserIds !== null) {
           setLikeUsers(
@@ -88,11 +79,6 @@ const PostDetail = () => {
         }
       }
     });
-    // dispatch(commentList({ postId: params.postId })).then((res) => {
-    //   if (res.payload?.status === 200) {
-    //     setComments(res.payload.commentDto);
-    //   }
-    // });
   }, [test, likeUsers]);
 
   useEffect(() => {
@@ -104,7 +90,6 @@ const PostDetail = () => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        {/* <h1 className={styles.text}>{feedItem.category}</h1> */}
         <div className={styles.info}>
           <div
             className={styles.userProfile}
@@ -114,11 +99,7 @@ const PostDetail = () => {
               })
             }
           >
-            <img
-              src={`${process.env.REACT_APP_BE_HOST}img/profile/${feedItem.userId}`}
-              alt="profileImg"
-              className={styles.profileImg}
-            />
+            <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${feedItem.userId}`} alt="profileImg" className={styles.profileImg} />
             <p className={styles.user}>{feedItem.userName}</p>
           </div>
         </div>
@@ -135,9 +116,7 @@ const PostDetail = () => {
                   className={styles.dropdownItem}
                 >
                   수정
-                  <i
-                    className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
-                  ></i>
+                  <i className={`fa-solid fa-pencil ${styles.dropdownIcon}`}></i>
                 </button>
                 <button
                   onClick={() => {
@@ -147,9 +126,7 @@ const PostDetail = () => {
                   className={styles.dropdownItem}
                 >
                   삭제
-                  <i
-                    className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-                  ></i>
+                  <i className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}></i>
                 </button>
               </div>
             ) : (
@@ -161,9 +138,7 @@ const PostDetail = () => {
                 className={styles.dropdownItem}
               >
                 신고
-                <i
-                  className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}
-                ></i>
+                <i className={`fa-solid fa-circle-exclamation ${styles.dropdownIcon}`}></i>
               </button>
             )}
           </div>
@@ -176,7 +151,6 @@ const PostDetail = () => {
           type={"수정"}
           postId={feedItem.id}
           img={feedItem.postImgUrl}
-          // category={feedItem.mission.category}
           postContent={feedItem.content}
           closeModal={() => setVisible(!visible)}
         />
@@ -201,18 +175,10 @@ const PostDetail = () => {
           closeModal={() => setVisible(!visible)}
         />
       )}
-      <img
-        src={`${process.env.REACT_APP_BE_HOST}img/post/${feedItem.id}`}
-        alt="postImg"
-        className={styles.postImg}
-      />
+      <img src={`${process.env.REACT_APP_BE_HOST}img/post/${feedItem.id}`} alt="postImg" className={styles.postImg} />
       <div className={styles.heartAndRegistTime}>
         <button className={styles.button} onClick={handlePostLike}>
-          {likeUsers ? (
-            <i className={`fa-solid fa-heart fa-2x ${styles.heart}`}></i>
-          ) : (
-            <i className={`fa-regular fa-heart fa-2x ${styles.heart}`}></i>
-          )}
+          {likeUsers ? <i className={`fa-solid fa-heart fa-2x ${styles.heart}`}></i> : <i className={`fa-regular fa-heart fa-2x ${styles.heart}`}></i>}
           {feedItem.likeCount}
         </button>
         <span className={styles.registTime}>{registTime}</span>
@@ -222,19 +188,9 @@ const PostDetail = () => {
       {feedItem.commentFlag && (
         <>
           <div className={styles.CommentForm}>
-            <CommentForm
-              postId={feedItem.id}
-              userId={getUserId()}
-              setTest={setTest}
-              type={true}
-            />
+            <CommentForm postId={feedItem.id} userId={getUserId()} setTest={setTest} type={true} />
           </div>
-          <CommentList
-            id={feedItem.id}
-            comments={comments}
-            replys={replys}
-            setTest={setTest}
-          />
+          <CommentList id={feedItem.id} comments={comments} replys={replys} setTest={setTest} />
         </>
       )}
     </div>

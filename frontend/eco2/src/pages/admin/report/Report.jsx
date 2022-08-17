@@ -35,14 +35,7 @@ const Report = () => {
         ) : (
           reports.map((report, i) => {
             return (
-              <ReportItem
-                key={i}
-                id={report.id}
-                count={report.count}
-                post={report.post}
-                commentId={report.commentId}
-                postCategory={report.postCategory}
-              />
+              <ReportItem key={i} id={report.id} count={report.count} post={report.post} commentId={report.commentId} postCategory={report.postCategory} />
             );
           })
         )}

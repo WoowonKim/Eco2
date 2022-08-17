@@ -113,7 +113,6 @@
 .reportButton:disabled {
   background-color: #dadada;
   border: 2px solid #dadada;
-  /* color: black; */
 }
 
 .cancleButton {
@@ -151,17 +150,6 @@
   background-size: 20px;
   cursor: pointer;
 }
-/* 
-.selectBox2:after {
-  content: "";
-  display: block;
-  width: 2px;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  right: 35px;
-  background: lightcoral;
-} */
 
 .selectBox2 .label {
   display: flex;

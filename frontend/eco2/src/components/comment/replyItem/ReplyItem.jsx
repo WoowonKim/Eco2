@@ -8,16 +8,7 @@ import { getUserName } from "../../../store/user/common";
 import PostModal from "../../modal/postModal/PostModal";
 import { useNavigate } from "react-router-dom";
 
-const ReplyItem = ({
-  id,
-  content,
-  user,
-  postId,
-  commentUserId,
-  setTest,
-  userEmail,
-  registTime,
-}) => {
+const ReplyItem = ({ id, content, user, postId, commentUserId, setTest, userEmail, registTime }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState(false);
@@ -39,11 +30,7 @@ const ReplyItem = ({
                 })
               }
             >
-              <img
-                src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
-                alt="profileImg"
-                className={styles.profileImg}
-              />
+              <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`} alt="profileImg" className={styles.profileImg} />
               <p className={styles.user}>{user}</p>
             </div>
             <div>
@@ -63,12 +50,9 @@ const ReplyItem = ({
                     className={styles.dropdownItem}
                   >
                     수정
-                    <i
-                      className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
-                    ></i>
+                    <i className={`fa-solid fa-pencil ${styles.dropdownIcon}`}></i>
                   </button>
                   <button
-                    // onClick={() => handleDelete()}
                     onClick={() => {
                       setModalVisible(!modalVisible);
                       setModalType("삭제");
@@ -76,9 +60,7 @@ const ReplyItem = ({
                     className={styles.dropdownItem}
                   >
                     삭제
-                    <i
-                      className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
-                    ></i>
+                    <i className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}></i>
                   </button>
                 </div>
               </div>
@@ -109,21 +91,11 @@ const ReplyItem = ({
               })
             }
           >
-            <img
-              src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`}
-              alt="profileImg"
-              className={styles.profileImg}
-            />
+            <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${commentUserId}`} alt="profileImg" className={styles.profileImg} />
             <p className={styles.user}>{user}</p>
           </div>
           <div className={styles.editForm}>
-            <CommentForm
-              id={id}
-              postId={postId}
-              content={content}
-              setTest={setTest}
-              closeModal={() => setVisible(!visible)}
-            />
+            <CommentForm id={id} postId={postId} content={content} setTest={setTest} closeModal={() => setVisible(!visible)} />
           </div>
         </div>
       )}

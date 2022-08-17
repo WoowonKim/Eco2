@@ -1,28 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  getUserEmail,
-  getUserId,
-  getUserName,
-  setUserName,
-} from "../../store/user/common";
-import {
-  passwordChange,
-  passwordCheck,
-  profileImgChange,
-} from "../../store/user/userSettingSlice";
-import {
-  ecoName,
-  ecoNameVerify,
-  newPassword,
-} from "../../store/user/userSlice";
+import { getUserEmail, getUserName, setUserName } from "../../store/user/common";
+import { passwordChange, passwordCheck } from "../../store/user/userSettingSlice";
+import { ecoName, ecoNameVerify, newPassword } from "../../store/user/userSlice";
 import styles from "./UserSettings.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { nameLengthValidation, passwordValidationCheck } from "../../utils";
 import Settings from "./settings/Settings";
 import Notice from "./notice/Notice";
 import PostModal from "../../components/modal/postModal/PostModal";
-import axiosService from "../../store/axiosService";
 import ConfirmModal from "../../components/modal/confirmModal/ConfirmModal";
 
 const UserSettings = () => {
@@ -40,16 +26,14 @@ const UserSettings = () => {
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordMessage2, setPasswordMessage2] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
-  const [file, setFile] = useState("");
-  const [autoLogin, setAutoLogin] = useState(false);
-  const [originalImg, setOriginalImg] = useState("");
 
+  const [autoLogin, setAutoLogin] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
   const email = getUserEmail();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const location = useLocation();
 
   const socialType = location.state?.socialType;
@@ -76,27 +60,23 @@ const UserSettings = () => {
       setNameMessage("3글자 이상 8글자 이하로 입력해주세요.");
       setIsName(false);
     } else {
-      dispatch(ecoNameVerify({ econame: e.target.value.trimStart() })).then(
-        (res) => {
-          if (res.payload.status === 200) {
-            console.log(e.target.value.trim());
-            setNameMessage("올바른 이름 형식입니다 :)");
-            setIsName(true);
-          } else {
-            setIsName(false);
-            setNameMessage(`${res.payload.msg}`);
-          }
+      dispatch(ecoNameVerify({ econame: e.target.value.trimStart() })).then((res) => {
+        if (res.payload.status === 200) {
+          console.log(e.target.value.trim());
+          setNameMessage("올바른 이름 형식입니다 :)");
+          setIsName(true);
+        } else {
+          setIsName(false);
+          setNameMessage(`${res.payload.msg}`);
         }
-      );
+      });
     }
   };
 
   const passwordValidation = (e) => {
     setNewPassword(e.target.value);
     if (passwordValidationCheck(e.target.value)) {
-      setPasswordMessage(
-        "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!"
-      );
+      setPasswordMessage("숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!");
       setIsPassword(false);
     } else {
       setPasswordMessage("안전한 비밀번호에요 : )");
@@ -144,20 +124,8 @@ const UserSettings = () => {
           <div className={styles.emailGroup}>
             <div className={styles.emailTitleGroup}>
               <p className={styles.emailTitle}>이메일</p>
-              {socialType === 1 && (
-                <img
-                  src={`${process.env.PUBLIC_URL}/google_logo.png`}
-                  alt="social_logo"
-                  className={styles.socialLogo}
-                />
-              )}
-              {socialType === 2 && (
-                <img
-                  src={`${process.env.PUBLIC_URL}/kakao_logo.png`}
-                  alt="social_logo"
-                  className={styles.socialLogo}
-                />
-              )}
+              {socialType === 1 && <img src={`${process.env.PUBLIC_URL}/google_logo.png`} alt="social_logo" className={styles.socialLogo} />}
+              {socialType === 2 && <img src={`${process.env.PUBLIC_URL}/kakao_logo.png`} alt="social_logo" className={styles.socialLogo} />}
             </div>
             <p className={styles.email}>{email}</p>
           </div>
@@ -168,25 +136,16 @@ const UserSettings = () => {
               </label>
             </div>
             <div className={styles.passwordForm}>
-              <input
-                id="EcoName"
-                className={styles.passwordFormInput}
-                placeholder="EcoName"
-                value={name}
-                onChange={ecoNameValidation}
-              />
+              <input id="EcoName" className={styles.passwordFormInput} placeholder="EcoName" value={name} onChange={ecoNameValidation} />
               <button
                 onClick={() => {
-                  dispatch(ecoName({ email, econame: name.trim() })).then(
-                    (res) => {
-                      if (res.payload?.status === 200) {
-                        setUserName(autoLogin, name.trim());
-                        // setNameMessage("EcoName이 저장되었습니다");
-                        setVisible(!visible);
-                        setModalType("확인");
-                      }
+                  dispatch(ecoName({ email, econame: name.trim() })).then((res) => {
+                    if (res.payload?.status === 200) {
+                      setUserName(autoLogin, name.trim());
+                      setVisible(!visible);
+                      setModalType("확인");
                     }
-                  );
+                  });
                 }}
                 disabled={!isName}
                 className={styles.passwordFormButton}
@@ -194,13 +153,10 @@ const UserSettings = () => {
                 변경
               </button>
             </div>
-            <p className={isName ? styles.success : styles.fail}>
-              {nameMessage}
-            </p>
+            <p className={isName ? styles.success : styles.fail}>{nameMessage}</p>
           </div>
           {visible && modalType === "로그아웃" && (
             <PostModal
-              // className={`${displayType} ${scrollType}`}
               title={"로그아웃"}
               className={`${modalDisplayType}`}
               content={"로그아웃 하시겠습니까"}
@@ -218,25 +174,13 @@ const UserSettings = () => {
             />
           )}
           {visible && modalType === "확인" && (
-            <ConfirmModal
-              title={"EcoName 변경"}
-              content={"EcoName 변경이 완료되었습니다."}
-              closeModal={() => setVisible(!visible)}
-            />
+            <ConfirmModal title={"EcoName 변경"} content={"EcoName 변경이 완료되었습니다."} closeModal={() => setVisible(!visible)} />
           )}
           {visible && modalType === "비밀번호" && (
-            <ConfirmModal
-              title={"비밀번호"}
-              content={"비밀번호 변경이 완료되었습니다."}
-              closeModal={() => setVisible(!visible)}
-            />
+            <ConfirmModal title={"비밀번호"} content={"비밀번호 변경이 완료되었습니다."} closeModal={() => setVisible(!visible)} />
           )}
           {visible && modalType === "동일" && (
-            <ConfirmModal
-              title={"비밀번호"}
-              content={"이전과 동일한 비밀번호 입니다."}
-              closeModal={() => setVisible(!visible)}
-            />
+            <ConfirmModal title={"비밀번호"} content={"이전과 동일한 비밀번호 입니다."} closeModal={() => setVisible(!visible)} />
           )}
           {!!socialType && (
             <div>
@@ -264,15 +208,10 @@ const UserSettings = () => {
           {!socialType && (
             <div className={styles.passwordGroup}>
               <p className={styles.label}>비밀번호 변경 / 탈퇴</p>
-              <p className={styles.passwordSmallText}>
-                비밀번호를 변경하시거나 탈퇴를 하시려면 비밀번호를 확인해주세요
-              </p>
+              <p className={styles.passwordSmallText}>비밀번호를 변경하시거나 탈퇴를 하시려면 비밀번호를 확인해주세요</p>
               {!passwordForm ? (
                 <div>
-                  <label
-                    htmlFor="passwordCheck"
-                    className={styles.passwordText}
-                  ></label>
+                  <label htmlFor="passwordCheck" className={styles.passwordText}></label>
                   <input
                     id="passwordCheck"
                     type="password"
@@ -280,37 +219,18 @@ const UserSettings = () => {
                     onChange={(e) => setPassword(e.target.value.trimStart())}
                     className={styles.passwordFormInput}
                   />
-                  <button
-                    onClick={handlePassword}
-                    disabled={!password}
-                    className={styles.passwordFormButton}
-                  >
+                  <button onClick={handlePassword} disabled={!password} className={styles.passwordFormButton}>
                     확인
                   </button>
-                  <p className={passwordForm ? styles.success : styles.fail}>
-                    {passwordMessage2}
-                  </p>
+                  <p className={passwordForm ? styles.success : styles.fail}>{passwordMessage2}</p>
                   <hr className={styles.line} />
                 </div>
               ) : (
                 <form>
                   <label htmlFor="newPassword"></label>
-                  <input
-                    id="newPassword"
-                    type="password"
-                    onChange={passwordValidation}
-                    // value={"" || newPassword}
-                    placeholder="새 비밀번호"
-                    className={styles.passwordFormInput}
-                  />
-                  {newPassword.length > 0 && (
-                    <p className={isPassword ? styles.success : styles.fail}>
-                      {passwordMessage}
-                    </p>
-                  )}
-                  {newPassword.length === 0 && (
-                    <div className={styles.test}></div>
-                  )}
+                  <input id="newPassword" type="password" onChange={passwordValidation} placeholder="새 비밀번호" className={styles.passwordFormInput} />
+                  {newPassword.length > 0 && <p className={isPassword ? styles.success : styles.fail}>{passwordMessage}</p>}
+                  {newPassword.length === 0 && <div className={styles.test}></div>}
                   <label htmlFor="newPasswordCheck"></label>
                   <input
                     id="newPasswordCheck"
@@ -322,9 +242,7 @@ const UserSettings = () => {
                   <button
                     className={styles.passwordFormButton}
                     onClick={() =>
-                      dispatch(
-                        passwordChange({ email, password: newpassword.trim() })
-                      ).then((res) => {
+                      dispatch(passwordChange({ email, password: newpassword.trim() })).then((res) => {
                         if (res.payload.status === 200) {
                           setVisible(!visible);
                           setModalType("비밀번호");
@@ -339,18 +257,8 @@ const UserSettings = () => {
                   >
                     변경
                   </button>
-                  {password2.length > 0 && (
-                    <p
-                      className={
-                        isPasswordConfirm ? styles.success : styles.fail
-                      }
-                    >
-                      {passwordConfirmMessage}
-                    </p>
-                  )}
-                  {password2.length === 0 && (
-                    <div className={styles.test}></div>
-                  )}
+                  {password2.length > 0 && <p className={isPasswordConfirm ? styles.success : styles.fail}>{passwordConfirmMessage}</p>}
+                  {password2.length === 0 && <div className={styles.test}></div>}
 
                   <hr className={styles.line} />
                 </form>
@@ -395,9 +303,7 @@ const UserSettings = () => {
       ) : userSetting === 2 ? (
         <Settings email={email} />
       ) : (
-        <Notice
-        // admin={location.state?.admin}
-        />
+        <Notice />
       )}
     </div>
   );

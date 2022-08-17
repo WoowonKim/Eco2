@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 // Component
 import { GreenBtn } from "../../../components/styled";
@@ -11,12 +10,7 @@ import MissionCustomItem from "../../../components/dailyMission/missionItem/miss
 import CalendarModal from "../../../components/calendar/calendarModal/CalendarModal";
 
 // Store
-import {
-  getMission,
-  missionPost,
-  postTodayMission,
-  missionItem,
-} from "../../../store/mission/missionMainSlice";
+import { getMission, missionPost, postTodayMission, missionItem } from "../../../store/mission/missionMainSlice";
 import { getUserId } from "../../../store/user/common";
 import { getLocation } from "../../../utils";
 
@@ -39,13 +33,15 @@ const DailyMissionMain = () => {
 
   const [missionDelete, setMissionDelete] = useState(false);
   const [cusMissionDelete, setCusMissionDelete] = useState(false);
-  const recommendedMission = useSelector(state => state.missionMain.data);
-  const modalOpen = useSelector(state => state.missionMain.open);
+  const recommendedMission = useSelector((state) => state.missionMain.data);
+  const modalOpen = useSelector((state) => state.missionMain.open);
 
   const [open, setOpen] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [calUR, setCalUR] = useState(0);
 
-  const naviGate = useNavigate();
   const dispatch = useDispatch();
+
   function getToday() {
     var date = new Date();
     var year = date.getFullYear();
@@ -54,10 +50,19 @@ const DailyMissionMain = () => {
     return year + "-" + month + "-" + day;
   }
   const toDayGet = getToday();
-  const successBtn = useSelector(state => state.missionMain.successBtn);
+  const successBtn = useSelector((state) => state.missionMain.successBtn);
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
   const displayType = visible ? styles.visible : styles.hidden;
+  const month = nowTime.slice(5, 7);
+  const days = nowTime.slice(8, 10);
+  /**
+   *  미션들의 길이와 미션 완료값이 동일할 경우 오늘 미션 완료로 간주.
+   */
+  const mainResult = main.filter((it) => it.achieveFlag === true);
+  const cusMainResult = cusMain.filter((it) => it.achieveFlag === true);
+  const sumClearMission = mainResult.length + cusMainResult.length;
+  const sumMission = main.length + cusMain.length;
 
   /**
    * 현재 위치를 불러오기 위한 getLocation
@@ -66,45 +71,31 @@ const DailyMissionMain = () => {
    * setLng : 경도?
    */
   useEffect(() => {
-    getLocation().then(res => {
+    getLocation().then((res) => {
       setNowTime(res.timeTwo);
       setLat(res.latitude);
       setLng(res.longitude);
     });
   }, [main]);
-  const month = nowTime.slice(5, 7);
-  const days = nowTime.slice(8, 10);
-  // console.log("날짜 ===>", nowTime);
-  // console.log("월 ===>", nowTime.slice(5, 7));
-  // console.log("일 ===>", nowTime.slice(8, 10));
+
   /**
    * 매일 추천 미션제공을 위한 postTodayMission
    */
   useEffect(() => {
     if (id !== 0) {
-      dispatch(postTodayMission({ id: id, lat, lng, date: nowTime })).then(
-        res => {
-          if (res.payload?.status === 200) {
-            if (id !== 0) {
-              dispatch(getMission({ id: getUserId() })).then(res => {
-                setMain(res.payload.dailyMissionList);
-                setcusMain(res.payload.dailyCustomMissionList);
-              });
-            }
-            setOpen(modalOpen);
+      dispatch(postTodayMission({ id: id, lat, lng, date: nowTime })).then((res) => {
+        if (res.payload?.status === 200) {
+          if (id !== 0) {
+            dispatch(getMission({ id: getUserId() })).then((res) => {
+              setMain(res.payload.dailyMissionList);
+              setcusMain(res.payload.dailyCustomMissionList);
+            });
           }
+          setOpen(modalOpen);
         }
-      );
+      });
     }
   }, [id, missionDelete, cusMissionDelete]);
-
-  /**
-   *  미션들의 길이와 미션 완료값이 동일할 경우 오늘 미션 완료로 간주.
-   */
-  const mainResult = main.filter(it => it.achieveFlag === true);
-  const cusMainResult = cusMain.filter(it => it.achieveFlag === true);
-  const sumClearMission = mainResult.length + cusMainResult.length;
-  const sumMission = main.length + cusMain.length;
 
   /**
    * false이면 오늘 미션 보상받기 활성화
@@ -114,26 +105,7 @@ const DailyMissionMain = () => {
     dispatch(missionItem({ id: id, date: toDayGet }));
   }, []);
 
-  const onSucsses = () => {
-    if (sumClearMission === sumMission) {
-      alert(
-        `축하합니다! 모든 미션을 완료하셨군요!\n나뭇잎 획득 메인페이지로 이동합니다.`
-      );
-      dispatch(missionPost({ id })).then(res => {
-        dispatch(missionItem({ id, date: toDayGet }));
-      });
-      naviGate("/mainTree");
-    } else {
-      alert("미션을 완료하고 눌러주세요!");
-    }
-  };
-
-  //console.log("main ===>", main);
-  // console.log("cusMain===>", cusMain);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const [calUR, setCalUR] = useState(0);
-  // console.log("이미지 받아와보자===>", calUR);
+  console.log("cusMain 확인 --> ", cusMain);
   return (
     <div className={styles.headerMain}>
       {successBtn ? (
@@ -141,9 +113,7 @@ const DailyMissionMain = () => {
           <span className={styles.mainHeaderLeft}>오늘의 도전과제</span>
           <span className={styles.mainHeaderRight}>
             추가하기
-            <i
-              className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
-            ></i>
+            <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
           </span>
         </div>
       ) : (
@@ -152,15 +122,13 @@ const DailyMissionMain = () => {
           <Link to="/dailymissionDetail" className={styles.mainHeaderRight}>
             <span>
               추가하기
-              <i
-                className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}
-              ></i>
+              <i className={`${"fa-solid fa-circle-plus"} ${styles.mainColor}`}></i>
             </span>
           </Link>
         </div>
       )}
       <div>
-        {cusMain.map(it => (
+        {cusMain.map((it) => (
           <MissionCustomItem
             key={it.id}
             content={it.customMission.title}
@@ -176,7 +144,7 @@ const DailyMissionMain = () => {
       </div>
 
       <div>
-        {main.map(it => (
+        {main.map((it) => (
           <MissionMain
             key={it.id}
             content={it.mission.title}
@@ -190,12 +158,6 @@ const DailyMissionMain = () => {
           />
         ))}
       </div>
-      {/* <div>
-        <img
-          src={`${process.env.REACT_APP_BE_HOST}img/reward/${calUR}`}
-          alt=""
-        />
-      </div> */}
       <div className={styles.btn}>
         {successBtn ? (
           <GreenBtn>오늘 미션 보상 완료!</GreenBtn>
@@ -210,7 +172,6 @@ const DailyMissionMain = () => {
                   setModalType("미션등록");
                   setModalVisible(true);
                 }}
-                // onClick={onSucsses}
               >
                 오늘 미션 보상 받기
               </GreenBtn>
@@ -229,29 +190,10 @@ const DailyMissionMain = () => {
             setCalUR={setCalUR}
           />
         )}
-        {calUR > 0 && modalVisible && (
-          <CalendarModal
-            calendarId={calUR}
-            month={month}
-            day={days}
-            closeModal={() => setModalVisible(!modalVisible)}
-          />
-        )}
+        {calUR > 0 && modalVisible && <CalendarModal calendarId={calUR} month={month} day={days} closeModal={() => setModalVisible(!modalVisible)} />}
       </div>
-      {/* <button
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        열려라
-      </button> */}
       {recommendedMission?.weather && (
-        <PopupModal
-          open={open}
-          setOpen={setOpen}
-          weather={recommendedMission.weather}
-          recommendedMission={recommendedMission.recommendedMission}
-        ></PopupModal>
+        <PopupModal open={open} setOpen={setOpen} weather={recommendedMission.weather} recommendedMission={recommendedMission.recommendedMission}></PopupModal>
       )}
     </div>
   );

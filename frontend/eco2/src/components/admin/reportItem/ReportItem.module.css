@@ -1,15 +1,10 @@
 .list {
   width: 380px;
   height: 40px;
-  /* margin: 20px; */
 }
 
 .list:hover {
-  background-color: #EAEAEA;
-}
-
-.link {
-
+  background-color: #eaeaea;
 }
 
 .leftContent {
@@ -24,32 +19,28 @@
   margin-top: 10px;
   display: inline-block;
   width: 18%;
-
 }
-.typeBox{
+.typeBox {
   float: left;
   width: 68px;
 }
-.type{
+.type {
   margin: 10px;
   font-weight: bold;
   font-size: 12px;
   color: #353535;
-  /* width: 300px; */
-  /* text-align: center; */
 }
 
-.text{
+.text {
   font-size: 11px;
   color: grey;
 }
-.report{
-  color:darkred;
+.report {
+  color: darkred;
   font-weight: 600;
   font-size: 11px;
 }
 .line {
-  border: solid #D5D5D5;
+  border: solid #d5d5d5;
   border-width: 1px 0px 0px 0px;
 }
-

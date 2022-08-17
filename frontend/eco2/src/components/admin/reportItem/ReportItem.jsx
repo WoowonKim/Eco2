@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import styles from "./ReportItem.module.css";
 import { commentDetail } from "../../../store/post/commentSlice";
 
@@ -36,11 +36,7 @@ const ReportItem = ({ id, count, post, commentId, postCategory }) => {
 
   return (
     <div className={styles.list}>
-      <Link
-        to={`/report/detail`}
-        state={{ reportId: id, post: post, comment: comment }}
-        className={styles.link}
-      >
+      <Link to={`/report/detail`} state={{ reportId: id, post: post, comment: comment }} className={styles.link}>
         <div className={styles.leftContent}>
           {comment === null ? (
             <div>

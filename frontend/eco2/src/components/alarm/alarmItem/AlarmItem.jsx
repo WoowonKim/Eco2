@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./alarmItem.module.css";
 import { useDispatch } from "react-redux";
-import {
-  deleteAlarm,
-  responseFriendRequest,
-} from "../../../store/alarm/alarmSlice";
+import { deleteAlarm, responseFriendRequest } from "../../../store/alarm/alarmSlice";
 import { getUserId } from "../../../store/user/common";
 import { useNavigate } from "react-router-dom";
 import FriendRequestModal from "../../modal/friendResponseModal/FriendRequestModal";
@@ -22,13 +19,8 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
     const dateTime = new Date(0);
     dateTime.setUTCSeconds(time);
 
-    if (
-      now.valueOf() - dateTime.valueOf() < 86400000 &&
-      now.getDate() === dateTime.getDate()
-    ) {
-      return (
-        addZero(dateTime.getHours()) + ":" + addZero(dateTime.getMinutes())
-      );
+    if (now.valueOf() - dateTime.valueOf() < 86400000 && now.getDate() === dateTime.getDate()) {
+      return addZero(dateTime.getHours()) + ":" + addZero(dateTime.getMinutes());
     } else {
       return dateTime.toLocaleDateString();
     }
@@ -74,7 +66,6 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
   };
 
   const onClickDelete = (id, userId) => {
-    console.log("delete");
     setIsDelete(true);
     setTimeout(() => dispatch(deleteAlarm({ id: id, userId: userId })), 300);
   };
@@ -83,19 +74,6 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
     setMsg(`정말 ${response ? "수락" : "거절"}하시겠습니까?`);
     setAcceptArgs({ friendId, response });
     setVisible(true);
-
-    // if (window.confirm(`정말 ${response ? "수락" : "거절"}하시겠습니까?`)) {
-    //   setIsDelete(true);
-    //   setTimeout(() =>
-    //     dispatch(
-    //       responseFriendRequest({
-    //         id: parseInt(getUserId()),
-    //         friendId: friendId,
-    //         response: response,
-    //       })
-    //     )
-    //   );
-    // }
   };
 
   const onClickNavigate = (id, type, senderId) => {
@@ -117,11 +95,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
 
   return (
     <>
-      <div
-        className={`${styles.container} ${
-          isDelete && styles["container-delete"]
-        }`}
-      >
+      <div className={`${styles.container} ${isDelete && styles["container-delete"]}`}>
         <div className={styles.head}>
           <div className={styles.title}>
             <i className={"fa-solid fa-circle-dot icon"}></i>
@@ -147,11 +121,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
             onClickNavigate(alarm.id, alarm.dtype, alarm.senderId);
           }}
         >
-          <img
-            className={styles.profileImg}
-            src={getImage(alarm)}
-            alt="profileImg"
-          />
+          <img className={styles.profileImg} src={getImage(alarm)} alt="profileImg" />
           <p>{alarm.content}</p>
         </div>
         <>

@@ -13,7 +13,6 @@ const Calendar = ({ id }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [rewardDate, setRewardDate] = useState([]);
-  // const []
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -31,7 +30,6 @@ const Calendar = ({ id }) => {
   };
 
   useEffect(() => {
-    console.log(params.userId);
     dispatch(calendar({ id: params.userId })).then((res) => {
       if (res.payload.status === 200) {
         setRewardDate(res.payload.calendarList);
@@ -40,18 +38,9 @@ const Calendar = ({ id }) => {
   }, [id, params?.userId]);
   return (
     <div className={styles.container}>
-      <CalendarHeader
-        currentMonth={currentMonth}
-        prevMonth={prevMonth}
-        nextMonth={nextMonth}
-      />
+      <CalendarHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
       <CalendarDays />
-      <CalendarBody
-        currentMonth={currentMonth}
-        selectedDate={selectedDate}
-        onDateClick={onDateClick}
-        rewardDate={rewardDate}
-      />
+      <CalendarBody currentMonth={currentMonth} selectedDate={selectedDate} onDateClick={onDateClick} rewardDate={rewardDate} />
     </div>
   );
 };

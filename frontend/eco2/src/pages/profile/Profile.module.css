@@ -4,9 +4,6 @@
 }
 
 .user {
-  /* background: linear-gradient(beige 30%, white); */
-  /* border-radius: 10px; */
-  /* background: linear-gradient(#e9fdd9 20%, white); */
   border-bottom: 1px solid #dadada;
   display: flex;
   justify-content: space-between;
@@ -69,18 +66,15 @@
   margin: 5px 0 0 0;
   font-weight: bold;
   font-size: 17px;
-  /* text-align: center; */
 }
 
 .profileImg {
   width: 140px;
   height: 140px;
   background-color: white;
-  /* //border: 1px solid black; */
   border: none;
   border-radius: 50%;
   margin: 20px 0 10px 0;
-  /* position: relative; */
 }
 
 .imgLabel {
@@ -101,13 +95,11 @@
 
 .editIcon :hover {
   cursor: pointer;
-  /* transform: scale(1.5); */
 }
 
 .icon {
   font-size: 10px;
   color: black;
-  /* margin: 3px; */
   background-color: transparent;
 }
 
@@ -120,9 +112,7 @@
 .button {
   border: none;
   background-color: transparent;
-  /* transition: all 200ms ease-in; */
   padding: 0 0 5px 0;
-  /* margin: 0px; */
   margin-right: 3px;
   margin-left: 3px;
 }
@@ -135,7 +125,6 @@
 .settingIcon {
   color: black;
   font-size: x-small;
-  /* padding: ; */
 }
 
 .friendIcon {
@@ -246,12 +235,6 @@
   background-color: #f4f9e5; /*스크롤바 트랙 색상*/
 }
 
-/* .imgIconGroup { */
-/* position: absolute; */
-/* top: 270px;
-  right: 200px; */
-/* } */
-
 .userNameGroup {
   display: flex;
   justify-content: center;
@@ -261,7 +244,6 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  /* margin-top: 40px; */
 }
 
 .data {

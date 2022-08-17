@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import styles from "./ChattingMessage.module.css";
 import ChattingMessageItem from "../chattingMessageItem/ChattingMessageItem";
 
-const ChattingMessage = ({ chattingMessages,toUser }) => {
+const ChattingMessage = ({ chattingMessages, toUser }) => {
   return (
     <div>
       {chattingMessages &&
