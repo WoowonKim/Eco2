@@ -41,5 +41,4 @@ public class UserSetting {
     @JoinColumn(name = "usr_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-
 }

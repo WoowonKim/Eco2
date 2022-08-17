@@ -1,6 +1,5 @@
 package com.web.eco2.controller;
 
-
 import com.web.eco2.domain.entity.calender.Calendar;
 import com.web.eco2.domain.entity.post.PostImg;
 import com.web.eco2.domain.entity.user.ProfileImg;
@@ -35,6 +34,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/img")
 public class ImageController {
+
     @Autowired
     private PostService postService;
 
@@ -104,11 +104,9 @@ public class ImageController {
         if (!resource.exists()) {
             return ResponseHandler.generateResponse("존재하지 않는 파일입니다.", HttpStatus.ACCEPTED);
         }
-
         HttpHeaders header = new HttpHeaders();
         Path p = Paths.get(saveFolder + "/" + saveName);
         header.add("Content-Type", Files.probeContentType(p));
         return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
     }
-
 }

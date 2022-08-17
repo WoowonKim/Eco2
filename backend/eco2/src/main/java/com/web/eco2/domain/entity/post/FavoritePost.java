@@ -36,6 +36,5 @@ public class FavoritePost {
         this.id = id;
         this.user = user;
         this.post = post;
-
     }
 }

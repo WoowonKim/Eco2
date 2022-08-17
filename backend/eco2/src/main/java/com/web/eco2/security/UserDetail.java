@@ -24,9 +24,10 @@ public class UserDetail implements UserDetails {
         this.user = user;
         List<GrantedAuthority> roles = new ArrayList<>();
         roles = (List<GrantedAuthority>) user.getAuthorities();
-        System.out.println("roles==========="+roles);
+        System.out.println("roles===========" + roles);
         this.setAuthorities(roles);
     }
+
     public User getUser() {
         return this.user;
     }

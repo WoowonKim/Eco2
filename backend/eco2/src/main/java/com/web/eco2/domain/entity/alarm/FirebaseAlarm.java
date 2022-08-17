@@ -1,11 +1,10 @@
 package com.web.eco2.domain.entity.alarm;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 @NoArgsConstructor
@@ -20,15 +19,6 @@ public class FirebaseAlarm {
     private String dType;
     private Long senderId; // 보낸 사람
     private String senderName;
-
-    //user 2개
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "usr_id", nullable = false)
-//    private User user;
-//
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "usr_id", nullable = false)
-//    private User user1;
 
     @Builder
     public FirebaseAlarm(String id, Long userId, String content, String url, String dType, Long senderId, String senderName) {

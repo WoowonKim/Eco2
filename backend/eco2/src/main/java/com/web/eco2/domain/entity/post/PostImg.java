@@ -30,7 +30,6 @@ public class PostImg {
     @Column(name = "poi_save_name", length = 100, nullable = false, unique = true)
     private String saveName;
 
-
     @MapsId
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -2,9 +2,10 @@ package com.web.eco2.domain.entity.post;
 
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
-import com.web.eco2.domain.entity.mission.Quest;
 import com.web.eco2.domain.entity.user.User;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -65,9 +66,7 @@ public class Post {
     private Integer category;
 
 
-    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission
-//            ,Quest quest
-    ) {
+    public Post(Long id, LocalDateTime registTime, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission) {
         this.id = id;
         this.registTime = registTime;
         this.content = content;
@@ -77,11 +76,8 @@ public class Post {
         this.user = user;
         this.mission = mission;
         this.customMission = customMission;
-//        this.quest = quest;
     }
 
     public Post(Long id, String content, boolean report, boolean publicFlag, boolean commentFlag, User user, Mission mission, CustomMission customMission) {
     }
-
-
 }

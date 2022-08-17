@@ -5,17 +5,15 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalField;
 import java.util.Arrays;
 
 @Component
 public class WeatherUtil {
     @Value("${api.weather.key}")
-	private String WEATHER_SERVICE_KEY;
+    private String WEATHER_SERVICE_KEY;
 
     @Value("${api.air.key}")
-	private String AIR_SERVICE_KEY;
+    private String AIR_SERVICE_KEY;
 
     @Value("${kakao-client-id}")
     private String KAKAO_KEY;
@@ -127,11 +125,6 @@ public class WeatherUtil {
 
         ret[0] = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         ret[1] = now.format(DateTimeFormatter.ofPattern("HHmm"));
-//        String timeString = now.format(DateTimeFormatter.ISO_DATE_TIME);
-//        String[] splitedDateTime = timeString.split("T");
-
-//        ret[0] = splitedDateTime[0].replace("-", "");
-//        ret[1] = splitedDateTime[1].replace(":", "").substring(0, 4);
 
         return ret;
     }
@@ -142,8 +135,6 @@ public class WeatherUtil {
         System.out.println(Arrays.toString(instance.convertLatLng2XY(33.450700761312206, 126.57066121198349)));
         System.out.println(Arrays.toString(instance.getBaseDateAndTime(LocalDateTime.now())));
         // 현재 시각과 제일 가까운 정각 / 30분 가져오기 테스트
-//		LocalDateTime now = LocalDateTime.of(2022, 1, 1, 0, 11);
-//		System.out.println(Arrays.toString(instance.getBaseDateAndTime(true, now)));
     }
 
 }

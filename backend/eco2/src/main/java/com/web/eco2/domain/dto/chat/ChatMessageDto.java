@@ -13,14 +13,12 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class ChatMessageDto {
     private Long id;
-
     private ChatRoom chatRoom;
     private User user;
     private String message;
-
     private LocalDateTime sendDate;
 
-    public ChatMessage toEntity(){
+    public ChatMessage toEntity() {
         return ChatMessage.builder()
                 .chatRoom(chatRoom)
                 .user(user)

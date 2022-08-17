@@ -1,19 +1,12 @@
 package com.web.eco2.domain.dto.post;
 
-
-import com.google.gson.JsonArray;
 import com.web.eco2.domain.dto.mission.QuestDto;
-import com.web.eco2.domain.entity.Friend;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
-import com.web.eco2.domain.entity.post.Comment;
-import com.web.eco2.domain.entity.post.PostImg;
-import com.web.eco2.domain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +23,6 @@ public class PostListDto {
     private LocalDateTime registTime;
     private String postImgUrl;
     private boolean userPublicFlag;
-//    private List<Long> friendIds;
     private boolean postPublicFlag;
     private boolean commentFlag;
     private Mission mission;

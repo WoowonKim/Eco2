@@ -9,8 +9,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component

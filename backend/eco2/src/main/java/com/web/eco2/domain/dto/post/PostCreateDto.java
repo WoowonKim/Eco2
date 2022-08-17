@@ -1,9 +1,5 @@
 package com.web.eco2.domain.dto.post;
 
-
-import com.web.eco2.domain.dto.mission.MissionDto;
-import com.web.eco2.domain.dto.mission.QuestDto;
-import com.web.eco2.domain.dto.user.UserDto;
 import com.web.eco2.domain.entity.mission.CustomMission;
 import com.web.eco2.domain.entity.mission.Mission;
 import com.web.eco2.domain.entity.mission.Quest;
@@ -30,14 +26,12 @@ public class PostCreateDto {
     private boolean commentFlag;
     private Long itemId;
 
-
-
     public Post toEntity() {
         return Post.builder()
                 .content(getContent())
                 .user(getUser())
                 .mission(getMission())
-                .category(getMission()!=null?getMission().getCategory(): getCustomMission().getCategory())
+                .category(getMission() != null ? getMission().getCategory() : getCustomMission().getCategory())
                 .customMission(getCustomMission())
                 .registTime(LocalDateTime.now())
                 .publicFlag(isPublicFlag())

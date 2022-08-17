@@ -11,13 +11,10 @@ import java.time.LocalDate;
 public class CalendarDto {
     private LocalDate date;
     private User user;
-
     private String saveFolder;
-
     private String saveName;
 
     public CalendarDto(User user) {
-//        String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         this.date = LocalDate.now();
         this.user = user;
         this.saveFolder = saveFolder;
