@@ -1,32 +1,23 @@
 @charset "utf-8";
 
-
 @font-face {
-  font-family: 'NanumBarunGothicLight';
-  /* font-style: normal;
-  font-weight: 100; */
-  src: url("../public/font/NanumBarunGothicLight.otf") format('truetype')
+  font-family: "NanumBarunGothicLight";
+  src: url("../public/font/NanumBarunGothicLight.otf") format("truetype");
 }
 
 @font-face {
-  font-family: 'NanumBarunGothic';
-  /* font-style: normal;
-  font-weight: 100; */
-  src: url("../public/font/NanumBarunGothic.otf") format('truetype')
+  font-family: "NanumBarunGothic";
+  src: url("../public/font/NanumBarunGothic.otf") format("truetype");
 }
 
 @font-face {
-  font-family: 'NanumBarunGothicBold';
-  /* font-style: normal;
-  font-weight: 100; */
-  src: url("../public/font/NanumBarunGothicBold.otf") format('truetype')
+  font-family: "NanumBarunGothicBold";
+  src: url("../public/font/NanumBarunGothicBold.otf") format("truetype");
 }
 
 @font-face {
-  font-family: 'NanumBarunGothicUltraLight';
-  /* font-style: normal;
-  font-weight: 100; */
-  src: url("../public/font/NanumBarunGothicUltraLight.otf") format('truetype')
+  font-family: "NanumBarunGothicUltraLight";
+  src: url("../public/font/NanumBarunGothicUltraLight.otf") format("truetype");
 }
 
 body {
@@ -35,7 +26,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 390px;
-  /* height: 844px; */
 }
 
 code {
@@ -46,10 +36,8 @@ code {
   box-sizing: border-box;
 }
 #root {
-  /* padding-top: 65px; */
   display: flex;
   justify-content: center;
   padding-top: 65px;
   padding-bottom: 65px;
-
 }
