@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  accountSetting,
-  accountSettingChange,
-} from "../../../store/user/accountSlice";
+import { accountSetting, accountSettingChange } from "../../../store/user/accountSlice";
 import styles from "./Settings.module.css";
 import { useDispatch } from "react-redux";
 import ConfirmModal from "../../../components/modal/confirmModal/ConfirmModal";
@@ -52,9 +49,7 @@ const Settings = ({ email }) => {
       <div className={styles.setting}>
         <div className={styles.settingGroup}>
           <p className={styles.settingTitle}>계정 공개</p>
-          <p className={styles.settingContent}>
-            계정을 공개로 설정하면 다른 유저들이 게시물을 볼 수 있습니다.
-          </p>
+          <p className={styles.settingContent}>계정을 공개로 설정하면 다른 유저들이 게시물을 볼 수 있습니다.</p>
         </div>
         <div className={styles.toggleGroup}>
           <input
@@ -78,9 +73,7 @@ const Settings = ({ email }) => {
       <div className={styles.setting}>
         <div className={styles.settingGroup}>
           <p className={styles.settingTitle}>게시물 댓글</p>
-          <p className={styles.settingContent}>
-            게시물 댓글 알림을 끄면 게시물에 댓글이 달려도 알림이 가지 않습니다.
-          </p>
+          <p className={styles.settingContent}>게시물 댓글 알림을 끄면 게시물에 댓글이 달려도 알림이 가지 않습니다.</p>
         </div>
         <div className={styles.toggleGroup}>
           <input
@@ -104,9 +97,7 @@ const Settings = ({ email }) => {
       <div className={styles.setting}>
         <div className={styles.settingGroup}>
           <p className={styles.settingTitle}>채팅</p>
-          <p className={styles.settingContent}>
-            채팅 알림을 끄면 채팅 팝업 알림이 가지 않습니다.
-          </p>
+          <p className={styles.settingContent}>채팅 알림을 끄면 채팅 팝업 알림이 가지 않습니다.</p>
         </div>
         <div className={styles.toggleGroup}>
           <input
@@ -127,15 +118,10 @@ const Settings = ({ email }) => {
         </div>
       </div>
       <button className={styles.settingButton} onClick={onClick}>
-        {/* <i className="fa-solid fa-check"></i>  */}
         저장
       </button>
       {visible && modalType === "확인" && (
-        <ConfirmModal
-          title={"계정 설정 변경"}
-          content={"계정 설정 변경이 완료되었습니다."}
-          closeModal={() => setVisible(!visible)}
-        />
+        <ConfirmModal title={"계정 설정 변경"} content={"계정 설정 변경이 완료되었습니다."} closeModal={() => setVisible(!visible)} />
       )}
     </div>
   );

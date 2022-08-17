@@ -1,28 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  emailCheck,
-  emailVerify,
-  emailVerifyCode,
-  signUp,
-} from "../../store/user/userSlice";
+import { emailCheck, emailVerify, emailVerifyCode, signUp } from "../../store/user/userSlice";
 import styles from "./Regist.module.css";
-import {
-  GreenBtn,
-  LoginInput,
-  WarningText,
-  ShortGreenBtn,
-} from "../../components/styled";
-import {
-  getUserId,
-  getUserName,
-  setAccessToken,
-  setUserEmail,
-  setUserId,
-} from "../../store/user/common";
+import { GreenBtn } from "../../components/styled";
+import { getUserId, setAccessToken, setUserEmail, setUserId } from "../../store/user/common";
 import { emailValidationCheck, passwordValidationCheck } from "../../utils";
-import axiosService from "../../store/axiosService";
 
 const Regist = () => {
   const [email, setEmail] = useState("");
@@ -80,9 +63,7 @@ const Regist = () => {
   const passwordValidation = (e) => {
     setPassword(e.target.value);
     if (passwordValidationCheck(e.target.value)) {
-      setPasswordMessage(
-        "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!"
-      );
+      setPasswordMessage("숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요!");
       setIsPassword(false);
     } else {
       setPasswordMessage("안전한 비밀번호에요 : )");
@@ -111,44 +92,22 @@ const Regist = () => {
   });
   return (
     <div className={styles.signup}>
-      <img
-        src={process.env.PUBLIC_URL + "logo2.png"}
-        alt="earth"
-        className={styles.img}
-      />
+      <img src={process.env.PUBLIC_URL + "logo2.png"} alt="earth" className={styles.img} />
       <label htmlFor="emailInput" className={styles.label}>
         이메일
       </label>
       <div className={styles.EmailInput}>
-        <input
-          id="emailInput"
-          type="email"
-          className={styles.input}
-          onChange={emailValidation}
-          placeholder="이메일"
-        />
-        <button
-          type="button"
-          onClick={onclick}
-          className={styles.button}
-          disabled={!isEmail}
-        >
+        <input id="emailInput" type="email" className={styles.input} onChange={emailValidation} placeholder="이메일" />
+        <button type="button" onClick={onclick} className={styles.button} disabled={!isEmail}>
           {buttonText}
         </button>
       </div>
-      {email.length > 0 && (
-        <p className={isEmail ? styles.success : styles.fail}>{emailMessage}</p>
-      )}
+      {email.length > 0 && <p className={isEmail ? styles.success : styles.fail}>{emailMessage}</p>}
       {email.length === 0 && <div className={styles.test}></div>}
       {visibility && isEmail && !isCode && (
         <div>
           <div className={`${styles.EmailInput}, ${displayType}`}>
-            <input
-              type="text"
-              className={styles.input}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="인증 번호"
-            />
+            <input type="text" className={styles.input} onChange={(e) => setCode(e.target.value)} placeholder="인증 번호" />
             <button
               disabled={isCode || code.trim().length == 0}
               className={styles.buttonEmail}
@@ -174,32 +133,14 @@ const Regist = () => {
         <label htmlFor="passwordInput" className={styles.label}>
           비밀번호
         </label>
-        <input
-          type="password"
-          onChange={passwordValidation}
-          className={styles.passwordInput}
-          placeholder="비밀번호"
-        />
-        {password.length > 0 && (
-          <p className={isPassword ? styles.success : styles.fail}>
-            {passwordMessage}
-          </p>
-        )}
+        <input type="password" onChange={passwordValidation} className={styles.passwordInput} placeholder="비밀번호" />
+        {password.length > 0 && <p className={isPassword ? styles.success : styles.fail}>{passwordMessage}</p>}
         {password.length === 0 && <div className={styles.test}></div>}
         <label htmlFor="passwordInput2" className={styles.label}>
           비밀번호 확인
         </label>
-        <input
-          type="password"
-          onChange={passwordConfirmValidation}
-          className={styles.passwordInput}
-          placeholder="비밀번호 확인"
-        />
-        {password2.length > 0 && (
-          <p className={isPasswordConfirm ? styles.success : styles.fail}>
-            {passwordConfirmMessage}
-          </p>
-        )}
+        <input type="password" onChange={passwordConfirmValidation} className={styles.passwordInput} placeholder="비밀번호 확인" />
+        {password2.length > 0 && <p className={isPasswordConfirm ? styles.success : styles.fail}>{passwordConfirmMessage}</p>}
         {password2.length === 0 && <div className={styles.test}></div>}
         <GreenBtn
           type="button"

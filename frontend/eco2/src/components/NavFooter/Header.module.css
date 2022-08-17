@@ -2,7 +2,7 @@
   height: 60px;
   padding: 0.7rem;
   color: white;
-  background-color: #FFF;
+  background-color: #fff;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -13,9 +13,6 @@
   right: 0;
   width: 390px;
   z-index: 1;
-  /* border-bottom-color: beige;
-  border-bottom-width: 0.005em;
-  border-bottom-style: solid; */
 }
 
 .Img {
@@ -38,7 +35,6 @@
   font-size: 25px;
 }
 
-.headerIcon:hover{
+.headerIcon:hover {
   color: rgb(196, 196, 196);
 }
-

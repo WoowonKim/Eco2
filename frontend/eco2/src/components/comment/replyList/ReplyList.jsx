@@ -1,9 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import ReplyItem from "../replyItem/ReplyItem";
 import styles from "./ReplyList.module.css";
 
-const ReplyList = ({ id, commentId, replys, commentUserId, setTest }) => {
+const ReplyList = ({ id, replys, commentUserId, setTest }) => {
   return (
     <div className={styles.replyList}>
       {replys?.length > 0 &&

@@ -111,7 +111,6 @@
 }
 
 .content {
-  /* height: 100px; */
   margin: 20px 0;
   text-align: left;
   font-size: 15px;
@@ -139,21 +138,10 @@
   display: none;
 }
 
-/* .scroll {
-  height: 100%;
-  overflow: auto;
-}
-
-.unset {
-  height: 100%;
-  overflow: unset;
-} */
-
 .registTime {
   display: flex;
   font-size: 10px;
   text-align: end;
-  /* justify-content: end; */
   margin-top: 1%;
   margin-left: 67%;
 }

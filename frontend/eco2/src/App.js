@@ -14,18 +14,9 @@ import Alarm from "./pages/alarm/Alarm";
 /* DailyMission */
 import DailyMissionMain from "./pages/dmission/dailyMissionMain/dailyMissionMain";
 import DailyMissionDetail from "./pages/dmission/dailyMissionDetail/dailyMissionDetail";
-import MissionCom from "./components/dailyMission/missionClear/missionCom";
 import DailyCustomMissionList from "./components/dailyMission/missionList/dailyCustomMissionList";
-import CustomPlus from "./components/dailyMission/missionItem/customPlus";
 /* DailyMission End */
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 
 import Footer from "./components/NavFooter/Footer";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,9 +63,7 @@ function App() {
     if (!userId) {
       return;
     }
-    dispatch(
-      userInformation({ email: getUserEmail(), userId: getUserId() })
-    ).then((res) => {
+    dispatch(userInformation({ email: getUserEmail(), userId: getUserId() })).then((res) => {
       if (res.payload.user.role === "[ROLE_ADMIN]") {
         setAdmin(true);
       }
@@ -108,14 +97,6 @@ function App() {
             }
           />
           <Route
-            path="/missionClear"
-            element={
-              <RequireAuth>
-                <MissionCom />
-              </RequireAuth>
-            }
-          />
-          <Route
             path="/dailyCustomMissionList"
             element={
               <RequireAuth>
@@ -123,14 +104,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/customPlus"
-            element={
-              <RequireAuth>
-                <CustomPlus />
-              </RequireAuth>
-            }
-          />
+
           {/*DailyMission */}
           <Route
             path="/mainFeed"
@@ -274,22 +248,10 @@ function App() {
           ></Route>
           <Route path="/*" element={<Error />}></Route>
         </Routes>
-        <div
-          className={`${styles.spinner} ${
-            pending || recommendPending || friendPending
-              ? styles.visible
-              : styles.hidden
-          }`}
-        >
+        <div className={`${styles.spinner} ${pending || recommendPending || friendPending ? styles.visible : styles.hidden}`}>
           <Spinner
             visible={pending || recommendPending || friendPending}
-            message={
-              pending
-                ? "인증 메일을 전송 중입니다 :D"
-                : recommendPending
-                ? "오늘의 추천 미션을 불러오는 중입니다 :D"
-                : "친구 요청을 보내는 중입니다 :D"
-            }
+            message={pending ? "인증 메일을 전송 중입니다 :D" : recommendPending ? "오늘의 추천 미션을 불러오는 중입니다 :D" : "친구 요청을 보내는 중입니다 :D"}
           />
         </div>
       </div>

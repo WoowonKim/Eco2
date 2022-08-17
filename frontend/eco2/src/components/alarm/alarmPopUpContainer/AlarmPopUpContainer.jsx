@@ -16,11 +16,7 @@ const AlarmPopUpContainer = () => {
 
   // 파이어베이스 onSnapShot 생성
   const getFirestoreAlarm = (type) => {
-    const q = firestore.query(
-      firestore.collection(dbService, `alarm/${getUserId()}/${type}`),
-      orderBy("sendTime", "desc"),
-      limit(50)
-    );
+    const q = firestore.query(firestore.collection(dbService, `alarm/${getUserId()}/${type}`), orderBy("sendTime", "desc"), limit(50));
 
     return firestore.onSnapshot(q, async (snapshot) => {
       let now = new Date();
@@ -28,9 +24,7 @@ const AlarmPopUpContainer = () => {
       let recentLookup = 0;
       try {
         // 최근 조회 시간 받아오기
-        const docSnap = await firestore.getDoc(
-          firestore.doc(dbService, `alarm/${getUserId()}`)
-        );
+        const docSnap = await firestore.getDoc(firestore.doc(dbService, `alarm/${getUserId()}`));
 
         recentLookup = docSnap.data()[type + "RecentLookup"];
 
@@ -48,21 +42,14 @@ const AlarmPopUpContainer = () => {
       const alarmArray = snapshot.docs
         .filter((doc) => {
           const alarm = doc.data();
-          // console.log("alarm", alarm);
-          // console.log("location.state", location.state);
           if (
             loc.pathname === "/chatting/room" &&
             alarm.dtype === "newChat" &&
-            (alarm.senderName === location.state.userName ||
-              alarm.senderId === location.state.userId)
+            (alarm.senderName === location.state.userName || alarm.senderId === location.state.userId)
           ) {
-            // await firestore.deleteDoc(firestore.doc(dbService, `alarm/${doc.data().}`))
             deleteArray.push(alarm.id);
             return false;
-          } else if (
-            loc.pathname !== "/alarm" &&
-            alarm.sendTime > recentLookup
-          ) {
+          } else if (loc.pathname !== "/alarm" && alarm.sendTime > recentLookup) {
             toast("🔔 " + alarm.content, {
               position: "bottom-right",
               autoClose: 4000,
@@ -84,16 +71,13 @@ const AlarmPopUpContainer = () => {
       dispatch(setAlarms({ name: type, data: alarmArray }));
 
       deleteArray.forEach(async (id) => {
-        await firestore.deleteDoc(
-          firestore.doc(dbService, `alarm/${getUserId()}/common`, id)
-        );
+        await firestore.deleteDoc(firestore.doc(dbService, `alarm/${getUserId()}/common`, id));
       });
 
       // 최근 조회 시간 업데이트
       const docRef = firestore.doc(dbService, "alarm", getUserId());
       const data = {};
-      data[type + "RecentLookup"] =
-        (now.valueOf() + now.getTimezoneOffset()) / 1000;
+      data[type + "RecentLookup"] = (now.valueOf() + now.getTimezoneOffset()) / 1000;
 
       try {
         await firestore.setDoc(docRef, data, { merge: true });
