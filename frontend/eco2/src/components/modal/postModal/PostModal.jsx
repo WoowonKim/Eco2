@@ -5,7 +5,11 @@ import { noticeDelete } from "../../../store/admin/noticeSlice";
 import { commentDelete } from "../../../store/post/commentSlice";
 import { postDelete, report } from "../../../store/post/postSlice";
 import { friendDelete, friendRequest } from "../../../store/user/accountSlice";
-import { getUserEmail, getUserId, removeUserSession } from "../../../store/user/common";
+import {
+  getUserEmail,
+  getUserId,
+  removeUserSession,
+} from "../../../store/user/common";
 import { deleteUser, logout } from "../../../store/user/userSettingSlice";
 import styles from "./PostModal.module.css";
 import { customDeleteMission } from "../../../store/mission/customMissionSlice";
@@ -60,7 +64,12 @@ const PostModal = ({
   const [hidden, setHidden] = useState(false);
   const displayType = hidden ? styles.hidden : null;
   const [cusMi, setCusMi] = useState([]);
-  const colorType = type === "수정" ? styles.editButton : type === "친구" ? styles.friendButton : styles.warningButton;
+  const colorType =
+    type === "수정"
+      ? styles.editButton
+      : type === "친구"
+      ? styles.friendButton
+      : styles.warningButton;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -133,9 +142,11 @@ const PostModal = ({
       });
     } else if (type === "옮기기") {
       cusMi.push(cosId);
-      dispatch(postMission({ id: userID, customMissionList: cusMi })).then((res) => {
-        setCusSubmit(!cusSubmit);
-      });
+      dispatch(postMission({ id: userID, customMissionList: cusMi })).then(
+        (res) => {
+          setCusSubmit(!cusSubmit);
+        }
+      );
     } else if (type === "등록") {
       dispatch(postMission({ id, dailyMissionList: ecoId })).then((res) => {
         if (res.payload?.status === 200) {
@@ -149,10 +160,12 @@ const PostModal = ({
     } else if (type === "커스텀 미션완료") {
       console.log("영제 커스텀 아이디 확인 ===> ", customMissionId);
       navigate("/post", {
-        state: { customId: customMissionId },
+        state: { customId: customMissionId, missionIdTest: missionIdTest },
       });
     } else if (type === "미션삭제") {
-      dispatch(deleteMission({ id: idTest, missionId: missiondeleteIdTest })).then((res) => {
+      dispatch(
+        deleteMission({ id: idTest, missionId: missiondeleteIdTest })
+      ).then((res) => {
         if (res.payload.status === 200) {
           setMissionDelete(!missionDelete);
         }
@@ -180,12 +193,14 @@ const PostModal = ({
         setCusMissionDelete(!cusMissionDelete);
       });
     } else if (type === "친구삭제") {
-      dispatch(friendDelete({ id: getUserId(), friendId: friendId })).then((res) => {
-        if (res.payload.status === 200) {
-          setFriendDelete((curr) => curr + 1);
-          closeModal();
+      dispatch(friendDelete({ id: getUserId(), friendId: friendId })).then(
+        (res) => {
+          if (res.payload.status === 200) {
+            setFriendDelete((curr) => curr + 1);
+            closeModal();
+          }
         }
-      });
+      );
     } else {
       window.location.replace(`/post/${postId}`);
     }
@@ -201,11 +216,15 @@ const PostModal = ({
           {type === "수정" ? (
             <i className={`fa-regular fa-circle-check ${styles.editIcon}`}></i>
           ) : type === "삭제" ? (
-            <i className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}></i>
+            <i
+              className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}
+            ></i>
           ) : type === "친구" ? (
             <i className={`fa-regular fa-bell ${styles.friendIcon}`}></i>
           ) : (
-            <i className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}></i>
+            <i
+              className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}
+            ></i>
           )}
           <h2 className={styles.title}>{title}</h2>
         </div>
@@ -213,11 +232,19 @@ const PostModal = ({
         <div className={styles.buttonGroup}>
           {type === "수정" ? (
             postId ? (
-              <Link className={styles.link} to="/post" state={{ postId, img, category, content: postContent }}>
+              <Link
+                className={styles.link}
+                to="/post"
+                state={{ postId, img, category, content: postContent }}
+              >
                 <button className={`${colorType}`}>{type}</button>
               </Link>
             ) : (
-              <Link className={styles.link} to="/notice" state={{ noticeId, noticeContent, noticeTitle }}>
+              <Link
+                className={styles.link}
+                to="/notice"
+                state={{ noticeId, noticeContent, noticeTitle }}
+              >
                 <button className={`${colorType}`}>{type}</button>
               </Link>
             )
