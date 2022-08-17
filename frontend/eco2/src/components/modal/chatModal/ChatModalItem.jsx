@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styles from "./ChatModal.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createRoom } from "../../../store/chat/chattingSlice";
 import { getUserId } from "../../../store/user/common";
 
@@ -16,11 +16,7 @@ const ChattModalItem = ({ key, id, email, name }) => {
   return (
     <div className={styles.list}>
       <div className={styles.leftContent}>
-        <img
-          src={`http://localhost:8002/img/profile/${id}`}
-          alt="profileImg"
-          className={styles.profileImg}
-        />
+        <img src={`http://localhost:8002/img/profile/${id}`} alt="profileImg" className={styles.profileImg} />
         <div className={`${styles.text}`}>{name}</div>
       </div>
       <div className={styles.rightContent}>

@@ -16,6 +16,7 @@ const DailyMissionDetail = () => {
   const [famissionList, setFamissionList] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
+  const customMake = location.state?.list;
 
   /**
    * getUserId() : id를 불러오기 위한 함수
@@ -23,25 +24,12 @@ const DailyMissionDetail = () => {
    */
   useEffect(() => {
     setId(getUserId());
-    dispatch(dMission({ id: getUserId() })).then(res =>
-      setMissionList(res.payload.missionList)
-    );
+    dispatch(dMission({ id: getUserId() })).then((res) => setMissionList(res.payload.missionList));
   }, [famissionList]);
 
-  // if (!location.state?.list) {
-  //   setTest(false);
-  // }
-  const customMake = location.state?.list;
-  //onsole.log("넘어오는 값 ===>", customMake);
   return (
     <div>
-      <DailyEcoMissionList
-        id={id}
-        ecomissionList={missionList}
-        customMake={customMake}
-        setFamissionList={setFamissionList}
-        famissionList={famissionList}
-      />
+      <DailyEcoMissionList id={id} ecomissionList={missionList} customMake={customMake} setFamissionList={setFamissionList} famissionList={famissionList} />
     </div>
   );
 };

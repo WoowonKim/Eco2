@@ -79,11 +79,11 @@
   justify-content: start;
 }
 
-.selectBox{
+.selectBox {
   margin-bottom: 15px;
   display: flex;
 }
-.categoryInput{
+.categoryInput {
   font-family: "NanumBarunGothicLight";
   border: none;
   margin-left: 10px;
@@ -93,18 +93,16 @@
 .categoryInput:focus {
   outline: none;
 }
-.contentBox{
+.contentBox {
   border-bottom: rgb(87, 214, 150) solid 2px;
-  /* display: flex; */
-
 }
-.contentTitle{
+.contentTitle {
   padding-bottom: 3px;
   border-bottom: rgb(87, 214, 150) solid 2px;
   width: 100%;
   display: flex;
 }
-.contentText{
+.contentText {
   margin-top: 10px;
   display: flex;
   justify-content: start;
@@ -115,21 +113,21 @@
   resize: none;
   font-family: "NanumBarunGothicLight";
 }
-.contentText:focus{
+.contentText:focus {
   outline: none;
 }
-.create{
+.create {
   border: none;
-  background-color: rgb(87, 214, 150) ;
-  color:#FFF;
-  padding:10px 17px;
+  background-color: rgb(87, 214, 150);
+  color: #fff;
+  padding: 10px 17px;
   margin-right: 10px;
   font-family: "NanumBarunGothicLight";
   border-radius: 10px;
   box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
 }
-.create:hover{
-  background-color:rgb(166, 228, 166);;
+.create:hover {
+  background-color: rgb(166, 228, 166);
 }
 .create:disabled {
   background-color: #b3b3b3;
@@ -138,17 +136,17 @@
   border-radius: 5px;
   border: none;
 }
-.close{
+.close {
   border: none;
-  background-color: #FFF ;
-  color:rgb(122, 122, 122);
-  padding:10px 17px;
+  background-color: #fff;
+  color: rgb(122, 122, 122);
+  padding: 10px 17px;
   font-family: "NanumBarunGothicLight";
   border-radius: 10px;
   box-shadow: 1px 1px 7px 1px rgb(199, 199, 199);
 }
-.close:hover{
-  background-color:rgb(221, 221, 221);;
+.close:hover {
+  background-color: rgb(221, 221, 221);
 }
 
 @keyframes modal-show {

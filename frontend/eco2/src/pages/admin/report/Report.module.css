@@ -3,46 +3,34 @@
   margin: 0;
   padding: 0;
   justify-content: center;
-  /* margin-top: 50px; */
 }
 
-.title{
+.title {
   text-align: left;
   font-size: 18px;
   color: black;
   margin: 10px;
   font-weight: 700;
 }
-.table{
+.table {
   margin-top: 15px;
   padding: 5px;
   font-size: 13px;
   width: 380px;
-  color: #FFF;
+  color: #fff;
   text-align: left;
-  background-color:rgb(87, 214, 150);
+  background-color: rgb(87, 214, 150);
   border-radius: 5px;
 }
-.th{
+.th {
   padding-left: 5px;
 }
-/* .img {
-  height: 200px;
-  margin-bottom: 10px;
-} */
 
-/* .createRoomButton {
-  font-size: 50px;
-  position: fixed;
-  bottom: 70px;
-} */
-
-.noPostList{
+.noPostList {
   padding-top: 30px;
 }
-.noPostMessage{
+.noPostMessage {
   font-size: small;
   font-weight: bold;
   color: grey;
 }
-

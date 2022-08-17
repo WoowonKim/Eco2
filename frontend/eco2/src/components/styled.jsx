@@ -9,7 +9,7 @@ let LoginInput = styled.input`
 `;
 
 let GreenBtn = styled.button`
-font-family: "NanumBarunGothicLight";
+  font-family: "NanumBarunGothicLight";
   background: rgb(87, 214, 150);
   border: 1px solid rgb(87, 214, 150);
   border-radius: 8px;

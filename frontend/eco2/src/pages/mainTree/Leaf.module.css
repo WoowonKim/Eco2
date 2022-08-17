@@ -1,7 +1,3 @@
-/* .leaf:hover {
-  transform: rotate( -20deg );
-} */
-
 .leaf {
   height: "40px";
   -webkit-transform: perspective(1px) translateZ(0);

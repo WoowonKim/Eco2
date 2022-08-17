@@ -1,22 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { postLike } from "../../../store/post/postSlice";
 import { getUserId } from "../../../store/user/common";
 import styles from "./FeedItem.module.css";
 
-const FeedItem = ({
-  id,
-  userId,
-  userName,
-  category,
-  content,
-  postImgUrl,
-  like,
-  userEmail,
-  likeUsers,
-  setLikeCount,
-}) => {
+const FeedItem = ({ id, userId, userName, like, userEmail, likeUsers, setLikeCount }) => {
   const [likeUserId, setLikeUserId] = useState(false);
 
   const navigate = useNavigate();
@@ -38,7 +27,6 @@ const FeedItem = ({
   };
 
   useEffect(() => {
-    // console.log(likeUsers);
     if (likeUsers !== null && !!likeUsers) {
       setLikeUserId(
         likeUsers.some((id) => {
@@ -50,32 +38,14 @@ const FeedItem = ({
 
   return (
     <div className={styles.list}>
-      <img
-        src={`${process.env.REACT_APP_BE_HOST}img/post/${id}`}
-        alt="postImg"
-        className={styles.postImg}
-        onClick={() => navigate(`/post/${id}`)}
-      />
+      <img src={`${process.env.REACT_APP_BE_HOST}img/post/${id}`} alt="postImg" className={styles.postImg} onClick={() => navigate(`/post/${id}`)} />
       <div className={styles.profile}>
-        <div
-          className={styles.userInfo}
-          onClick={() =>
-            navigate(`/profile/${userId}`, { state: { userEmail } })
-          }
-        >
-          <img
-            src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`}
-            alt="profileImg"
-            className={styles.profileImg}
-          />
+        <div className={styles.userInfo} onClick={() => navigate(`/profile/${userId}`, { state: { userEmail } })}>
+          <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`} alt="profileImg" className={styles.profileImg} />
           <p className={styles.user}>{userName}님</p>
         </div>
         <button className={styles.heartButton} onClick={handlePostLike}>
-          {likeUserId ? (
-            <i className={`fa-solid fa-heart ${styles.heartIcon}`}></i>
-          ) : (
-            <i className={`fa-regular fa-heart ${styles.heartIcon}`}></i>
-          )}
+          {likeUserId ? <i className={`fa-solid fa-heart ${styles.heartIcon}`}></i> : <i className={`fa-regular fa-heart ${styles.heartIcon}`}></i>}
           <span className={styles.likeText}>{like}</span>
         </button>
       </div>

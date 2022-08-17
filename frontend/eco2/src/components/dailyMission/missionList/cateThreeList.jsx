@@ -1,24 +1,11 @@
 import React, { useState } from "react";
 import CateThree from "../missionItem/cateThree";
-import { useNavigate } from "react-router-dom";
-import { postMission } from "../../../store/mission/missionMainSlice";
 import { GreenBtn } from "../../styled";
-import { useDispatch } from "react-redux";
 import styles from "./dailyMissionDetail.module.css";
 import PostModal from "../../modal/postModal/PostModal";
 
-const CateThreeList = ({
-  id,
-  categoryThree,
-  setCateNum,
-  cnt,
-  setCnt,
-  faAdd,
-  setFaAdd,
-}) => {
+const CateThreeList = ({ id, categoryThree, setCateNum, cnt, setCnt, faAdd, setFaAdd }) => {
   const [ecoId, setEcoId] = useState([]);
-  const dispatch = useDispatch();
-  const naviGate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState("");
   const displayType = visible ? styles.visible : styles.hidden;
@@ -36,21 +23,8 @@ const CateThreeList = ({
       };
       setEcoId([...ecoId, newEco.id]);
     } else {
-      const reEcoId = ecoId.filter(it => it !== id);
+      const reEcoId = ecoId.filter((it) => it !== id);
       setEcoId(reEcoId);
-    }
-  };
-  /**
-   * 선택한 미션들을 서버에 전송하기 위한 함수.
-   */
-  const onMissionSub = () => {
-    if (ecoCount >= 1) {
-      dispatch(postMission({ id, dailyMissionList: ecoId })).then(res => {
-        if (res.payload?.status === 200) {
-          alert(`${ecoId.length}개 저장 완료 메인페이지로 이동합니다.`);
-          naviGate("/dailymissionMain");
-        }
-      });
     }
   };
   return (
@@ -71,7 +45,7 @@ const CateThreeList = ({
         ></i>
       </div>
       <div className={styles.scrollMission}>
-        {categoryThree.map(it => (
+        {categoryThree.map((it) => (
           <CateThree
             key={it.id}
             content={it.title}
@@ -103,14 +77,7 @@ const CateThreeList = ({
       </div>
       <div>
         {visible && modalType === "등록하기" && (
-          <PostModal
-            className={`${displayType}`}
-            title={"미션 등록하기"}
-            content={"실천하기 미션 등록"}
-            type={"등록"}
-            userID={id}
-            ecoId={ecoId}
-          />
+          <PostModal className={`${displayType}`} title={"미션 등록하기"} content={"실천하기 미션 등록"} type={"등록"} userID={id} ecoId={ecoId} />
         )}
       </div>
     </div>

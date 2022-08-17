@@ -12,9 +12,7 @@ const ConfirmModal = ({ type, title, content, closeModal }) => {
     <div className={`${displayType} ${styles.modal}`} onClick={closeModal}>
       <div onClick={(e) => e.stopPropagation()} className={styles.modalBody}>
         <div className={styles.modalTitle}>
-          <i
-            className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}
-          ></i>
+          <i className={`fa-solid fa-circle-exclamation ${styles.deleteIcon}`}></i>
           <h2 className={styles.title}>{title}</h2>
         </div>
         <p className={styles.content}>{content}</p>
