@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./ReportDetail.module.css";
 import { useLocation } from 'react-router-dom';
 import { reportDetailList } from "../../../store/admin/reportSlice";
-import { reportCancle } from "../../../store/admin/reportSlice";
 import ReportDetailItem from "../../../components/admin/reportDetailItem/ReportDetailItem";
 import AdminModal from "../../../components/modal/adminModal/AdminModal";
 
@@ -17,7 +16,6 @@ const ReportDetail = () => {
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
   const [registTime, setRegistTime] = useState("");
-  const navigate = useNavigate();
   const [acceptModalVisible, setAcceptModalVisible] = useState(false);
   const [cancleModalVisible, setCancleModalVisible] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -67,7 +65,7 @@ const ReportDetail = () => {
 
           <div className={styles.postTitle}>
             <img
-              src={`http://localhost:8002/img/profile/${post.user.id}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${post.user.id}`}
               alt="profileImg"
               className={styles.profileImg}
             />
@@ -85,7 +83,8 @@ const ReportDetail = () => {
               )}
             </div>
             <img
-              src={`http://localhost:8002/img/post/${post.id}`}
+
+              src={`${process.env.REACT_APP_BE_HOST}img/post/${post.id}`}
               alt="postImg"
               className={styles.postImg}
             />
@@ -98,7 +97,7 @@ const ReportDetail = () => {
         <div className={styles.comment}>
           <div className={styles.commentBody}>
             <img
-              src={`http://localhost:8002/img/profile/${comment.user.id}`}
+              src={`${process.env.REACT_APP_BE_HOST}img/profile/${comment.user.id}`}
               alt="profileImg"
               className={styles.profileImg}
             />
@@ -120,6 +119,7 @@ const ReportDetail = () => {
             </tbody>
           </table>
         </div>
+      <div className={styles.listBox}>
         {reportDetails.length === 0 ? (
           <div>없음</div>
         ) : (
@@ -134,6 +134,7 @@ const ReportDetail = () => {
             );
           })
         )}
+        </div>
       </div>
       <div className={styles.reportButton}>
       <button
