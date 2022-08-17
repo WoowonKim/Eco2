@@ -1,53 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosService from "../axiosService";
 
-export const getLeaves = createAsyncThunk(
-  "leavesSlice/getLeaves",
-  async (args, { rejectWithValue }) => {
-    try {
-      const response = await axiosService.get(`/tree/${args}`);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
+export const getLeaves = createAsyncThunk("leavesSlice/getLeaves", async (args, { rejectWithValue }) => {
+  try {
+    const response = await axiosService.get(`/tree/${args}`);
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
   }
-);
+});
 
-export const updateLeaf = createAsyncThunk(
-  "leavesSlice/updateLeaf",
-  async (args, { rejectWithValue }) => {
-    console.log(args);
-    try {
-      //   const token = getToken();
-      //   const response = await axios({
-      //     url: `/tree/1`,
-      //     method: "put",
-      //     Headers: {
-      //       Authorization: "Authorization" + token,
-      //     },
-      //     data: args,
-      //   });
-      const response = await axiosService.put(`/tree/${args.userId}`, {
-        ...args.leaf,
-      });
-      return response.data;
-    } catch (err) {
-      return rejectWithValue;
-    }
+export const updateLeaf = createAsyncThunk("leavesSlice/updateLeaf", async (args, { rejectWithValue }) => {
+  try {
+    const response = await axiosService.put(`/tree/${args.userId}`, {
+      ...args.leaf,
+    });
+    return response.data;
+  } catch (err) {
+    return rejectWithValue;
   }
-);
+});
 
-export const statisticLeaves = createAsyncThunk(
-  "leavesSlice/statisticLeaves",
-  async (args, { rejectWithValue }) => {
-    try {
-      const response = await axiosService.get(`/tree/statistic/${args.userId}`);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
+export const statisticLeaves = createAsyncThunk("leavesSlice/statisticLeaves", async (args, { rejectWithValue }) => {
+  try {
+    const response = await axiosService.get(`/tree/statistic/${args.userId}`);
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response);
   }
-);
+});
 
 export let leavesSlice = createSlice({
   name: "leaves",
@@ -78,15 +59,11 @@ export let leavesSlice = createSlice({
     [updateLeaf.rejected]: (state, action) => {
       console.log("updateLeaf rejected");
     },
-    [updateLeaf.fulfilled]: (state, action) => {
-      console.log("updateLeaf fullfilled");
-    },
+    [updateLeaf.fulfilled]: (state, action) => {},
     [updateLeaf.pending]: (state, action) => {
       console.log("updateLeaf pendeing");
     },
-    [statisticLeaves.fulfilled]: (state, action) => {
-      console.log("statisticLeaves fullfilled");
-    },
+    [statisticLeaves.fulfilled]: (state, action) => {},
     [statisticLeaves.rejected]: (state, action) => {
       console.log("statisticLeaves rejected");
     },
