@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import { useDrag } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
 import styles from "./Leaf.module.css";
 
 const style = {
@@ -17,11 +19,42 @@ export const Leaf = ({ id, left, top, category, delay, createdItem }) => {
     }),
     [id, left, top, category]
   );
-  if (isDragging) {
-    return <img ref={drag} />;
-  }
-
-  return (
+  let preview = useRef();
+  const setPreviewMouse = (e) => {
+    const mouseX = e.pageX;
+    const mouseY = e.pageY;
+    preview.current.style.left =
+      mouseX - preview.current.offsetWidth / 2 + "px";
+    preview.current.style.top =
+      mouseY - preview.current.offsetHeight / 2 + "px";
+  };
+  const setPreviewTouch = (e) => {
+    const mouseX = e.touches[0].clientX;
+    const mouseY = e.touches[0].clientY;
+    preview.current.style.left =
+      mouseX - preview.current.offsetWidth / 2 + "px";
+    preview.current.style.top =
+      mouseY - preview.current.offsetHeight / 2 + "px";
+  };
+  useEffect(() => {
+    if (preview && isDragging) {
+      document.addEventListener("mousemove", setPreviewMouse);
+      document.addEventListener("touchmove", setPreviewTouch);
+    }
+    return () => {
+      document.removeEventListener("mousemove", setPreviewMouse);
+      document.removeEventListener("touchmove", setPreviewTouch);
+    };
+  }, [isDragging]);
+  return isDragging ? (
+    <img
+      src={
+        process.env.PUBLIC_URL + "/tree_leaves/" + "Leaf" + category + ".png"
+      }
+      className={styles.preview}
+      ref={preview}
+    ></img>
+  ) : (
     <img
       className={` ${
         category <= 6
