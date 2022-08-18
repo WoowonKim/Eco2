@@ -112,7 +112,7 @@ public class PostController {
                 UserSetting userSetting = userSettingRepository.getById(post.getUser().getId());
                 if (!userSetting.isPublicFlag()) {
                     if (friendService.getFriends(userId).contains(postUser) || postUser.getId().equals(userId)) {
-                        if (post.isPublicFlag()) {
+                        if (post.isPublicFlag() || postUser.getId().equals(userId)) {
                             Mission mission = null;
                             CustomMission customMission = null;
                             QuestDto quest = null;
@@ -197,7 +197,7 @@ public class PostController {
                 // API 요청을 보낸 user의 친구 중 postUser가 포함되어있거나, 게시물 작성자와 요청 user가 같은 경우 게시물 공개!
                 if (friendService.getFriends(userId).contains(postUser) || postUser.getId().equals(userId)) {
                     // 특정 게시물 공개일 경우
-                    if (post.isPublicFlag()) {
+                    if (post.isPublicFlag() || postUser.getId().equals(userId)) {
                         Mission mission = null;
                         CustomMission customMission = null;
                         QuestDto quest = null;
