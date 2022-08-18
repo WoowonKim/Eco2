@@ -27,10 +27,23 @@ const QuestModal = (props) => {
       setDisabled(false);
     }
   }, [load.content]);
-
+  useEffect(() => {
+    return () => {
+      setLoad({
+        userId: getUserId(),
+        missionId: 2,
+        lat: null,
+        lng: null,
+        achieveCount: 3,
+        content: "",
+      });
+    };
+  }, [open]);
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
-    <div className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}>
+    <div
+      className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}
+    >
       {open ? (
         <section>
           <header>퀘스트 생성하기</header>
