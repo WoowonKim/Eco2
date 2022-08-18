@@ -10,6 +10,7 @@ import com.web.eco2.model.service.post.PostService;
 import com.web.eco2.model.service.user.UserService;
 import com.web.eco2.util.ResponseHandler;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,7 @@ public class PostLikeController {
     private PostLikeService postLikeService;
 
     @PostMapping()
+    @ApiOperation(value = "게시물 좋아요", response = Object.class)
     public ResponseEntity<Object> postLike(@RequestBody PostLikeDto postLikeDto) {
         try {
             Long userId = postLikeDto.getUserId();

@@ -67,12 +67,8 @@ public class ImageController {
         try {
             log.info("프로필 사진 조회 api 호출");
             ProfileImg profileImg = profileImgService.findById(userId);
-            if (profileImg == null) {
-                return ResponseHandler.generateResponse("존재하지 않는 유저입니다.", HttpStatus.ACCEPTED);
-            }
-
             String saveName = "default.png";
-            if (profileImg.getSaveFolder() != null) {
+            if (profileImg != null && profileImg.getSaveFolder() != null) {
                 saveName = profileImg.getSaveName();
             }
             return getFileResponse(saveFolder, saveName);

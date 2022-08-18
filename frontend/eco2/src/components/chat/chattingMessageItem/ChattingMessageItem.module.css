@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   justify-content: center;
+  clear: both;
 }
 
 .profileImg {
