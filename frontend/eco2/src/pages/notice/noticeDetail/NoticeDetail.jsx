@@ -33,14 +33,15 @@ const NoticeDetail = () => {
   useEffect(() => {
     console.log(
       "now",
-      "prev",
-      location.state.notices[location.state.index - 1],
-      "now",
-      location.state.notices[location.state.index],
-      "next",
-      location.state.notices[location.state.index + 1],
-      "index",
-      location.state?.index
+      location.state
+      // "prev",
+      // location.state.notices[location.state.index - 1],
+      // "now",
+      // location.state.notices[location.state.index],
+      // "next",
+      // location.state.notices[location.state.index + 1],
+      // "index",
+      // location.state?.index
     );
     setName(getUserName());
     dispatch(noticeDetail({ noticeId: params.noticeId })).then((res) => {
@@ -78,10 +79,18 @@ const NoticeDetail = () => {
       }
     });
   }, [params.noticeId, location.state?.index]);
+  console.log(location.state.next?.title);
+  useEffect(() => {});
   return (
     <div className={styles.notice}>
       <div className={styles.header}>
-        <span className={`${styles.title} ${notice.urgentFlag ? styles.urgent : null}`}>{notice.urgentFlag ? `[긴급] ${notice.title}` : notice.title}</span>
+        <span
+          className={`${styles.title} ${
+            notice.urgentFlag ? styles.urgent : null
+          }`}
+        >
+          {notice.urgentFlag ? `[긴급] ${notice.title}` : notice.title}
+        </span>
         {location.state?.admin && (
           <div className={styles.dropdown}>
             <i className={`fa-solid fa-ellipsis-vertical ${styles.icon}`}></i>
@@ -96,7 +105,9 @@ const NoticeDetail = () => {
                     className={styles.dropdownItem}
                   >
                     수정
-                    <i className={`fa-solid fa-pencil ${styles.dropdownIcon}`}></i>
+                    <i
+                      className={`fa-solid fa-pencil ${styles.dropdownIcon}`}
+                    ></i>
                   </button>
                   <button
                     onClick={() => {
@@ -106,7 +117,9 @@ const NoticeDetail = () => {
                     className={styles.dropdownItem}
                   >
                     삭제
-                    <i className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}></i>
+                    <i
+                      className={`fa-solid fa-trash-can ${styles.dropdownIcon}`}
+                    ></i>
                   </button>
                 </div>
               )}
@@ -141,7 +154,7 @@ const NoticeDetail = () => {
       </div>
       <pre className={styles.content}>{notice.content}</pre>
       <div className={styles.otherPage}>
-        {!!prev ? (
+        {location.state.prev?.title ? (
           <div
             className={styles.pageContainer}
             onClick={() => {
@@ -157,7 +170,9 @@ const NoticeDetail = () => {
             }}
           >
             <span className={styles.page}>이전</span>
-            <span className={styles.pageTitle}>{prev.title}</span>
+            <span className={styles.pageTitle}>
+              {location.state.prev?.title}
+            </span>
           </div>
         ) : (
           <div className={styles.pageContainer}>
@@ -165,7 +180,7 @@ const NoticeDetail = () => {
             <span className={styles.pageTitle}>이전글이 없습니다.</span>
           </div>
         )}
-        {!!next ? (
+        {location.state.next?.title ? (
           <div
             className={styles.pageContainer}
             onClick={() => {
@@ -181,7 +196,9 @@ const NoticeDetail = () => {
             }}
           >
             <span className={styles.page}>다음</span>
-            <span className={styles.pageTitle}>{next.title}</span>
+            <span className={styles.pageTitle}>
+              {location.state.next?.title}
+            </span>
           </div>
         ) : (
           <div className={styles.pageContainer}>
