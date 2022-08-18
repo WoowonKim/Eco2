@@ -25,6 +25,7 @@
   height: 30px;
   background-color: white;
   margin-right: 10px;
+  border-radius: 50%;
 }
 
 .friendName {
