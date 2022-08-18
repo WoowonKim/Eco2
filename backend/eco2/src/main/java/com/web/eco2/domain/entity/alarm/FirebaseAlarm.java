@@ -19,9 +19,10 @@ public class FirebaseAlarm {
     private String dType;
     private Long senderId; // 보낸 사람
     private String senderName;
+    private String senderEmail;
 
     @Builder
-    public FirebaseAlarm(String id, Long userId, String content, String url, String dType, Long senderId, String senderName) {
+    public FirebaseAlarm(String id, Long userId, String content, String url, String dType, Long senderId, String senderName, String senderEmail) {
         this.id = id;
         this.userId = userId;
         this.content = content;
@@ -30,5 +31,6 @@ public class FirebaseAlarm {
         this.senderId = senderId;
         this.sendTime = ZonedDateTime.now().toEpochSecond();
         this.senderName = senderName;
+        this.senderEmail = senderEmail;
     }
 }
