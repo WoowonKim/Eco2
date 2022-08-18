@@ -69,96 +69,96 @@
 
 ### 메인
 
-![](./readme_assets/나무.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/9d18393257e3b05da6046cae16e438cb/나무.gif)
 
 - 미션과 퀘스트를 통해 얻은 보상 확인 및 활용하여 자신만의 나무 꾸미기
 - 지금까지 참여했던 미션 카테고리 통계 확인 가능
 
 ### 데일리미션
 
-![](./readme_assets/데일리 미션 추천.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/18c6cdb02f16f46e36f9ce8de89c9f54/데일리_미션_추천.gif)
 
 - 날씨에 따라 매일 미션 3개 추천
 
-![](./readme_assets/기본 미션.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/cbf21ad64073d6bb244d0d362e897dec/기본_미션.gif)
 
 - 트렌딩을 통해 가장 많이 참여한 미션 상위 5개 확인 가능
 - 카테고리 별로 나눠진 추천리스트에서 원하는 미션을 선택
 
-![](./readme_assets/데일리 미션 즐겨찾기.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/d3f8b6bee09f97d7ff8ba7e6801a4254/데일리_미션_즐겨찾기.gif)
 
 - 자주 하는 미션을 즐겨찾기로 등록 가능
 
-![](./readme_assets/커스텀 미션 등록.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/53ee198e9bc68ee52a32942618d34d69/커스텀_미션_등록.gif)
 
 - 커스텀 미션 기능을 통해 목록에 없는 미션을 직접 생성하여 실천 가능
 
-![](./readme_assets/데일리 미션 완료 게시물 등록.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/035cb627df9e457dc6c2b9f7e9f9c0f8/데일리_미션_완료_게시물_등록.gif)
 
 - 미션 수행 후, 인증 게시물을 올리면 보상 아이템 지급
 
-![](./readme_assets/데일리 미션 보상.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/d390c832f50c588b7007cf05bc4ef64b/데일리_미션_보상.gif)
 
 - 모든 데일리 미션 수행 후, 보상받기 버튼을 누르면 보상 이미지 지급
 - 보상 이미지 다운로드, 카카오톡 공유 가능
 
 ### 퀘스트
 
-![](./readme_assets/퀘스트 등록.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/e0d91b0f97cacd04e283c27d638219fd/퀘스트_등록.gif)
 
 - 지도에서 위치를 정해 퀘스트를 생성하고, 다른 사람과 함께 미션 진행 가능
 
-![](./readme_assets/퀘스트 생성 제한.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/402d5fba16453acf28eb3c548612e2d6/퀘스트_생성_제한.gif)
 
 - 하루에 퀘스트를 3개 생성했을 시, 추가적으로 퀘스트 생성 불가능
 - 50m 이내에 퀘스트가 존재하면 퀘스트 생성 불가능
 
-![](./readme_assets/퀘스트 완료 게시물 등록.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/14d93ba54d0e22424ee335a4c83ab403/퀘스트_완료_게시물_등록.gif)
 
 - 미션 수행 후, 인증 게시물을 올리면 보상 아이템 지급
 
-![](./readme_assets/퀘스트 인원 달성 보상.gif)
+![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/ada79ee898da8a877e62c0ca10809d90/퀘스트_인원_달성_보상.gif)
 
 - 퀘스트 참여 인원수가 목표 인원수에 도달하면 추가 보상 아이템 지급
 
 ### 공통 기능
 
 - 회원가입
-  ![](./readme_assets/회원가입.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/e556a5e755bcf402e9bbcdd947d69e40/회원가입.gif)
 
 - 로그인
-  ![](./readme_assets/로그인.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/e3762e029438a4890c3347fa7be73121/로그인.gif)
 
 - 프로필
-  ![](./readme_assets/닉네임 변경.gif)
-  ![](./readme_assets/비밀번호 변경.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/uploads/cfbc2fad4f3949811be8d609b412aa46/닉네임_변경.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/c61141d3fd235ef808da9729924adae2/비밀번호_변경.gif)
 
 - 친구
-  ![](./readme_assets/친구신청.gif)
-  ![](./readme_assets/친구삭제.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/1536c91bc2d6842c88f85af37faffa5c/친구신청.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/385bf94a223ef116dd5c98980d18dbdf/친구삭제.gif)
 
 - 채팅
-  ![](./readme_assets/채팅.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/812f67dd329b505931935b107ed3e3bc/채팅.gif)
 
 - 신고
-  ![](./readme_assets/관리자 신고 수락.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/aac04dd73db33c53ece667ca4bebee12/관리자_신고_수락.gif)
   
   - 신고받은 게시물/댓글을 관리자가 확인 후 처리
 
 - 공지사항
-  ![](./readme_assets/공지사항_유저.gif)
-  ![](./readme_assets/공지사항_관리자.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/50e8b6299ec91eced8b4b841ba0642bd/공지사항_유저.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/0fc64b54419f104fb32cf839ad8fd546/공지사항_관리자.gif)
   
   - 관리자는 공지사항 작성 가능
   
   - 긴급 공지사항은 상단 고정
 
 - 알림
-  ![](./readme_assets/알림 팝업.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/fff1f9454cbd4cbc69ef240ae9d89665/알림_팝업.gif)
 
 - 계정설정
-  ![](./readme_assets/계정설정 변경.gif)
-  ![](./readme_assets/프로필 변경.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/uploads/079da07abec92f284bfd82330eb47769/계정설정_변경.gif)
+  ![](https://lab.ssafy.com/s07-webmobile2-sub2/S07P12B103/S07P12B103/uploads/44920505ff4f19ac8170538e239646b7/프로필_변경.gif)
 
 ## 📄산출물
 
