@@ -9,7 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
 
-@Valid
+//@Valid
 @ToString
 @Data
 public class SignUpRequest {
