@@ -102,3 +102,11 @@
     height: 40px;
   }
 }
+
+.preview {
+  position: fixed;
+  height: 40px;
+  top: 100%;
+  left: 50%;
+  z-index: 0;
+}
