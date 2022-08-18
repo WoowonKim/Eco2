@@ -271,7 +271,7 @@ public class UserController {
             String refreshToken = jwtTokenUtil.createRefreshToken();
             if (user == null) {
                 // 없는 회원: 회원 가입하기
-                userService.save(User.builder().email(email).socialType(socialType).refreshToken(refreshToken).role(Collections.singletonList("ROLE_ADMIN")).build());
+                userService.save(User.builder().email(email).socialType(socialType).refreshToken(refreshToken).role(Collections.singletonList("ROLE_USER")).build());
                 user = userService.findByEmail(email);
 
                 // 계정 설정 insert
