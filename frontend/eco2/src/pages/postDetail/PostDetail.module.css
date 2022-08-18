@@ -111,7 +111,7 @@
 }
 
 .content {
-  margin: 20px 0;
+  margin: 40px 0;
   text-align: left;
   font-size: 15px;
   word-break: break-all;
@@ -144,4 +144,23 @@
   text-align: end;
   margin-top: 1%;
   margin-left: 67%;
+}
+
+.hashTag {
+  text-align: start;
+  display: flex;
+  align-items: center;
+  font-size: small;
+  background-color: rgb(87, 214, 150);
+  color: white;
+  padding: 2px 5px;
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  font-family: "NanumBarunGothicLight";
+  margin: 10px 0;
+}
+
+.hashTagContent {
+  margin: 4px;
 }
