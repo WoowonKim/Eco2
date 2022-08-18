@@ -16,7 +16,7 @@ const ChattModalItem = ({ key, id, email, name }) => {
   return (
     <div className={styles.list}>
       <div className={styles.leftContent}>
-        <img src={`http://localhost:8002/img/profile/${id}`} alt="profileImg" className={styles.profileImg} />
+        <img src={`${process.env.REACT_APP_BE_HOST}img/profile/${id}`} alt="profileImg" className={styles.profileImg} />
         <div className={`${styles.text}`}>{name}</div>
       </div>
       <div className={styles.rightContent}>
