@@ -124,7 +124,7 @@ public class UserSettingController {
                     .userId(toId).senderId(fromId)
                     .content(sender.getName() + "님이 친구 신청 했습니다.")
                     .dType("friendRequest")
-                    .url("/profile/" + fromId)
+                    .url("/profile/" + fromId).senderEmail(sender.getEmail())
                     .build(), fromId.toString(), "friendRequest");
             return ResponseHandler.generateResponse(fromId + " 유저가 " + toId + " 유저에게 친구신청을 보냈습니다.", HttpStatus.OK);
         } catch (Exception e) {
@@ -172,7 +172,7 @@ public class UserSettingController {
                 alarmService.insertAlarm(FirebaseAlarm.builder()
                         .userId(friendId).senderId(id)
                         .content(user.getName() + "님이 친구신청을 수락하였습니다.")
-                        .dType("friendAccept").url("/profile/" + id).build());
+                        .dType("friendAccept").url("/profile/" + id).senderEmail(user.getEmail()).build());
                 msg = "친구 신청 수락 성공하였습니다.";
             } else {
                 // 친구 신청 거절
