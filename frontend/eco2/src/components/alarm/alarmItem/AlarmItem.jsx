@@ -89,7 +89,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
     if (type !== "friendRequest") {
       dispatch(deleteAlarm({ id: id, userId: getUserId() }));
     }
-    if (type === "friendAccept") {
+    if (type === "friendAccept" || type === "friendRequest") {
       navigate(alarm.url, { state: { userEmail: alarm.senderEmail } });
     } else if (type === "newChat") {
       // 채팅 이동

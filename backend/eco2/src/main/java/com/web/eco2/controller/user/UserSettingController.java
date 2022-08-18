@@ -124,7 +124,7 @@ public class UserSettingController {
                     .userId(toId).senderId(fromId)
                     .content(sender.getName() + "님이 친구 신청 했습니다.")
                     .dType("friendRequest")
-                    .url("/profile/" + fromId)
+                    .url("/profile/" + fromId).senderEmail(sender.getEmail())
                     .build(), fromId.toString(), "friendRequest");
             return ResponseHandler.generateResponse(fromId + " 유저가 " + toId + " 유저에게 친구신청을 보냈습니다.", HttpStatus.OK);
         } catch (Exception e) {
