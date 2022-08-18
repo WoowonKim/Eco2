@@ -100,7 +100,14 @@ const QuestMain = () => {
           setLikeCount={setLikeCount}
         ></DetailModal>
       )}
-      {questDetail && <PostModal open={postModal} questDetail={questDetail} close={closePostModal} closeDetail={closeDetailModal}></PostModal>}
+      {questDetail && (
+        <PostModal
+          open={postModal}
+          questDetail={questDetail}
+          close={closePostModal}
+          closeDetail={closeDetailModal}
+        ></PostModal>
+      )}
       {confirm && (
         <ConfirmModal
           closeModal={() => {
