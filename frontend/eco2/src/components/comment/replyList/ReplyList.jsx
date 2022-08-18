@@ -15,7 +15,7 @@ const ReplyList = ({ id, replys, commentUserId, setTest }) => {
                 content={reply.content}
                 user={reply.userName}
                 postId={reply.postId}
-                commentUserId={commentUserId}
+                commentUserId={reply.userId}
                 setTest={setTest}
                 userEmail={reply.userEmail}
                 registTime={reply.registTime}
