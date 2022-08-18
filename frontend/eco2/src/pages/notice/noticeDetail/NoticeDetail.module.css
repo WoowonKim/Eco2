@@ -36,6 +36,7 @@
   word-break: break-all;
   white-space: pre-wrap;
   height: 300px;
+  font-family: "NanumBarunGothicLight";
 }
 
 .dropdown {
