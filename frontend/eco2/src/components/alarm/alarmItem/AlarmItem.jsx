@@ -69,7 +69,7 @@ const AlarmItem = ({ alarm, isFriendRequest }) => {
         return `${process.env.REACT_APP_BE_HOST}img/profile/${alarm.senderId}`;
       case "report":
       default:
-        return process.env.PUBLIC_URL + `/logo.png`;
+        return process.env.PUBLIC_URL + `/logo2.png`;
     }
   };
 
