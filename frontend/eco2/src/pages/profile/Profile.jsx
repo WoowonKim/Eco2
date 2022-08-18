@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
-import { getUserName, getUserEmail, getUserId, getAccessToken } from "../../store/user/common";
+import {
+  getUserName,
+  getUserEmail,
+  getUserId,
+  getAccessToken,
+} from "../../store/user/common";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { profileImgChange, userInformation } from "../../store/user/userSettingSlice";
+import {
+  profileImgChange,
+  userInformation,
+} from "../../store/user/userSettingSlice";
 import { useDispatch } from "react-redux";
 import Calendar from "../../components/calendar/calendar/Calendar";
 
-import { accountSetting, friends, isFriend } from "../../store/user/accountSlice";
+import {
+  accountSetting,
+  friends,
+  isFriend,
+} from "../../store/user/accountSlice";
 import { createRoom } from "../../store/chat/chattingSlice";
 import PostModal from "../../components/modal/postModal/PostModal";
 import axiosService from "../../store/axiosService";
@@ -35,9 +47,6 @@ const Profile = () => {
   const location = useLocation();
   const params = useParams();
   const email = location.state?.userEmail || getUserEmail();
-
-  const displayType = userSetting === 1 ? styles.selectedMenu : null;
-  const displayType2 = userSetting === 2 ? styles.selectedMenu : null;
 
   useEffect(() => {
     // 유저 객체 받아오기
@@ -70,14 +79,16 @@ const Profile = () => {
 
   const profileImg = () => {
     // 현재 수정한 이미지가 없을 경우 기존 이미지를 백으로 보내고 있음
-    dispatch(profileImgChange({ email, img: file ? file : originalImg })).then((res) => {
-      if (res.payload.status === 200) {
-        setProfileEdit(false);
-        if (!!file) {
-          window.location.replace(`/profile/${getUserId()}`);
+    dispatch(profileImgChange({ email, img: file ? file : originalImg })).then(
+      (res) => {
+        if (res.payload.status === 200) {
+          setProfileEdit(false);
+          if (!!file) {
+            window.location.replace(`/profile/${getUserId()}`);
+          }
         }
       }
-    });
+    );
   };
 
   useEffect(() => {
@@ -112,9 +123,17 @@ const Profile = () => {
         <div className={styles.user}>
           <div className={styles.userGroup}>
             {fileImage ? (
-              <img className={styles.profileImg} alt="profileImg" src={fileImage} />
+              <img
+                className={styles.profileImg}
+                alt="profileImg"
+                src={fileImage}
+              />
             ) : (
-              <img className={styles.profileImg} alt="profileImg" src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`} />
+              <img
+                className={styles.profileImg}
+                alt="profileImg"
+                src={`${process.env.REACT_APP_BE_HOST}img/profile/${userId}`}
+              />
             )}
             <div className={styles.userNameGroup}>
               <p className={styles.userName}>{userName}</p>
@@ -133,7 +152,9 @@ const Profile = () => {
                       }
                       className={styles.button}
                     >
-                      <i className={`fa-solid fa-gear ${styles.settingIcon}`}></i>
+                      <i
+                        className={`fa-solid fa-gear ${styles.settingIcon}`}
+                      ></i>
                     </button>
                   ) : (
                     <div className={styles.buttonGroup}>
@@ -145,7 +166,9 @@ const Profile = () => {
                             setModalType("친구");
                           }}
                         >
-                          <i className={`fa-solid fa-user-plus ${styles.icon}`}></i>
+                          <i
+                            className={`fa-solid fa-user-plus ${styles.icon}`}
+                          ></i>
                         </button>
                       )}
                       <button
@@ -171,20 +194,31 @@ const Profile = () => {
                             .catch((err) => console.log(err));
                         }}
                       >
-                        <i className={`fa-solid fa-paper-plane ${styles.icon}`}></i>
+                        <i
+                          className={`fa-solid fa-paper-plane ${styles.icon}`}
+                        ></i>
                       </button>
                     </div>
                   )}
                   {getUserId() === params.userId && (
                     <div className={styles.imgIconGroup}>
                       {!profileEdit ? (
-                        <i className={`fa-solid fa-pencil ${styles.editIcon}`} onClick={() => setProfileEdit(true)}></i>
+                        <i
+                          className={`fa-solid fa-pencil ${styles.editIcon}`}
+                          onClick={() => setProfileEdit(true)}
+                        ></i>
                       ) : (
                         <div>
                           <label htmlFor="file" className={styles.imgLabel}>
-                            <i className={`fa-solid fa-pencil ${styles.editIcon}`} onClick={() => setProfileEdit(true)}></i>
+                            <i
+                              className={`fa-solid fa-pencil ${styles.editIcon}`}
+                              onClick={() => setProfileEdit(true)}
+                            ></i>
                           </label>
-                          <button onClick={profileImg} className={styles.button}>
+                          <button
+                            onClick={profileImg}
+                            className={styles.button}
+                          >
                             <i className="fa-solid fa-check"></i>
                           </button>
                         </div>
@@ -215,7 +249,13 @@ const Profile = () => {
               setConfirm={setConfirm}
             />
           )}
-          {confirm === 202 && <ConfirmModal title={"친구 신청"} content={"이미 친구 신청한 유저입니다."} closeModal={() => setConfirm(!confirm)} />}
+          {confirm === 202 && (
+            <ConfirmModal
+              title={"친구 신청"}
+              content={"이미 친구 신청한 유저입니다."}
+              closeModal={() => setConfirm(!confirm)}
+            />
+          )}
           <div className={styles.dataGroup}>
             <div className={styles.data}>
               <p className={styles.friendCount}>{missionList.length}</p>
@@ -242,16 +282,31 @@ const Profile = () => {
           </div>
         </div>
         <div className={styles.missionList}>
-          <div onClick={() => setUserSetting(1)} className={`${styles.missionTitle} ${userSetting === 1 ? styles.selectedMenu1 : null}`}>
-            <p className={`${styles.calendarText} ${displayType}`}>달력</p>
+          <div
+            onClick={() => setUserSetting(1)}
+            className={`${styles.missionTitle} ${
+              userSetting === 1 ? styles.selectedMenu1 : null
+            }`}
+          >
+            <p className={`${styles.calendarText}`}>달력</p>
             {userSetting === 1}
           </div>
-          <div onClick={() => setUserSetting(2)} className={`${styles.missionTitle} ${userSetting === 2 ? styles.selectedMenu2 : null}`}>
-            <p className={`${styles.dailyText} ${displayType}`}>데일리</p>
+          <div
+            onClick={() => setUserSetting(2)}
+            className={`${styles.missionTitle} ${
+              userSetting === 2 ? styles.selectedMenu2 : null
+            }`}
+          >
+            <p className={`${styles.dailyText}`}>데일리</p>
             {userSetting === 2}
           </div>
-          <div onClick={() => setUserSetting(3)} className={`${styles.missionTitle} ${userSetting === 3 ? styles.selectedMenu3 : null}`}>
-            <p className={`${styles.questText} ${displayType2}`}>퀘스트</p>
+          <div
+            onClick={() => setUserSetting(3)}
+            className={`${styles.missionTitle} ${
+              userSetting === 3 ? styles.selectedMenu3 : null
+            }`}
+          >
+            <p className={`${styles.questText}`}>퀘스트</p>
             {userSetting === 3}
           </div>
         </div>
@@ -287,7 +342,7 @@ const Profile = () => {
             )}
             {userSetting === 3 && (
               <div className={styles.dailyScroll}>
-                <div className={`${styles.mission} ${displayType2}`}>
+                <div className={`${styles.mission}`}>
                   {questList.map((mission) => (
                     <img
                       key={mission.id}
