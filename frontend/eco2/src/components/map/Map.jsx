@@ -123,16 +123,16 @@ const Map = ({
             Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
               Math.sin(lat1) * Math.sin(lat2)
           );
-        // if (dist < 500) {
-        kakao.maps.event.addListener(marker, "click", function () {
-          openDeatailModal(quest.id);
-        });
-        // } else {
-        //   kakao.maps.event.addListener(marker, "click", function () {
-        //     setContent("너무 멀어요!");
-        //     setConfirm(true);
-        //   });
-        // }
+        if (dist < 500) {
+          kakao.maps.event.addListener(marker, "click", function () {
+            openDeatailModal(quest.id);
+          });
+        } else {
+          kakao.maps.event.addListener(marker, "click", function () {
+            setContent("너무 멀어요!");
+            setConfirm(true);
+          });
+        }
         if (dist < 500) {
           setCounter((counter) => counter + 1);
         }
@@ -173,10 +173,10 @@ const Map = ({
     //   setContent("3개 이상 등록할 수 없어요!");
     // }
     if (makeFlag) {
-      kakao.maps.event.addListener(kakaoMap, "click", clickHandler);
+      kakao.maps.event.addListener(mapCircle, "click", clickHandler);
     }
     return () => {
-      kakao.maps.event.removeListener(kakaoMap, "click", clickHandler);
+      kakao.maps.event.removeListener(mapCircle, "click", clickHandler);
     };
   }, [kakaoMap, makeFlag]);
   return (
